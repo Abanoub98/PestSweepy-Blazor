@@ -1,4 +1,4 @@
-@import url('open-iconic/font/css/open-iconic-bootstrap.min.css');
+﻿@import url('open-iconic/font/css/open-iconic-bootstrap.min.css');
 
 h1:focus {
     outline: none;
@@ -86,7 +86,6 @@ a, .btn-link {
         }
 
 .loading-progress-text {
-    position: absolute;
     text-align: center;
     font-weight: bold;
     inset: calc(20vh + 3.25rem) 0 auto 0.2rem;
@@ -95,3 +94,51 @@ a, .btn-link {
     .loading-progress-text:after {
         content: var(--blazor-load-percentage-text, "Loading");
     }
+
+.loadingImage {
+    width: 300px;
+    margin-bottom: 30px;
+}
+
+.loader {
+    margin-top: 10px !important;
+    width: 25% !important;
+    display: block;
+    position: relative;
+    height: 12px;
+    width: 80%;
+    border: 1px solid #fdaf3b;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+@media only screen and (max-width: 768px) {
+    /* For mobile phones: */
+    .loader {
+        width: 80% !important;
+    }
+}
+
+.loader::after {
+    content: '';
+    width: 40%;
+    height: 100%;
+    background: #fdaf3b;
+    position: absolute;
+    top: 0;
+    left: 0;
+    box-sizing: border-box;
+    animation: animloader 1s linear infinite;
+}
+
+@keyframes animloader {
+    0% {
+        left: 0;
+        transform: translateX(-100%);
+    }
+
+    100% {
+        left: 100%;
+        transform: translateX(0%);
+    }
+}

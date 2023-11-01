@@ -1,0 +1,40 @@
+﻿<MudSkeleton Class="my-5" SkeletonType="SkeletonType.Rectangle" Animation="Animation.Wave" Height="20px" Width="500px" />
+<MudCard Elevation="25">
+    <MudCardHeader Style="padding:20px">
+        <CardHeaderAvatar>
+            <MudSkeleton SkeletonType="SkeletonType.Rectangle" Animation="Animation.Wave" Height="60px" Width="60px" />
+        </CardHeaderAvatar>
+        <CardHeaderContent>
+            <MudSkeleton Class="mb-1" SkeletonType="SkeletonType.Rectangle" Animation="Animation.Wave" Height="30px" Width="30%" />
+            <div class="d-flex gap-1">
+                <MudSkeleton SkeletonType="SkeletonType.Rectangle" Animation="Animation.Wave" Height="15px" Width="60px" />
+                <MudSkeleton SkeletonType="SkeletonType.Rectangle" Animation="Animation.Wave" Height="15px" Width="60px" />
+                <MudSkeleton SkeletonType="SkeletonType.Rectangle" Animation="Animation.Wave" Height="15px" Width="60px" />
+            </div>
+        </CardHeaderContent>
+        <CardHeaderActions>
+            <MudSkeleton SkeletonType="SkeletonType.Rectangle" Animation="Animation.Wave" Height="35px" Width="80px" />
+        </CardHeaderActions>
+    </MudCardHeader>
+</MudCard>
+<MudTabs HideSlider=true Class="mt-5" Elevation="25" Rounded="true" ApplyEffectsToContainer=true PanelClass="bg-white px-6 pb-6 pt-0">
+    <MudTabPanel Disabled=true>
+        <MudSkeleton Animation="Animation.Wave" Class="mb-1 mt-6" Width="10%" Height="35px;" />
+        <MudPaper Style="max-height:300px;overflow:scroll;border:0" Outlined="true">
+            <div class="mb-2 m-3 text-secondary">
+                <MudSkeleton Animation="Animation.Wave" Width="95%" />
+                <MudSkeleton Animation="Animation.Wave" Width="100%" />
+                <MudSkeleton Animation="Animation.Wave" Width="100%" />
+                <MudSkeleton Animation="Animation.Wave" Width="95%" />
+                <MudSkeleton Animation="Animation.Wave" Width="100%" />
+                <MudSkeleton Animation="Animation.Wave" Width="100%" />
+                <MudSkeleton Animation="Animation.Wave" Width="100%" />
+                <MudSkeleton Animation="Animation.Wave" Width="95%" />
+                <MudSkeleton Animation="Animation.Wave" Width="100%" />
+                <MudSkeleton Animation="Animation.Wave" Width="100%" />
+                <MudSkeleton Animation="Animation.Wave" Width="100%" />
+                <MudSkeleton Animation="Animation.Wave" Width="40%" />
+            </div>
+        </MudPaper>
+    </MudTabPanel>
+</MudTabs>

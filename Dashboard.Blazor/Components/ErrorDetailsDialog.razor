@@ -1,0 +1,17 @@
+﻿<MudDialog DisableSidePadding="true">
+    <DialogContent>
+        <MudContainer Style="max-height: 300px; overflow-y: scroll">
+            <MudText Style="word-wrap: break-word;">@Error</MudText>
+        </MudContainer>
+    </DialogContent>
+</MudDialog>
+
+@code{
+    [CascadingParameter] MudDialogInstance MudDialog { get; set; } = default!;
+    [Parameter][EditorRequired] public string Error { set; get; } = null!;
+
+    private void Ok()
+    {
+        MudDialog.Close(DialogResult.Ok(true));
+    }
+}
