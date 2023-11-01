@@ -1,0 +1,11 @@
+﻿<MudCard Outlined="true" Style="border:0px;text-align:center">
+    <MudCardContent>
+        <MudProgressCircular Color="Color.Info" Style=@("height:70px;width:70px;" + (IsBigForm? "margin: 150px 0px": string.Empty)) Indeterminate="true" />
+    </MudCardContent>
+    <MudCardActions>
+    </MudCardActions>
+</MudCard>
+
+@code{
+    [Parameter] public bool IsBigForm { set; get; }
+}

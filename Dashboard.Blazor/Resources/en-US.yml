@@ -18,6 +18,11 @@ PageOne: "Page One"
 PageTwo: "Page Two"
 PageThree: "Page Three"
 Pro: "Pro"
-
+Dashboard: "Dashboard"
+Audits: "Audits"
+LoginLogs: "Login Logs"
+ReferenceData: "Reference Data"
+Customers: "Customers"
+Orders: "Orders"
 #MainFooter
 About: "About"

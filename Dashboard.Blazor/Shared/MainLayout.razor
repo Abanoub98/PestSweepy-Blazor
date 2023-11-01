@@ -2,6 +2,9 @@
 
 <!--begin::App-->
 <div style="height:100%;@(CurrentCulture == "ar-SA" ? "font-family: 'Noto Sans Arabic', sans-serif;" : string.Empty)" class="d-flex flex-column flex-root app-root" id="kt_app_root">
+    <MudThemeProvider />
+    <MudDialogProvider />
+    <MudSnackbarProvider />
     <!--begin::Page-->
     <div class="app-page flex-column flex-column-fluid" id="kt_app_page">
         <!--begin::Header-->
@@ -27,7 +30,7 @@
                     <!--begin::Content-->
                     <div id="kt_app_content" class="app-content flex-column-fluid">
                         <!--begin::Content container-->
-                        <div id="kt_app_content_container" class="app-container container-fluid">
+                        <div id="kt_app_content_container" class="h-100 app-container container-fluid">
                             @Body
                         </div>
                         <!--end::Content container-->

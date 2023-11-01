@@ -18,6 +18,12 @@ PageOne: "الصفحة الأولى"
 PageTwo: "الصفحة الثانية"
 PageThree: "الصفحة الثالثة"
 Pro: "متقدم"
+Dashboard: "لوحة التحكم"
+Audits: "تدقيق"
+LoginLogs: "سجل الدخول"
+ReferenceData: "البيانات المرجعية"
+Customers: "العملاء"
+Orders: "الطلبات"
 
 #MainFooter
 About: "حول"

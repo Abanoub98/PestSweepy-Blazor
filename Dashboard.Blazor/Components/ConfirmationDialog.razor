@@ -1,0 +1,19 @@
+﻿<MudDialog>
+    <DialogContent>
+        <MudText>@ConfirmationMessage</MudText>
+        <MudAlert Severity="Severity.Warning" Dense="true" Class="my-2">This action cannot be undone.</MudAlert>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Cancel">Cancel</MudButton>
+        <MudButton DisableElevation="true" Variant="Variant.Filled" Color="Color.Warning" OnClick="Submit">Ok</MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    [CascadingParameter] MudDialogInstance MudDialog { get; set; } = default!;
+
+    [Parameter] public string ConfirmationMessage { get; set; } = "You want to delete this?";
+
+    void Submit() => MudDialog.Close(DialogResult.Ok(true));
+    void Cancel() => MudDialog.Cancel();
+}
