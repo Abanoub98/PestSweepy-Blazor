@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>Dashboard</title>
+    <base href="/" />
+
+    <link rel="icon" type="image/png" href="favicon.png" />
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto+Sans+Arabic">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,400,500,600,700" />
+
+    <link href="css/bootstrap/bootstrap.min.css" rel="stylesheet" />
+
+    <!--begin::Global Stylesheets Bundle(mandatory for all pages)-->
+    <link href="assets/plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css" />
+    <link href="assets/css/style.bundle.css" rel="stylesheet" type="text/css" />
+    <!--end::Global Stylesheets Bundle-->
+
+    <link href="css/app.css" rel="stylesheet" />
+    <link href="Dashboard.Blazor.styles.css" rel="stylesheet" />
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+
+            var culture = localStorage.getItem("CurrentCulture");
+            // Get the <html> element
+            var htmlElement = document.querySelector("html");
+
+            // Update the dir and style attributes based on culture
+            if (culture === "\"ar-SA\"") {
+                htmlElement.setAttribute("dir", "rtl");
+                htmlElement.setAttribute("style", "direction: rtl");
+            }
+            else {
+                htmlElement.setAttribute("dir", "ltr");
+                htmlElement.removeAttribute("style");
+            }
+
+            var pluginsBundle = "assets/plugins/global/plugins.bundle" + (culture === "\"ar-SA\"" ? ".rtl" : "") + ".css";
+            var styleBundle = "assets/css/style.bundle" + (culture === "\"ar-SA\"" ? ".rtl" : "") + ".css";
+
+            // Get the <link> elements for the stylesheets
+            var pluginsBundleLink = document.querySelector("link[href*='plugins.bundle']");
+            var styleBundleLink = document.querySelector("link[href*='style.bundle']");
+
+            // Update the href attributes
+            pluginsBundleLink.href = pluginsBundle;
+            styleBundleLink.href = styleBundle;
+
+        });
+    </script>
+</head>
+
+<body id="kt_app_body" data-kt-app-header-fixed="true" data-kt-app-header-fixed-mobile="true" data-kt-app-sidebar-enabled="true"
+      data-kt-app-sidebar-fixed="true" data-kt-app-sidebar-hoverable="true" data-kt-app-sidebar-push-toolbar="true"
+      data-kt-app-sidebar-push-footer="true" data-kt-app-toolbar-enabled="true" data-kt-app-aside-enabled="true" class="app-default"
+      data-kt-app-aside-fixed="true" data-kt-app-aside-push-toolbar="true" data-kt-app-aside-push-footer="true">
+
+    <!--begin::Theme mode setup on page load-->
+    <script>
+        var defaultThemeMode = "light";
+        var themeMode;
+        if (document.documentElement) {
+            if (document.documentElement.hasAttribute("data-bs-theme-mode")) {
+                themeMode = document.documentElement.getAttribute("data-bs-theme-mode");
+            }
+            else {
+                if (localStorage.getItem("data-bs-theme") !== null) {
+                    themeMode = localStorage.getItem("data-bs-theme");
+                }
+                else {
+                    themeMode = defaultThemeMode;
+                }
+            }
+            if (themeMode === "system") {
+                themeMode = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+            } document.documentElement.setAttribute("data-bs-theme", themeMode);
+        }
+    </script>
+    <!--end::Theme mode setup on page load-->
+
+    <div style="height:100%" id="app">
+        <svg class="loading-progress">
+            <circle r="40%" cx="50%" cy="50%" />
+            <circle r="40%" cx="50%" cy="50%" />
+        </svg>
+        <div class="loading-progress-text"></div>
+    </div>
+
+    <div id="blazor-error-ui">
+        An unhandled error has occurred.
+        <a href="" class="reload">Reload</a>
+        <a class="dismiss">🗙</a>
+    </div>
+    <script src="_content/Microsoft.AspNetCore.Components.WebAssembly.Authentication/AuthenticationService.js"></script>
+    <script src="_framework/blazor.webassembly.js"></script>
+
+    <!--begin::Global Javascript Bundle(mandatory for all pages)-->
+    <script>var hostUrl = "assets/";</script>
+    <script src="assets/plugins/global/plugins.bundle.js"></script>
+    <script src="assets/js/scripts.bundle.js"></script>
+    <!--end::Global Javascript Bundle-->
+
+    <script src="assets/js/fullscreen.js"></script>
+</body>
+
+</html>

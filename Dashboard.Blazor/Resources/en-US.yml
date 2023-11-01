@@ -1,0 +1,23 @@
+﻿#TopNavigation
+Alerts: "Alerts"
+Notifications: "Notifications"
+Reports: "Reports"
+Updates: "Updates"
+Logs: "Logs"
+MyProfile: "My Profile"
+Mode: "Mode"
+Light: "Light"
+Dark: "Dark"
+Language: "Language"
+AccountSettings: "AccountSettings"
+SignOut: "SignOut"
+
+#MainNavigation
+Home: "Home"
+PageOne: "Page One"
+PageTwo: "Page Two"
+PageThree: "Page Three"
+Pro: "Pro"
+
+#MainFooter
+About: "About"

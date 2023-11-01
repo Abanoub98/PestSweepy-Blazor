@@ -1,0 +1,23 @@
+#TopNavigation
+Alerts: "التنبيهات"
+Notifications: "الإشعارات"
+Reports: "تقارير"
+Updates: "التحديثات"
+Logs: "السجلات"
+MyProfile: "صفحتي الشخصية"
+Mode: "الوضع"
+Light: "فاتح"
+Dark: "داكن"
+Language: "اللغة"
+AccountSettings: "إعدادات الحساب"
+SignOut: "تسجيل الخروج"
+
+#MainNavigation
+Home: "الصفحة الرئيسية"
+PageOne: "الصفحة الأولى"
+PageTwo: "الصفحة الثانية"
+PageThree: "الصفحة الثالثة"
+Pro: "متقدم"
+
+#MainFooter
+About: "حول"
