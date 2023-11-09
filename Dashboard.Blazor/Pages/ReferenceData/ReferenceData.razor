@@ -1,0 +1,54 @@
+﻿@using Dashboard.Blazor.Components
+
+@page "/ReferenceData"
+@attribute [Authorize]
+@inherits BasePage<LookupDto>
+
+<PageTitle>@languageContainer.Keys["ReferenceData"]</PageTitle>
+<MudBreadcrumbs Items="breadcrumbItems"></MudBreadcrumbs>
+
+<MudCard Elevation="25">
+    <MudCardContent>
+        <MudDataGrid T="LookupDto" Dense="true" Elevation="0" FixedHeader="true" Height="330px"
+                     Loading="@(isLoading)" LoadingProgressColor="Color.Info" Filterable="true"
+                     Items="LookupList" Hover="true" SortMode="SortMode.Single" QuickFilter="@FilterFunc">
+
+            <ToolBarContent>
+                <div class="d-flex justify-content-between flex-column align-items-center flex-md-row w-100">
+                    <div class="w-md-25 w-100">
+                        <MudAutocomplete T="string" Label="Reference Data Tables" SearchFunc="@GetTablesAsync"
+                                         Variant="Variant.Outlined" ShowProgressIndicator="true" ResetValueOnEmptyText="true" CoerceText="true"
+                                         ProgressIndicatorColor="Color.Info" Margin="Margin.Dense" Clearable ValueChanged="TableChanged">
+                            <NoItemsTemplate>
+                                <MudText Align="Align.Center" Class="px-4 py-4">
+                                    No items found
+                                </MudText>
+                            </NoItemsTemplate>
+                        </MudAutocomplete>
+                    </div>
+                    <div class="w-md-50 w-100">
+                        <MudTextField @bind-Value="searchString" Adornment="Adornment.Start" Class="mt-0 mb-5" Immediate="true"
+                                      Placeholder=@($"{languageContainer.Keys["SearchFor"]} Name")
+                                      AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" />
+                    </div>
+                </div>
+            </ToolBarContent>
+            <NoRecordsContent>
+                <NoDataToDisply />
+            </NoRecordsContent>
+            <Columns>
+                <PropertyColumn Property="x => x.Name" Title="Name" />
+                <PropertyColumn Property="x => x.OrderIndex" Title="Order Index" />
+                <TemplateColumn Context="Refdata" Sortable="false" Filterable="false">
+                    <CellTemplate>
+
+                    </CellTemplate>
+                </TemplateColumn>
+            </Columns>
+
+            <PagerContent>
+                <MudDataGridPager T="LookupDto" />
+            </PagerContent>
+        </MudDataGrid>
+    </MudCardContent>
+</MudCard>

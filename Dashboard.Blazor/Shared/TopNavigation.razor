@@ -2,7 +2,7 @@
 <div id="kt_app_header" class="app-header d-flex flex-column flex-stack">
 	<!--begin::Header main-->
 	<div class="d-flex align-items-center flex-stack flex-grow-1">
-		<div class="app-header-logo d-flex align-items-center flex-stack px-lg-11 mb-2" id="kt_app_header_logo">
+		<div class="app-header-logo d-flex align-items-center justify-content-around flex-stack px-lg-11 mb-2" id="kt_app_header_logo">
 			<!--begin::Sidebar mobile toggle-->
 			<div class="btn btn-icon btn-active-color-primary w-35px h-35px ms-3 me-2 d-flex d-lg-none" id="kt_app_sidebar_mobile_toggle">
 				<i class="ki-duotone ki-abstract-14 fs-2">
@@ -13,11 +13,11 @@
 			<!--end::Sidebar mobile toggle-->
 			<!--begin::Logo-->
 			<a href="/" class="app-sidebar-logo">
-				<img src="images/logo.png" class="h-60px h-md-80px py-5" />
+				<img src="images/LogoWord.png" class="h-60px h-md-80px py-5" />
 			</a>
 			<!--end::Logo-->
 			<!--begin::Sidebar toggle-->
-			<div id="kt_app_sidebar_toggle" class="app-sidebar-toggle btn btn-sm btn-icon btn-color-warning me-n2 d-none d-lg-flex" data-kt-toggle="true" data-kt-toggle-state="active" data-kt-toggle-target="body" data-kt-toggle-name="app-sidebar-minimize">
+			<div id="kt_app_sidebar_toggle" class="app-sidebar-toggle btn btn-sm btn-icon btn-color-success me-n2 d-none d-lg-flex" data-kt-toggle="true" data-kt-toggle-state="active" data-kt-toggle-target="body" data-kt-toggle-name="app-sidebar-minimize">
 				<i class="ki-duotone ki-exit-left fs-2x rotate-180">
 					<span class="path1"></span>
 					<span class="path2"></span>
@@ -27,74 +27,10 @@
 		</div>
 		<!--begin::Navbar-->
 		<div class="app-navbar flex-grow-1 justify-content-end" id="kt_app_header_navbar">
-@*			<!--begin::Notifications-->
-			<div class="app-navbar-item me-lg-1">
-				<!--begin::Menu- wrapper-->
-				<div class="btn btn-icon btn-custom btn-color-gray-600 btn-active-color-primary w-35px h-35px w-md-40px h-md-40px" data-kt-menu-trigger="{default: 'click', lg: 'hover'}" data-kt-menu-attach="parent" data-kt-menu-placement="bottom-@(CurrentCulture == "ar-SA" ? "start" : "end")">
-					<i class="ki-duotone ki-graph-3 fs-1">
-						<span class="path1"></span>
-						<span class="path2"></span>
-					</i>
-				</div>
-				<!--begin::Menu-->
-				<div class="menu menu-sub menu-sub-dropdown menu-column w-350px w-lg-375px" data-kt-menu="true" id="kt_menu_notifications">
-					<!--begin::Heading-->
-					<div class="d-flex flex-column bgi-no-repeat rounded-top" style="background-image:url('assets/media/misc/menu-header-bg.jpg')">
-						<!--begin::Title-->
-						<h3 class="text-white fw-semibold px-9 mt-10 mb-6">
-							@languageContainer.Keys["Notifications"]
-							<span class="fs-8 opacity-75 ps-3">24 @languageContainer.Keys["Reports"]</span>
-						</h3>
-						<!--end::Title-->
-						<!--begin::Tabs-->
-						<ul class="nav nav-line-tabs nav-line-tabs-2x nav-stretch fw-semibold px-9">
-							<li class="nav-item">
-								<a class="nav-link text-white opacity-75 opacity-state-100 pb-4" data-bs-toggle="tab" href="#kt_topbar_notifications_1">
-									@languageContainer.Keys["Alerts"]
-								</a>
-							</li>
-							<li class="nav-item">
-								<a class="nav-link text-white opacity-75 opacity-state-100 pb-4 active" data-bs-toggle="tab" href="#kt_topbar_notifications_2">
-									@languageContainer.Keys["Updates"]
-								</a>
-							</li>
-							<li class="nav-item">
-								<a class="nav-link text-white opacity-75 opacity-state-100 pb-4" data-bs-toggle="tab" href="#kt_topbar_notifications_3">
-									@languageContainer.Keys["Logs"]
-								</a>
-							</li>
-						</ul>
-						<!--end::Tabs-->
-					</div>
-					<!--end::Heading-->
-					<!--begin::Tab content-->
-					<div class="tab-content">
-						<!--begin::Tab panel-->
-						<div class="tab-pane fade" id="kt_topbar_notifications_1" role="tabpanel">
-
-						</div>
-						<!--end::Tab panel-->
-						<!--begin::Tab panel-->
-						<div class="tab-pane fade show active" id="kt_topbar_notifications_2" role="tabpanel">
-
-						</div>
-						<!--end::Tab panel-->
-						<!--begin::Tab panel-->
-						<div class="tab-pane fade" id="kt_topbar_notifications_3" role="tabpanel">
-
-						</div>
-						<!--end::Tab panel-->
-					</div>
-					<!--end::Tab content-->
-				</div>
-				<!--end::Menu-->
-				<!--end::Menu wrapper-->
-			</div>
-			<!--end::Notifications-->*@
 			<!--begin::User menu-->
 			<div class="app-navbar-item ms-3 ms-lg-4 me-lg-2" id="kt_header_user_menu_toggle">
 				<!--begin::Menu wrapper-->
-				<div class="cursor-pointer symbol symbol-30px symbol-lg-40px" data-kt-menu-trigger="{default: 'click', lg: 'hover'}" data-kt-menu-attach="parent" data-kt-menu-placement="bottom-@(CurrentCulture == "ar-SA" ? "start" : "end")">
+				<div class="cursor-pointer symbol symbol-30px symbol-lg-40px" data-kt-menu-trigger="{default: 'click', lg: 'hover'}" data-kt-menu-attach="parent" data-kt-menu-placement="bottom-@(CurrentCulture == "ar-EG" ? "start" : "end")">
 					<img src="assets/media/avatars/300-2.jpg" alt="user" />
 				</div>
 				<!--begin::User account menu-->
@@ -103,15 +39,17 @@
 					<div class="menu-item px-3">
 						<div class="menu-content d-flex align-items-center px-3">
 							<!--begin::Avatar-->
-							<div class="symbol symbol-50px @(CurrentCulture == "ar-SA" ? "ms-3" : "me-5")">
+							<div class="symbol symbol-50px @(CurrentCulture == "ar-EG" ? "ms-3" : "me-5")">
 								<img alt="Logo" src="assets/media/avatars/300-2.jpg" />
 							</div>
 							<!--end::Avatar-->
 							<!--begin::Username-->
 							<div class="d-flex flex-column">
 								<div class="fw-bold d-flex align-items-center fs-5">
-									Jane Cooper
-									<span class="badge badge-light-success fw-bold fs-8 px-2 py-1 @(CurrentCulture == "ar-SA" ? "me-2" : "ms-2")">Pro</span>
+									<AuthorizeView>
+										@context.User.Claims.Where(c => c.Type == "name").FirstOrDefault()?.Value.ToString()
+									</AuthorizeView>
+									<span class="badge badge-light-success fw-bold fs-8 px-2 py-1 @(CurrentCulture == "ar-EG" ? "me-2" : "ms-2")">Pro</span>
 								</div>
 								<a href="#" class="fw-semibold text-muted text-hover-primary fs-7">jane@kt.com</a>
 							</div>
@@ -135,7 +73,7 @@
 						<a href="#" class="menu-link px-5">
 							<span class="menu-title position-relative">
 								@languageContainer.Keys["Mode"]
-								<span class="position-absolute translate-middle-y top-50 end-0" style=@(CurrentCulture == "ar-SA" ? "direction:ltr;" : string.Empty)>
+								<span class="position-absolute translate-middle-y top-50 end-0" style=@(CurrentCulture == "ar-EG" ? "direction:ltr;" : string.Empty)>
 									<i class="ki-duotone ki-night-day theme-light-show fs-2">
 										<span class="path1"></span>
 										<span class="path2"></span>
@@ -159,7 +97,7 @@
 						<div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-title-gray-700 menu-icon-gray-500 menu-active-bg menu-state-color fw-semibold py-4 fs-base w-150px" data-kt-menu="true" data-kt-element="theme-mode-menu">
 							<!--begin::Menu item-->
 							<div class="menu-item px-3 my-0">
-								<a href="#" class="menu-link px-3 py-2" data-kt-element="mode" data-kt-value="light">
+								<a @onclick="ChangeThemeAsync" href="#" class="menu-link px-3 py-2" data-kt-element="mode" data-kt-value="light">
 									<span class="menu-icon" data-kt-element="icon">
 										<i class="ki-duotone ki-night-day fs-2">
 											<span class="path1"></span>
@@ -180,7 +118,7 @@
 							<!--end::Menu item-->
 							<!--begin::Menu item-->
 							<div class="menu-item px-3 my-0">
-								<a href="#" class="menu-link px-3 py-2" data-kt-element="mode" data-kt-value="dark">
+								<a @onclick="ChangeThemeAsync" href="#" class="menu-link px-3 py-2" data-kt-element="mode" data-kt-value="dark">
 									<span class="menu-icon" data-kt-element="icon">
 										<i class="ki-duotone ki-moon fs-2">
 											<span class="path1"></span>
@@ -200,9 +138,9 @@
 						<a href="#" class="menu-link px-5">
 							<span class="menu-title position-relative">
 								@languageContainer.Keys["Language"]
-								<span class="fs-8 rounded position-absolute translate-middle-y top-50 end-0" style=@(CurrentCulture == "ar-SA" ? "direction:ltr;" : string.Empty)>
-									@(CurrentCulture == "ar-SA" ? "عربي" : "English")
-									<img class="w-15px h-15px rounded-1 ms-2" src="assets/media/flags/@(CurrentCulture == "ar-SA" ? "saudi-arabia.svg" : "united-states.svg")" alt="" />
+								<span class="fs-8 rounded position-absolute translate-middle-y top-50 end-0" style=@(CurrentCulture == "ar-EG" ? "direction:ltr;" : string.Empty)>
+									@(CurrentCulture == "ar-EG" ? "عربي" : "English")
+									<img class="w-15px h-15px rounded-1 ms-2" src="assets/media/flags/@(CurrentCulture == "ar-EG" ? "saudi-arabia.svg" : "united-states.svg")" alt="" />
 								</span>
 							</span>
 						</a>
@@ -210,7 +148,7 @@
 						<div class="menu-sub menu-sub-dropdown w-175px py-4">
 							<!--begin::Menu item-->
 							<div class="menu-item px-3">
-								<a @onclick='()=>SetLanguage("en-US")' href="#" class="menu-link d-flex px-5 @(CurrentCulture == "ar-SA" ? string.Empty : "active")">
+								<a @onclick='()=>SetLanguage("en-US")' class="menu-link d-flex px-5 @(CurrentCulture == "ar-EG" ? string.Empty : "active")">
 									<span class="symbol symbol-20px me-4">
 										<img class="rounded-1" src="assets/media/flags/united-states.svg" alt="" />
 									</span>
@@ -220,7 +158,7 @@
 							<!--end::Menu item-->
 							<!--begin::Menu item-->
 							<div class="menu-item px-3">
-								<a style="font-family: 'Noto Sans Arabic', sans-serif;" @onclick='()=>SetLanguage("ar-SA")' href="#" class="menu-link d-flex px-5 @(CurrentCulture == "ar-SA" ? "active" : string.Empty)">
+								<a style="font-family: 'Noto Sans Arabic', sans-serif;" @onclick='()=>SetLanguage("ar-EG")' class="menu-link d-flex px-5 @(CurrentCulture == "ar-EG" ? "active" : string.Empty)">
 									<span class="symbol symbol-20px me-4">
 										<img class="rounded-1" src="assets/media/flags/saudi-arabia.svg" alt="" />
 									</span>
@@ -234,12 +172,12 @@
 					<!--end::Menu item-->
 					<!--begin::Menu item-->
 					<div class="menu-item px-5 my-1">
-						<a href="../dist/account/settings.html" class="menu-link px-5">@languageContainer.Keys["AccountSettings"]</a>
+						<a class="menu-link px-5">@languageContainer.Keys["Account Settings"]</a>
 					</div>
 					<!--end::Menu item-->
 					<!--begin::Menu item-->
 					<div class="menu-item px-5">
-						<a href="../dist/authentication/layouts/corporate/sign-in.html" class="menu-link px-5">@languageContainer.Keys["SignOut"]</a>
+						<a @onclick="SignOut" class="menu-link px-5">@languageContainer.Keys["Logout"]</a>
 					</div>
 					<!--end::Menu item-->
 				</div>
@@ -248,7 +186,7 @@
 			</div>
 			<!--end::User menu-->
 			<!--begin::Action-->
-			<div class="app-navbar-item ms-3 ms-lg-4 me-lg-6">
+			<div class="d-none d-md-inline app-navbar-item ms-3 ms-lg-4 me-lg-6">
 				<!--begin::Link-->
                 <a @onclick="ToggleFullScreen" class="btn btn-icon btn-custom btn-color-gray-600 btn-active-color-primary w-35px h-35px w-md-40px h-md-40px">
                     <i class="@(fullScreen ? "fa-solid fa-compress fs-2" : "fa-solid fa-expand fs-2")"></i>
@@ -287,20 +225,27 @@
 	[Inject] IJSRuntime JSRuntime { get; set; } = default!;
 	[Inject] ILanguageContainerService LangContainer { get; set; } = default!;
 	[Inject] ILocalStorageService LocalStorage { get; set; } = default!;
+	[Inject] AuthenticationStateProvider AuthStateProvider { get; set; } = default!;
 	[Inject] NavigationManager NavManager { get; set; } = default!;
 
 	[Parameter][EditorRequired] public string CurrentCulture { get; set; } = string.Empty;
+	[Parameter][EditorRequired] public EventCallback ThemeChnaged { get; set; }
 
 	private bool fullScreen = false;
 
 	private async Task ToggleFullScreen()
-	{
+	{ 
 		await JSRuntime.InvokeVoidAsync("FullScreen");
 
 		fullScreen = !fullScreen;
 	}
 
-	void SetLanguage(string cultureCode)
+	private async Task ChangeThemeAsync()
+	{
+		await ThemeChnaged.InvokeAsync();
+	}
+
+	private void SetLanguage(string cultureCode)
 	{
 		LangContainer.SetLanguage(CultureInfo.GetCultureInfo(cultureCode));
 		if (CultureInfo.CurrentCulture != null)
@@ -310,5 +255,11 @@
 			// Load the Current URL
 			NavManager.NavigateTo(NavManager.Uri, forceLoad: true);
 		}
+	}
+
+	private async Task SignOut()
+	{
+		await LocalStorage.RemoveItemAsync("token");
+		await AuthStateProvider.GetAuthenticationStateAsync();
 	}
 }

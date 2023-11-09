@@ -14,9 +14,6 @@ SignOut: "SignOut"
 
 #MainNavigation
 Home: "Home"
-PageOne: "Page One"
-PageTwo: "Page Two"
-PageThree: "Page Three"
 Pro: "Pro"
 Dashboard: "Dashboard"
 Audits: "Audits"
@@ -24,5 +21,21 @@ LoginLogs: "Login Logs"
 ReferenceData: "Reference Data"
 Customers: "Customers"
 Orders: "Orders"
+
 #MainFooter
 About: "About"
+
+#components
+NoRecordsToDisplay: "No Records To Display"
+
+AuditDetails: "Audit Details"
+SearchFor: "Search For"
+
+Email: "Email"
+Password: "Password"
+Login: "Login"
+PleaseWait: "Please wait"
+YouAreUnauthorizedToAccessThisPage: "You Are Unauthorized To Access This Page"
+IfYouThinkThatYouCanAccessThisPage: "if you think that you can access this page"
+PleaseContactUs: "please contact us"
+GoBack: "Go Back"

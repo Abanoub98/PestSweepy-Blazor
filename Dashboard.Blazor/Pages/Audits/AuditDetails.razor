@@ -1,0 +1,68 @@
+﻿@using Dashboard.Blazor.Components
+@inherits BasePage<AuditDto>
+
+<MudDialog>
+    <DialogContent>
+        @if (Auditing is null)
+        {
+            <FormLoadingSpinner IsBigForm="true" />
+        }
+        else
+        {
+            <ul style="background-color:transparent !important;" class="list-group mb-3">
+                <li class="list-group-item" style="background-color:transparent !important;">User Id: @Auditing.UserId</li>
+                <li class="list-group-item" style="background-color:transparent !important;">Type: @Auditing.Type</li>
+                <li class="list-group-item" style="background-color:transparent !important;">Table Name: @Auditing.TableName</li>
+                <li class="list-group-item" style="background-color:transparent !important;">Date: @Auditing.DateTime</li>
+                <li class="@(Auditing.Type == "Create"? "d-none" : string.Empty) list-group-item" style="background-color:transparent !important;">
+                    Primary Key Value: @ExtractPrimaryKeyValue(Auditing.PrimaryKey)
+                </li>
+            </ul>
+            <div class="table-responsive text-center ">
+                <table class="table table-bordered table-striped">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>Affected Columns</th>
+                            <th class="@(Auditing.Type == "Create"? "d-none" : string.Empty)">Old Value</th>
+                            <th class="@(Auditing.Type == "Delete"? "d-none" : string.Empty)">New Value</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (!string.IsNullOrEmpty(Auditing.NewValues))
+                        {
+                            foreach (var property in ParseJson(Auditing.NewValues))
+                            {
+                                if (Auditing.Type == "Create" || GetOldValue(property.Key) != property.Value)
+                                {
+                                    <tr>
+                                        <td>@property.Key</td>
+                                        <td class="text-danger @(Auditing.Type == "Create"? "d-none" : string.Empty)">
+                                            @GetOldValue(property.Key)
+                                        </td>
+                                        <td class="text-success">@property.Value</td>
+                                    </tr>
+                                }
+                            }
+                        }
+                        else if (!string.IsNullOrEmpty(Auditing.OldValues))
+                        {
+                            foreach (var property in ParseJson(Auditing.OldValues))
+                            {
+                                if (GetOldValue(property.Key) != property.Value)
+                                {
+                                    <tr>
+                                        <td>@property.Key</td>
+                                        <td class="text-danger">@property.Value</td>
+                                    </tr>
+                                }
+                            }
+                        }
+
+                    </tbody>
+                </table>
+            </div>
+        }
+    </DialogContent>
+    <DialogActions>
+    </DialogActions>
+</MudDialog>

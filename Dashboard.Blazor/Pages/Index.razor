@@ -1,6 +1,7 @@
 ﻿@page "/"
+@attribute [Authorize]
 
-<PageTitle>Home</PageTitle>
+<PageTitle>@languageContainer.Keys["Home"]</PageTitle>
 
 <div class="h-100 d-flex justify-content-center align-items-center">
     <MudImage Src="/images/Logo.png" Width="300" ObjectFit="ObjectFit.Contain" Class="rounded-lg ma-4" />

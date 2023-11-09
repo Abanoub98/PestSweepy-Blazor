@@ -72,20 +72,6 @@ public class BasePage<T> : ComponentBase where T : class
         return (true, response.Object);
     }
 
-    protected async Task<bool> ChangeStatusAsync(string endPoint)
-    {
-        var response = await ApiService.ChangeStatusAsync<T>(endPoint);
-
-        if (!response.IsSuccess)
-        {
-            ShowError(response.Error!);
-            return false;
-        }
-
-        ShowSuccess("Status Changed Successfully");
-        return true;
-    }
-
     protected void StartProcessing()
     {
         isLoading = true;
@@ -130,9 +116,9 @@ public class BasePage<T> : ComponentBase where T : class
 
         double durationInHours = durationInMin / 60;
         durationInHours = Math.Round(durationInHours, 1);
-
         return $"{durationInHours} Hours";
     }
+
 
     //TODO : Handel All Status Codes
     private void HandelNavigation(string StatusCode)

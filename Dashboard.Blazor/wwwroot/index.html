@@ -13,12 +13,12 @@
 
     <link href="css/bootstrap/bootstrap.min.css" rel="stylesheet" />
 
-    <link href="_content/MudBlazor/MudBlazor.min.css" rel="stylesheet" />
-
     <!--begin::Global Stylesheets Bundle(mandatory for all pages)-->
     <link href="assets/plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css" />
     <link href="assets/css/style.bundle.css" rel="stylesheet" type="text/css" />
     <!--end::Global Stylesheets Bundle-->
+
+    <link href="_content/MudBlazor/MudBlazor.min.css" rel="stylesheet" />
 
     <link href="css/app.css" rel="stylesheet" />
     <link href="Dashboard.Blazor.styles.css" rel="stylesheet" />
@@ -31,7 +31,7 @@
             var htmlElement = document.querySelector("html");
 
             // Update the dir and style attributes based on culture
-            if (culture === "\"ar-SA\"") {
+            if (culture === "\"ar-EG\"") {
                 htmlElement.setAttribute("dir", "rtl");
                 htmlElement.setAttribute("style", "direction: rtl");
             }
@@ -40,8 +40,8 @@
                 htmlElement.removeAttribute("style");
             }
 
-            var pluginsBundle = "assets/plugins/global/plugins.bundle" + (culture === "\"ar-SA\"" ? ".rtl" : "") + ".css";
-            var styleBundle = "assets/css/style.bundle" + (culture === "\"ar-SA\"" ? ".rtl" : "") + ".css";
+            var pluginsBundle = "assets/plugins/global/plugins.bundle" + (culture === "\"ar-EG\"" ? ".rtl" : "") + ".css";
+            var styleBundle = "assets/css/style.bundle" + (culture === "\"ar-EG\"" ? ".rtl" : "") + ".css";
 
             // Get the <link> elements for the stylesheets
             var pluginsBundleLink = document.querySelector("link[href*='plugins.bundle']");

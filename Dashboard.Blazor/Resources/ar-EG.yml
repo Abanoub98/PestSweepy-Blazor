@@ -1,0 +1,46 @@
+#TopNavigation
+Alerts: "التنبيهات"
+Notifications: "الإشعارات"
+Reports: "تقارير"
+Updates: "التحديثات"
+Logs: "السجلات"
+MyProfile: "صفحتي الشخصية"
+Mode: "الوضع"
+Light: "فاتح"
+Dark: "داكن"
+Language: "اللغة"
+AccountSettings: "إعدادات الحساب"
+SignOut: "تسجيل الخروج"
+
+#MainNavigation
+Home: "الصفحة الرئيسية"
+Pro: "متقدم"
+Dashboard: "لوحة التحكم"
+Audits: "التدقيق"
+LoginLogs: "سجل الدخول"
+ReferenceData: "البيانات المرجعية"
+Customers: "العملاء"
+Orders: "الطلبات"
+
+#MainFooter
+About: "حول"
+
+#Components
+NoRecordsToDisplay: "لا توجد سجلات لعرضها"
+SearchFor: "البحث عن"
+AuditDetails:  "تفاصيل التدقيق"
+
+Email: "البريد الإلكتروني"
+Password: "كلمة المرور"
+Login: "تسجيل الدخول"
+PleaseWait: "الرجاء الانتظار"
+You Are Unauthorized To Access This Page: "غير مصرح لك بالوصول إلى هذه الصفحة"
+If You Think That You Can Access This Page: "إذا كنت تعتقد أنه يمكنك الوصول إلى هذه الصفحة"
+Please Contact Us: "بالرجاء التواصل معنا"
+Go Back: "عودة"
+
+Enter 6-digit code from your authenticator application: "أدخل الرمز المكون من 6 أرقام من تطبيق المصادقة الخاص بك"
+2FA Code: "رمز المصادقة الثنائية"
+
+Welcome to: "مرحبًا بك في"
+We provide you with the best quality, according to international standards, for cleaning services, pest extermination, and home and hotel services.: ".نحن نقدم لك أفضل جودة، وفقًا للمعايير الدولية، لخدمات التنظيف واستبعاد الآفات وخدمات المنزل والفندق"

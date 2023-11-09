@@ -47417,15 +47417,15 @@ a:hover {
 }
 
 [data-bs-theme=light] {
-  --bs-app-bg-color: #F8F2EC;
-  --bs-app-blank-bg-color: #ffffff;
-  --bs-app-header-base-bg-color: #F8F2EC;
-  --bs-app-toolbar-base-bg-color: #ffffff;
-  --bs-app-sidebar-base-bg-color: #F8F2EC;
-  --bs-app-sidebar-base-box-shadow: none;
-  --bs-app-sidebar-minimize-bg-color: #F8F2EC;
-  --bs-app-aside-base-bg-color: #F8F2EC;
-  --bs-app-aside-base-box-shadow: none;
+    --bs-app-bg-color: #e9ffef;
+    --bs-app-blank-bg-color: #ffffff;
+    --bs-app-header-base-bg-color: #e9ffef;
+    --bs-app-toolbar-base-bg-color: #ffffff;
+    --bs-app-sidebar-base-bg-color: #e9ffef;
+    --bs-app-sidebar-base-box-shadow: none;
+    --bs-app-sidebar-minimize-bg-color: #e9ffef;
+    --bs-app-aside-base-bg-color: #e9ffef;
+    --bs-app-aside-base-box-shadow: none;
 }
 
 [data-bs-theme=dark] {
@@ -49175,9 +49175,9 @@ body,
   }
 }
 [data-bs-theme=light] {
-  --bs-app-sidebar-link-bg-color: #F1EAE2;
-  --bs-app-separator-border: 1px solid #E1E3EA;
-  --bs-app-content-bg-color: #ffffff;
+    --bs-app-sidebar-link-bg-color: #bbf0d0;
+    --bs-app-separator-border: 1px solid #E1E3EA;
+    --bs-app-content-bg-color: #ffffff;
 }
 
 [data-bs-theme=dark] {

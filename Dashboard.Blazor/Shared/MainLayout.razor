@@ -1,73 +1,95 @@
 ﻿@inherits LayoutComponentBase
 
-<!--begin::App-->
-<div style="height:100%;@(CurrentCulture == "ar-SA" ? "font-family: 'Noto Sans Arabic', sans-serif;" : string.Empty)" class="d-flex flex-column flex-root app-root" id="kt_app_root">
-    <MudThemeProvider />
-    <MudDialogProvider />
-    <MudSnackbarProvider />
-    <!--begin::Page-->
-    <div class="app-page flex-column flex-column-fluid" id="kt_app_page">
-        <!--begin::Header-->
-        <TopNavigation CurrentCulture="@CurrentCulture" />
-        <!--end::Header-->
-        <!--begin::Wrapper-->
-        <div class="app-wrapper flex-column flex-row-fluid" id="kt_app_wrapper">
-            <!--begin::Sidebar-->
-            <MainNavigation />
-            <!--end::Sidebar-->
-            <!--begin::Main-->
-            <div class="app-main flex-column flex-row-fluid" id="kt_app_main">
-                <!--begin::Content wrapper-->
-                <div class="d-flex flex-column flex-column-fluid">
-                    <!--begin::Toolbar-->
-                    <div id="kt_app_toolbar" class="app-toolbar pt-5">
-                        <!--begin::Toolbar container-->
-                        <div id="kt_app_toolbar_container" class="app-container container-fluid d-flex align-items-stretch">
+<MudRTLProvider Style="height:100% !important;" RightToLeft="IsRightToLeft">
+    <!--begin::App-->
+    <div style="height:100% !important;@(CurrentCulture == "ar-EG" ? "font-family: 'Noto Sans Arabic', sans-serif !important;" : string.Empty)" class="d-flex flex-column flex-root app-root" id="kt_app_root">
+        <MudThemeProvider Theme="MyCustomTheme" @bind-IsDarkMode="IsDarkMode" />
+        <MudDialogProvider />
+        <MudSnackbarProvider />
+        <!--begin::Page-->
+        <div class="app-page flex-column flex-column-fluid" id="kt_app_page">
+            <!--begin::Header-->
+            <TopNavigation CurrentCulture="@CurrentCulture" ThemeChnaged="SetThemeModeAsync"/>
+            <!--end::Header-->
+            <!--begin::Wrapper-->
+            <div class="app-wrapper flex-column flex-row-fluid" id="kt_app_wrapper">
+                <!--begin::Sidebar-->
+                <MainNavigation />
+                <!--end::Sidebar-->
+                <!--begin::Main-->
+                <div class="app-main flex-column flex-row-fluid" id="kt_app_main">
+                    <!--begin::Content wrapper-->
+                    <div class="d-flex flex-column flex-column-fluid">
+                        <!--begin::Content-->
+                        <div id="kt_app_content" class="app-content flex-column-fluid">
+                            <!--begin::Content container-->
+                            <div id="kt_app_content_container" class="h-100 app-container container-fluid">
+                                @Body
+                            </div>
+                            <!--end::Content container-->
                         </div>
-                        <!--end::Toolbar container-->
+                        <!--end::Content-->
                     </div>
-                    <!--end::Toolbar-->
-                    <!--begin::Content-->
-                    <div id="kt_app_content" class="app-content flex-column-fluid">
-                        <!--begin::Content container-->
-                        <div id="kt_app_content_container" class="h-100 app-container container-fluid">
-                            @Body
-                        </div>
-                        <!--end::Content container-->
-                    </div>
-                    <!--end::Content-->
+                    <!--end::Content wrapper-->
+                    <!--begin::Footer-->
+                    <MainFooter />
+                    <!--end::Footer-->
                 </div>
-                <!--end::Content wrapper-->
-                <!--begin::Footer-->
-                <MainFooter />
-                <!--end::Footer-->
+                <!--end:::Main-->
+                <!--begin::aside-->
+                <MainAside />
+                <!--end::aside-->
             </div>
-            <!--end:::Main-->
-            <!--begin::aside-->
-            <MainAside/>
-            <!--end::aside-->
+            <!--end::Wrapper-->
         </div>
-        <!--end::Wrapper-->
+        <!--end::Page-->
     </div>
-    <!--end::Page-->
-</div>
-<!--end::App-->
+    <!--end::App-->
+</MudRTLProvider>
+
 @code {
 
     [Inject] IJSRuntime JSRuntime { get; set; } = default!;
     [Inject] ILocalStorageService LocalStorage { get; set; } = default!;
 
     private string CurrentCulture = string.Empty;
+    private bool IsDarkMode;
+    private bool IsRightToLeft = false;
+    MudTheme MyCustomTheme = new MudTheme();
 
     protected override async Task OnInitializedAsync()
     {
         CurrentCulture = await LocalStorage.GetItemAsync<string>("CurrentCulture");
+
+        if (CurrentCulture == "ar-EG")
+        {
+            IsRightToLeft = true;
+            MyCustomTheme = new()
+            {
+                Typography = new Typography()
+                {
+                    Default = new Default() { FontFamily = new[] { "Noto Sans Arabic", "sans-serif" } },
+                }
+            };
+        }
+
+        await SetThemeModeAsync();
+    }
+
+    private async Task SetThemeModeAsync()
+    {
+        IsDarkMode = await LocalStorage.GetItemAsync<string>("data-bs-theme-mode") == "light" ? false : true;
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        await JSRuntime.InvokeVoidAsync("KTThemeModeUser.init");
-        await JSRuntime.InvokeVoidAsync("KTThemeMode.init");
-        await JSRuntime.InvokeVoidAsync("KTComponents.init");
-    }                   
+        try
+        {
+            await JSRuntime.InvokeVoidAsync("KTThemeModeUser.init");
+            await JSRuntime.InvokeVoidAsync("KTThemeMode.init");
+            await JSRuntime.InvokeVoidAsync("KTComponents.init");
+        }
+        catch{}
+
+    }
 }

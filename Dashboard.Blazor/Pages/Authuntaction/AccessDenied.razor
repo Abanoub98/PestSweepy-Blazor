@@ -1,0 +1,37 @@
+﻿@page "/AccessDenied"
+@attribute [Authorize]
+
+<div class="d-flex flex-column flex-root" id="kt_app_root">
+    <!--begin::Authentication - Signup Welcome Message -->
+    <div class="d-flex flex-column flex-column-fluid">
+        <!--begin::Content-->
+        <div class="d-flex flex-row-fluid flex-column flex-column-fluid text-center p-5 py-lg-10">
+            <!--begin::Logo-->
+            <div class="text-center">
+                <img src="/images/AccessDenied.svg" alt="Unauthorize" class="h-250px" />
+            </div>
+            <!--end::Logo-->
+            <!--begin::Logo-->
+            <h1 class="fw-bold fs-2qx text-gray-800 mb-7">
+                @languageContainer.Keys["You Are Unauthorized To Access This Page"]
+            </h1>
+            <!--end::Logo-->
+            <!--begin::Message-->
+            <div class="fw-semibold fs-3 text-muted mb-5">
+                @languageContainer.Keys["If You Think That You Can Access This Page"]
+                @languageContainer.Keys["Please Contact Us"].
+            </div>
+            <!--end::Message-->
+            <!--begin::Action-->
+            <div class="text-center">
+                <a href="/" class="btn btn-lg btn-primary fw-bold">
+                    @languageContainer.Keys["Go Back"]
+                </a>
+            </div>
+            <!--end::Action-->
+
+        </div>
+        <!--end::Content-->
+    </div>
+    <!--end::Authentication - Signup Welcome Message-->
+</div>
