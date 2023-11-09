@@ -1,8 +1,11 @@
-﻿namespace Dashboard.Blazor.Pages;
+﻿using Microsoft.AspNetCore.Components.Authorization;
+
+namespace Dashboard.Blazor.Pages;
 
 public class BasePage<T> : ComponentBase where T : class
 {
     [Inject] protected NavigationManager NavigationManager { get; set; } = default!;
+    [Inject] AuthenticationStateProvider AuthenticationStateProvider { get; set; } = default!;
     [Inject] protected IDialogService DialogService { get; set; } = default!;
     [Inject] private IApiService ApiService { get; set; } = default!;
     [Inject] private ISnackbar Snackbar { get; set; } = default!;
@@ -55,6 +58,22 @@ public class BasePage<T> : ComponentBase where T : class
         }
 
         ShowSuccess("Added Successfully");
+        return (true, response.Object!);
+    }
+
+    protected async Task<(bool, TItem?)> PostAsync<TItem>(string endPoint, string successMessage = "Added Successfully", bool showSuccess = true) where TItem : class
+    {
+        var response = await ApiService.PostAsync<TItem>(endPoint);
+
+        if (!response.IsSuccess)
+        {
+            ShowError(response.Error!);
+            return (false, response.Object);
+        }
+
+        if (showSuccess)
+            ShowSuccess(successMessage);
+
         return (true, response.Object!);
     }
 
@@ -119,6 +138,17 @@ public class BasePage<T> : ComponentBase where T : class
         return $"{durationInHours} Hours";
     }
 
+    protected async Task<string?> GetClaimsPrincipalData(string claim)
+    {
+        var authState = await AuthenticationStateProvider
+            .GetAuthenticationStateAsync();
+        var user = authState.User;
+
+        if (user.Identity is not null && user.Identity.IsAuthenticated)
+            return user.FindFirst(claim)?.Value;
+
+        return null;
+    }
 
     //TODO : Handel All Status Codes
     private void HandelNavigation(string StatusCode)

@@ -45,6 +45,7 @@ public class ApiService : IApiService
         return await GetErrorAsync<T>(responseMessage);
     }
 
+
     public async Task<ApiResponse<T>> GetByIdAsync<T>(string endPoint) where T : class
     {
         var responseMessage = await _httpClient.GetAsync(endPoint);
@@ -58,6 +59,16 @@ public class ApiService : IApiService
     public async Task<ApiResponse<T>> AddAsync<T>(string endPoint, T model) where T : class
     {
         var responseMessage = await _httpClient.PostAsJsonAsync(endPoint, model);
+
+        if (responseMessage.IsSuccessStatusCode)
+            return await GetResponseMessage<T>(responseMessage);
+
+        return await GetErrorAsync<T>(responseMessage);
+    }
+
+    public async Task<ApiResponse<T>> PostAsync<T>(string endPoint) where T : class
+    {
+        var responseMessage = await _httpClient.PostAsync(endPoint, null);
 
         if (responseMessage.IsSuccessStatusCode)
             return await GetResponseMessage<T>(responseMessage);

@@ -1,0 +1,137 @@
+﻿@using Dashboard.Blazor.Components
+@inherits BasePage<TwoFactorAuthDto>
+
+<MudDialog>
+    <DialogContent>
+        @if (twoFactorAuthDto is null)
+        {
+            <FormLoadingSpinner />
+        }
+        else
+        {
+            <div class="card mb-5 mb-xl-10">
+                <!--begin::Card body-->
+                <div class="card-body border-top p-9">
+                    @if (twoFactorAuthDto.isTwoFactorEnabled && isGetInfoSuccess)
+                    {
+                        <div class="notice d-flex bg-light-success rounded border-success border p-6">
+                            <!--begin::Icon-->
+                            <i class="ki-duotone ki-shield-tick fs-2tx text-success me-4"><span class="path1"></span><span class="path2"></span></i>
+                            <!--end::Icon-->
+                            <!--begin::Wrapper-->
+                            <div class="d-flex flex-stack flex-grow-1 flex-wrap flex-md-nowrap">
+                                <!--begin::Content-->
+                                <div class="mb-3 mb-md-0 fw-semibold">
+                                    <h4 class="text-gray-700 fw-bold">Your Account Is Secured</h4>
+                                    <div class="fs-6 text-gray-700 pe-7">
+                                        Using an authenticator app like
+                                        <a href="https://support.google.com/accounts/answer/1066447?hl=en" target="_blank">Google Authenticator</a>,
+                                        <a href="https://www.microsoft.com/en-us/account/authenticator" target="_blank">Microsoft Authenticator</a>,
+                                        <a href="https://authy.com/download/" target="_blank">Authy</a>, or
+                                        <a href="https://support.1password.com/one-time-passwords/" target="_blank">1Password</a>.
+                                        <br/>
+                                        scan the QR code and It will generate a 6 digit code for you.
+                                    </div>
+                                </div>
+                                <!--end::Content-->
+                                <!--begin::Action-->
+                                <a @onclick="ChangeStatusOfTwoFactorAuth" class="btn btn-warning px-6 align-self-center text-nowrap @(isDisable? "disabled" : string.Empty)">
+                                    @if (isLoading)
+                                    {
+                                        <span class="indicator-label">
+                                            <span class="spinner-border spinner-border-sm align-middle"></span>
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="indicator-label">
+                                            @languageContainer.Keys["Disable"]
+                                        </span>
+                                    }
+                                </a>
+                                <!--end::Action-->
+                            </div>
+                            <!--end::Wrapper-->
+                        </div>
+                        <div class="mt-5">
+                            <!--begin::Description-->
+                            <div class="text-gray-500 fw-semibold fs-6 mb-5">
+                                <!--begin::QR code image-->
+                                <div class="pt-5 text-center">
+                                    <img src="@twoFactorAuthDto.QrCodeImage" alt="" class="mw-200px">
+                                </div>
+                                <!--end::QR code image-->
+                            </div>
+                            <!--end::Description-->
+                            <!--begin::Notice-->
+                            <div class="notice d-flex bg-light-warning rounded border-warning border border-dashed p-6">
+                                <!--begin::Icon-->
+                                <i class="ki-duotone ki-information fs-2tx text-warning me-4"><span class="path1"></span><span class="path2"></span><span class="path3"></span></i>
+                                <!--end::Icon-->
+                                <!--begin::Wrapper-->
+                                <div class="d-flex flex-stack flex-grow-1 ">
+                                    <!--begin::Content-->
+                                    <div class=" fw-semibold">
+
+                                        <div class="fs-6 text-gray-700 ">
+                                            If you having trouble using the QR code, select manual entry on your app, and enter your username and the code:
+                                            <br />
+                                            <div class="fw-bold text-gray-900 pt-2">
+                                                @twoFactorAuthDto.SecretKey
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--end::Content-->
+                                </div>
+                                <!--end::Wrapper-->
+                            </div>
+                            <!--end::Notice-->
+                        </div>
+                    }
+                    else
+                    {
+                        <!--begin::Notice-->
+                        <div class="notice d-flex bg-light-warning rounded border-warning border p-6">
+                            <!--begin::Icon-->
+                            <i class="ki-duotone ki-information fs-2tx text-warning me-4"><span class="path1"></span><span class="path2"></span><span class="path3"></span></i>
+                            <!--end::Icon-->
+                            <!--begin::Wrapper-->
+                            <div class="d-flex flex-stack flex-grow-1 flex-wrap flex-md-nowrap">
+                                <!--begin::Content-->
+                                <div class="mb-3 mb-md-0 fw-semibold">
+                                    <h4 class="text-gray-900 fw-bold">Secure Your Account</h4>
+
+                                    <div class="fs-6 text-gray-700 pe-7">Two-factor authentication adds an extra layer of security to your account.<br /> To log in, in addition you'll need to provide a 6 digit code</div>
+                                </div>
+                                <!--end::Content-->
+                                <!--begin::Action-->
+                                <a @onclick="ChangeStatusOfTwoFactorAuth" class="btn btn-success px-6 align-self-center text-nowrap @(isDisable? "disabled" : string.Empty)">
+                                    @if (isLoading)
+                                    {
+                                        <span class="indicator-label">
+                                            <span class="spinner-border spinner-border-sm align-middle"></span>
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="indicator-label">
+                                            @languageContainer.Keys["Enable"]
+                                        </span>
+                                    }
+                                </a>
+                                <!--end::Action-->
+                            </div>
+                            <!--end::Wrapper-->
+                        </div>
+                        <!--end::Notice-->
+                    }
+                    <!--begin::Apps-->
+                    <!--end::Options-->
+                </div>
+                <!--end::Card body-->
+            </div>
+        }
+    </DialogContent>
+    <DialogActions>
+    </DialogActions>
+</MudDialog>

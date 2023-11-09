@@ -16,7 +16,7 @@
         <label class="form-label fs-6 fw-bold text-dark">@languageContainer.Keys["Email"]</label>
         <!--end::Label-->
         <!--begin::Input-->
-        <InputText @bind-Value="loginDto.Email" class="form-control form-control-lg form-control-solid" type="text" name="email" autocomplete="off" />
+        <InputText @bind-Value="loginDto.Email" class="form-control form-control-lg form-control-solid" type="text" name="email" />
         <!--end::Input-->
         <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div>
     </div>
@@ -31,7 +31,7 @@
         </div>
         <!--end::Wrapper-->
         <!--begin::Input-->
-        <InputText @bind-Value="loginDto.Password" class="form-control form-control-lg form-control-solid" type="password" name="password" autocomplete="off" />
+        <InputText @bind-Value="loginDto.Password" class="form-control form-control-lg form-control-solid" type="password" name="password" />
         <!--end::Input-->
         <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div>
     </div>
