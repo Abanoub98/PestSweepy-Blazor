@@ -47417,14 +47417,14 @@ a:hover {
 }
 
 [data-bs-theme=light] {
-    --bs-app-bg-color: #e9ffef;
+    --bs-app-bg-color: #DEF2F1;
     --bs-app-blank-bg-color: #ffffff;
-    --bs-app-header-base-bg-color: #e9ffef;
+    --bs-app-header-base-bg-color: #DEF2F1;
     --bs-app-toolbar-base-bg-color: #ffffff;
-    --bs-app-sidebar-base-bg-color: #e9ffef;
+    --bs-app-sidebar-base-bg-color: #DEF2F1;
     --bs-app-sidebar-base-box-shadow: none;
-    --bs-app-sidebar-minimize-bg-color: #e9ffef;
-    --bs-app-aside-base-bg-color: #e9ffef;
+    --bs-app-sidebar-minimize-bg-color: #DEF2F1;
+    --bs-app-aside-base-bg-color: #DEF2F1;
     --bs-app-aside-base-box-shadow: none;
 }
 
@@ -49175,7 +49175,7 @@ body,
   }
 }
 [data-bs-theme=light] {
-    --bs-app-sidebar-link-bg-color: #bbf0d0;
+    --bs-app-sidebar-link-bg-color: #d1e3e2;
     --bs-app-separator-border: 1px solid #E1E3EA;
     --bs-app-content-bg-color: #ffffff;
 }

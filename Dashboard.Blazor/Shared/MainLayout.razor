@@ -78,7 +78,7 @@
 
     private async Task SetThemeModeAsync()
     {
-        IsDarkMode = await LocalStorage.GetItemAsync<string>("data-bs-theme-mode") == "light" ? false : true;
+        IsDarkMode = await LocalStorage.GetItemAsync<string>("data-bs-theme") == "dark" ? true : false;
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)

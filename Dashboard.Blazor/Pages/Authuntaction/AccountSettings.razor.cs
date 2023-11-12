@@ -8,42 +8,38 @@ public partial class AccountSettings
 
     private TwoFactorAuthDto? twoFactorAuthDto;
     private bool isGetInfoSuccess;
+    private string? userId;
 
     protected override async Task OnInitializedAsync()
     {
-        var userId = await GetClaimsPrincipalData(ClaimTypes.NameIdentifier);
+        userId = await GetClaimsPrincipalData(ClaimTypes.NameIdentifier);
 
         twoFactorAuthDto = await GetByIdAsync($"Account/IsTwoFactorEnabled?userId={userId}");
 
         if (twoFactorAuthDto.isTwoFactorEnabled)
-        {
-            (isGetInfoSuccess, TwoFactorAuthDto? obj) = await PostAsync<TwoFactorAuthDto>($"Account/EnableOrDisableTwoFactor?userId={userId}&enable=true", showSuccess: false);
-
-            if (isGetInfoSuccess && obj is not null)
-            {
-                twoFactorAuthDto.QrCodeImage = obj.QrCodeImage;
-                twoFactorAuthDto.SecretKey = obj.SecretKey;
-            }
-        }
+            await GetTwoFactorAuthInfo(userId);
     }
 
     private async Task ChangeStatusOfTwoFactorAuth()
     {
         StartProcessing();
 
-        var userId = await GetClaimsPrincipalData(ClaimTypes.NameIdentifier);
-
         twoFactorAuthDto!.isTwoFactorEnabled = !twoFactorAuthDto.isTwoFactorEnabled;
 
+        await GetTwoFactorAuthInfo(userId);
+
+        StopProcessing();
+    }
+
+    private async Task GetTwoFactorAuthInfo(string? userId)
+    {
         (isGetInfoSuccess, TwoFactorAuthDto? obj) = await PostAsync<TwoFactorAuthDto>
-            ($"Account/EnableOrDisableTwoFactor?userId={userId}&enable={twoFactorAuthDto.isTwoFactorEnabled}", twoFactorAuthDto.isTwoFactorEnabled ? "Enabled Successfully" : "Disabled Successfully");
+            ($"Account/EnableOrDisableTwoFactor?userId={userId}&enable={twoFactorAuthDto.isTwoFactorEnabled}", showSuccess: false);
 
         if (isGetInfoSuccess && obj is not null && twoFactorAuthDto.isTwoFactorEnabled)
         {
             twoFactorAuthDto.QrCodeImage = obj.QrCodeImage;
             twoFactorAuthDto.SecretKey = obj.SecretKey;
         }
-
-        StopProcessing();
     }
 }

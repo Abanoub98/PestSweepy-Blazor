@@ -13,7 +13,7 @@ public partial class Audits
         breadcrumbItems.AddRange(new List<BreadcrumbItem>
         {
             new BreadcrumbItem(languageContainer.Keys["Home"], href: "/", icon: Icons.Material.Filled.Home),
-            new BreadcrumbItem(languageContainer.Keys["Audits"], href: null, disabled: true),
+            new BreadcrumbItem(languageContainer.Keys["Audits"], href: null, disabled: true, icon: @Icons.Material.TwoTone.Archive),
         });
 
         audits = await GetAllAsync("SecuirtyLogs/Audits");
@@ -37,7 +37,7 @@ public partial class Audits
             { x => x.Id, id }
         };
 
-        DialogService.Show<AuditDetails>(languageContainer.Keys["AuditDetails"], formParameters, dialogOptions);
+        DialogService.Show<AuditDetails>(languageContainer.Keys["Audit Details"], formParameters, dialogOptions);
     }
 
     private bool FilterFunc(AuditDto element)

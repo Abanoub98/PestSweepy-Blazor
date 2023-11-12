@@ -7,13 +7,12 @@
                 @languageContainer.Keys["Enter 6-digit code from your authenticator application"]
             </MudText>
             <div class="d-flex flex-column flex-md-row align-items-center mt-3">
-
                 <MudTextField Mask="@(new PatternMask("0 0 0 0 0 0"))" @bind-Value="TwoFactorAuth" TextChanged="TrackTwoFactorAuthCodeChanges"
-                              Variant="Variant.Outlined" Label="@languageContainer.Keys["2FA Code"]" Immediate="true" AutoFocus="true" Class="mt-3 mx-10" IconSize="Size.Large"
+                              Variant="Variant.Outlined" Label="@languageContainer.Keys["2FA Code"]" Immediate="true" AutoFocus="true" Class="mt-3 mx-5" IconSize="Size.Large"
                               Adornment="Adornment.Start" AdornmentIcon="@(IsUnlock? Icons.Material.Outlined.LockOpen : Icons.Material.Outlined.Lock)"
-                              AdornmentColor="@(IsUnlock? Color.Success : Color.Error)" Style="font-weight: bold; font-size: x-large; width: 185px;" />
-                <MudFab Color="Color.Success" Size="Size.Small" DisableElevation="true" Disabled="!IsUnlock"
-                        Label="@languageContainer.Keys["Submit"]" Class="mt-4" OnClick="Submit" />
+                              AdornmentColor="@(IsUnlock? Color.Success : Color.Error)" Style="font-weight: bold; font-size: x-large; width: 185px; direction:ltr" />
+                <MudButton Variant="Variant.Filled" Color="Color.Success" Size="Size.Large" DisableElevation="true"
+                           Disabled="!IsUnlock" Class="mt-4" OnClick="Submit">@languageContainer.Keys["Submit"]</MudButton>
             </div>
         </div>
     </DialogContent>

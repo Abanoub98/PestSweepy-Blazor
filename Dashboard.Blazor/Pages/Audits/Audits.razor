@@ -1,6 +1,4 @@
-﻿@using Dashboard.Blazor.Components
-
-@page "/Audits"
+﻿@page "/Audits"
 @attribute [Authorize]
 @inherits BasePage<AuditDto>
 
@@ -9,16 +7,26 @@
 
 <MudCard Elevation="25">
     <MudCardContent>
-        <MudDataGrid T="AuditDto" Dense="true" Elevation="0" FixedHeader="true" Height="300px"
+        <MudDataGrid T="AuditDto" Dense="true" Elevation="0" FixedHeader="true" Height="330px"
                      Loading="@(isLoading)" LoadingProgressColor="Color.Info" Filterable="true"
                      Items="audits" Hover="true" SortMode="SortMode.Single" QuickFilter="@FilterFunc">
 
             <ToolBarContent>
-                <MudText Class="me-1" Typo="Typo.h5">@languageContainer.Keys["Audits"]</MudText>
-                <MudSpacer />
-                <MudTextField @bind-Value="searchString" Adornment="Adornment.Start" Class="mt-0" Immediate="true"
-                              Placeholder=@($"{languageContainer.Keys["SearchFor"]} User Id, Type, Table Name, Date")
-                              AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium"/>
+                <div class="d-flex justify-content-between flex-column align-items-center flex-md-row w-100">
+                    <div class="w-md-25 w-100">
+                        <div class="d-flex align-items-center">
+                            <MudAvatar Rounded="true" Color="Color.Info">
+                                <MudIcon Icon="@Icons.Material.Filled.Archive" />
+                            </MudAvatar>
+                            <MudText Class="mx-3" Typo="Typo.h5">@languageContainer.Keys["Audits"]</MudText>
+                        </div>
+                    </div>
+                    <div class="w-md-50 w-100">
+                        <MudTextField @bind-Value="searchString" Adornment="Adornment.Start" Class="mt-0 mb-5" Immediate="true"
+                                      Placeholder=@($"{languageContainer.Keys["Search For"]} User Id, Type, Table Name, Date")
+                                      AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" />
+                    </div>
+                </div>
             </ToolBarContent>
             <NoRecordsContent>
                 <NoDataToDisply />
@@ -28,7 +36,7 @@
                 <PropertyColumn Property="x => x.Type" />
                 <PropertyColumn Property="x => x.TableName" Title="Table Name" />
                 <PropertyColumn Property="x => x.DateTime.ToString()" Title="Date Time" />
-                <TemplateColumn Context="audit" Sortable="false" Filterable="false">
+                <TemplateColumn Context="audit" Sortable="false" Filterable="false" Title="Actions">
                     <CellTemplate>
                         <MudButtonGroup Size="Size.Small" Color="Color.Info" Variant="Variant.Outlined">
                             <MudIconButton OnClick="() => ShowAuditDetailsDialog(audit.Item!.Id)" Disabled="isDisable" Icon="@Icons.Material.Filled.Info" />

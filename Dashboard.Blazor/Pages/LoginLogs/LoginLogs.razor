@@ -1,24 +1,32 @@
-﻿@using Dashboard.Blazor.Components
-
-@page "/LoginLogs"
+﻿@page "/LoginLogs"
 @attribute [Authorize]
 @inherits BasePage<LoginLogDto>
 
-<PageTitle>@languageContainer.Keys["LoginLogs"]</PageTitle>
+<PageTitle>@languageContainer.Keys["Login Logs"]</PageTitle>
 <MudBreadcrumbs Items="breadcrumbItems"></MudBreadcrumbs>
 
 <MudCard Elevation="25">
     <MudCardContent>
-        <MudDataGrid T="LoginLogDto" Dense="true" Elevation="0" FixedHeader="true" Height="300px"
+        <MudDataGrid T="LoginLogDto" Dense="true" Elevation="0" FixedHeader="true" Height="330px"
                      Loading="@(isLoading)" LoadingProgressColor="Color.Info" Filterable="true"
                      Items="loginLogs" Hover="true" SortMode="SortMode.Single" QuickFilter="@FilterFunc">
 
             <ToolBarContent>
-                <MudText Class="me-1" Typo="Typo.h5">@languageContainer.Keys["LoginLogs"]</MudText>
-                <MudSpacer />
-                <MudTextField @bind-Value="searchString" Adornment="Adornment.Start" Class="mt-0" Immediate="true"
-                              Placeholder=@($"{languageContainer.Keys["SearchFor"]} User Id, Role, Ip Address, User Name, Login Date")
-                              AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium"/>
+                <div class="d-flex justify-content-between flex-column align-items-center flex-md-row w-100">
+                    <div class="w-md-25 w-100">
+                        <div class="d-flex align-items-center">
+                            <MudAvatar Rounded="true" Color="Color.Info">
+                                <MudIcon Icon="@Icons.Material.Filled.Security" />
+                            </MudAvatar>
+                            <MudText Class="mx-3" Typo="Typo.h5">@languageContainer.Keys["Login Logs"]</MudText>
+                        </div>
+                    </div>
+                    <div class="w-md-50 w-100">
+                        <MudTextField @bind-Value="searchString" Adornment="Adornment.Start" Class="mt-0 mb-5" Immediate="true"
+                                      Placeholder=@($"{languageContainer.Keys["Search For"]} User Id, Role, Ip Address, User Name, Login Date")
+                                      AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" />
+                    </div>
+                </div>
             </ToolBarContent>
             <NoRecordsContent>
                 <NoDataToDisply />

@@ -1,5 +1,4 @@
-﻿@using Dashboard.Blazor.Components
-@inherits BasePage<TwoFactorAuthDto>
+﻿@inherits BasePage<TwoFactorAuthDto>
 
 <MudDialog>
     <DialogContent>
@@ -22,15 +21,18 @@
                             <div class="d-flex flex-stack flex-grow-1 flex-wrap flex-md-nowrap">
                                 <!--begin::Content-->
                                 <div class="mb-3 mb-md-0 fw-semibold">
-                                    <h4 class="text-gray-700 fw-bold">Your Account Is Secured</h4>
+                                    <h4 class="text-gray-700 fw-bold">
+                                        @languageContainer.Keys["Your Account Is Secured"]
+                                    </h4>
                                     <div class="fs-6 text-gray-700 pe-7">
-                                        Using an authenticator app like
+                                        @languageContainer.Keys["Using an authenticator app like"]
+                                        
                                         <a href="https://support.google.com/accounts/answer/1066447?hl=en" target="_blank">Google Authenticator</a>,
                                         <a href="https://www.microsoft.com/en-us/account/authenticator" target="_blank">Microsoft Authenticator</a>,
                                         <a href="https://authy.com/download/" target="_blank">Authy</a>, or
                                         <a href="https://support.1password.com/one-time-passwords/" target="_blank">1Password</a>.
-                                        <br/>
-                                        scan the QR code and It will generate a 6 digit code for you.
+                                        <br />
+                                        @languageContainer.Keys["scan the QR code and It will generate a 6 digit code for you"]                                        .
                                     </div>
                                 </div>
                                 <!--end::Content-->
@@ -74,7 +76,7 @@
                                     <div class=" fw-semibold">
 
                                         <div class="fs-6 text-gray-700 ">
-                                            If you having trouble using the QR code, select manual entry on your app, and enter your username and the code:
+                                            @languageContainer.Keys["If you having trouble using the QR code, select manual entry on your app, and enter the code"]:
                                             <br />
                                             <div class="fw-bold text-gray-900 pt-2">
                                                 @twoFactorAuthDto.SecretKey
@@ -99,9 +101,13 @@
                             <div class="d-flex flex-stack flex-grow-1 flex-wrap flex-md-nowrap">
                                 <!--begin::Content-->
                                 <div class="mb-3 mb-md-0 fw-semibold">
-                                    <h4 class="text-gray-900 fw-bold">Secure Your Account</h4>
+                                    <h4 class="text-gray-900 fw-bold">@languageContainer.Keys["Secure Your Account"]</h4>
 
-                                    <div class="fs-6 text-gray-700 pe-7">Two-factor authentication adds an extra layer of security to your account.<br /> To log in, in addition you'll need to provide a 6 digit code</div>
+                                    <div class="fs-6 text-gray-700 pe-7">
+                                        @languageContainer.Keys["Two-factor authentication adds an extra layer of security to your account"]
+                                        <br />
+                                        @languageContainer.Keys["To log in, in addition you'll need to provide a 6 digit code"]
+                                    </div>
                                 </div>
                                 <!--end::Content-->
                                 <!--begin::Action-->

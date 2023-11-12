@@ -14,7 +14,7 @@ public partial class ReferenceData
         breadcrumbItems.AddRange(new List<BreadcrumbItem>
         {
             new BreadcrumbItem(languageContainer.Keys["Home"], href: "/", icon: Icons.Material.Filled.Home),
-            new BreadcrumbItem(languageContainer.Keys["ReferenceData"], href: null, disabled: true),
+            new BreadcrumbItem(languageContainer.Keys["Reference Data"], href: null, disabled: true, icon: @Icons.Material.TwoTone.Dataset),
         });
     }
 

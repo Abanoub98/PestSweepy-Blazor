@@ -1,10 +1,8 @@
-﻿@using Dashboard.Blazor.Components
-
-@page "/ReferenceData"
+﻿@page "/ReferenceData"
 @attribute [Authorize]
 @inherits BasePage<LookupDto>
 
-<PageTitle>@languageContainer.Keys["ReferenceData"]</PageTitle>
+<PageTitle>@languageContainer.Keys["Reference Data"]</PageTitle>
 <MudBreadcrumbs Items="breadcrumbItems"></MudBreadcrumbs>
 
 <MudCard Elevation="25">
@@ -15,20 +13,26 @@
 
             <ToolBarContent>
                 <div class="d-flex justify-content-between flex-column align-items-center flex-md-row w-100">
-                    <div class="w-md-25 w-100">
-                        <MudAutocomplete T="string" Label="Reference Data Tables" SearchFunc="@GetTablesAsync"
-                                         Variant="Variant.Outlined" ShowProgressIndicator="true" ResetValueOnEmptyText="true" CoerceText="true"
-                                         ProgressIndicatorColor="Color.Info" Margin="Margin.Dense" Clearable ValueChanged="TableChanged">
-                            <NoItemsTemplate>
-                                <MudText Align="Align.Center" Class="px-4 py-4">
-                                    No items found
-                                </MudText>
-                            </NoItemsTemplate>
-                        </MudAutocomplete>
-                    </div>
                     <div class="w-md-50 w-100">
+                        <div class="d-flex align-items-center w-100">
+                            <MudAvatar Rounded="true" Color="Color.Info">
+                                <MudIcon Icon="@Icons.Material.Filled.Dataset" />
+                            </MudAvatar>
+                            <MudAutocomplete T="string" Label="@languageContainer.Keys["Reference Data Tables"]" SearchFunc="@GetTablesAsync" Class="mx-2 mx-md-3"
+                                             Variant="Variant.Outlined" ShowProgressIndicator="true" ResetValueOnEmptyText="true" CoerceText="true"
+                                             ProgressIndicatorColor="Color.Info" Margin="Margin.Dense" Clearable ValueChanged="TableChanged">
+                                <NoItemsTemplate>
+                                    <MudText Align="Align.Center" Class="px-4 py-4">
+                                        No items found
+                                    </MudText>
+                                </NoItemsTemplate>
+                            </MudAutocomplete>
+                            <MudIconButton Icon="@Icons.Material.Filled.Add" Color="Color.Success"></MudIconButton>
+                        </div>
+                    </div>
+                    <div class="w-md-25 w-100">
                         <MudTextField @bind-Value="searchString" Adornment="Adornment.Start" Class="mt-0 mb-5" Immediate="true"
-                                      Placeholder=@($"{languageContainer.Keys["SearchFor"]} Name")
+                                      Placeholder=@($"{languageContainer.Keys["Search For"]} Name")
                                       AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" />
                     </div>
                 </div>
@@ -39,7 +43,7 @@
             <Columns>
                 <PropertyColumn Property="x => x.Name" Title="Name" />
                 <PropertyColumn Property="x => x.OrderIndex" Title="Order Index" />
-                <TemplateColumn Context="Refdata" Sortable="false" Filterable="false">
+                <TemplateColumn Context="Refdata" Sortable="false" Filterable="false" Title="Actions">
                     <CellTemplate>
 
                     </CellTemplate>

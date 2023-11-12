@@ -12,7 +12,7 @@ public partial class LoginLogs
         breadcrumbItems.AddRange(new List<BreadcrumbItem>
         {
             new BreadcrumbItem(languageContainer.Keys["Home"], href: "/", icon: Icons.Material.Filled.Home),
-            new BreadcrumbItem(languageContainer.Keys["LoginLogs"], href: null, disabled: true),
+            new BreadcrumbItem(languageContainer.Keys["Login Logs"], href: null, disabled: true, icon: Icons.Material.TwoTone.Security),
         });
 
         loginLogs = await GetAllAsync("SecuirtyLogs/LoginLogs");
