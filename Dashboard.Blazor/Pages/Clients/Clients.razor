@@ -1,0 +1,69 @@
+﻿@page "/Clients"
+@attribute [Authorize]
+@inherits BasePage<ClientDto>
+
+<PageTitle>@languageContainer.Keys["Clients"]</PageTitle>
+<MudBreadcrumbs Items="breadcrumbItems"></MudBreadcrumbs>
+
+<MudCard Elevation="25">
+    <MudCardContent>
+        <MudDataGrid T="ClientDto" Dense="true" Elevation="0" FixedHeader="true" Height="330px"
+                     Loading="@(isLoading)" LoadingProgressColor="Color.Info" Filterable="true"
+                     Items="clients" Hover="true" SortMode="SortMode.Single" QuickFilter="@FilterFunc">
+
+            <ToolBarContent>
+                <div class="d-flex justify-content-between flex-column align-items-center flex-md-row w-100">
+                    <div class="w-md-25 w-100">
+                        <div class="d-flex align-items-center">
+                            <MudAvatar Rounded="true" Color="Color.Info">
+                                <MudIcon Icon="@Icons.Material.Filled.Groups" />
+                            </MudAvatar>
+                            <MudText Class="mx-3" Typo="Typo.h5">@languageContainer.Keys["Clients"]</MudText>
+                            <MudIconButton OnClick="() => OpenForm(formUri)" Icon="@Icons.Material.Filled.Add" Color="Color.Success"></MudIconButton>
+                        </div>
+                    </div>
+                    <div class="w-md-50 w-100">
+                        <MudTextField @bind-Value="searchString" Adornment="Adornment.Start" Class="mt-0 mb-5" Immediate="true"
+                                      Placeholder=@($"{languageContainer.Keys["Search For"]} Name, Order Index")
+                                      AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" />
+                    </div>
+                </div>
+            </ToolBarContent>
+
+            <NoRecordsContent>
+                <NoDataToDisply />
+            </NoRecordsContent>
+
+            <Columns>
+                <TemplateColumn Context="client">
+                    <HeaderTemplate>
+                        <MudText>Client</MudText>
+                    </HeaderTemplate>
+                    <CellTemplate>
+                        <div class="d-flex align-items-center">
+                            <MudAvatar Rounded="true" Size="Size.Large">
+                                <MudImage Src="@(imageUrl + client.Item!.Image)" />
+                            </MudAvatar>
+                            <div class="mx-3">
+                                <MudText>@client.Item!.Name</MudText>
+                            </div>
+                        </div>
+                    </CellTemplate>
+                </TemplateColumn>
+
+                <TemplateColumn CellStyle="width:200px" CellClass="text-center" Context="client" HeaderClass="text-center" Sortable="false" Filterable="false">
+                    <HeaderTemplate>
+                        <MudText Class="w-100">Actions</MudText>
+                    </HeaderTemplate>
+                    <CellTemplate>
+                        <TableButtons IsDisable="isDisable" EditClicked="() => OpenForm(formUri, client.Item!.Id)" />
+                    </CellTemplate>
+                </TemplateColumn>
+            </Columns>
+
+            <PagerContent>
+                <MudDataGridPager T="ClientDto" />
+            </PagerContent>
+        </MudDataGrid>
+    </MudCardContent>
+</MudCard>

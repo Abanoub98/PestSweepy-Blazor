@@ -1,0 +1,11 @@
+﻿<MudButtonGroup Color="Color.Info" Variant="Variant.Outlined">
+    <MudIconButton OnClick="EditClicked" Color="Color.Info" Disabled="IsDisable" Icon="@Icons.Material.Filled.Edit" />
+    <MudIconButton Color="Color.Error" Disabled="IsDisable" Icon="@Icons.Material.Filled.DeleteForever" />
+    <MudIconButton Color="Color.Info" Disabled="IsDisable" Icon="@Icons.Material.Outlined.Info" />
+</MudButtonGroup>
+
+@code {
+    [Parameter][EditorRequired] public bool IsDisable { get; set; }
+    [Parameter][EditorRequired] public EventCallback EditClicked { get; set; }
+
+}

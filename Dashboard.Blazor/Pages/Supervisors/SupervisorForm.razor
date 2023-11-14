@@ -1,0 +1,89 @@
+﻿@page "/Supervisors/Form/{Id:int}"
+@page "/Supervisors/Form"
+@attribute [Authorize]
+@inherits BasePage<SupervisorDto>
+
+<PageTitle>@languageContainer.Keys[(Id == 0 ? "Add" : "Edit") + " Supervisor"]</PageTitle>
+<MudBreadcrumbs Items="breadcrumbItems"></MudBreadcrumbs>
+
+@if (supervisorForm is null)
+{
+    <FormLoadingSpinner IsBigForm="true" />
+}
+else
+{
+    <MudCard Elevation="25">
+        <EditForm Model="@supervisorForm" OnValidSubmit="OnValidSubmit">
+            <DataAnnotationsValidator />
+            <MudCardHeader Style="padding:20px">
+                <CardHeaderAvatar>
+                    <MudAvatar Rounded="true" Color="Color.Info">
+                        <MudIcon Icon="@Icons.Material.Filled.SupervisorAccount" />
+                    </MudAvatar>
+                </CardHeaderAvatar>
+                <CardHeaderContent>
+                    <MudText Style="display: flex;align-items: center;" Typo="Typo.h5">
+                        @(Id == 0 ? "Add Supervisor" : $"Edit {supervisorForm.Name}")
+                    </MudText>
+                </CardHeaderContent>
+                <CardHeaderActions>
+                    <MudButton DisableElevation="true" Href="/Supervisors" Style="margin:10px" Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.ArrowBack" Color="Color.Info">
+                        Back to Supervisors
+                    </MudButton>
+                </CardHeaderActions>
+            </MudCardHeader>
+            <MudCardContent Class="px-5 py-3">
+                <div class="d-flex flex-wrap flex-md-nowrap">
+                    <div class="p-3  w-100 w-md-50">
+                        <MudTextField HelperText="Required" Variant="Variant.Outlined" @bind-Value="supervisorForm.Name" For="@(() => supervisorForm.Name)" HelperTextOnFocus="true"
+                                  AdornmentColor="Color.Info" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.AccountBox" Placeholder="@Placeholders.Name" />
+                    </div>
+                    <div class="p-3 w-100 w-md-25">
+                        <MudSelect HelperText="Required" Variant="Variant.Outlined" @bind-Value="supervisorForm.Gender" For="@(() => supervisorForm.Gender)" Adornment="Adornment.Start" Clearable
+                               Placeholder="@Placeholders.GenderDropDown" AdornmentIcon="@Icons.Material.Filled.Group" AdornmentColor="Color.Info" AnchorOrigin="Origin.BottomCenter" T="string" HelperTextOnFocus="true">
+                        <MudSelectItem Value="@("Male")">Male</MudSelectItem>
+                        <MudSelectItem Value="@("Female")">Female</MudSelectItem>
+                        </MudSelect>
+                    </div>
+                    <div class="p-3 w-100 w-md-25">
+                        <MudAutocomplete T="LookupDto" SearchFunc="@GetNationalities" Adornment="Adornment.Start" AnchorOrigin="Origin.BottomCenter"
+                                     Variant="Variant.Outlined" ShowProgressIndicator="true" ResetValueOnEmptyText="true" CoerceText="true" AdornmentIcon="@Icons.Material.Filled.Flag"
+                                     ProgressIndicatorColor="Color.Info" Clearable @bind-Value="supervisorForm.Nationality" For="@(() => supervisorForm.Nationality)" AdornmentColor="Color.Info"
+                                     ToStringFunc="@(e=> e == null ? null : $"{e.Name}")" HelperText="Required" Placeholder="@Placeholders.NationalityDropDown" MaxItems="null" HelperTextOnFocus="true">
+                            <NoItemsTemplate>
+                                <MudText Align="Align.Center" Class="px-4 py-4">
+                                    No items found
+                                </MudText>
+                            </NoItemsTemplate>
+                        </MudAutocomplete>
+                    </div>
+                </div>
+                @if (Id == 0)
+                {
+                    <div class="flex-wrap d-flex flex-md-nowrap">
+                        <div class="p-3 w-100">
+                            <MudNumericField HideSpinButtons="true" HelperText="Required" Variant="Variant.Outlined" AdornmentColor="Color.Info" Adornment="Adornment.Start" HelperTextOnFocus="true" Required="true"
+                                     @bind-Value="supervisorForm.PhoneNumber" For="@(() => supervisorForm.PhoneNumber)" AdornmentIcon="@Icons.Material.Filled.Phone" Placeholder="@Placeholders.PhoneNumber" RequiredError="Phone Number is Required" />
+                        </div>
+                        <div class="p-3 w-100">
+                            <MudTextField HelperText="Required" Variant="Variant.Outlined" InputType="InputType.Email" AdornmentColor="Color.Info" Adornment="Adornment.Start" HelperTextOnFocus="true"
+                                  @bind-Value="supervisorForm.Email" For="@(() => supervisorForm.Email)" AdornmentIcon="@Icons.Material.Filled.Email" Placeholder="@Placeholders.Email" Required="true" RequiredError="Email is Required" />
+                        </div>
+                        <div class="p-3 w-100">
+                            <MudTextField HelperText="Required" Variant="Variant.Outlined" InputType="PasswordInput" AdornmentColor="Color.Info"
+                                  @bind-Value="supervisorForm.Password" For="@(() => supervisorForm.Password)" Placeholder="**************" HelperTextOnFocus="true" RequiredError="Password is Required"
+                                  Adornment="Adornment.Start" AdornmentIcon="@PasswordInputIcon" OnAdornmentClick="ChangePasswordStatus" AdornmentAriaLabel="@Placeholders.Password" Required="true" />
+                        </div>
+                    </div>
+                }
+                <div class="flex-wrap gap-5 gap-md-0 d-flex flex-md-nowrap align-items-end p-3">
+                    <ImageUpload ImageSelected="CaptureUploadedImage" UploadedImageCleared="ClearUploadedImage" CurrentImage="@(imageUrl + supervisorForm.Image)" />
+                    <MudSpacer />
+                    <FormButtons IsLoading="@isLoading" />
+                </div>
+            </MudCardContent>
+            <MudCardActions>
+            </MudCardActions>
+        </EditForm>
+    </MudCard>
+}

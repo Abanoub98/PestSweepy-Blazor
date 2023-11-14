@@ -1,5 +1,4 @@
-﻿
-namespace Dashboard.Blazor.Pages.Audits;
+﻿namespace Dashboard.Blazor.Pages.Audits;
 
 public partial class Audits
 {
@@ -13,7 +12,7 @@ public partial class Audits
         breadcrumbItems.AddRange(new List<BreadcrumbItem>
         {
             new BreadcrumbItem(languageContainer.Keys["Home"], href: "/", icon: Icons.Material.Filled.Home),
-            new BreadcrumbItem(languageContainer.Keys["Audits"], href: null, disabled: true, icon: @Icons.Material.TwoTone.Archive),
+            new BreadcrumbItem(languageContainer.Keys["Audits"], href: null, disabled: true, icon: @Icons.Material.TwoTone.History),
         });
 
         audits = await GetAllAsync("SecuirtyLogs/Audits");

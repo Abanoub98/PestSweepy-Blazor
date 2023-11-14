@@ -27,25 +27,6 @@ public class ApiService : IApiService
         return await GetErrorAsync<T>(responseMessage);
     }
 
-    public async Task<ApiResponse<T>> ChangeStatusAsync<T>(string endPoint) where T : class
-    {
-        var responseMessage = await _httpClient.PutAsync(endPoint, null);
-
-        if (responseMessage.IsSuccessStatusCode)
-        {
-            var message = await responseMessage.Content.ReadAsStringAsync();
-
-            return new ApiResponse<T>
-            {
-                IsSuccess = true,
-                Message = message
-            };
-        }
-
-        return await GetErrorAsync<T>(responseMessage);
-    }
-
-
     public async Task<ApiResponse<T>> GetByIdAsync<T>(string endPoint) where T : class
     {
         var responseMessage = await _httpClient.GetAsync(endPoint);
@@ -66,9 +47,9 @@ public class ApiService : IApiService
         return await GetErrorAsync<T>(responseMessage);
     }
 
-    public async Task<ApiResponse<T>> PostAsync<T>(string endPoint) where T : class
+    public async Task<ApiResponse<T>> PostAsync<T>(string endPoint, HttpContent? model = null) where T : class
     {
-        var responseMessage = await _httpClient.PostAsync(endPoint, null);
+        var responseMessage = await _httpClient.PostAsync(endPoint, model);
 
         if (responseMessage.IsSuccessStatusCode)
             return await GetResponseMessage<T>(responseMessage);

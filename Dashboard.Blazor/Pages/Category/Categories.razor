@@ -1,0 +1,89 @@
+﻿@page "/Categories"
+@attribute [Authorize]
+@inherits BasePage<CategoryDto>
+
+<PageTitle>@languageContainer.Keys["Categories"]</PageTitle>
+<MudBreadcrumbs Items="breadcrumbItems"></MudBreadcrumbs>
+
+<MudCard Elevation="25">
+    <MudCardContent>
+        <MudDataGrid T="CategoryDto" Dense="true" Elevation="0" FixedHeader="true" Height="330px"
+                     Loading="@(isLoading)" LoadingProgressColor="Color.Info" Filterable="true"
+                     Items="categories" Hover="true" SortMode="SortMode.Single" QuickFilter="@FilterFunc">
+
+            <ToolBarContent>
+                <div class="d-flex justify-content-between flex-column align-items-center flex-md-row w-100">
+                    <div class="w-md-25 w-100">
+                        <div class="d-flex align-items-center">
+                            <MudAvatar Rounded="true" Color="Color.Info">
+                                <MudIcon Icon="@Icons.Material.Filled.Category" />
+                            </MudAvatar>
+                            <MudText Class="mx-3" Typo="Typo.h5">@languageContainer.Keys["Categories"]</MudText>
+                            <MudIconButton Icon="@Icons.Material.Filled.Add" Color="Color.Success"></MudIconButton>
+                        </div>
+                    </div>
+                    <div class="w-md-50 w-100">
+                        <MudTextField @bind-Value="searchString" Adornment="Adornment.Start" Class="mt-0 mb-5" Immediate="true"
+                                      Placeholder=@($"{languageContainer.Keys["Search For"]} User Id, Type, Table Name, Date")
+                                      AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" />
+                    </div>
+                </div>
+            </ToolBarContent>
+
+            <NoRecordsContent>
+                <NoDataToDisply />
+            </NoRecordsContent>
+
+            <Columns>
+                <TemplateColumn Context="category">
+                    <HeaderTemplate>
+                        <MudText>Category</MudText>
+                    </HeaderTemplate>
+                    <CellTemplate>
+                        <div class="d-flex align-items-center">
+                            <MudAvatar Rounded="true" Size="Size.Large">
+                                <MudImage Src="@(imageUrl + category.Item!.Image)" />
+                            </MudAvatar>
+                            <div class="mx-3">
+                                <MudText>@category.Item!.Name</MudText>
+                            </div>
+                        </div>
+                    </CellTemplate>
+                </TemplateColumn>
+
+                <TemplateColumn Context="category" CellClass="text-center" CellStyle="width:180px">
+                    <HeaderTemplate>
+                        <MudText>order Index</MudText>
+                    </HeaderTemplate>
+                    <CellTemplate>
+                        <MudText>@(category.Item!.OrderIndex is not null ? $"#{category.Item!.OrderIndex}" : string.Empty)</MudText>
+                        </CellTemplate>
+                </TemplateColumn>
+
+                <TemplateColumn Context="category" Sortable="false" Filterable="false" HeaderClass="text-center" CellClass="text-center" CellStyle="width:150px">
+                    <HeaderTemplate>
+                        <MudText Class="w-100">Color</MudText>
+                    </HeaderTemplate>
+                    <CellTemplate>
+                            <MudTooltip role="button" Text="@category.Item.Color" Style="@($"background-color: {category.Item.Color}")" Placement="Placement.Left">
+                                <MudAvatar Style=@($"background-color:{category.Item.Color}")></MudAvatar>
+                            </MudTooltip>
+                    </CellTemplate>
+                </TemplateColumn>
+
+                <TemplateColumn CellStyle="width:200px" CellClass="text-center" Context="category" HeaderClass="text-center" Sortable="false" Filterable="false">
+                    <HeaderTemplate>
+                        <MudText Class="w-100">Actions</MudText>
+                    </HeaderTemplate>
+                    <CellTemplate>
+                        <TableButtons IsDisable="isDisable" />
+                    </CellTemplate>
+                </TemplateColumn>
+            </Columns>
+
+            <PagerContent>
+                <MudDataGridPager T="CategoryDto" />
+            </PagerContent>
+            </MudDataGrid>
+        </MudCardContent>
+    </MudCard>

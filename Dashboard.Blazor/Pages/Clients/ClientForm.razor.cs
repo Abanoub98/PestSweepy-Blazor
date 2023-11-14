@@ -1,0 +1,67 @@
+﻿namespace Dashboard.Blazor.Pages.Clients;
+
+public partial class ClientForm
+{
+    [Parameter][EditorRequired] public int Id { get; set; }
+
+    private ClientDto? clientForm;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        if (Id == 0)
+            clientForm = new();
+        else
+            clientForm = await GetByIdAsync($"Clients/{Id}");
+
+        breadcrumbItems.AddRange(new List<BreadcrumbItem>
+        {
+            new BreadcrumbItem(languageContainer.Keys["Home"], href: "/", icon: Icons.Material.Filled.Home),
+            new BreadcrumbItem(languageContainer.Keys["Clients"], href: "/Clients", icon: Icons.Material.TwoTone.Groups),
+            new BreadcrumbItem(languageContainer.Keys[Id == 0 ? "Add Client" : $"Edit {clientForm.Name}"], href: null, disabled: true),
+        });
+    }
+
+    private async Task OnValidSubmit(EditContext context)
+    {
+        StartProcessing();
+
+        clientForm!.NationalityId = clientForm.Nationality!.Id;
+
+        bool result;
+        ClientDto? clientDtoResult;
+
+        if (Id == 0)
+            (result, clientDtoResult) = await AddAsync("Clients", clientForm!);
+        else
+            (result, clientDtoResult) = await UpdateAsync($"Clients/{Id}", clientForm!);
+
+        if (result)
+        {
+            if (Id == 0)
+                clientForm!.Id = clientDtoResult!.Id;
+
+            if (clientForm.UploadedImage is not null)
+                await UploadImage("Clients", clientForm.Id, clientForm.UploadedImage);
+
+            NavigationManager.NavigateTo("/Clients");
+        }
+
+        StopProcessing();
+    }
+
+    private void CaptureUploadedImage(IBrowserFile image) => clientForm!.UploadedImage = image;
+
+    private void ClearUploadedImage() => clientForm!.UploadedImage = null;
+
+    private async Task<IEnumerable<LookupDto>> GetNationalities(string value)
+    {
+        if (clientForm!.Nationalities is null)
+            clientForm.Nationalities = await GetAllLookupsAsync<LookupDto>("ReferenceData?tableName=Nationalities");
+
+        // if text is null or empty, show complete list
+        if (string.IsNullOrEmpty(value))
+            return clientForm.Nationalities;
+
+        return clientForm.Nationalities.Where(x => x.Name.Contains(value, StringComparison.InvariantCultureIgnoreCase));
+    }
+}

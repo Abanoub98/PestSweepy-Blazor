@@ -98,7 +98,7 @@ public partial class Login
 
     private async Task ShowErrorAsync(HttpResponseMessage responseMessage)
     {
-        var response = await responseMessage.Content.ReadFromJsonAsync<ApiResponseDto>();
+        var response = await responseMessage.Content.ReadFromJsonAsync<ResponseDto>();
 
         if (response is not null)
             errorMessage = response.Message;

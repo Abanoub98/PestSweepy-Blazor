@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Components.Authorization;
+﻿using System.Net.Http.Headers;
+using Microsoft.AspNetCore.Components.Authorization;
 
 namespace Dashboard.Blazor.Pages;
 
@@ -13,6 +14,13 @@ public class BasePage<T> : ComponentBase where T : class
     protected List<BreadcrumbItem> breadcrumbItems = new();
     protected bool isLoading;
     protected bool isDisable;
+
+    bool isShowPassword;
+    protected InputType PasswordInput = InputType.Password;
+    protected string PasswordInputIcon = Icons.Material.Filled.VisibilityOff;
+
+    protected readonly string imageUrl = "https://api.pestsweepy.com/Upload/";
+    protected readonly long maxFileSize = 1024 * 1024; //represents 1MB 
 
     protected async Task<List<T>> GetAllAsync(string endPoint)
     {
@@ -61,6 +69,58 @@ public class BasePage<T> : ComponentBase where T : class
         return (true, response.Object!);
     }
 
+    protected async Task<(bool, ResponseDto?)> UploadImage(string entityName, int id, IBrowserFile image)
+    {
+        if (image.Size > maxFileSize)
+        {
+            ShowError("File size must be less than 1Mb");
+            return (false, new());
+        }
+
+        using MultipartFormDataContent content = HandelImage(image);
+
+        var response = await ApiService.PostAsync<ResponseDto>($"Files/UploadFile?id={id}&entityName={entityName}&isPdf=false", content);
+
+        if (!response.IsSuccess)
+        {
+            ShowError(response.Error ?? response.Message ?? string.Empty);
+            return (false, response.Object);
+        }
+
+        return (true, response.Object!);
+    }
+
+    private MultipartFormDataContent HandelImage(IBrowserFile image)
+    {
+        var content = new MultipartFormDataContent();
+        var fileContent = new StreamContent(image.OpenReadStream());
+        fileContent.Headers.ContentType = new MediaTypeHeaderValue(image.ContentType);
+
+        content.Add
+        (
+        content: fileContent,
+        name: "\"files\"",
+        fileName: image.Name
+        );
+        return content;
+    }
+
+    protected void ChangePasswordStatus()
+    {
+        if (isShowPassword)
+        {
+            isShowPassword = false;
+            PasswordInputIcon = Icons.Material.Filled.VisibilityOff;
+            PasswordInput = InputType.Password;
+        }
+        else
+        {
+            isShowPassword = true;
+            PasswordInputIcon = Icons.Material.Filled.Visibility;
+            PasswordInput = InputType.Text;
+        }
+    }
+
     protected async Task<(bool, TItem?)> PostAsync<TItem>(string endPoint, string successMessage = "Added Successfully", bool showSuccess = true) where TItem : class
     {
         var response = await ApiService.PostAsync<TItem>(endPoint);
@@ -101,6 +161,11 @@ public class BasePage<T> : ComponentBase where T : class
     {
         isLoading = false;
         isDisable = false;
+    }
+
+    protected void OpenForm(string uri, int id = 0)
+    {
+        NavigationManager.NavigateTo(id == 0 ? uri : $"{uri}/{id}");
     }
 
     protected async Task<bool> ShowConfirmation(string? confirmationMessage = null)
