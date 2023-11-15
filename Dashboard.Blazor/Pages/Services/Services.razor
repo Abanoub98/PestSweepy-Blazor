@@ -60,6 +60,15 @@
                     </CellTemplate>
                 </TemplateColumn>
 
+                <TemplateColumn Context="service">
+                    <HeaderTemplate>
+                        <MudText Class="w-100">Price</MudText>
+                    </HeaderTemplate>
+                    <CellTemplate>
+                        <MudText>230 SAR</MudText>
+                    </CellTemplate>
+                </TemplateColumn>
+
                 <TemplateColumn CellStyle="width:150px" InitialDirection="SortDirection.Ascending" SortBy="new Func<ServiceDto, object>(x=>x.OrderIndex)" Context="service" HeaderClass="text-center" CellClass="text-center" Filterable="false">
                     <HeaderTemplate>
                         <MudText Class="w-100">Order</MudText>
