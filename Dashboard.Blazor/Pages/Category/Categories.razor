@@ -19,7 +19,7 @@
                                 <MudIcon Icon="@Icons.Material.Filled.Category" />
                             </MudAvatar>
                             <MudText Class="mx-3" Typo="Typo.h5">@languageContainer.Keys["Categories"]</MudText>
-                            <MudIconButton Icon="@Icons.Material.Filled.Add" Color="Color.Success"></MudIconButton>
+                            <MudIconButton OnClick="() => OpenForm(formUri)" Icon="@Icons.Material.Filled.Add" Color="Color.Success"></MudIconButton>
                         </div>
                     </div>
                     <div class="w-md-50 w-100">
@@ -41,7 +41,7 @@
                     </HeaderTemplate>
                     <CellTemplate>
                         <div class="d-flex align-items-center">
-                            <MudAvatar Rounded="true" Size="Size.Large">
+                            <MudAvatar Class="cursor-all-scroll" @onclick="() => ShowImagePreview(imageUrl + category.Item!.Image)" Rounded="true" Size="Size.Large">
                                 <MudImage Src="@(imageUrl + category.Item!.Image)" />
                             </MudAvatar>
                             <div class="mx-3">
@@ -51,32 +51,33 @@
                     </CellTemplate>
                 </TemplateColumn>
 
-                <TemplateColumn Context="category" CellClass="text-center" CellStyle="width:180px">
-                    <HeaderTemplate>
-                        <MudText>order Index</MudText>
-                    </HeaderTemplate>
-                    <CellTemplate>
-                        <MudText>@(category.Item!.OrderIndex is not null ? $"#{category.Item!.OrderIndex}" : string.Empty)</MudText>
-                        </CellTemplate>
-                </TemplateColumn>
-
                 <TemplateColumn Context="category" Sortable="false" Filterable="false" HeaderClass="text-center" CellClass="text-center" CellStyle="width:150px">
                     <HeaderTemplate>
                         <MudText Class="w-100">Color</MudText>
                     </HeaderTemplate>
                     <CellTemplate>
-                            <MudTooltip role="button" Text="@category.Item.Color" Style="@($"background-color: {category.Item.Color}")" Placement="Placement.Left">
-                                <MudAvatar Style=@($"background-color:{category.Item.Color}")></MudAvatar>
-                            </MudTooltip>
+                        <MudTooltip role="button" Text="@category.Item!.Color" Style="@($"background-color: {category.Item.Color}")" Placement="Placement.Left">
+                            <MudAvatar Class="cursor-help" Style=@($"background-color: {category.Item.Color}")></MudAvatar>
+                        </MudTooltip>
                     </CellTemplate>
                 </TemplateColumn>
 
-                <TemplateColumn CellStyle="width:200px" CellClass="text-center" Context="category" HeaderClass="text-center" Sortable="false" Filterable="false">
+                <TemplateColumn CellStyle="width:150px" InitialDirection="SortDirection.Ascending" SortBy="new Func<CategoryDto, object>(x=>x.OrderIndex)" Context="category" HeaderClass="text-center" CellClass="text-center" Filterable="false">
+                    <HeaderTemplate>
+                        <MudText Class="w-100">Order</MudText>
+                    </HeaderTemplate>
+                    <CellTemplate>
+                        <MudText Class="w-100">@(category.Item!.OrderIndex is not null ? $"#{category.Item!.OrderIndex}" : string.Empty)</MudText>
+                    </CellTemplate>
+                </TemplateColumn>
+
+                <TemplateColumn CellStyle="width:250px" CellClass="text-center" Context="category" HeaderClass="text-center" Sortable="false" Filterable="false">
                     <HeaderTemplate>
                         <MudText Class="w-100">Actions</MudText>
                     </HeaderTemplate>
                     <CellTemplate>
-                        <TableButtons IsDisable="isDisable" />
+                        <TableButtons IsDisable="isDisable" EditClicked="() => OpenForm(formUri,category.Item!.Id)" DeleteClicked="() => Delete(category.Item!.Id)"
+                                      DetailsClicked="() => OpenDetails(detailsUri,category.Item!.Id)" />
                     </CellTemplate>
                 </TemplateColumn>
             </Columns>

@@ -90,21 +90,6 @@ public class BasePage<T> : ComponentBase where T : class
         return (true, response.Object!);
     }
 
-    private MultipartFormDataContent HandelImage(IBrowserFile image)
-    {
-        var content = new MultipartFormDataContent();
-        var fileContent = new StreamContent(image.OpenReadStream());
-        fileContent.Headers.ContentType = new MediaTypeHeaderValue(image.ContentType);
-
-        content.Add
-        (
-        content: fileContent,
-        name: "\"files\"",
-        fileName: image.Name
-        );
-        return content;
-    }
-
     protected void ChangePasswordStatus()
     {
         if (isShowPassword)
@@ -151,6 +136,25 @@ public class BasePage<T> : ComponentBase where T : class
         return (true, response.Object);
     }
 
+    protected async Task<bool> DeleteAsync(string endPoint)
+    {
+        var isConfirmed = await ShowConfirmation();
+
+        if (!isConfirmed)
+            return false;
+
+        var response = await ApiService.DeleteAsync<T>(endPoint);
+
+        if (!response.IsSuccess)
+        {
+            ShowError(response.Error!);
+            return false;
+        }
+
+        ShowSuccess("Deleted Successfully");
+        return true;
+    }
+
     protected void StartProcessing()
     {
         isLoading = true;
@@ -166,6 +170,11 @@ public class BasePage<T> : ComponentBase where T : class
     protected void OpenForm(string uri, int id = 0)
     {
         NavigationManager.NavigateTo(id == 0 ? uri : $"{uri}/{id}");
+    }
+
+    protected void OpenDetails(string uri, int id)
+    {
+        NavigationManager.NavigateTo($"{uri}/{id}");
     }
 
     protected async Task<bool> ShowConfirmation(string? confirmationMessage = null)
@@ -193,12 +202,31 @@ public class BasePage<T> : ComponentBase where T : class
         return true;
     }
 
-    protected string HandelDuration(double durationInMin)
+    protected async Task ShowImagePreview(string imageUrl)
+    {
+        DialogOptions dialogOptions = new()
+        {
+            CloseOnEscapeKey = true,
+            MaxWidth = MaxWidth.Small,
+            FullWidth = true,
+            Position = DialogPosition.Center,
+            CloseButton = true
+        };
+
+        DialogParameters<ImagePreview> formParameters = new()
+        {
+            { x => x.ImageUrl, imageUrl }
+        };
+
+        await DialogService.ShowAsync<ImagePreview>("Image Preview", formParameters, dialogOptions);
+    }
+
+    protected string HandelDuration(int durationInMin)
     {
         if (durationInMin < 60)
             return $"{durationInMin} Minutes";
 
-        double durationInHours = durationInMin / 60;
+        double durationInHours = (double)durationInMin / 60;
         durationInHours = Math.Round(durationInHours, 1);
         return $"{durationInHours} Hours";
     }
@@ -207,6 +235,7 @@ public class BasePage<T> : ComponentBase where T : class
     {
         var authState = await AuthenticationStateProvider
             .GetAuthenticationStateAsync();
+
         var user = authState.User;
 
         if (user.Identity is not null && user.Identity.IsAuthenticated)
@@ -216,6 +245,22 @@ public class BasePage<T> : ComponentBase where T : class
     }
 
     //TODO : Handel All Status Codes
+    private MultipartFormDataContent HandelImage(IBrowserFile image)
+    {
+        var content = new MultipartFormDataContent();
+        var fileContent = new StreamContent(image.OpenReadStream());
+        fileContent.Headers.ContentType = new MediaTypeHeaderValue(image.ContentType);
+
+        content.Add
+        (
+        content: fileContent,
+        name: "\"files\"",
+        fileName: image.Name
+        );
+        return content;
+    }
+
+
     private void HandelNavigation(string StatusCode)
     {
         NavigationManager.NavigateTo("/ServerError");

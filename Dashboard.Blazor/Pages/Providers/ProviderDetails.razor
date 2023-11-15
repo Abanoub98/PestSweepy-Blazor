@@ -1,0 +1,55 @@
+﻿@page "/Providers/Details/{Id:int}"
+@attribute [Authorize]
+@inherits BasePage<ProviderDto>
+
+<PageTitle>@languageContainer.Keys["Provider Details"]</PageTitle>
+<MudBreadcrumbs Items="breadcrumbItems"></MudBreadcrumbs>
+
+@if (provider is null)
+{
+    <FormLoadingSpinner IsBigForm="true" />
+}
+else
+{
+    <MudCard Elevation="25">
+        <MudCardHeader Style="padding:20px">
+            <CardHeaderAvatar>
+                <MudAvatar Class="cursor-all-scroll" @onclick="() => ShowImagePreview(imageUrl + provider.Image)" Size="Size.Large" Rounded="true" Color="Color.Info">
+                    <MudImage Src=@(imageUrl + provider.Image)></MudImage>
+                </MudAvatar>
+            </CardHeaderAvatar>
+            <CardHeaderContent>
+                <MudText Typo="Typo.h5">
+                    @provider.Name
+                </MudText>
+                <MudChip Variant="Variant.Text" Size="Size.Small" Icon="@Icons.Material.Filled.Flag" Color="Color.Info">@provider.Nationality?.Name</MudChip>
+                @if (provider.Gender == "Male")
+                {
+                    <MudChip Variant="Variant.Filled" Size="Size.Small" Icon="@Icons.Material.Filled.Male" Color="Color.Info">Male</MudChip>
+                }
+                else
+                {
+                    <MudChip Variant="Variant.Filled" Size="Size.Small" Icon="@Icons.Material.Filled.Female" Color="Color.Secondary">Female</MudChip>
+                }
+            </CardHeaderContent>
+            <CardHeaderActions>
+                <div style="margin:10px">
+                    <MudButton DisableElevation="true" OnClick="() => OpenForm(formUri,provider.Id)" Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Edit" Color="Color.Info">
+                        Edit
+                    </MudButton>
+                    <MudButton DisableElevation="true" Href="/Providers" Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.ArrowBack" Color="Color.Info">
+                        Back to Providers
+                    </MudButton>
+                </div>
+            </CardHeaderActions>
+        </MudCardHeader>
+    </MudCard>
+    <MudTabs SliderColor="Color.Info" Class="mt-5" Elevation="25" Rounded="true" ApplyEffectsToContainer=true Border=true PanelClass="h-300px px-6 pb-6 pt-0">
+        <MudTabPanel Icon="@Icons.Material.Filled.Info" Text="More Info">
+
+        </MudTabPanel>
+        <MudTabPanel Icon="@Icons.Material.Filled.SupervisedUserCircle" Text="Providers">
+
+        </MudTabPanel>
+    </MudTabs>
+}

@@ -47,6 +47,16 @@ public class ApiService : IApiService
         return await GetErrorAsync<T>(responseMessage);
     }
 
+    public async Task<ApiResponse<T>> DeleteAsync<T>(string endPoint) where T : class
+    {
+        var responseMessage = await _httpClient.DeleteAsync(endPoint);
+
+        if (responseMessage.IsSuccessStatusCode)
+            return await GetResponseMessage<T>(responseMessage);
+
+        return await GetErrorAsync<T>(responseMessage);
+    }
+
     public async Task<ApiResponse<T>> PostAsync<T>(string endPoint, HttpContent? model = null) where T : class
     {
         var responseMessage = await _httpClient.PostAsync(endPoint, model);

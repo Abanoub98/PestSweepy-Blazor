@@ -1,0 +1,48 @@
+﻿@page "/Services/Details/{Id:int}"
+@attribute [Authorize]
+@inherits BasePage<ServiceDto>
+
+@if (service is null)
+{
+    <FormLoadingSpinner IsBigForm="true" />
+}
+else
+{
+    <MudCard Elevation="25">
+        <MudCardHeader Style="padding:20px">
+            <CardHeaderAvatar>
+                <MudAvatar Class="cursor-all-scroll" @onclick="() => ShowImagePreview(imageUrl + service.Image)" Size="Size.Large" Rounded="true" Color="Color.Info">
+                    <MudImage Src=@(imageUrl + service.Image)></MudImage>
+                </MudAvatar>
+            </CardHeaderAvatar>
+            <CardHeaderContent>
+                <MudText Typo="Typo.h5">
+                    @service.Name
+                </MudText>
+                @if (service.OrderIndex is not null)
+                {
+                    <MudChip Variant="Variant.Text" Size="Size.Small" Icon="@Icons.Material.Outlined.Sort" Color="Color.Info">#@service.OrderIndex</MudChip>
+                }
+                <MudChip Variant="Variant.Text" Size="Size.Small" Icon="@Icons.Material.Outlined.Timer" Color="Color.Info">@HandelDuration((int)service.DurationInMinutes!)</MudChip>
+            </CardHeaderContent>
+            <CardHeaderActions>
+                <div style="margin:10px">
+                    <MudButton DisableElevation="true" OnClick="() => OpenForm(formUri,service.Id)" Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Edit" Color="Color.Info">
+                        Edit
+                    </MudButton>
+                    <MudButton DisableElevation="true" Href="/Services" Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.ArrowBack" Color="Color.Info">
+                        Back to Services
+                    </MudButton>
+                </div>
+            </CardHeaderActions>
+        </MudCardHeader>
+    </MudCard>
+    <MudTabs SliderColor="Color.Info" Class="mt-5" Elevation="25" Rounded="true" ApplyEffectsToContainer=true Border=true PanelClass="h-300px px-6 pb-6 pt-0">
+        <MudTabPanel Icon="@Icons.Material.Filled.Info" Text="More Info">
+
+        </MudTabPanel>
+        <MudTabPanel Icon="@Icons.Material.Filled.SupervisedUserCircle" Text="Orders">
+
+        </MudTabPanel>
+    </MudTabs>
+}

@@ -1,10 +1,11 @@
-﻿using System.Drawing;
-namespace Dashboard.Blazor.Pages.Category;
+﻿namespace Dashboard.Blazor.Pages.Category;
 
 public partial class Categories
 {
     private List<CategoryDto> categories = new();
     private string searchString = string.Empty;
+    private readonly string formUri = "Categories/Form";
+    private readonly string detailsUri = "Categories/Details";
 
     protected override async Task OnInitializedAsync()
     {
@@ -21,6 +22,19 @@ public partial class Categories
         StopProcessing();
     }
 
+    private async Task Delete(int id)
+    {
+        StartProcessing();
+
+        var isSuccess = await DeleteAsync($"Categories/{id}");
+        if (isSuccess)
+        {
+            categories.Remove(categories.FirstOrDefault(x => x.Id == id)!);
+        }
+
+        StopProcessing();
+    }
+
     private bool FilterFunc(CategoryDto element)
     {
         if (string.IsNullOrWhiteSpace(searchString))
@@ -33,16 +47,5 @@ public partial class Categories
             return true;
 
         return false;
-    }
-
-    private string FindComplementaryColor(string color)
-    {
-        var originalColor = ColorTranslator.FromHtml(color);
-
-        int red = 255 - originalColor.R;
-        int green = 255 - originalColor.G;
-        int blue = 255 - originalColor.B;
-
-        return ColorTranslator.ToHtml(System.Drawing.Color.FromArgb(red, green, blue));
     }
 }

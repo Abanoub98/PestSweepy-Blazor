@@ -1,0 +1,12 @@
+﻿<MudDialog>
+    <DialogContent>
+        <div class="w-100 text-center">
+                    <MudImage Fluid="true" Src="@ImageUrl" Alt="Image Preview" Class="rounded-lg" />
+
+        </div>
+    </DialogContent>
+</MudDialog>
+
+@code {
+    [Parameter][EditorRequired] public string ImageUrl { get; set; } = null!;
+}

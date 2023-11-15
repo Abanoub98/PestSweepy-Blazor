@@ -26,6 +26,7 @@ public partial class SupervisorForm
         StartProcessing();
 
         supervisorForm!.NationalityId = supervisorForm.Nationality!.Id;
+        supervisorForm!.ManagerId = supervisorForm.Manager!.Id;
 
         bool result;
         SupervisorDto? supervisorDtoResult;
@@ -63,5 +64,17 @@ public partial class SupervisorForm
             return supervisorForm.Nationalities;
 
         return supervisorForm.Nationalities.Where(x => x.Name.Contains(value, StringComparison.InvariantCultureIgnoreCase));
+    }
+
+    private async Task<IEnumerable<LookupDto>> GetManagers(string value)
+    {
+        if (supervisorForm!.Managers is null)
+            supervisorForm.Managers = await GetAllLookupsAsync<LookupDto>("/Managers");
+
+        // if text is null or empty, show complete list
+        if (string.IsNullOrEmpty(value))
+            return supervisorForm.Managers;
+
+        return supervisorForm.Managers.Where(x => x.Name.Contains(value, StringComparison.InvariantCultureIgnoreCase));
     }
 }

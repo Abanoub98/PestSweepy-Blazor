@@ -1,11 +1,17 @@
-﻿<MudButtonGroup Color="Color.Info" Variant="Variant.Outlined">
-    <MudIconButton OnClick="EditClicked" Color="Color.Info" Disabled="IsDisable" Icon="@Icons.Material.Filled.Edit" />
-    <MudIconButton Color="Color.Error" Disabled="IsDisable" Icon="@Icons.Material.Filled.DeleteForever" />
-    <MudIconButton Color="Color.Info" Disabled="IsDisable" Icon="@Icons.Material.Outlined.Info" />
-</MudButtonGroup>
+﻿
+<a @onclick="DetailsClicked" title="Show Details" class="btn btn-sm btn-light-info me-1">
+    <i class="fa-solid fa-circle-info"></i>
+</a>
+<a @onclick="EditClicked" title="Edit Record" class="btn btn-sm btn-light-primary me-1">
+    <i class="fa-solid fa-pen-to-square"></i>
+</a>
+<a @onclick="DeleteClicked" title="Delete Record" class="btn btn-sm btn-light-danger me-1">
+    <i class="fa-solid fa-trash"></i>
+</a>
 
 @code {
     [Parameter][EditorRequired] public bool IsDisable { get; set; }
     [Parameter][EditorRequired] public EventCallback EditClicked { get; set; }
-
+    [Parameter][EditorRequired] public EventCallback DetailsClicked { get; set; }
+    [Parameter][EditorRequired] public EventCallback DeleteClicked { get; set; }
 }

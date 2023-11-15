@@ -42,10 +42,22 @@
             </NoRecordsContent>
             <Columns>
                 <PropertyColumn Property="x => x.Name" Title="Name" />
-                <PropertyColumn Property="x => x.OrderIndex" Title="Order Index" />
-                <TemplateColumn Context="Refdata" Sortable="false" Filterable="false" Title="Actions">
-                    <CellTemplate>
 
+                <TemplateColumn Context="Refdata" CellClass="text-center" CellStyle="width:180px">
+                    <HeaderTemplate>
+                        <MudText>Order</MudText>
+                    </HeaderTemplate>
+                    <CellTemplate>
+                        <MudText>@(Refdata.Item!.OrderIndex is not null ? $"#{Refdata.Item!.OrderIndex}" : string.Empty)</MudText>
+                        </CellTemplate>
+                </TemplateColumn>
+
+                <TemplateColumn CellStyle="width:300px" CellClass="text-center" Context="Refdata" HeaderClass="text-center" Sortable="false" Filterable="false">
+                    <HeaderTemplate>
+                        <MudText Class="w-100">Actions</MudText>
+                    </HeaderTemplate>
+                    <CellTemplate>
+                            <TableButtons IsDisable="isDisable" EditClicked="() => OpenForm(formUri,Refdata.Item!.Id)" DeleteClicked="() => Delete(Refdata.Item!.Id)" />
                     </CellTemplate>
                 </TemplateColumn>
             </Columns>

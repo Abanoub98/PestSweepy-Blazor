@@ -8,6 +8,7 @@ public partial class ReferenceData
     private List<LookupDto>? LookupList = new();
 
     private string searchString = string.Empty;
+    private readonly string formUri = "Services/Form";
 
     protected override void OnInitialized()
     {
@@ -31,6 +32,11 @@ public partial class ReferenceData
         SelectedTable = selectedTable;
 
         StopProcessing();
+    }
+
+    private async Task Delete(int id)
+    {
+
     }
 
     private async Task<IEnumerable<string>> GetTablesAsync(string value)

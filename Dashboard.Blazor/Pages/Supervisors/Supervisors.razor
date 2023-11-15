@@ -41,7 +41,7 @@
                     </HeaderTemplate>
                     <CellTemplate>
                         <div class="d-flex align-items-center">
-                            <MudAvatar Rounded="true" Size="Size.Large">
+                            <MudAvatar Class="cursor-all-scroll" @onclick="() => ShowImagePreview(imageUrl + supervisor.Item!.Image)" Rounded="true" Size="Size.Large">
                                 <MudImage Src="@(imageUrl + supervisor.Item!.Image)" />
                             </MudAvatar>
                             <div class="mx-3">
@@ -51,12 +51,13 @@
                     </CellTemplate>
                 </TemplateColumn>
 
-                <TemplateColumn CellStyle="width:200px" CellClass="text-center" Context="supervisor" HeaderClass="text-center" Sortable="false" Filterable="false">
+                <TemplateColumn CellStyle="width:300px" CellClass="text-center" Context="supervisor" HeaderClass="text-center" Sortable="false" Filterable="false">
                     <HeaderTemplate>
                         <MudText Class="w-100">Actions</MudText>
                     </HeaderTemplate>
                     <CellTemplate>
-                        <TableButtons IsDisable="isDisable" EditClicked="() => OpenForm(formUri, supervisor.Item!.Id)" />
+                        <TableButtons IsDisable="isDisable" EditClicked="() => OpenForm(formUri, supervisor.Item!.Id)" DeleteClicked="() => Delete(supervisor.Item!.Id)"
+                                      DetailsClicked="() => OpenDetails(detailsUri, supervisor.Item!.Id)" />
                     </CellTemplate>
                 </TemplateColumn>
             </Columns>

@@ -18,7 +18,7 @@ else
             <MudCardHeader Style="padding:20px">
                 <CardHeaderAvatar>
                     <MudAvatar Rounded="true" Color="Color.Info">
-                        <MudIcon Icon="@Icons.Material.Filled.Person3" />
+                        <MudIcon Icon="@Icons.Material.Filled.Diversity3" />
                     </MudAvatar>
                 </CardHeaderAvatar>
                 <CardHeaderContent>
@@ -77,7 +77,7 @@ else
                     </div>
                 }
                 <div class="flex-wrap gap-5 gap-md-0 d-flex flex-md-nowrap align-items-end p-3">
-                    <ImageUpload ImageSelected="CaptureUploadedImage" UploadedImageCleared="ClearUploadedImage" CurrentImage="@(imageUrl + managerForm.Image)" />
+                    <ImageUpload ImageSelected="CaptureUploadedImage" UploadedImageCleared="ClearUploadedImage" CurrentImage="@(Id == 0 ? null :imageUrl + managerForm.Image)" />
                     <MudSpacer />
                     <FormButtons IsLoading="@isLoading" />
                 </div>

@@ -1,11 +1,11 @@
-﻿namespace Dashboard.Blazor.Pages.Clients;
+﻿namespace Dashboard.Blazor.Pages.Providers;
 
-public partial class Clients
+public partial class Providers
 {
-    private List<ClientDto> clients = new();
+    private List<ProviderDto> providers = new();
     private string searchString = string.Empty;
-    private readonly string formUri = "Clients/Form";
-    private readonly string detailsUri = "Clients/Details";
+    private readonly string formUri = "Providers/Form";
+    private readonly string detailsUri = "Providers/Details";
 
     protected override async Task OnInitializedAsync()
     {
@@ -14,10 +14,10 @@ public partial class Clients
         breadcrumbItems.AddRange(new List<BreadcrumbItem>
         {
             new BreadcrumbItem(languageContainer.Keys["Home"], href: "/", icon: Icons.Material.Filled.Home),
-            new BreadcrumbItem(languageContainer.Keys["Clients"], href: null, disabled: true, icon: Icons.Material.TwoTone.Diversity1),
+            new BreadcrumbItem(languageContainer.Keys["Providers"], href: null, disabled: true, icon: Icons.Material.TwoTone.Engineering),
         });
 
-        clients = await GetAllAsync("Clients");
+        providers = await GetAllAsync("Providers");
 
         StopProcessing();
     }
@@ -26,16 +26,16 @@ public partial class Clients
     {
         StartProcessing();
 
-        var isSuccess = await DeleteAsync($"Clients/{id}");
+        var isSuccess = await DeleteAsync($"Providers/{id}");
         if (isSuccess)
         {
-            clients.Remove(clients.FirstOrDefault(x => x.Id == id)!);
+            providers.Remove(providers.FirstOrDefault(x => x.Id == id)!);
         }
 
         StopProcessing();
     }
 
-    private bool FilterFunc(ClientDto element)
+    private bool FilterFunc(ProviderDto element)
     {
         if (string.IsNullOrWhiteSpace(searchString))
             return true;
