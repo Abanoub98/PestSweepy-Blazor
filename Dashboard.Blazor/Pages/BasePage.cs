@@ -251,7 +251,7 @@ public class BasePage<T> : ComponentBase where T : class
     private MultipartFormDataContent HandelImage(IBrowserFile image)
     {
         var content = new MultipartFormDataContent();
-        var fileContent = new StreamContent(image.OpenReadStream());
+        var fileContent = new StreamContent(image.OpenReadStream(maxFileSize));
         fileContent.Headers.ContentType = new MediaTypeHeaderValue(image.ContentType);
 
         content.Add
