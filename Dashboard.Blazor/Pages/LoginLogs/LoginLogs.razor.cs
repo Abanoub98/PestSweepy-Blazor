@@ -15,7 +15,7 @@ public partial class LoginLogs
             new BreadcrumbItem(languageContainer.Keys["Login Logs"], href: null, disabled: true, icon: Icons.Material.TwoTone.Security),
         });
 
-        loginLogs = await GetAllAsync("SecuirtyLogs/LoginLogs");
+        loginLogs = await GetAllAsync("SecuirtyLogs/LoginLogs?OrderBy=id&Asc=false");
 
         StopProcessing();
     }

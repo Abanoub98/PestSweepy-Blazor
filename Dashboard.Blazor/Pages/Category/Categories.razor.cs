@@ -17,7 +17,7 @@ public partial class Categories
             new BreadcrumbItem(languageContainer.Keys["Categories"], href: null, disabled: true, icon: Icons.Material.TwoTone.Category),
         });
 
-        categories = await GetAllAsync("Categories");
+        categories = await GetAllAsync("Categories?OrderBy=id&Asc=false");
 
         StopProcessing();
     }

@@ -15,7 +15,7 @@ public partial class Audits
             new BreadcrumbItem(languageContainer.Keys["Audits"], href: null, disabled: true, icon: @Icons.Material.TwoTone.History),
         });
 
-        audits = await GetAllAsync("SecuirtyLogs/Audits");
+        audits = await GetAllAsync("SecuirtyLogs/Audits?OrderBy=id&Asc=false");
 
         StopProcessing();
     }

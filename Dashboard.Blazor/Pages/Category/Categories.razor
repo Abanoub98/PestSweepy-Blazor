@@ -63,7 +63,7 @@
                     </CellTemplate>
                 </TemplateColumn>
 
-                <TemplateColumn CellStyle="width:150px" InitialDirection="SortDirection.Ascending" SortBy="new Func<CategoryDto, object>(x=>x.OrderIndex)" Context="category" HeaderClass="text-center" CellClass="text-center" Filterable="false">
+                <TemplateColumn CellStyle="width:150px" SortBy="new Func<CategoryDto, object>(x=>x.OrderIndex)" Context="category" HeaderClass="text-center" CellClass="text-center" Filterable="false">
                     <HeaderTemplate>
                         <MudText Class="w-100">Order</MudText>
                     </HeaderTemplate>

@@ -74,7 +74,7 @@
                     </CellTemplate>
                 </TemplateColumn>
 
-                <TemplateColumn CellStyle="width:150px" InitialDirection="SortDirection.Ascending" SortBy="new Func<ServiceDto, object>(x=>x.OrderIndex)" Context="service" HeaderClass="text-center" CellClass="text-center" Filterable="false">
+                <TemplateColumn CellStyle="width:150px" SortBy="new Func<ServiceDto, object>(x=>x.OrderIndex)" Context="service" HeaderClass="text-center" CellClass="text-center" Filterable="false">
                     <HeaderTemplate>
                         <MudText Class="w-100">Order</MudText>
                     </HeaderTemplate>

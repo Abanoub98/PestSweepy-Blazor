@@ -19,11 +19,9 @@ public partial class Supervisors
             new BreadcrumbItem(languageContainer.Keys["Supervisors"], href: null, disabled: true, icon: Icons.Material.TwoTone.SupervisorAccount),
         });
 
-
-        supervisors = await GetAllAsync("Supervisors");
-
-        if (ManagerId is not null)
-            supervisors = supervisors.Where(x => x.ManagerId == ManagerId).ToList();
+        supervisors = ManagerId is not null ?
+            await GetAllAsync($"Supervisors?OrderBy=id&Asc=false&FilterQuery={Uri.EscapeDataString($"ManagerId={ManagerId}")}") :
+            await GetAllAsync("Supervisors?OrderBy=id&Asc=false");
 
         StopProcessing();
     }

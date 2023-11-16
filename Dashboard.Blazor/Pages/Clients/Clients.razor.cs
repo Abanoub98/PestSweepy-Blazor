@@ -18,7 +18,7 @@ public partial class Clients
             new BreadcrumbItem(languageContainer.Keys["Clients"], href: null, disabled: true, icon: Icons.Material.TwoTone.Diversity1),
         });
 
-        clients = await GetAllAsync("Clients");
+        clients = await GetAllAsync("Clients?OrderBy=id&Asc=false");
 
         StopProcessing();
     }

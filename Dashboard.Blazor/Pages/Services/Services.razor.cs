@@ -2,7 +2,7 @@
 
 public partial class Services
 {
-    [Parameter] public int? CategoryId { get; set; }
+    [Parameter] public int? CategoryId { get; set; } = null;
 
     private List<ServiceDto> services = new();
     private string searchString = string.Empty;
@@ -19,10 +19,10 @@ public partial class Services
             new BreadcrumbItem(languageContainer.Keys["Services"], href: null, disabled: true, icon: Icons.Material.TwoTone.Handyman),
         });
 
-        services = await GetAllAsync("Services");
+        services = CategoryId is not null ?
+            await GetAllAsync($"Services?OrderBy=id&Asc=false&FilterQuery={Uri.EscapeDataString($"CategoryId={CategoryId}")}") :
+            await GetAllAsync("Services?OrderBy=id&Asc=false");
 
-        if (CategoryId is not null)
-            services = services.Where(x => x.CategoryId == CategoryId).ToList();
 
         StopProcessing();
     }

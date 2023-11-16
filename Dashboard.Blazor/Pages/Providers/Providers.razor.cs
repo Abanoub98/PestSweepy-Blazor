@@ -19,10 +19,9 @@ public partial class Providers
             new BreadcrumbItem(languageContainer.Keys["Providers"], href: null, disabled: true, icon: Icons.Material.TwoTone.Engineering),
         });
 
-        providers = await GetAllAsync("Providers");
-
-        if (SupervisorId is not null)
-            providers = providers.Where(x => x.SupervisorId == SupervisorId).ToList();
+        providers = SupervisorId is not null ?
+            await GetAllAsync($"Providers?OrderBy=id&Asc=false&FilterQuery={Uri.EscapeDataString($"SupervisorId={SupervisorId}")}") :
+            await GetAllAsync("Providers?OrderBy=id&Asc=false");
 
         StopProcessing();
     }

@@ -18,7 +18,7 @@ public partial class Managers
             new BreadcrumbItem(languageContainer.Keys["Managers"], href: null, disabled: true, icon: Icons.Material.TwoTone.Diversity3),
         });
 
-        managers = await GetAllAsync("Managers");
+        managers = await GetAllAsync("Managers?OrderBy=id&Asc=false");
 
         StopProcessing();
     }
