@@ -4,7 +4,7 @@ public class ServiceDto
 {
     public int Id { get; set; }
 
-    [Label(name: "Order Index")]
+    [Label(name: "Order")]
     public int? OrderIndex { get; set; }
 
     [Required]

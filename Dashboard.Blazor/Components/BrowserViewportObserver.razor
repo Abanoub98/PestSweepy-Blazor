@@ -1,0 +1,53 @@
+﻿@implements IBrowserViewportObserver
+@implements IAsyncDisposable
+
+@code{
+    [Parameter][EditorRequired] public EventCallback<int> TableHeightChanged { get; set; }
+
+    [Inject] protected IBrowserViewportService BrowserViewportService { get; set; } = default!;
+
+    protected int screenHeight = 0;
+    protected int screenWidth = 0;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await BrowserViewportService.SubscribeAsync(this, fireImmediately: true);
+        }
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    public async ValueTask DisposeAsync() => await BrowserViewportService.UnsubscribeAsync(this);
+
+    Guid IBrowserViewportObserver.Id { get; } = Guid.NewGuid();
+
+    ResizeOptions IBrowserViewportObserver.ResizeOptions { get; } = new()
+    {
+        ReportRate = 50,
+        NotifyOnBreakpointOnly = false
+    };
+
+    Task IBrowserViewportObserver.NotifyBrowserViewportChangeAsync(BrowserViewportEventArgs browserViewportEventArgs)
+    {
+        screenHeight = browserViewportEventArgs.BrowserWindowSize.Height;
+        screenWidth = browserViewportEventArgs.BrowserWindowSize.Width;
+
+        TableHeightChanged.InvokeAsync(CalculateTableHieght(screenHeight, screenWidth));
+
+        return InvokeAsync(StateHasChanged);
+    }
+
+    private int CalculateTableHieght(int screenHeight, int screenWidth)
+    {
+        var tableHieght = (screenHeight * 330) / 739;
+
+        if (screenHeight * screenWidth <= 1135104)
+            tableHieght = 330;
+        else
+            tableHieght = 540;
+
+        return tableHieght;
+    }
+}

@@ -44,12 +44,12 @@ else
             </CardHeaderActions>
         </MudCardHeader>
     </MudCard>
-    <MudTabs SliderColor="Color.Info" Class="mt-5" Elevation="25" Rounded="true" ApplyEffectsToContainer=true Border=true PanelClass="h-300px px-6 pb-6 pt-0">
+    <MudTabs SliderColor="Color.Info" Class="mt-5" Elevation="25" Rounded="true" ApplyEffectsToContainer=true Border=true PanelClass="px-6 pb-6 pt-0">
         <MudTabPanel Icon="@Icons.Material.Filled.Info" Text="More Info">
 
         </MudTabPanel>
         <MudTabPanel Icon="@Icons.Material.Filled.SupervisedUserCircle" Text="Supervisors">
-
+            <Supervisors ManagerId="manager.Id" />
         </MudTabPanel>
     </MudTabs>
 }

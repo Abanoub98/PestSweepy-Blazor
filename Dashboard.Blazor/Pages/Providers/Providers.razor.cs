@@ -2,6 +2,8 @@
 
 public partial class Providers
 {
+    [Parameter] public int? SupervisorId { get; set; }
+
     private List<ProviderDto> providers = new();
     private string searchString = string.Empty;
     private readonly string formUri = "Providers/Form";
@@ -18,6 +20,9 @@ public partial class Providers
         });
 
         providers = await GetAllAsync("Providers");
+
+        if (SupervisorId is not null)
+            providers = providers.Where(x => x.SupervisorId == SupervisorId).ToList();
 
         StopProcessing();
     }

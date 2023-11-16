@@ -2,12 +2,13 @@
 @attribute [Authorize]
 @inherits BasePage<ClientDto>
 
+<BrowserViewportObserver TableHeightChanged="TableHeightChanged" />
 <PageTitle>@languageContainer.Keys["Clients"]</PageTitle>
 <MudBreadcrumbs Items="breadcrumbItems"></MudBreadcrumbs>
 
 <MudCard Elevation="25">
     <MudCardContent>
-        <MudDataGrid T="ClientDto" Dense="true" Elevation="0" FixedHeader="true" Height="56vh"
+        <MudDataGrid T="ClientDto" Dense="true" Elevation="0" FixedHeader="true" Height="@($"{tableHight}px")"
                      Loading="@(isLoading)" LoadingProgressColor="Color.Info" Filterable="true"
                      Items="clients" Hover="true" SortMode="SortMode.Single" QuickFilter="@FilterFunc">
 

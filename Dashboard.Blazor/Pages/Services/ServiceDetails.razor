@@ -24,6 +24,7 @@ else
                     <MudChip Variant="Variant.Text" Size="Size.Small" Icon="@Icons.Material.Outlined.Sort" Color="Color.Info">#@service.OrderIndex</MudChip>
                 }
                 <MudChip Variant="Variant.Text" Size="Size.Small" Icon="@Icons.Material.Outlined.Timer" Color="Color.Info">@HandelDuration((int)service.DurationInMinutes!)</MudChip>
+                <MudChip Variant="Variant.Text" Size="Size.Small" Icon="@Icons.Material.Outlined.Paid" Color="Color.Warning">240 SAR</MudChip>
             </CardHeaderContent>
             <CardHeaderActions>
                 <div style="margin:10px">
@@ -39,10 +40,8 @@ else
     </MudCard>
     <MudTabs SliderColor="Color.Info" Class="mt-5" Elevation="25" Rounded="true" ApplyEffectsToContainer=true Border=true PanelClass="h-300px px-6 pb-6 pt-0">
         <MudTabPanel Icon="@Icons.Material.Filled.Info" Text="More Info">
-
-        </MudTabPanel>
-        <MudTabPanel Icon="@Icons.Material.Filled.SupervisedUserCircle" Text="Orders">
-
+            <MudText Class="mb-1 mt-6" Typo="Typo.h6">Description:</MudText>
+            <MudTextField Value="service.Description" Disabled  Style="color:black" Variant="Variant.Outlined" Lines="10" />
         </MudTabPanel>
     </MudTabs>
 }

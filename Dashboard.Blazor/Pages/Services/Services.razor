@@ -2,12 +2,17 @@
 @attribute [Authorize]
 @inherits BasePage<ServiceDto>
 
-<PageTitle>@languageContainer.Keys["Services"]</PageTitle>
-<MudBreadcrumbs Items="breadcrumbItems"></MudBreadcrumbs>
+<BrowserViewportObserver TableHeightChanged="TableHeightChanged" />
 
-<MudCard Elevation="25">
+@if (CategoryId is null)
+{
+    <PageTitle>@languageContainer.Keys["Services"]</PageTitle>
+    <MudBreadcrumbs Items="breadcrumbItems"></MudBreadcrumbs>
+}
+
+<MudCard Elevation="@(CategoryId is null? 25 : 0)">
     <MudCardContent>
-        <MudDataGrid T="ServiceDto" Dense="true" Elevation="0" FixedHeader="true" Height="330px"
+        <MudDataGrid T="ServiceDto" Dense="true" Elevation="0" FixedHeader="true" Height="@($"{tableHight}px")"
                      Loading="@(isLoading)" LoadingProgressColor="Color.Info" Filterable="true"
                      Items="services" Hover="true" SortMode="SortMode.Single" QuickFilter="@FilterFunc">
 

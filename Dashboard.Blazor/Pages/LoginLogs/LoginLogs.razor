@@ -4,10 +4,11 @@
 
 <PageTitle>@languageContainer.Keys["Login Logs"]</PageTitle>
 <MudBreadcrumbs Items="breadcrumbItems"></MudBreadcrumbs>
+<BrowserViewportObserver TableHeightChanged="TableHeightChanged" />
 
 <MudCard Elevation="25">
     <MudCardContent>
-        <MudDataGrid T="LoginLogDto" Dense="true" Elevation="0" FixedHeader="true" Height="330px"
+        <MudDataGrid T="LoginLogDto" Dense="true" Elevation="0" FixedHeader="true" Height="@($"{tableHight}px")"
                      Loading="@(isLoading)" LoadingProgressColor="Color.Info" Filterable="true"
                      Items="loginLogs" Hover="true" SortMode="SortMode.Single" QuickFilter="@FilterFunc">
 

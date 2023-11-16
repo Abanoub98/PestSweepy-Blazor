@@ -4,6 +4,7 @@ public partial class Clients
 {
     private List<ClientDto> clients = new();
     private string searchString = string.Empty;
+
     private readonly string formUri = "Clients/Form";
     private readonly string detailsUri = "Clients/Details";
 

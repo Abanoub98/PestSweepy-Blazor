@@ -2,6 +2,8 @@
 
 public partial class Supervisors
 {
+    [Parameter] public int? ManagerId { get; set; }
+
     private List<SupervisorDto> supervisors = new();
     private string searchString = string.Empty;
     private readonly string formUri = "Supervisors/Form";
@@ -17,7 +19,11 @@ public partial class Supervisors
             new BreadcrumbItem(languageContainer.Keys["Supervisors"], href: null, disabled: true, icon: Icons.Material.TwoTone.SupervisorAccount),
         });
 
+
         supervisors = await GetAllAsync("Supervisors");
+
+        if (ManagerId is not null)
+            supervisors = supervisors.Where(x => x.ManagerId == ManagerId).ToList();
 
         StopProcessing();
     }

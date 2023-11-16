@@ -36,4 +36,7 @@ public class SupervisorDto
 
     [Label(name: "Phone Number")]
     public string? PhoneNumber { get; set; }
+
+    public List<ProviderDto> ProvidersList { get; set; } = new();
+
 }

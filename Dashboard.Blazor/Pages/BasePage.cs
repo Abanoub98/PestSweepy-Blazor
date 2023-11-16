@@ -6,7 +6,7 @@ namespace Dashboard.Blazor.Pages;
 public class BasePage<T> : ComponentBase where T : class
 {
     [Inject] protected NavigationManager NavigationManager { get; set; } = default!;
-    [Inject] AuthenticationStateProvider AuthenticationStateProvider { get; set; } = default!;
+    [Inject] private AuthenticationStateProvider AuthenticationStateProvider { get; set; } = default!;
     [Inject] protected IDialogService DialogService { get; set; } = default!;
     [Inject] private IApiService ApiService { get; set; } = default!;
     [Inject] private ISnackbar Snackbar { get; set; } = default!;
@@ -15,9 +15,11 @@ public class BasePage<T> : ComponentBase where T : class
     protected bool isLoading;
     protected bool isDisable;
 
-    bool isShowPassword;
+    private bool isShowPassword;
     protected InputType PasswordInput = InputType.Password;
     protected string PasswordInputIcon = Icons.Material.Filled.VisibilityOff;
+
+    protected int tableHight;
 
     protected readonly string imageUrl = "https://api.pestsweepy.com/Upload/";
     protected readonly long maxFileSize = 1024 * 1024; //represents 1MB 
@@ -223,12 +225,12 @@ public class BasePage<T> : ComponentBase where T : class
 
     protected string HandelDuration(int durationInMin)
     {
-        if (durationInMin < 60)
+        if (durationInMin <= 60)
             return $"{durationInMin} Minutes";
 
-        double durationInHours = (double)durationInMin / 60;
-        durationInHours = Math.Round(durationInHours, 1);
-        return $"{durationInHours} Hours";
+        int hours = durationInMin / 60;
+        int remainingMinutes = durationInMin % 60;
+        return $"{hours} hours and {remainingMinutes} minutes";
     }
 
     protected async Task<string?> GetClaimsPrincipalData(string claim)
@@ -244,6 +246,7 @@ public class BasePage<T> : ComponentBase where T : class
         return null;
     }
 
+    protected void TableHeightChanged(int newTableHight) => tableHight = newTableHight;
     //TODO : Handel All Status Codes
     private MultipartFormDataContent HandelImage(IBrowserFile image)
     {

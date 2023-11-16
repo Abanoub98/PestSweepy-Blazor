@@ -30,4 +30,6 @@ public class ManagerDto
 
     [Label(name: "Phone Number")]
     public string? PhoneNumber { get; set; }
+
+    public List<SupervisorDto> supervisorList { get; set; } = new();
 }

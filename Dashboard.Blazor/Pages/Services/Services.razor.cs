@@ -2,6 +2,8 @@
 
 public partial class Services
 {
+    [Parameter] public int? CategoryId { get; set; }
+
     private List<ServiceDto> services = new();
     private string searchString = string.Empty;
     private readonly string formUri = "Services/Form";
@@ -18,6 +20,9 @@ public partial class Services
         });
 
         services = await GetAllAsync("Services");
+
+        if (CategoryId is not null)
+            services = services.Where(x => x.CategoryId == CategoryId).ToList();
 
         StopProcessing();
     }
