@@ -46474,12 +46474,12 @@ a:hover {
 [data-bs-theme=light] {
     --bs-app-bg-color: #e4f5ff;
     --bs-app-blank-bg-color: #ffffff;
-    --bs-app-header-base-bg-color: transparent;
+    --bs-app-header-base-bg-color: #e4f5ff;
     --bs-app-toolbar-base-bg-color: #ffffff;
-    --bs-app-sidebar-base-bg-color: transparent;
+    --bs-app-sidebar-base-bg-color: #e4f5ff;
     --bs-app-sidebar-base-box-shadow: none;
-    --bs-app-sidebar-minimize-bg-color: transparent;
-    --bs-app-aside-base-bg-color: transparent;
+    --bs-app-sidebar-minimize-bg-color: #e4f5ff;
+    --bs-app-aside-base-bg-color: #e4f5ff;
     --bs-app-aside-base-box-shadow: none;
 }
 

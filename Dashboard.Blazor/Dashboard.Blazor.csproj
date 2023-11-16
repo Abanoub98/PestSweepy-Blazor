@@ -24,9 +24,6 @@
 	  <None Include="Components\FormLoadingSpinner.razor" />
 	  <None Include="Components\ServerError.razor" />
 	  <None Include="Components\NoDataToDisply.razor" />
-	  <None Include="wwwroot\img\401.svg" />
-	  <None Include="wwwroot\img\imgIcon.svg" />
-	  <None Include="wwwroot\img\smartphone-2.svg" />
 	</ItemGroup>
 
 	<ItemGroup>
