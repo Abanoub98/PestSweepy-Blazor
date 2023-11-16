@@ -22,7 +22,7 @@ public class BasePage<T> : ComponentBase where T : class
     protected int tableHight;
 
     protected readonly string imageUrl = "https://api.pestsweepy.com/Upload/";
-    protected readonly long maxFileSize = 1024 * 1024; //represents 1MB 
+    protected readonly long maxFileSize = 1024 * 1024 * 2; //represents 2MB 
 
     protected async Task<List<T>> GetAllAsync(string endPoint)
     {
@@ -75,7 +75,7 @@ public class BasePage<T> : ComponentBase where T : class
     {
         if (image.Size > maxFileSize)
         {
-            ShowError("File size must be less than 1Mb");
+            ShowError("File size must be less than 2Mb");
             return (false, new());
         }
 
