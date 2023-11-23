@@ -4,7 +4,7 @@
     <DataAnnotationsValidator />
     <div class="d-flex flex-wrap flex-md-nowrap">
         <div class="p-3 w-100">
-            <MudAutocomplete T="LookupDto" SearchFunc="@GetCategories" Adornment="Adornment.Start" AnchorOrigin="Origin.BottomCenter"
+            <MudAutocomplete T="LookupDto" SearchFunc="@GetCategories" Adornment="Adornment.Start" AnchorOrigin="Origin.BottomCenter" ReadOnly="IsReadOnly" Disabled="IsReadOnly"
                              Variant="Variant.Outlined" ShowProgressIndicator="true" ResetValueOnEmptyText="true" CoerceText="true" AdornmentIcon="@Icons.Material.Filled.Category"
                              ProgressIndicatorColor="Color.Info" Clearable @bind-Value="quotationService.Category" For="@(() => quotationService.Category)" AdornmentColor="Color.Info"
                               ToStringFunc="@(e=> e == null ? null : $"{e.Name}")" HelperText="Required" Placeholder="Select Category" MaxItems="null" HelperTextOnFocus="true">
@@ -16,9 +16,9 @@
              </MudAutocomplete>
          </div>
          <div class="p-3 w-100">
-             <MudAutocomplete T="ServiceDto" SearchFunc="@GetServices" Adornment="Adornment.Start" AnchorOrigin="Origin.BottomCenter" ValueChanged="GetServicePrice"
+             <MudAutocomplete T="ServiceDto" SearchFunc="@GetServices" Adornment="Adornment.Start" AnchorOrigin="Origin.BottomCenter" ValueChanged="GetServicePrice" Disabled="IsReadOnly"
                               Variant="Variant.Outlined" ShowProgressIndicator="true" ResetValueOnEmptyText="true" CoerceText="true" AdornmentIcon="@Icons.Material.Filled.Handyman"
-                              ProgressIndicatorColor="Color.Info" Clearable For="@(() => quotationService.Service)" AdornmentColor="Color.Info"
+                              ProgressIndicatorColor="Color.Info" Clearable For="@(() => quotationService.Service)" AdornmentColor="Color.Info" ReadOnly="IsReadOnly"
                               ToStringFunc="@(e=> e == null ? null : $"{e.Name}")" HelperText="Required" Placeholder="Select Service" MaxItems="null" HelperTextOnFocus="true">
                  <NoItemsTemplate>
                      <MudText Align="Align.Center" Class="px-4 py-4">
@@ -29,26 +29,26 @@
          </div>
          <div class="p-3 w-100">
              <MudTextField HelperText="Required" Variant="Variant.Outlined" @bind-Value="quotationService.Unit" For="@(() => quotationService.Unit)" HelperTextOnFocus="true"
-                           AdornmentColor="Color.Info" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Home" Placeholder="Unit" />
+                           AdornmentColor="Color.Info" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Home" Placeholder="Unit" ReadOnly="IsReadOnly" Disabled="IsReadOnly" />
          </div>
      </div>
      <div class="flex-wrap d-flex flex-md-nowrap">
          <MudNumericField Class="p-3 w-100" HideSpinButtons="true" HelperText="Required" @bind-Value="quotationService.Area" For="@(() => quotationService.Area)"
-                          Variant="Variant.Outlined" AdornmentColor="Color.Info" Adornment="Adornment.End" AdornmentText="M²" HelperTextOnFocus="true" />
+                          Variant="Variant.Outlined" AdornmentColor="Color.Info" Adornment="Adornment.End" AdornmentText="M²" HelperTextOnFocus="true" ReadOnly="IsReadOnly" Disabled="IsReadOnly" />
 
          <MudNumericField Class="p-3 w-100" HideSpinButtons="true" HelperText="Required" @bind-Value="quotationService.Count" For="@(() => quotationService.Count)" Immediate="true" TextChanged="CalculateTotalPrice"
-                          Variant="Variant.Outlined" AdornmentColor="Color.Info" Adornment="Adornment.End" AdornmentText="Unit" HelperTextOnFocus="true" />
+                          Variant="Variant.Outlined" AdornmentColor="Color.Info" Adornment="Adornment.End" AdornmentText="Unit" HelperTextOnFocus="true" ReadOnly="IsReadOnly" Disabled="IsReadOnly" />
 
          <MudNumericField Class="p-3 w-100" HideSpinButtons="true" HelperText="Required" @bind-Value="quotationService.DiscountRate" For="@(() => quotationService.DiscountRate)" Immediate="true" TextChanged="CalculateDiscountPrice"
-                          Variant="Variant.Outlined" AdornmentColor="Color.Info" Adornment="Adornment.End" AdornmentText="%" HelperTextOnFocus="true" />
+                          Variant="Variant.Outlined" AdornmentColor="Color.Info" Adornment="Adornment.End" AdornmentText="%" HelperTextOnFocus="true" ReadOnly="IsReadOnly" Disabled="IsReadOnly" />
 
          <MudNumericField Class="p-3 w-100" HideSpinButtons="true" HelperText="Required" @bind-Value="quotationService.Price" For="@(() => quotationService.Price)" Immediate="true" Disabled
-                          Variant="Variant.Outlined" AdornmentColor="Color.Info" Adornment="Adornment.End" AdornmentText="SAR" HelperTextOnFocus="true" />
+                          Variant="Variant.Outlined" AdornmentColor="Color.Info" Adornment="Adornment.End" AdornmentText="SAR" HelperTextOnFocus="true" ReadOnly="IsReadOnly" />
 
          <MudNumericField Class="p-3 w-100" HideSpinButtons="true" HelperText="Required" @bind-Value="quotationService.DiscountPrice" For="@(() => quotationService.DiscountPrice)" Disabled
-                          Variant="Variant.Outlined" AdornmentColor="Color.Info" Adornment="Adornment.End" AdornmentText="SAR" HelperTextOnFocus="true" />
+                          Variant="Variant.Outlined" AdornmentColor="Color.Info" Adornment="Adornment.End" AdornmentText="SAR" HelperTextOnFocus="true" ReadOnly="IsReadOnly" />
 
-         <MudNumericField Class="p-3 w-100" HideSpinButtons="true" HelperText="Required" @bind-Value="quotationService.TotalPrice" For="@(() => quotationService.TotalPrice)" Disabled
+         <MudNumericField Class="p-3 w-100" HideSpinButtons="true" HelperText="Required" @bind-Value="quotationService.TotalPrice" For="@(() => quotationService.TotalPrice)" Disabled ReadOnly="IsReadOnly"
                           Variant="Variant.Outlined" AdornmentColor="Color.Info" Adornment="Adornment.End" AdornmentText="SAR" HelperTextOnFocus="true" TextChanged="CallBackTotalValue" />
      </div>
 

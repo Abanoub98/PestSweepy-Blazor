@@ -16,9 +16,9 @@ public partial class ManagerDetails
 
         breadcrumbItems.AddRange(new List<BreadcrumbItem>
         {
-            new BreadcrumbItem(languageContainer.Keys["Home"], href: "/", icon: Icons.Material.Filled.Home),
-            new BreadcrumbItem(languageContainer.Keys["Managers"], href: "/Managers", icon: Icons.Material.TwoTone.Diversity3),
-            new BreadcrumbItem(manager.Name, href: null, disabled: true),
+            new(languageContainer.Keys["Home"], href: "/", icon: Icons.Material.Filled.Home),
+            new(languageContainer.Keys["Managers"], href: "/Managers", icon: Icons.Material.TwoTone.Diversity3),
+            new(manager.Name, href: null, disabled: true),
         });
     }
 }

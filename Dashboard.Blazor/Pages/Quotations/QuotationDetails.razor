@@ -1,5 +1,78 @@
-﻿<h3>QuotationDetails</h3>
+﻿@page "/Quotations/Details/{Id:int}"
+@attribute [Authorize]
+@inherits BasePage
 
-@code {
+<PageTitle>@languageContainer.Keys["Quotation Details"]</PageTitle>
+<MudBreadcrumbs Items="breadcrumbItems"></MudBreadcrumbs>
 
+@if (quotation is null)
+{
+    <FormLoadingSpinner IsBigForm="true" />
+}
+else
+{
+    <MudCard Elevation="25">
+        <MudCardHeader Style="padding:20px">
+            <CardHeaderContent>
+                <MudText Typo="Typo.h5">
+                    @quotation.SerialNumber
+                </MudText>
+                <MudChip Variant="Variant.Text" Size="Size.Small" Icon="@Icons.Material.Filled.CalendarMonth" Color="Color.Info">@quotation.Date</MudChip>
+                <MudChip Variant="Variant.Text" Size="Size.Small" Icon="@Icons.Material.Filled.AttachMoney" Color="Color.Warning">@quotation.TotalPrice SAR</MudChip>
+            </CardHeaderContent>
+            <CardHeaderActions>
+                <div style="margin:10px">
+                    <MudButton DisableElevation="true" OnClick="() => OpenForm(formUri,quotation.Id)" Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Edit" Color="Color.Info">
+                        Edit
+                    </MudButton>
+                    <MudButton DisableElevation="true" Href="/Managers" Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.ArrowBack" Color="Color.Info">
+                        Back to Managers
+                    </MudButton>
+                </div>
+            </CardHeaderActions>
+        </MudCardHeader>
+    </MudCard>
+    <MudTabs SliderColor="Color.Info" Class="mt-5" Elevation="25" Rounded="true" ApplyEffectsToContainer=true Border=true PanelClass="px-6 pb-6 pt-0">
+        <MudTabPanel Icon="@Icons.Material.Filled.Info" Text="More Info">
+            <div class="d-flex justify-content-start my-5">
+                <div class="d-flex flex-column gap-1 me-10">
+                    <div class="fw-bold text-muted">@languageContainer.Keys["Receiver Email"]</div>
+                    <div class="fw-bold fs-5">
+                        @quotation.ReceiverEmail
+                    </div>
+                </div>
+                <div class="d-flex flex-column gap-1">
+                    <div class="fw-bold text-muted">@languageContainer.Keys["Client Name"]</div>
+                    <div class="fw-bold fs-5">
+                        @quotation.ClientName
+                    </div>
+                </div>
+            </div>
+            <MudCard Class="p-3 my-3 border" Elevation="0">
+                <MudCardHeader>
+                    <CardHeaderContent>
+                        <MudText Typo="Typo.h5">Quotation Services:</MudText>
+                    </CardHeaderContent>
+                </MudCardHeader>
+                <MudCardContent>
+                    @{
+                        ServiceNumber = 0;
+                    }
+                    @foreach (var quotationService in quotation.QuotationServices)
+                    {
+                        <div class="d-flex align-items-center">
+                            <MudText Typo="Typo.h6">Service @(++ServiceNumber):</MudText>
+                        </div>
+                        <div class="mt-2">
+                            <QuotationService Service="quotationService" IsReadOnly="true" />
+                        </div>
+                        <MudDivider Light=true DividerType="DividerType.Middle" Class="mb-3" />
+                    }
+                </MudCardContent>
+                <MudCardActions>
+                </MudCardActions>
+            </MudCard>
+            <MudTextField Variant="Variant.Outlined" @bind-Value="quotation.Notes" For="@(() => quotation.Notes)" Lines="10" ReadOnly Disabled />
+        </MudTabPanel>
+    </MudTabs>
 }

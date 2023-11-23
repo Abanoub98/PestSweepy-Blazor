@@ -3,18 +3,14 @@
 public partial class QuotationService
 {
     [Parameter][EditorRequired] public QuotationServiceType? Service { get; set; }
-    [Parameter][EditorRequired] public EventCallback TotalValueChanged { get; set; }
+    [Parameter] public EventCallback TotalValueChanged { get; set; }
+    [Parameter] public bool IsReadOnly { get; set; }
 
     private QuotationServiceType? quotationService;
 
     protected override void OnParametersSet()
     {
         quotationService = Service;
-    }
-
-    private void OnValidSubmit(EditContext context)
-    {
-
     }
 
     private async Task<IEnumerable<LookupDto>> GetCategories(string value)
