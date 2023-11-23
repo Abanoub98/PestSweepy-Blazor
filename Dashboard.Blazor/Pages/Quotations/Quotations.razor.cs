@@ -22,6 +22,43 @@ public partial class Quotations
 
         //quotations = await GetAllAsync<QuotationDto>("Quotations?OrderBy=id&Asc=false");
 
+        quotations = new()
+        {
+            new QuotationDto
+            {
+                Id = 1,
+                ClientName ="Youssef Ahmed",
+                Date = DateTime.Now.AddDays(-10),
+                SerialNumber = "059753654",
+                TotalPrice = 50000,
+                QuotationServices = new()
+                {
+                    new QuotationServiceType
+                    {
+                        Category = new(){Id = 1,Name="الدهانات"},
+                        Service = new(){Id=1,Name="دهانات الجدران"},
+                        Area = 200,
+                        Price = 4000,
+                        DiscountRate = 25,
+                        DiscountPrice = 1000,
+                        Count = 2,
+                        TotalPrice = 6000
+                    },
+                    new QuotationServiceType
+                    {
+                        Category = new(){Id = 1,Name="صيانة الكهرباء"},
+                        Service = new(){Id=1,Name="تصليح إضاءه"},
+                        Area = 100,
+                        Price = 2000,
+                        DiscountRate = 50,
+                        DiscountPrice = 1000,
+                        Count = 2,
+                        TotalPrice = 2000
+                    }
+                }
+            }
+        };
+
         StopProcessing();
     }
 
