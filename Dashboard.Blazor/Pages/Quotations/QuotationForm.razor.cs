@@ -64,8 +64,8 @@ public partial class QuotationForm
         breadcrumbItems.AddRange(new List<BreadcrumbItem>
         {
             new(languageContainer.Keys["Home"], href: "/", icon: Icons.Material.Filled.Home),
-            new(languageContainer.Keys["Quotations"], href: "/Quotations", icon: EntityIcons.QuotationsIcon),
-            new(languageContainer.Keys[Id == 0 ? "Add Quotation" : $"Edit {quotationForm.SerialNumber}"], href: null, disabled: true),
+            new(languageContainer.Keys["Price Quotations"], href: "/Quotations", icon: EntityIcons.QuotationsIcon),
+            new((Id == 0 ? $"{languageContainer.Keys["Add"]} {languageContainer.Keys["Price Quotation"]}" : $"{languageContainer.Keys["Edit"]} {quotationForm.SerialNumber}"), href: null, disabled: true),
         });
     }
 

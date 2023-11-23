@@ -27,6 +27,9 @@ Supervisors: "المشرفون"
 Categories: "الفئات"
 Services: "الخدمات"
 Clients: "العملاء"
+Price Quotations: "عروض الأسعار"
+Price Quotation: "عرض السعر"
+Company Info: "معلومات الشركة"
 
 #Components
 No Records To Display: "لا توجد سجلات لعرضها"
@@ -44,6 +47,7 @@ Disable: "إيقاف"
 Your Account Is Secured: "تم تأمين حسابك"
 Using an authenticator app like: "استخدام تطبيق المصادقة مثل"
 scan the QR code and It will generate a 6 digit code for you: "قم بمسح رمز الاستجابة السريعة وسيقوم بتوليد رمز مكون من 6 أرقام لك"
+
 #Login
 Email: "البريد الإلكتروني"
 Password: "كلمة المرور"
@@ -58,3 +62,45 @@ Enter 6-digit code from your authenticator application: "أدخل الرمز ا�
 2FA Code: "رمز المصادقة الثنائية"
 Welcome to: "مرحبًا بك في"
 We provide you with the best quality, according to international standards, for cleaning services, pest extermination, and home and hotel services.: ".نحن نقدم لك أفضل جودة، وفقًا للمعايير الدولية، لخدمات التنظيف واستبعاد الآفات وخدمات المنزل والفندق"
+
+#Forms
+Add: "إضافة"
+Edit: "تعديل"
+No items found: "لم يتم العثور على عناصر"
+Select Client: "اختيار العميل"
+Client Registered In The System ?: "العميل مسجل في النظام ؟"
+Price Quotation Services: "خدمات عرض السعر"
+Required: "مطلوب"
+Service: "الخدمة"
+Quotation Total Price: "إجمالي عرض السعر"
+SAR: "ريال سعودي"
+Add Service: "إضافة خدمة"
+Select Date: "اختيار التاريخ"
+Email is Required: "البريد الإلكتروني مطلوب"
+Select Manager: "اختيار المدير"
+Description: "الوصف"
+Select Category: "اختيار الفئة"
+Select Nationality: "اختيار الجنسية"
+Select Supervisor: "اختيار المشرف"
+Name: "الاسم"
+Duration: "المدة"
+Order: "الطلب"
+Select Gender: "اختيار الجنس"
+Back To: "العودة إلى"
+Notes: "ملاحظات"
+Total Price: "السعر الإجمالي"
+Discount Price: "سعر الخصم"
+Price: "السعر"
+Discount Rate: "نسبة الخصم"
+Count: "العدد"
+Area: "مساحه"
+Unit: "الوحدة"
+Units: "وحدات"
+Category: "الفئة"
+Select Service: "اختر الخدمة"
+Date: "تاريخ"
+Client: "العميل"
+Serial Number: "الرقم التسلسلي"
+Client Name: "اسم العميل"
+Actions: "الإجراءات"
+M²: "²م"

@@ -17,7 +17,7 @@ public partial class Quotations
         breadcrumbItems.AddRange(new List<BreadcrumbItem>
         {
             new(languageContainer.Keys["Home"], href: "/", icon: Icons.Material.Filled.Home),
-            new(languageContainer.Keys["Quotations"], href: null, disabled: true, icon: EntityIcons.QuotationsIcon),
+            new(languageContainer.Keys["Price Quotations"], href: null, disabled: true, icon: EntityIcons.QuotationsIcon),
         });
 
         //quotations = await GetAllAsync<QuotationDto>("Quotations?OrderBy=id&Asc=false");

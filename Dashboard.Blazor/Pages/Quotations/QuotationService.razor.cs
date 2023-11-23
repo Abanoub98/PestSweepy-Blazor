@@ -55,7 +55,7 @@ public partial class QuotationService
     private void GetServicePrice(ServiceDto? service)
     {
         quotationService!.Service = service;
-        quotationService.Price = quotationService.Service?.Price ?? 0;
+        quotationService.Price = quotationService.Service?.Price ?? 1500;
     }
 
     private async Task CallBackTotalValue()

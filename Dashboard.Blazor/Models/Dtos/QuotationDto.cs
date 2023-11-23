@@ -38,7 +38,6 @@ public class QuotationServiceType
 {
 
     [Required]
-    [Label(name: "Category")]
     public LookupDto? Category { get; set; }
     public int CategoryId { get; set; }
     public IEnumerable<LookupDto>? Categories { get; set; }
@@ -59,7 +58,7 @@ public class QuotationServiceType
 
     [Required]
     [Label(name: "Price")]
-    public double Price { get; set; } = 1500;
+    public double Price { get; set; }
 
     [Required]
     [Label(name: "Discount Rate")]
