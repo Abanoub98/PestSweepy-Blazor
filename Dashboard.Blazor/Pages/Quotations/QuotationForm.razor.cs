@@ -18,7 +18,7 @@ public partial class QuotationForm
         }
         else
         {
-            quotationForm = await GetByIdAsync<QuotationDto>($"Quotations/{Id}");
+            //quotationForm = await GetByIdAsync<QuotationDto>($"Quotations/{Id}");
 
             if (quotationForm is null)
                 return;

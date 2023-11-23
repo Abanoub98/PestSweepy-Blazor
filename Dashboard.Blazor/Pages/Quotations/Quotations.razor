@@ -25,7 +25,7 @@
                     </div>
                     <div class="w-md-50 w-100">
                         <MudTextField @bind-Value="searchString" Adornment="Adornment.Start" Class="mt-0 mb-5" Immediate="true"
-                                        Placeholder=@($"{languageContainer.Keys["Search For"]} Name, Order Index")
+                                        Placeholder=@($"{languageContainer.Keys["Search For"]} Serial Number, Client Name, Date")
                                         AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" />
                     </div>
                 </div>
@@ -39,6 +39,7 @@
                 <PropertyColumn Property="x => x.SerialNumber" Title="Serial Number" />
                 <PropertyColumn Property="x => x.ClientName" Title="Client Name" />
                 <PropertyColumn Property="x => x.Date" Title="Date" />
+                <PropertyColumn Property="x => x.TotalPrice" Title="Total Price" />
 
                 <TemplateColumn CellStyle="width:300px" CellClass="text-center" Context="quotation" HeaderClass="text-center" Sortable="false" Filterable="false">
                     <HeaderTemplate>

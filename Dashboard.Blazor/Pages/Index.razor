@@ -6,7 +6,7 @@
 
 @if (isLoading)
 {
-    
+    <FormLoadingSpinner IsBigForm="true"/>
 }
 else
 {
@@ -51,21 +51,108 @@ else
                 </div>
             </div>
         </div>
+        <div class="col-md-5 col-12 mb-md-0 mb-3">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body">
+                    <MudCard Class="bg-transparent" Elevation="0">
+                        <MudCardContent>
+                            <div class="d-flex justify-content-center align-items-center">
+                                <MudImage Src="/images/Logo.png" Width="230" Class="rounded-lg ma-4" />
+                            </div>
+                        </MudCardContent>
+                    </MudCard>
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="my-10 d-flex justify-content-center align-items-center">
-        <MudImage Src="/images/Logo.png" Width="300" ObjectFit="ObjectFit.Contain" Class="rounded-lg ma-4" />
+    <div class="row mb-3">
+        <div class="col-6 col-md-3 mb-3 mb-md-0">
+            <div class="card card-flush shadow-sm">
+                <div class="card-header">
+                    <h2 class="card-title fw-bold">@languageContainer.Keys["Services"]</h2>
+                </div>
+                <div class="card-body pt-0">
+                    <MudIcon Size="Size.Large" Icon="@Icons.Material.TwoTone.Handyman" Title="Services" />
+                    <div class="fw-semibold text-gray-400 mt-5">
+                        <span class="text-gray-900 fw-bold fs-2 me-1">@Services.Count</span>
+                        @languageContainer.Keys["Services"]
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 col-md-3 mb-3 mb-md-0">
+            <div class="card card-flush shadow-sm">
+                <div class="card-header">
+                    <h2 class="card-title fw-bold">@languageContainer.Keys["Clients"]</h2>
+                </div>
+                <div class="card-body pt-0">
+                    <MudIcon Size="Size.Large" Icon="@Icons.Material.TwoTone.Diversity1" Title="Clients" />
+                    <div class="fw-semibold text-gray-400 mt-5">
+                        <span class="text-gray-900 fw-bold fs-2 me-1">@Clients.Count</span>
+                        @languageContainer.Keys["Clients"]
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 col-md-3 mb-3 mb-md-0">
+            <div class="card card-flush shadow-sm">
+                <div class="card-header">
+                    <h2 class="card-title fw-bold">@languageContainer.Keys["Supervisors"]</h2>
+                </div>
+                <div class="card-body pt-0">
+                    <MudIcon Size="Size.Large" Icon="@Icons.Material.TwoTone.SupervisorAccount" Title="Supervisors" />
+                    <div class="fw-semibold text-gray-400 mt-5">
+                        <span class="text-gray-900 fw-bold fs-2 me-1">@Supervisors.Count</span>
+                        @languageContainer.Keys["Supervisors"]
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 col-md-3 mb-3 mb-md-0">
+            <div class="card card-flush shadow-sm">
+                <div class="card-header">
+                    <h2 class="card-title fw-bold">@languageContainer.Keys["Managers"]</h2>
+                </div>
+                <div class="card-body pt-0">
+                    <MudIcon Size="Size.Large" Icon="@Icons.Material.TwoTone.Diversity3" Title="Managers" />
+                    <div class="fw-semibold text-gray-400 mt-5">
+                        <span class="text-gray-900 fw-bold fs-2 me-1">@Managers.Count</span>
+                        @languageContainer.Keys["Managers"]
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 }
 
 
 @code {
+
     private IEnumerable<Claim> claims = Enumerable.Empty<Claim>();
+
+    private List<LookupDto>? Managers;
+    private List<LookupDto>? Supervisors;
+    private List<LookupDto>? Clients;
+    private List<LookupDto>? Services;
+
 
     protected override async Task OnInitializedAsync()
     {
         StartProcessing();
 
         claims = await GetClaimsPrincipalData();
+
+        var managersTask = GetAllLookupsAsync("Managers");
+        var supervisorsTask = GetAllLookupsAsync("Supervisors");
+        var clientsTask = GetAllLookupsAsync("Clients");
+        var servicesTask = GetAllLookupsAsync("Services");
+
+        await Task.WhenAll(managersTask, supervisorsTask, clientsTask, servicesTask);
+
+        Managers = await managersTask;
+        Supervisors = await supervisorsTask;
+        Clients = await clientsTask;
+        Services = await servicesTask;
 
         StopProcessing();
     }
