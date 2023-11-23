@@ -15,13 +15,13 @@ public partial class Providers
 
         breadcrumbItems.AddRange(new List<BreadcrumbItem>
         {
-            new BreadcrumbItem(languageContainer.Keys["Home"], href: "/", icon: Icons.Material.Filled.Home),
-            new BreadcrumbItem(languageContainer.Keys["Providers"], href: null, disabled: true, icon: Icons.Material.TwoTone.Engineering),
+            new(languageContainer.Keys["Home"], href: "/", icon: Icons.Material.Filled.Home),
+            new(languageContainer.Keys["Providers"], href: null, disabled: true, icon: Icons.Material.TwoTone.Engineering),
         });
 
         providers = SupervisorId is not null ?
-            await GetAllAsync($"Providers?OrderBy=id&Asc=false&FilterQuery={Uri.EscapeDataString($"SupervisorId={SupervisorId}")}") :
-            await GetAllAsync("Providers?OrderBy=id&Asc=false");
+            await GetAllAsync<ProviderDto>($"Providers?OrderBy=id&Asc=false&FilterQuery={Uri.EscapeDataString($"SupervisorId={SupervisorId}")}") :
+            await GetAllAsync<ProviderDto>("Providers?OrderBy=id&Asc=false");
 
         StopProcessing();
     }
@@ -30,11 +30,10 @@ public partial class Providers
     {
         StartProcessing();
 
-        var isSuccess = await DeleteAsync($"Providers/{id}");
+        var isSuccess = await DeleteAsync<ProviderDto>($"Providers/{id}");
+
         if (isSuccess)
-        {
             providers.Remove(providers.FirstOrDefault(x => x.Id == id)!);
-        }
 
         StopProcessing();
     }

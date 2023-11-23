@@ -8,16 +8,16 @@ public partial class ManagerForm
 
     protected override async Task OnParametersSetAsync()
     {
-        if (Id == 0)
-            managerForm = new();
-        else
-            managerForm = await GetByIdAsync($"Managers/{Id}");
+        managerForm = (Id == 0) ? new() : await GetByIdAsync<ManagerDto>($"Managers/{Id}");
+
+        if (managerForm is null)
+            return;
 
         breadcrumbItems.AddRange(new List<BreadcrumbItem>
         {
-            new BreadcrumbItem(languageContainer.Keys["Home"], href: "/", icon: Icons.Material.Filled.Home),
-            new BreadcrumbItem(languageContainer.Keys["Managers"], href: "/Managers", icon: Icons.Material.TwoTone.Diversity3),
-            new BreadcrumbItem(languageContainer.Keys[Id == 0 ? "Add Manager" : $"Edit {managerForm.Name}"], href: null, disabled: true),
+            new(languageContainer.Keys["Home"], href: "/", icon: Icons.Material.Filled.Home),
+            new(languageContainer.Keys["Managers"], href: "/Managers", icon: Icons.Material.TwoTone.Diversity3),
+            new(languageContainer.Keys[Id == 0 ? "Add Manager" : $"Edit {managerForm.Name}"], href: null, disabled: true),
         });
     }
 
@@ -56,7 +56,7 @@ public partial class ManagerForm
     private async Task<IEnumerable<LookupDto>> GetNationalities(string value)
     {
         if (managerForm!.Nationalities is null)
-            managerForm.Nationalities = await GetAllLookupsAsync<LookupDto>("ReferenceData?tableName=Nationalities");
+            managerForm.Nationalities = await GetAllLookupsAsync("ReferenceData?tableName=Nationalities");
 
         // if text is null or empty, show complete list
         if (string.IsNullOrEmpty(value))

@@ -14,11 +14,11 @@ public partial class Managers
 
         breadcrumbItems.AddRange(new List<BreadcrumbItem>
         {
-            new BreadcrumbItem(languageContainer.Keys["Home"], href: "/", icon: Icons.Material.Filled.Home),
-            new BreadcrumbItem(languageContainer.Keys["Managers"], href: null, disabled: true, icon: Icons.Material.TwoTone.Diversity3),
+            new(languageContainer.Keys["Home"], href: "/", icon: Icons.Material.Filled.Home),
+            new(languageContainer.Keys["Managers"], href: null, disabled: true, icon: Icons.Material.TwoTone.Diversity3),
         });
 
-        managers = await GetAllAsync("Managers?OrderBy=id&Asc=false");
+        managers = await GetAllAsync<ManagerDto>("Managers?OrderBy=id&Asc=false");
 
         StopProcessing();
     }
@@ -27,7 +27,7 @@ public partial class Managers
     {
         StartProcessing();
 
-        var isSuccess = await DeleteAsync($"Managers/{id}");
+        var isSuccess = await DeleteAsync<ManagerDto>($"Managers/{id}");
         if (isSuccess)
         {
             managers.Remove(managers.FirstOrDefault(x => x.Id == id)!);

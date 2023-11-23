@@ -1,0 +1,59 @@
+﻿@page "/Quotations"
+@attribute [Authorize]
+@inherits BasePage
+
+<PageTitle>@languageContainer.Keys["Quotations"]</PageTitle>
+<MudBreadcrumbs Items="breadcrumbItems"></MudBreadcrumbs>
+<BrowserViewportObserver TableHeightChanged="TableHeightChanged" />
+
+<MudCard Elevation="25">
+    <MudCardContent>
+        <MudDataGrid T="QuotationDto" Dense="true" Elevation="0" FixedHeader="true" Height="@($"{tableHight}px")"
+                        Loading="@(isLoading)" LoadingProgressColor="Color.Info" Filterable="true"
+                        Items="quotations" Hover="true" SortMode="SortMode.Single" QuickFilter="@FilterFunc">
+
+            <ToolBarContent>
+                <div class="d-flex justify-content-between flex-column align-items-center flex-md-row w-100">
+                    <div class="w-md-25 w-100">
+                        <div class="d-flex align-items-center">
+                            <MudAvatar Rounded="true" Color="Color.Info">
+                                <MudIcon Icon="@EntityIcons.QuotationsIcon" />
+                            </MudAvatar>
+                            <MudText Class="mx-3" Typo="Typo.h5">@languageContainer.Keys["Quotations"]</MudText>
+                            <MudIconButton OnClick="() => OpenForm(formUri)" Icon="@Icons.Material.Filled.Add" Color="Color.Success"></MudIconButton>
+                        </div>
+                    </div>
+                    <div class="w-md-50 w-100">
+                        <MudTextField @bind-Value="searchString" Adornment="Adornment.Start" Class="mt-0 mb-5" Immediate="true"
+                                        Placeholder=@($"{languageContainer.Keys["Search For"]} Name, Order Index")
+                                        AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" />
+                    </div>
+                </div>
+            </ToolBarContent>
+
+            <NoRecordsContent>
+                <NoDataToDisply />
+            </NoRecordsContent>
+
+            <Columns>
+                <PropertyColumn Property="x => x.SerialNumber" Title="Serial Number" />
+                <PropertyColumn Property="x => x.ClientName" Title="Client Name" />
+                <PropertyColumn Property="x => x.Date" Title="Date" />
+
+                <TemplateColumn CellStyle="width:300px" CellClass="text-center" Context="quotation" HeaderClass="text-center" Sortable="false" Filterable="false">
+                    <HeaderTemplate>
+                        <MudText Class="w-100">Actions</MudText>
+                    </HeaderTemplate>
+                    <CellTemplate>
+                        <TableButtons IsDisable="isDisable" EditClicked="() => OpenForm(formUri,quotation.Item!.Id)"
+                                        DeleteClicked="() => Delete(quotation.Item!.Id)" DetailsClicked="() => OpenDetails(detailsUri,quotation.Item!.Id)" />
+                    </CellTemplate>
+                </TemplateColumn>
+            </Columns>
+
+            <PagerContent>
+                <MudDataGridPager T="QuotationDto" />
+            </PagerContent>
+        </MudDataGrid>
+    </MudCardContent>
+</MudCard>

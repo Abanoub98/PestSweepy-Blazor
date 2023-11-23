@@ -14,8 +14,8 @@ public partial class ReferenceData
     {
         breadcrumbItems.AddRange(new List<BreadcrumbItem>
         {
-            new BreadcrumbItem(languageContainer.Keys["Home"], href: "/", icon: Icons.Material.Filled.Home),
-            new BreadcrumbItem(languageContainer.Keys["Reference Data"], href: null, disabled: true, icon: @Icons.Material.TwoTone.ManageSearch),
+            new(languageContainer.Keys["Home"], href: "/", icon: Icons.Material.Filled.Home),
+            new(languageContainer.Keys["Reference Data"], href: null, disabled: true, icon: @Icons.Material.TwoTone.ManageSearch),
         });
     }
 
@@ -27,7 +27,7 @@ public partial class ReferenceData
             return;
 
         LookupList = string.IsNullOrWhiteSpace(selectedTable) ?
-            new() : await GetAllAsync("ReferenceData?tableName=" + selectedTable);
+            new() : await GetAllLookupsAsync("ReferenceData?tableName=" + selectedTable);
 
         SelectedTable = selectedTable;
 
@@ -44,7 +44,7 @@ public partial class ReferenceData
         if (TablesNameList is not null)
             return TablesNameList;
 
-        TablesNameList = await GetAllLookupsAsync<string>("ReferenceData/ShowTables");
+        TablesNameList = await GetAllAsync<string>("ReferenceData/ShowTables");
 
         // if text is null or empty, show complete list
         if (string.IsNullOrEmpty(value))

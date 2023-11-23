@@ -9,13 +9,16 @@ public partial class CategoryDetails
 
     protected override async Task OnParametersSetAsync()
     {
-        category = await GetByIdAsync($"Categories/{Id}");
+        category = await GetByIdAsync<CategoryDto>($"Categories/{Id}");
+
+        if (category is null)
+            return;
 
         breadcrumbItems.AddRange(new List<BreadcrumbItem>
         {
-            new BreadcrumbItem(languageContainer.Keys["Home"], href: "/", icon: Icons.Material.Filled.Home),
-            new BreadcrumbItem(languageContainer.Keys["Categories"], href: "/Categories", icon: Icons.Material.TwoTone.Category),
-            new BreadcrumbItem(category.Name, href: null, disabled: true),
+            new(languageContainer.Keys["Home"], href: "/", icon: Icons.Material.Filled.Home),
+            new(languageContainer.Keys["Categories"], href: "/Categories", icon: Icons.Material.TwoTone.Category),
+            new(category.Name, href: null, disabled: true),
         });
     }
 }

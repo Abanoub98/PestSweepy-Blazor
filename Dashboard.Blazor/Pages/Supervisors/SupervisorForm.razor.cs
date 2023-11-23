@@ -8,16 +8,16 @@ public partial class SupervisorForm
 
     protected override async Task OnParametersSetAsync()
     {
-        if (Id == 0)
-            supervisorForm = new();
-        else
-            supervisorForm = await GetByIdAsync($"Supervisors/{Id}");
+        supervisorForm = (Id == 0) ? new() : supervisorForm = await GetByIdAsync<SupervisorDto>($"Supervisors/{Id}");
+
+        if (supervisorForm is null)
+            return;
 
         breadcrumbItems.AddRange(new List<BreadcrumbItem>
         {
-            new BreadcrumbItem(languageContainer.Keys["Home"], href: "/", icon: Icons.Material.Filled.Home),
-            new BreadcrumbItem(languageContainer.Keys["Supervisors"], href: "/Supervisors", icon: Icons.Material.TwoTone.SupervisorAccount),
-            new BreadcrumbItem(languageContainer.Keys[Id == 0 ? "Add Supervisor" : $"Edit {supervisorForm.Name}"], href: null, disabled: true),
+            new(languageContainer.Keys["Home"], href: "/", icon: Icons.Material.Filled.Home),
+            new(languageContainer.Keys["Supervisors"], href: "/Supervisors", icon: Icons.Material.TwoTone.SupervisorAccount),
+            new(languageContainer.Keys[Id == 0 ? "Add Supervisor" : $"Edit {supervisorForm.Name}"], href: null, disabled: true),
         });
     }
 
@@ -57,7 +57,7 @@ public partial class SupervisorForm
     private async Task<IEnumerable<LookupDto>> GetNationalities(string value)
     {
         if (supervisorForm!.Nationalities is null)
-            supervisorForm.Nationalities = await GetAllLookupsAsync<LookupDto>("ReferenceData?tableName=Nationalities");
+            supervisorForm.Nationalities = await GetAllLookupsAsync("ReferenceData?tableName=Nationalities");
 
         // if text is null or empty, show complete list
         if (string.IsNullOrEmpty(value))
@@ -69,7 +69,7 @@ public partial class SupervisorForm
     private async Task<IEnumerable<LookupDto>> GetManagers(string value)
     {
         if (supervisorForm!.Managers is null)
-            supervisorForm.Managers = await GetAllLookupsAsync<LookupDto>("/Managers");
+            supervisorForm.Managers = await GetAllLookupsAsync("/Managers");
 
         // if text is null or empty, show complete list
         if (string.IsNullOrEmpty(value))

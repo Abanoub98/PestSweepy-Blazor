@@ -8,16 +8,16 @@ public partial class ProviderForm
 
     protected override async Task OnParametersSetAsync()
     {
-        if (Id == 0)
-            providerForm = new();
-        else
-            providerForm = await GetByIdAsync($"Providers/{Id}");
+        providerForm = (Id == 0) ? new() : await GetByIdAsync<ProviderDto>($"Providers/{Id}");
+
+        if (providerForm is null)
+            return;
 
         breadcrumbItems.AddRange(new List<BreadcrumbItem>
         {
-            new BreadcrumbItem(languageContainer.Keys["Home"], href: "/", icon: Icons.Material.Filled.Home),
-            new BreadcrumbItem(languageContainer.Keys["Providers"], href: "/Providers", icon: Icons.Material.TwoTone.Engineering),
-            new BreadcrumbItem(languageContainer.Keys[Id == 0 ? "Add Provider" : $"Edit {providerForm.Name}"], href: null, disabled: true),
+            new(languageContainer.Keys["Home"], href: "/", icon: Icons.Material.Filled.Home),
+            new(languageContainer.Keys["Providers"], href: "/Providers", icon: Icons.Material.TwoTone.Engineering),
+            new(languageContainer.Keys[Id == 0 ? "Add Provider" : $"Edit {providerForm.Name}"], href: null, disabled: true),
         });
     }
 
@@ -57,7 +57,7 @@ public partial class ProviderForm
     private async Task<IEnumerable<LookupDto>> GetNationalities(string value)
     {
         if (providerForm!.Nationalities is null)
-            providerForm.Nationalities = await GetAllLookupsAsync<LookupDto>("ReferenceData?tableName=Nationalities");
+            providerForm.Nationalities = await GetAllLookupsAsync("ReferenceData?tableName=Nationalities");
 
         // if text is null or empty, show complete list
         if (string.IsNullOrEmpty(value))
@@ -69,7 +69,7 @@ public partial class ProviderForm
     private async Task<IEnumerable<LookupDto>> GetManagers(string value)
     {
         if (providerForm!.Supervisors is null)
-            providerForm.Supervisors = await GetAllLookupsAsync<LookupDto>("/Supervisors");
+            providerForm.Supervisors = await GetAllLookupsAsync("/Supervisors");
 
         // if text is null or empty, show complete list
         if (string.IsNullOrEmpty(value))

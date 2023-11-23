@@ -11,12 +11,10 @@ public partial class UserMenu
 {
     [Inject] ILanguageContainerService LangContainer { get; set; } = default!;
     [Inject] ILocalStorageService LocalStorage { get; set; } = default!;
-    [Inject] AuthenticationStateProvider AuthStateProvider { get; set; } = default!;
     [Inject] NavigationManager NavManager { get; set; } = default!;
-    [Inject] IDialogService DialogService { get; set; } = default!;
 
     [Parameter][EditorRequired] public string CurrentCulture { get; set; } = string.Empty;
-    [Parameter][EditorRequired] public EventCallback ThemeChnaged { get; set; }
+    [Parameter][EditorRequired] public EventCallback ThemeChanged { get; set; }
 
     private IEnumerable<Claim> claims = Enumerable.Empty<Claim>();
 
@@ -25,10 +23,7 @@ public partial class UserMenu
         claims = await GetClaimsPrincipalData();
     }
 
-    private async Task ChangeThemeAsync()
-    {
-        await ThemeChnaged.InvokeAsync();
-    }
+    private async Task ChangeThemeAsync() => await ThemeChanged.InvokeAsync();
 
     private void SetLanguage(string cultureCode)
     {
@@ -45,7 +40,7 @@ public partial class UserMenu
     private async Task SignOut()
     {
         await LocalStorage.RemoveItemAsync("token");
-        await AuthStateProvider.GetAuthenticationStateAsync();
+        await AuthenticationStateProvider.GetAuthenticationStateAsync();
     }
 
     private async Task ShowAccountSettingsAsync()
@@ -61,24 +56,4 @@ public partial class UserMenu
 
         await DialogService.ShowAsync<AccountSettings>(languageContainer.Keys["Account Settings"], dialogOptions);
     }
-
-    private async Task<IEnumerable<Claim>> GetClaimsPrincipalData()
-    {
-        var authState = await AuthStateProvider
-            .GetAuthenticationStateAsync();
-        var user = authState.User;
-
-        if (user.Identity is not null && user.Identity.IsAuthenticated)
-        {
-            foreach (var item in user.Claims)
-            {
-                Console.WriteLine(item);
-            }
-            return user.Claims;
-        }
-
-        return Enumerable.Empty<Claim>();
-    }
-
-
 }

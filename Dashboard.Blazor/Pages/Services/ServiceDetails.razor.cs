@@ -9,13 +9,16 @@ public partial class ServiceDetails
 
     protected override async Task OnParametersSetAsync()
     {
-        service = await GetByIdAsync($"Services/{Id}");
+        service = await GetByIdAsync<ServiceDto>($"Services/{Id}");
+
+        if (service is null)
+            return;
 
         breadcrumbItems.AddRange(new List<BreadcrumbItem>
         {
-            new BreadcrumbItem(languageContainer.Keys["Home"], href: "/", icon: Icons.Material.Filled.Home),
-            new BreadcrumbItem(languageContainer.Keys["Services"], href: "/Services", icon: Icons.Material.TwoTone.Handyman),
-            new BreadcrumbItem(service.Name, href: null, disabled: true),
+            new(languageContainer.Keys["Home"], href: "/", icon: Icons.Material.Filled.Home),
+            new(languageContainer.Keys["Services"], href: "/Services", icon: Icons.Material.TwoTone.Handyman),
+            new(service.Name, href: null, disabled: true),
         });
     }
 }

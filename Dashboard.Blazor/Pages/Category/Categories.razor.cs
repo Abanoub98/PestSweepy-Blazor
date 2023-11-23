@@ -13,11 +13,11 @@ public partial class Categories
 
         breadcrumbItems.AddRange(new List<BreadcrumbItem>
         {
-            new BreadcrumbItem(languageContainer.Keys["Home"], href: "/", icon: Icons.Material.Filled.Home),
-            new BreadcrumbItem(languageContainer.Keys["Categories"], href: null, disabled: true, icon: Icons.Material.TwoTone.Category),
+            new(languageContainer.Keys["Home"], href: "/", icon: Icons.Material.Filled.Home),
+            new(languageContainer.Keys["Categories"], href: null, disabled: true, icon: Icons.Material.TwoTone.Category),
         });
 
-        categories = await GetAllAsync("Categories?OrderBy=id&Asc=false");
+        categories = await GetAllAsync<CategoryDto>("Categories?OrderBy=id&Asc=false");
 
         StopProcessing();
     }
@@ -26,11 +26,10 @@ public partial class Categories
     {
         StartProcessing();
 
-        var isSuccess = await DeleteAsync($"Categories/{id}");
+        var isSuccess = await DeleteAsync<CategoryDto>($"Categories/{id}");
+
         if (isSuccess)
-        {
             categories.Remove(categories.FirstOrDefault(x => x.Id == id)!);
-        }
 
         StopProcessing();
     }

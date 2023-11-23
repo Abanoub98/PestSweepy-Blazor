@@ -1,0 +1,108 @@
+﻿@page "/Quotations/Form/{Id:int}"
+@page "/Quotations/Form"
+@attribute [Authorize]
+@inherits BasePage
+
+<PageTitle>@languageContainer.Keys[(Id == 0 ? "Add" : "Edit") + " Quotation"]</PageTitle>
+    <MudBreadcrumbs Items="breadcrumbItems"></MudBreadcrumbs>
+
+    @if (quotationForm is null)
+{
+    <FormLoadingSpinner IsBigForm="true" />
+}
+else
+{
+    <MudCard Elevation="25">
+        <EditForm Model="@quotationForm" OnValidSubmit="OnValidSubmit">
+            <DataAnnotationsValidator />
+            <MudCardHeader Style="padding:20px">
+                <CardHeaderAvatar>
+                    <MudAvatar Rounded="true" Color="Color.Info">
+                        <MudIcon Icon="@EntityIcons.QuotationsIcon" />
+                    </MudAvatar>
+                </CardHeaderAvatar>
+                <CardHeaderContent>
+                    <MudText Style="display: flex;align-items: center;" Typo="Typo.h5">
+                        @(Id == 0 ? "Add Quotation" : $"Edit {quotationForm.SerialNumber}")
+                    </MudText>
+                </CardHeaderContent>
+                <CardHeaderActions>
+                    <MudButton DisableElevation="true" Href="/Quotations" Style="margin:10px" Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.ArrowBack" Color="Color.Info">
+                        Back to Quotations
+                    </MudButton>
+                </CardHeaderActions>
+            </MudCardHeader>
+            <MudCardContent Class="px-5 py-3">
+                <MudCheckBox @bind-Checked="@IsExistClient" Label="Client Registered In The System?" Color="Color.Info"></MudCheckBox>
+                <div class="d-flex flex-wrap flex-md-nowrap">
+                    <div class="p-3 w-100 w-md-25">
+                        @if (IsExistClient)
+                        {
+                            <MudAutocomplete T="LookupDto" SearchFunc="@GetClients" Adornment="Adornment.Start" AnchorOrigin="Origin.BottomCenter"
+                                             Variant="Variant.Outlined" ShowProgressIndicator="true" ResetValueOnEmptyText="true" CoerceText="true" AdornmentIcon="@Icons.Material.Filled.Diversity1"
+                                             ProgressIndicatorColor="Color.Info" Clearable @bind-Value="quotationForm.Client" For="@(() => quotationForm.Client)" AdornmentColor="Color.Info"
+                                              ToStringFunc="@(e=> e == null ? null : $"{e.Name}")" HelperText="Required" Placeholder="Select Client" MaxItems="null" HelperTextOnFocus="true">
+                                 <NoItemsTemplate>
+                                     <MudText Align="Align.Center" Class="px-4 py-4">
+                                         No items found
+                                     </MudText>
+                                 </NoItemsTemplate>
+                             </MudAutocomplete>
+                        }
+                        else
+                        {
+                            <MudTextField HelperText="Required" Variant="Variant.Outlined" @bind-Value="quotationForm.ClientName" For="@(() => quotationForm.ClientName)" HelperTextOnFocus="true"
+                                          AdornmentColor="Color.Info" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.AccountBox" Placeholder="@Placeholders.Name" />
+                        }
+                    </div>
+                    <div class="p-3 w-100 w-md-25">
+                        <MudDatePicker AdornmentColor="Color.Info" Variant="Variant.Outlined" @bind-Date="quotationForm.Date" For="@(() => quotationForm.Date)" Placeholder="Select Date" />
+                    </div>
+                    <div class="p-3 w-100 w-md-50">
+                        <MudTextField HelperText="Required" Variant="Variant.Outlined" InputType="InputType.Email" AdornmentColor="Color.Info" Adornment="Adornment.Start" HelperTextOnFocus="true"
+                                      @bind-Value="quotationForm.ReceiverEmail" For="@(() => quotationForm.ReceiverEmail)" AdornmentIcon="@Icons.Material.Filled.Email" Placeholder="@Placeholders.Email"
+                                      Required="true" RequiredError="Email is Required" />
+                    </div>
+                </div>
+                <MudCard Class="p-3 mb-3 border" Elevation="0">
+                    <MudCardHeader>
+                        <CardHeaderContent>
+                            <MudText Typo="Typo.h5">Quotation Services:</MudText>
+                        </CardHeaderContent>
+                    </MudCardHeader>
+                    <MudCardContent>
+                        @{
+                            ServiceNumber = 0;
+                        }
+                        @foreach (var quotationService in quotationForm.QuotationServices)
+                        {
+                            <div class="d-flex align-items-center">
+                                <MudText Typo="Typo.h6">Service @(++ServiceNumber):</MudText>
+                                <MudIconButton OnClick="() => DeleteService(quotationService)" Icon="@Icons.Material.Filled.Delete" Color="Color.Error"></MudIconButton>
+                            </div>
+                            <div class="mt-2">
+                                <QuotationService Service="quotationService" TotalValueChanged="TotalValueChanged" />
+                            </div>
+                            <MudDivider Light=true DividerType="DividerType.Middle" Class="mb-3" />
+                        }
+                    </MudCardContent>
+                    <MudCardActions>
+                        <MudButton DisableElevation="true" OnClick="@AddService" EndIcon="@Icons.Material.Filled.Add" Variant="Variant.Filled" Color="Color.Success">Add Service</MudButton>
+                    </MudCardActions>
+                </MudCard>
+                <div class="p-3 w-100">
+                    <MudTextField HelperText="Required" Variant="Variant.Outlined" @bind-Value="quotationForm.Notes" For="@(() => quotationForm.Notes)"
+                                  HelperTextOnFocus="true" Placeholder="@Placeholders.Description" Lines="10" />
+                </div>
+                <div class="flex-wrap gap-5 gap-md-0 d-flex flex-md-nowrap align-items-end p-3">
+                    <MudText Typo="Typo.h6">Quotation Total Price = <span class="text-warning">@(quotationForm.TotalPrice)</span> SAR</MudText>
+                    <MudSpacer />
+                    <FormButtons IsLoading="@isLoading" />
+                </div>
+            </MudCardContent>
+            <MudCardActions>
+            </MudCardActions>
+        </EditForm>
+    </MudCard>
+}
+

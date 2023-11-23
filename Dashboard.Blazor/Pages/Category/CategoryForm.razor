@@ -1,7 +1,7 @@
 ﻿@page "/Categories/Form/{Id:int}"
 @page "/Categories/Form"
 @attribute [Authorize]
-@inherits BasePage<CategoryDto>
+@inherits BasePage
 
 <PageTitle>@languageContainer.Keys[(Id == 0 ? "Add" : "Edit") + " Category"]</PageTitle>
 <MudBreadcrumbs Items="breadcrumbItems"></MudBreadcrumbs>

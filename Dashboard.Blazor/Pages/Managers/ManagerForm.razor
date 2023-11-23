@@ -1,7 +1,7 @@
 ﻿@page "/Managers/Form/{Id:int}"
 @page "/Managers/Form"
 @attribute [Authorize]
-@inherits BasePage<ManagerDto>
+@inherits BasePage
 
 <PageTitle>@languageContainer.Keys[(Id == 0 ? "Add" : "Edit") + " Manager"]</PageTitle>
 <MudBreadcrumbs Items="breadcrumbItems"></MudBreadcrumbs>
@@ -87,4 +87,3 @@ else
         </EditForm>
     </MudCard>
 }
-

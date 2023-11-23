@@ -9,13 +9,16 @@ public partial class SupervisorDetails
 
     protected override async Task OnParametersSetAsync()
     {
-        supervisor = await GetByIdAsync($"Supervisors/{Id}");
+        supervisor = await GetByIdAsync<SupervisorDto>($"Supervisors/{Id}");
+
+        if (supervisor is null)
+            return;
 
         breadcrumbItems.AddRange(new List<BreadcrumbItem>
         {
-            new BreadcrumbItem(languageContainer.Keys["Home"], href: "/", icon: Icons.Material.Filled.Home),
-            new BreadcrumbItem(languageContainer.Keys["Supervisors"], href: "/Supervisors", icon: Icons.Material.TwoTone.SupervisorAccount),
-            new BreadcrumbItem(supervisor.Name, href: null, disabled: true),
+            new(languageContainer.Keys["Home"], href: "/", icon: Icons.Material.Filled.Home),
+            new(languageContainer.Keys["Supervisors"], href: "/Supervisors", icon: Icons.Material.TwoTone.SupervisorAccount),
+            new(supervisor.Name, href: null, disabled: true),
         });
     }
 }

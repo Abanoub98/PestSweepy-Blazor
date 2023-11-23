@@ -16,7 +16,7 @@ public partial class AuditDetails
     {
         StartProcessing();
 
-        Auditing = await GetByIdAsync($"SecuirtyLogs/Audit/{Id}");
+        Auditing = await GetByIdAsync<AuditDto>($"SecuirtyLogs/Audit/{Id}");
 
         if (Auditing.OldValues is not null)
             OldValuesDict = ParseJson(Auditing.OldValues);

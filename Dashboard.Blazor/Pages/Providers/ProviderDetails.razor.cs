@@ -9,13 +9,16 @@ public partial class ProviderDetails
 
     protected override async Task OnParametersSetAsync()
     {
-        provider = await GetByIdAsync($"Providers/{Id}");
+        provider = await GetByIdAsync<ProviderDto>($"Providers/{Id}");
+
+        if (provider is null)
+            return;
 
         breadcrumbItems.AddRange(new List<BreadcrumbItem>
         {
-            new BreadcrumbItem(languageContainer.Keys["Home"], href: "/", icon: Icons.Material.Filled.Home),
-            new BreadcrumbItem(languageContainer.Keys["Providers"], href: "/Providers", icon: Icons.Material.TwoTone.Engineering),
-            new BreadcrumbItem(provider.Name, href: null, disabled: true),
+            new(languageContainer.Keys["Home"], href: "/", icon: Icons.Material.Filled.Home),
+            new(languageContainer.Keys["Providers"], href: "/Providers", icon: Icons.Material.TwoTone.Engineering),
+            new(provider.Name, href: null, disabled: true),
         });
     }
 }

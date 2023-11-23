@@ -11,11 +11,11 @@ public partial class Audits
 
         breadcrumbItems.AddRange(new List<BreadcrumbItem>
         {
-            new BreadcrumbItem(languageContainer.Keys["Home"], href: "/", icon: Icons.Material.Filled.Home),
-            new BreadcrumbItem(languageContainer.Keys["Audits"], href: null, disabled: true, icon: @Icons.Material.TwoTone.History),
+            new(languageContainer.Keys["Home"], href: "/", icon: Icons.Material.Filled.Home),
+            new(languageContainer.Keys["Audits"], href: null, disabled: true, icon: @Icons.Material.TwoTone.History),
         });
 
-        audits = await GetAllAsync("SecuirtyLogs/Audits?OrderBy=id&Asc=false");
+        audits = await GetAllAsync<AuditDto>("SecuirtyLogs/Audits?OrderBy=id&Asc=false");
 
         StopProcessing();
     }

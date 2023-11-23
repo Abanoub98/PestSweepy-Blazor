@@ -131,6 +131,18 @@
             <!--begin:Menu item-->
             <div class="menu-item here show menu-accordion">
                 <!--begin:Menu link-->
+                <NavLink Match="NavLinkMatch.Prefix" href="/CompanyInfo" class="menu-link">
+                    <span class="menu-icon">
+                        <MudIcon Size="Size.Large" Icon="@EntityIcons.CompanyInfoIcon" Title="Company Info" />
+                    </span>
+                    <span class="menu-title">@languageContainer.Keys["Company Info"]</span>
+                </NavLink>
+                <!--end:Menu link-->
+            </div>
+            <!--end:Menu item-->
+            <!--begin:Menu item-->
+            <div class="menu-item here show menu-accordion">
+                <!--begin:Menu link-->
                 <NavLink Match="NavLinkMatch.Prefix" href="/Categories" class="menu-link">
                     <span class="menu-icon">
                         <MudIcon Size="Size.Large" Icon="@Icons.Material.TwoTone.Category" Title="Categories" />
@@ -160,6 +172,30 @@
                         <MudIcon Size="Size.Large" Icon="@Icons.Material.TwoTone.Diversity1" Title="Clients" />
                     </span>
                     <span class="menu-title">@languageContainer.Keys["Clients"]</span>
+                </NavLink>
+                <!--end:Menu link-->
+            </div>
+            <!--end:Menu item-->
+@*             <!--begin:Menu item-->
+            <div class="menu-item here show menu-accordion">
+                <!--begin:Menu link-->
+                <NavLink Match="NavLinkMatch.Prefix" href="/Contracts" class="menu-link">
+                    <span class="menu-icon">
+                        <MudIcon Size="Size.Large" Icon="@EntityIcons.ContractsIcon" Title="Contracts" />
+                    </span>
+                    <span class="menu-title">@languageContainer.Keys["Contracts"]</span>
+                </NavLink>
+                <!--end:Menu link-->
+            </div>
+            <!--end:Menu item--> *@
+            <!--begin:Menu item-->
+            <div class="menu-item here show menu-accordion">
+                <!--begin:Menu link-->
+                <NavLink Match="NavLinkMatch.Prefix" href="/Quotations" class="menu-link">
+                    <span class="menu-icon">
+                        <MudIcon Size="Size.Large" Icon="@EntityIcons.QuotationsIcon" Title="Quotations" />
+                    </span>
+                    <span class="menu-title">@languageContainer.Keys["Quotations"]</span>
                 </NavLink>
                 <!--end:Menu link-->
             </div>

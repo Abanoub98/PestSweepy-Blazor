@@ -8,10 +8,10 @@ public partial class CategoryForm
 
     protected override async Task OnParametersSetAsync()
     {
-        if (Id == 0)
-            categoryForm = new();
-        else
-            categoryForm = await GetByIdAsync($"Categories/{Id}");
+        categoryForm = (Id == 0) ? new() : await GetByIdAsync<CategoryDto>($"Categories/{Id}");
+
+        if (categoryForm is null)
+            return;
 
         breadcrumbItems.AddRange(new List<BreadcrumbItem>
         {

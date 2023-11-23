@@ -15,13 +15,13 @@ public partial class Services
 
         breadcrumbItems.AddRange(new List<BreadcrumbItem>
         {
-            new BreadcrumbItem(languageContainer.Keys["Home"], href: "/", icon: Icons.Material.Filled.Home),
-            new BreadcrumbItem(languageContainer.Keys["Services"], href: null, disabled: true, icon: Icons.Material.TwoTone.Handyman),
+            new(languageContainer.Keys["Home"], href: "/", icon: Icons.Material.Filled.Home),
+            new(languageContainer.Keys["Services"], href: null, disabled: true, icon: Icons.Material.TwoTone.Handyman),
         });
 
         services = CategoryId is not null ?
-            await GetAllAsync($"Services?OrderBy=id&Asc=false&FilterQuery={Uri.EscapeDataString($"CategoryId={CategoryId}")}") :
-            await GetAllAsync("Services?OrderBy=id&Asc=false");
+            await GetAllAsync<ServiceDto>($"Services?OrderBy=id&Asc=false&FilterQuery={Uri.EscapeDataString($"CategoryId={CategoryId}")}") :
+            await GetAllAsync<ServiceDto>("Services?OrderBy=id&Asc=false");
 
 
         StopProcessing();
@@ -31,7 +31,7 @@ public partial class Services
     {
         StartProcessing();
 
-        var isSuccess = await DeleteAsync($"Services/{id}");
+        var isSuccess = await DeleteAsync<ServiceDto>($"Services/{id}");
 
         if (isSuccess)
         {

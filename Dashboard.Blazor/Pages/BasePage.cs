@@ -1,30 +1,35 @@
 ﻿using System.Net.Http.Headers;
+using System.Security.Claims;
 using Microsoft.AspNetCore.Components.Authorization;
 
 namespace Dashboard.Blazor.Pages;
 
-public class BasePage<T> : ComponentBase where T : class
+public class BasePage : ComponentBase
 {
     [Inject] protected NavigationManager NavigationManager { get; set; } = default!;
-    [Inject] private AuthenticationStateProvider AuthenticationStateProvider { get; set; } = default!;
     [Inject] protected IDialogService DialogService { get; set; } = default!;
+    [Inject] protected AuthenticationStateProvider AuthenticationStateProvider { get; set; } = default!;
     [Inject] private IApiService ApiService { get; set; } = default!;
     [Inject] private ISnackbar Snackbar { get; set; } = default!;
 
+    //Variables
     protected List<BreadcrumbItem> breadcrumbItems = new();
+    protected int tableHight;
     protected bool isLoading;
     protected bool isDisable;
 
+    //Password Input
     private bool isShowPassword;
     protected InputType PasswordInput = InputType.Password;
     protected string PasswordInputIcon = Icons.Material.Filled.VisibilityOff;
 
-    protected int tableHight;
-
+    //Const
     protected readonly string imageUrl = "https://api.pestsweepy.com/Upload/";
     protected readonly long maxFileSize = 1024 * 1024 * 2; //represents 2MB 
 
-    protected async Task<List<T>> GetAllAsync(string endPoint)
+    //Start CRUD Functions
+
+    protected async Task<List<T>> GetAllAsync<T>(string endPoint) where T : class
     {
         var response = await ApiService.GetAllAsync<T>(endPoint);
 
@@ -34,9 +39,9 @@ public class BasePage<T> : ComponentBase where T : class
         return response.ObjectsList!;
     }
 
-    protected async Task<List<TItem>> GetAllLookupsAsync<TItem>(string endPoint) where TItem : class
+    protected async Task<List<LookupDto>> GetAllLookupsAsync(string endPoint)
     {
-        var response = await ApiService.GetAllAsync<TItem>(endPoint);
+        var response = await ApiService.GetAllAsync<LookupDto>(endPoint);
 
         if (!response.IsSuccess)
         {
@@ -47,7 +52,7 @@ public class BasePage<T> : ComponentBase where T : class
         return response.ObjectsList!;
     }
 
-    protected async Task<T> GetByIdAsync(string endPoint)
+    protected async Task<T> GetByIdAsync<T>(string endPoint) where T : class
     {
         var response = await ApiService.GetByIdAsync<T>(endPoint);
 
@@ -57,7 +62,7 @@ public class BasePage<T> : ComponentBase where T : class
         return response.Object!;
     }
 
-    protected async Task<(bool, T?)> AddAsync(string endPoint, T model)
+    protected async Task<(bool, T?)> AddAsync<T>(string endPoint, T model) where T : class
     {
         var response = await ApiService.AddAsync<T>(endPoint, model);
 
@@ -92,25 +97,9 @@ public class BasePage<T> : ComponentBase where T : class
         return (true, response.Object!);
     }
 
-    protected void ChangePasswordStatus()
+    protected async Task<(bool, T?)> PostAsync<T>(string endPoint, string successMessage = "Added Successfully", bool showSuccess = true) where T : class
     {
-        if (isShowPassword)
-        {
-            isShowPassword = false;
-            PasswordInputIcon = Icons.Material.Filled.VisibilityOff;
-            PasswordInput = InputType.Password;
-        }
-        else
-        {
-            isShowPassword = true;
-            PasswordInputIcon = Icons.Material.Filled.Visibility;
-            PasswordInput = InputType.Text;
-        }
-    }
-
-    protected async Task<(bool, TItem?)> PostAsync<TItem>(string endPoint, string successMessage = "Added Successfully", bool showSuccess = true) where TItem : class
-    {
-        var response = await ApiService.PostAsync<TItem>(endPoint);
+        var response = await ApiService.PostAsync<T>(endPoint);
 
         if (!response.IsSuccess)
         {
@@ -124,7 +113,7 @@ public class BasePage<T> : ComponentBase where T : class
         return (true, response.Object!);
     }
 
-    protected async Task<(bool, T?)> UpdateAsync(string endPoint, T model)
+    protected async Task<(bool, T?)> UpdateAsync<T>(string endPoint, T model) where T : class
     {
         var response = await ApiService.UpdateAsync<T>(endPoint, model);
 
@@ -138,7 +127,7 @@ public class BasePage<T> : ComponentBase where T : class
         return (true, response.Object);
     }
 
-    protected async Task<bool> DeleteAsync(string endPoint)
+    protected async Task<bool> DeleteAsync<T>(string endPoint) where T : class
     {
         var isConfirmed = await ShowConfirmation();
 
@@ -157,6 +146,23 @@ public class BasePage<T> : ComponentBase where T : class
         return true;
     }
 
+    //End CRUD Functions
+
+    protected void ChangePasswordStatus()
+    {
+        if (isShowPassword)
+        {
+            isShowPassword = false;
+            PasswordInputIcon = Icons.Material.Filled.VisibilityOff;
+            PasswordInput = InputType.Password;
+        }
+        else
+        {
+            isShowPassword = true;
+            PasswordInputIcon = Icons.Material.Filled.Visibility;
+            PasswordInput = InputType.Text;
+        }
+    }
     protected void StartProcessing()
     {
         isLoading = true;
@@ -233,21 +239,26 @@ public class BasePage<T> : ComponentBase where T : class
         return $"{hours} hours and {remainingMinutes} minutes";
     }
 
-    protected async Task<string?> GetClaimsPrincipalData(string claim)
+    protected async Task<IEnumerable<Claim>> GetClaimsPrincipalData()
     {
         var authState = await AuthenticationStateProvider
-            .GetAuthenticationStateAsync();
-
+           .GetAuthenticationStateAsync();
         var user = authState.User;
 
         if (user.Identity is not null && user.Identity.IsAuthenticated)
-            return user.FindFirst(claim)?.Value;
+            return user.Claims;
 
-        return null;
+        return Enumerable.Empty<Claim>();
     }
 
     protected void TableHeightChanged(int newTableHight) => tableHight = newTableHight;
+
     //TODO : Handel All Status Codes
+    private void HandelNavigation(string StatusCode)
+    {
+        NavigationManager.NavigateTo("/ServerError");
+    }
+
     private MultipartFormDataContent HandelImage(IBrowserFile image)
     {
         var content = new MultipartFormDataContent();
@@ -261,12 +272,6 @@ public class BasePage<T> : ComponentBase where T : class
         fileName: image.Name
         );
         return content;
-    }
-
-
-    private void HandelNavigation(string StatusCode)
-    {
-        NavigationManager.NavigateTo("/ServerError");
     }
 
     private void ShowError(string Error)

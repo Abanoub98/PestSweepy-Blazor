@@ -1,7 +1,7 @@
 ﻿@page "/Services/Form/{Id:int}"
 @page "/Services/Form"
 @attribute [Authorize]
-@inherits BasePage<ServiceDto>
+@inherits BasePage
 
 <PageTitle>@languageContainer.Keys[(Id == 0 ? "Add" : "Edit") + " Service"]</PageTitle>
 <MudBreadcrumbs Items="breadcrumbItems"></MudBreadcrumbs>

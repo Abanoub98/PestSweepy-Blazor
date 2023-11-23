@@ -8,17 +8,16 @@ public partial class ServiceForm
 
     protected override async Task OnParametersSetAsync()
     {
-        if (Id == 0)
-            serviceForm = new();
-        else
-            serviceForm = await GetByIdAsync($"Services/{Id}");
+        serviceForm = (Id == 0) ? new() : await GetByIdAsync<ServiceDto>($"Services/{Id}");
 
+        if (serviceForm is null)
+            return;
 
         breadcrumbItems.AddRange(new List<BreadcrumbItem>
         {
-            new BreadcrumbItem(languageContainer.Keys["Home"], href: "/", icon: Icons.Material.Filled.Home),
-            new BreadcrumbItem(languageContainer.Keys["Services"], href: "/Services", icon: Icons.Material.TwoTone.Handyman),
-            new BreadcrumbItem(languageContainer.Keys[Id == 0 ? "Add Service" : $"Edit {serviceForm.Name}"], href: null, disabled: true),
+            new(languageContainer.Keys["Home"], href: "/", icon: Icons.Material.Filled.Home),
+            new(languageContainer.Keys["Services"], href: "/Services", icon: Icons.Material.TwoTone.Handyman),
+            new(languageContainer.Keys[Id == 0 ? "Add Service" : $"Edit {serviceForm.Name}"], href: null, disabled: true),
         });
     }
 
@@ -57,7 +56,7 @@ public partial class ServiceForm
     private async Task<IEnumerable<LookupDto>> GetCategories(string value)
     {
         if (serviceForm!.Categories is null)
-            serviceForm.Categories = await GetAllLookupsAsync<LookupDto>("Categories");
+            serviceForm.Categories = await GetAllLookupsAsync("Categories");
 
         // if text is null or empty, show complete list
         if (string.IsNullOrEmpty(value))

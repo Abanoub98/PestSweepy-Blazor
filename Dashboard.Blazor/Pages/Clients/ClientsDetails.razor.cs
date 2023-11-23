@@ -9,13 +9,16 @@ public partial class ClientsDetails
 
     protected override async Task OnParametersSetAsync()
     {
-        client = await GetByIdAsync($"Clients/{Id}");
+        client = await GetByIdAsync<ClientDto>($"Clients/{Id}");
+
+        if (client is null)
+            return;
 
         breadcrumbItems.AddRange(new List<BreadcrumbItem>
         {
-            new BreadcrumbItem(languageContainer.Keys["Home"], href: "/", icon: Icons.Material.Filled.Home),
-            new BreadcrumbItem(languageContainer.Keys["Clients"], href: "/Clients", icon: Icons.Material.TwoTone.Diversity1),
-            new BreadcrumbItem(client.Name, href: null, disabled: true),
+            new(languageContainer.Keys["Home"], href: "/", icon: Icons.Material.Filled.Home),
+            new(languageContainer.Keys["Clients"], href: "/Clients", icon: Icons.Material.TwoTone.Diversity1),
+            new(client.Name, href: null, disabled: true),
         });
     }
 }

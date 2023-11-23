@@ -12,9 +12,11 @@ public partial class AccountSettings
 
     protected override async Task OnInitializedAsync()
     {
-        userId = await GetClaimsPrincipalData(ClaimTypes.NameIdentifier);
+        var claims = await GetClaimsPrincipalData();
 
-        twoFactorAuthDto = await GetByIdAsync($"Account/IsTwoFactorEnabled?userId={userId}");
+        userId = claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
+
+        twoFactorAuthDto = await GetByIdAsync<TwoFactorAuthDto>($"Account/IsTwoFactorEnabled?userId={userId}");
 
         if (twoFactorAuthDto.isTwoFactorEnabled)
             await GetTwoFactorAuthInfo(userId);

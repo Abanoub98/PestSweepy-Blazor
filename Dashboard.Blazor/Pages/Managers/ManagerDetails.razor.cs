@@ -9,7 +9,10 @@ public partial class ManagerDetails
 
     protected override async Task OnParametersSetAsync()
     {
-        manager = await GetByIdAsync($"Managers/{Id}");
+        manager = await GetByIdAsync<ManagerDto>($"Managers/{Id}");
+
+        if (manager is null)
+            return;
 
         breadcrumbItems.AddRange(new List<BreadcrumbItem>
         {

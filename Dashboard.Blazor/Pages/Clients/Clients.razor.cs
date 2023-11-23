@@ -14,11 +14,11 @@ public partial class Clients
 
         breadcrumbItems.AddRange(new List<BreadcrumbItem>
         {
-            new BreadcrumbItem(languageContainer.Keys["Home"], href: "/", icon: Icons.Material.Filled.Home),
-            new BreadcrumbItem(languageContainer.Keys["Clients"], href: null, disabled: true, icon: Icons.Material.TwoTone.Diversity1),
+            new(languageContainer.Keys["Home"], href: "/", icon: Icons.Material.Filled.Home),
+            new(languageContainer.Keys["Clients"], href: null, disabled: true, icon: Icons.Material.TwoTone.Diversity1),
         });
 
-        clients = await GetAllAsync("Clients?OrderBy=id&Asc=false");
+        clients = await GetAllAsync<ClientDto>("Clients?OrderBy=id&Asc=false");
 
         StopProcessing();
     }
@@ -27,11 +27,10 @@ public partial class Clients
     {
         StartProcessing();
 
-        var isSuccess = await DeleteAsync($"Clients/{id}");
+        var isSuccess = await DeleteAsync<ClientDto>($"Clients/{id}");
+
         if (isSuccess)
-        {
             clients.Remove(clients.FirstOrDefault(x => x.Id == id)!);
-        }
 
         StopProcessing();
     }

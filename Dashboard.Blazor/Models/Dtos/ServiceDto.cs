@@ -8,6 +8,10 @@ public class ServiceDto
     public int? OrderIndex { get; set; }
 
     [Required]
+    [Label(name: "Price")]
+    public int? Price { get; set; }
+
+    [Required]
     [Label(name: "Duration")]
     public int? DurationInMinutes { get; set; }
 
