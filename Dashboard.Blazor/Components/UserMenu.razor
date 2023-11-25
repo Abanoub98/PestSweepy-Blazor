@@ -19,7 +19,7 @@
                 <!--begin::Username-->
                 <div class="fw-bold d-flex align-items-center flex-wrap fs-5">
                     <span class="">
-                        Sweepy Admin
+                        @claims.FirstOrDefault(x => x.Type == "")?.Value
                     </span>
                     <a class="fw-semibold text-muted text-hover-primary fs-7">@claims.FirstOrDefault(x => x.Type == ClaimTypes.Email)?.Value</a>
                     <span class="badge badge-light-success fw-bold fs-8 py-1 px-2 mt-3">
@@ -35,7 +35,7 @@
         <!--end::Menu separator-->
         <!--begin::Menu item-->
         <div class="menu-item px-5">
-            <a href="../dist/account/overview.html" class="menu-link px-5">@languageContainer.Keys["My Profile"]</a>
+            <a href="/MyProfile" class="menu-link px-5">@languageContainer.Keys["My Profile"]</a>
         </div>
         <!--end::Menu item-->
         <!--begin::Menu item-->
@@ -153,11 +153,6 @@
                 <!--end::Menu item-->
             </div>
             <!--end::Menu sub-->
-        </div>
-        <!--end::Menu item-->
-        <!--begin::Menu item-->
-        <div class="menu-item px-5 my-1">
-            <a @onclick="ShowAccountSettingsAsync" class="menu-link px-5">@languageContainer.Keys["Account Settings"]</a>
         </div>
         <!--end::Menu item-->
         <!--begin::Menu item-->

@@ -2,7 +2,6 @@
 using System.Security.Claims;
 using AKSoftware.Localization.MultiLanguages;
 using Blazored.LocalStorage;
-using Dashboard.Blazor.Pages.Authuntaction;
 using Microsoft.AspNetCore.Components.Authorization;
 
 namespace Dashboard.Blazor.Components;
@@ -41,19 +40,5 @@ public partial class UserMenu
     {
         await LocalStorage.RemoveItemAsync("token");
         await AuthenticationStateProvider.GetAuthenticationStateAsync();
-    }
-
-    private async Task ShowAccountSettingsAsync()
-    {
-        DialogOptions dialogOptions = new()
-        {
-            CloseOnEscapeKey = true,
-            MaxWidth = MaxWidth.Medium,
-            FullWidth = true,
-            Position = DialogPosition.TopCenter,
-            CloseButton = true,
-        };
-
-        await DialogService.ShowAsync<AccountSettings>(languageContainer.Keys["Account Settings"], dialogOptions);
     }
 }

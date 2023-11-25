@@ -97,7 +97,7 @@ public class BasePage : ComponentBase
         return (true, response.Object!);
     }
 
-    protected async Task<(bool, T?)> PostAsync<T>(string endPoint, string successMessage = "Added Successfully", bool showSuccess = true) where T : class
+    protected async Task<(bool isSucces, T? obj)> PostAsync<T>(string endPoint, string successMessage = "Added Successfully", bool showSuccess = true) where T : class
     {
         var response = await ApiService.PostAsync<T>(endPoint);
 

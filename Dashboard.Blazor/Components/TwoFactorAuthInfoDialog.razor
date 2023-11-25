@@ -1,0 +1,85 @@
+﻿@inherits BasePage
+
+<MudDialog>
+    <DialogContent>
+        <div class="mt-5">
+            <!--begin::Description-->
+            <div class="text-gray-500 fw-semibold fs-6 mb-5">
+                @languageContainer.Keys["Using an authenticator app like"]
+                <a href="https://support.google.com/accounts/answer/1066447?hl=en" target="_blank">Google Authenticator, </a>
+                @languageContainer.Keys["scan the QR code and It will generate a 6 digit code for you"]
+                <!--begin::QR code image-->
+                <div class="pt-5 d-flex justify-content-center w-100">
+                    @if (twoFactorAuth is not null)
+                    {
+                        <img src="@twoFactorAuth.QrCodeImage" alt="" class="mw-200px">
+                    }
+                    else
+                    {
+                        <MudSkeleton Animation="Animation.Wave" SkeletonType="SkeletonType.Rectangle" Width="180px" Height="180px" />
+                    }
+                </div>
+                <!--end::QR code image-->
+            </div>
+            <!--end::Description-->
+            <!--begin::Notice-->
+            <div class="notice d-flex bg-light-warning rounded border-warning border border-dashed p-6">
+                <!--begin::Icon-->
+                <i class="ki-duotone ki-information fs-2tx text-warning me-4"><span class="path1"></span><span class="path2"></span><span class="path3"></span></i>
+                <!--end::Icon-->
+                <!--begin::Wrapper-->
+                <div class="d-flex flex-stack flex-grow-1 ">
+                    <!--begin::Content-->
+                    <div class=" fw-semibold">
+                        <div class="fs-6 text-gray-700 ">
+                            @languageContainer.Keys["If you having trouble using the QR code, select manual entry on your app, and enter the code"]:
+                            <br />
+                            <div style="line-break:anywhere" class="fw-bold text-gray-900 pt-2">
+                                @(twoFactorAuth is null ? "..." : twoFactorAuth.SecretKey)
+                            </div>
+                        </div>
+                    </div>
+                    <!--end::Content-->
+                </div>
+                <!--end::Wrapper-->
+            </div>
+            <!--end::Notice-->
+            <div class="d-flex flex-center mt-5">
+                <button @onclick="CallBackDisableTwoFactorAuth" class="btn btn-warning">
+                    <span class="indicator-label">
+                        Disable Two-Factor Authentication
+                    </span>
+                </button>
+            </div>
+        </div>
+    </DialogContent>
+    <DialogActions>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    [CascadingParameter] MudDialogInstance MudDialog { get; set; } = default!;
+
+    [Parameter][EditorRequired] public string userId { set; get; } = null!;
+
+    private TwoFactorAuthDto? twoFactorAuth;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        var result = await PostAsync<TwoFactorAuthDto>
+            ($"Account/EnableOrDisableTwoFactor?userId={userId}&enable={true}", showSuccess: false);
+
+        var twoFactorAuthInfo = result.obj;
+
+        if (twoFactorAuthInfo is not null)
+        {
+            twoFactorAuth = twoFactorAuthInfo;
+            twoFactorAuth.isTwoFactorEnabled = true;
+        }
+    }
+
+    private void CallBackDisableTwoFactorAuth()
+    {
+        MudDialog.Close();
+    }
+}

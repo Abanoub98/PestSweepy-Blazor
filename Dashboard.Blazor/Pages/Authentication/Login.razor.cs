@@ -2,7 +2,7 @@
 using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components.Authorization;
 
-namespace Dashboard.Blazor.Pages.Authuntaction;
+namespace Dashboard.Blazor.Pages.Authentication;
 
 public partial class Login
 {

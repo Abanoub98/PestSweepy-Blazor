@@ -1,0 +1,44 @@
+﻿@page "/Moyasar"
+
+<h3>Moyasar Payment</h3>
+
+<div class="form-group">
+    <label for="amountInput">Amount:</label>
+    <input id="amountInput" class="form-control" @bind="Amount" />
+</div>
+
+<div class="form-group">
+    <label for="descriptionInput">Description:</label>
+    <input id="descriptionInput" class="form-control" @bind="Description" />
+</div>
+
+<button class="btn btn-primary" @onclick="InitializeMoyasar">Initialize Moyasar</button>
+
+@if(Amount!=0 && Description !=null)
+{
+    <div class="mysr-form"></div>
+}
+@code {
+    [Inject] IJSRuntime JSRuntime { get; set; } = default!;
+
+    private int Amount { get; set; }
+    private string? Description { get; set; }
+
+    private void InitializeMoyasar()
+    {
+        var initializationScript = $@"
+            Moyasar.init({{
+                element: '.mysr-form',
+                amount: {Amount},
+                currency: 'SAR',
+                description: '{Description}',
+                publishable_api_key: 'pk_test_igGxNTDwvEPGS2gnMDLnUVKMxJmNh8mLr7f9qzbx',
+                callback_url: 'https://moyasar.com/thanks',
+                methods: ['creditcard'],
+                on_completed: 'https://localhost:7143/Payments/SavePayment'
+            }});
+        ";
+
+        JSRuntime.InvokeVoidAsync("eval", initializationScript);
+    }
+}
