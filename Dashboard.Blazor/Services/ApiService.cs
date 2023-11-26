@@ -3,12 +3,10 @@
 public class ApiService : IApiService
 {
     private readonly HttpClient _httpClient;
-    private readonly NavigationManager _navigationManager;
 
-    public ApiService(HttpClient httpClient, NavigationManager navigationManager)
+    public ApiService(HttpClient httpClient)
     {
         _httpClient = httpClient;
-        _navigationManager = navigationManager;
     }
 
     public async Task<ApiResponse<T>> GetAllAsync<T>(string endPoint) where T : class
