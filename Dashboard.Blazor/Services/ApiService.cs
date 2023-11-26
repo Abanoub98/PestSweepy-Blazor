@@ -3,10 +3,12 @@
 public class ApiService : IApiService
 {
     private readonly HttpClient _httpClient;
+    private readonly NavigationManager _navigationManager;
 
-    public ApiService(HttpClient httpClient)
+    public ApiService(HttpClient httpClient, NavigationManager navigationManager)
     {
         _httpClient = httpClient;
+        _navigationManager = navigationManager;
     }
 
     public async Task<ApiResponse<T>> GetAllAsync<T>(string endPoint) where T : class
@@ -29,7 +31,16 @@ public class ApiService : IApiService
 
     public async Task<ApiResponse<T>> GetByIdAsync<T>(string endPoint) where T : class
     {
-        var responseMessage = await _httpClient.GetAsync(endPoint);
+        HttpResponseMessage responseMessage = new();
+
+        try
+        {
+            responseMessage = await _httpClient.GetAsync(endPoint);
+        }
+        catch
+        {
+            return await GetErrorAsync<T>(responseMessage);
+        }
 
         if (responseMessage.IsSuccessStatusCode)
             return await GetResponseMessage<T>(responseMessage);
@@ -39,7 +50,17 @@ public class ApiService : IApiService
 
     public async Task<ApiResponse<T>> AddAsync<T>(string endPoint, T model) where T : class
     {
-        var responseMessage = await _httpClient.PostAsJsonAsync(endPoint, model);
+
+        HttpResponseMessage responseMessage = new();
+
+        try
+        {
+            responseMessage = await _httpClient.PostAsJsonAsync(endPoint, model);
+        }
+        catch
+        {
+            return await GetErrorAsync<T>(responseMessage);
+        }
 
         if (responseMessage.IsSuccessStatusCode)
             return await GetResponseMessage<T>(responseMessage);
@@ -49,7 +70,16 @@ public class ApiService : IApiService
 
     public async Task<ApiResponse<T>> DeleteAsync<T>(string endPoint) where T : class
     {
-        var responseMessage = await _httpClient.DeleteAsync(endPoint);
+        HttpResponseMessage responseMessage = new();
+
+        try
+        {
+            responseMessage = await _httpClient.DeleteAsync(endPoint);
+        }
+        catch
+        {
+            return await GetErrorAsync<T>(responseMessage);
+        }
 
         if (responseMessage.IsSuccessStatusCode)
             return await GetResponseMessage<T>(responseMessage);
@@ -59,7 +89,16 @@ public class ApiService : IApiService
 
     public async Task<ApiResponse<T>> PostAsync<T>(string endPoint, HttpContent? model = null) where T : class
     {
-        var responseMessage = await _httpClient.PostAsync(endPoint, model);
+        HttpResponseMessage responseMessage = new();
+
+        try
+        {
+            responseMessage = await _httpClient.PostAsync(endPoint, model);
+        }
+        catch
+        {
+            return await GetErrorAsync<T>(responseMessage);
+        }
 
         if (responseMessage.IsSuccessStatusCode)
             return await GetResponseMessage<T>(responseMessage);
@@ -69,7 +108,16 @@ public class ApiService : IApiService
 
     public async Task<ApiResponse<T>> UpdateAsync<T>(string endPoint, T model) where T : class
     {
-        var responseMessage = await _httpClient.PutAsJsonAsync(endPoint, model);
+        HttpResponseMessage responseMessage = new();
+
+        try
+        {
+            responseMessage = await _httpClient.PutAsJsonAsync(endPoint, model);
+        }
+        catch
+        {
+            return await GetErrorAsync<T>(responseMessage);
+        }
 
         if (responseMessage.IsSuccessStatusCode)
             return await GetResponseMessage<T>(responseMessage);

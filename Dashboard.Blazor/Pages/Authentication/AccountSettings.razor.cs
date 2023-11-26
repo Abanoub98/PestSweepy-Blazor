@@ -6,6 +6,7 @@ public partial class AccountSettings
 {
     [Parameter][EditorRequired] public IEnumerable<Claim> Claims { get; set; } = null!;
     [Parameter][EditorRequired] public bool IsTwoFactorEnabled { get; set; }
+    [Parameter][EditorRequired] public string Email { get; set; } = null!;
     [Parameter][EditorRequired] public EventCallback<bool> TwoFactorAuthChanged { get; set; }
 
     private TwoFactorAuthDto? twoFactorAuthDto;
@@ -28,10 +29,15 @@ public partial class AccountSettings
 
         twoFactorAuthDto = await GetTwoFactorAuthInfo(userId, !twoFactorAuthDto!.isTwoFactorEnabled);
 
+        StopProcessing();
+
         if (twoFactorAuthDto is not null)
+        {
             await TwoFactorAuthChanged.InvokeAsync(twoFactorAuthDto.isTwoFactorEnabled);
 
-        StopProcessing();
+            if (twoFactorAuthDto.isTwoFactorEnabled)
+                await ShowTwoFactorAuthMoreInfo();
+        }
     }
 
     private async Task ShowTwoFactorAuthMoreInfo()
@@ -55,6 +61,21 @@ public partial class AccountSettings
 
         if (!result.Canceled)
             await ChangeStatusOfTwoFactorAuth();
+    }
+
+    private async Task ShowResetPassword()
+    {
+        DialogOptions dialogOptions = new()
+        {
+            CloseOnEscapeKey = true,
+            MaxWidth = MaxWidth.Small,
+            FullWidth = true,
+            Position = DialogPosition.Center,
+            CloseButton = true
+        };
+
+        var dialog = await DialogService.ShowAsync<ResetPasswordDialog>("Reset Password", dialogOptions);
+        var result = await dialog.Result;
     }
 
     private async Task<TwoFactorAuthDto?> GetTwoFactorAuthInfo(string? userId, bool isTwoFactorEnabled)

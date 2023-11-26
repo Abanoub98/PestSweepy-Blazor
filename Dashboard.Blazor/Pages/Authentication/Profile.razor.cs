@@ -6,7 +6,7 @@ public partial class Profile
 {
     private IEnumerable<Claim>? claims;
     private AccountProfile? accountProfile;
-    private int profileCompletion;
+    private int profileCompletion = 0;
 
     protected override async Task OnInitializedAsync()
     {

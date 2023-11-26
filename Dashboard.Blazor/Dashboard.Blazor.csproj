@@ -24,6 +24,12 @@
 	  <None Include="Components\FormLoadingSpinner.razor" />
 	  <None Include="Components\ServerError.razor" />
 	  <None Include="Components\NoDataToDisply.razor" />
+	  <None Include="wwwroot\assets\media\logos\default-dark.svg" />
+	  <None Include="wwwroot\assets\media\logos\defaultl.svg" />
+	  <None Include="wwwroot\assets\media\logos\keenthemes-dark.svg" />
+	  <None Include="wwwroot\assets\media\logos\keenthemes.svg" />
+	  <None Include="wwwroot\assets\media\logos\mail.svg" />
+	  <None Include="wwwroot\assets\media\logos\mail2.svg" />
 	</ItemGroup>
 
 	<ItemGroup>

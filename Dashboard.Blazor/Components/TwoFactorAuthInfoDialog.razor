@@ -3,12 +3,27 @@
 <MudDialog>
     <DialogContent>
         <div class="mt-5">
+            <h3 class="text-dark fw-bold mb-7">Authenticator App</h3>
             <!--begin::Description-->
             <div class="text-gray-500 fw-semibold fs-6 mb-5">
-                @languageContainer.Keys["Using an authenticator app like"]
+                @languageContainer.Keys["Using an authenticator app"]
                 <a href="https://support.google.com/accounts/answer/1066447?hl=en" target="_blank">Google Authenticator, </a>
                 @languageContainer.Keys["scan the QR code and It will generate a 6 digit code for you"]
                 <!--begin::QR code image-->
+                <div class="d-flex flex-wrap align-items-center justify-content-center">
+                    <!-- Google Play Store App Link -->
+                    <div class="p-3">
+                        <a class="app-link rounded-circle" href="https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2&hl=en_US" target="_blank">
+                            <img src="assets/media/logos/playstore-download.png" alt="Google Play Store" class="w-150px">
+                        </a>
+                    </div>
+                    <!-- Apple App Store App Link -->
+                    <div class="p-3">
+                        <a class="app-link rounded-circle" href="https://apps.apple.com/us/app/google-authenticator/id388497605" target="_blank">
+                            <img src="assets/media/logos/applestore-download.png" alt="Apple App Store" class="w-150px">
+                        </a>
+                    </div>
+                </div>
                 <div class="pt-5 d-flex justify-content-center w-100">
                     @if (twoFactorAuth is not null)
                     {
@@ -35,7 +50,7 @@
                             @languageContainer.Keys["If you having trouble using the QR code, select manual entry on your app, and enter the code"]:
                             <br />
                             <div style="line-break:anywhere" class="fw-bold text-gray-900 pt-2">
-                                @(twoFactorAuth is null ? "..." : twoFactorAuth.SecretKey)
+                                @(twoFactorAuth is null ? "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX" : twoFactorAuth.SecretKey)
                             </div>
                         </div>
                     </div>
