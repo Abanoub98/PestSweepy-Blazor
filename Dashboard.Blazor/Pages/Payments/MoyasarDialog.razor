@@ -1,0 +1,45 @@
+﻿<MudDialog>
+    <DialogContent>
+        <div class="form-group mb-3">
+            <label for="amountInput">Amount:</label>
+            <input id="amountInput" class="form-control" @bind="Amount" />
+        </div>
+        <button class="btn btn-sm btn-primary" @onclick="InitializeMoyasar">Initialize Moyasar</button>
+
+        @if (Amount > 0)
+        {
+            <div class="mysr-form mt-5"></div>
+        }
+    </DialogContent>
+    <DialogActions>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    [Inject] IJSRuntime JSRuntime { get; set; } = default!;
+    [CascadingParameter] MudDialogInstance MudDialog { get; set; } = default!;
+
+    private int Amount = 150000;
+
+    void Submit() => MudDialog.Close(DialogResult.Ok(true));
+
+    void Cancel() => MudDialog.Cancel();
+
+    private async Task InitializeMoyasar()
+    {
+        string initializationScript = $@"
+            Moyasar.init({{
+                element: '.mysr-form',
+                amount: {Amount},
+                currency: 'SAR',
+                description: 'Test Payment',
+                publishable_api_key: 'pk_test_Eaq1zMjsvHtZXKdnhoieg3ugdAq4KNhagtg8A6DH',
+                callback_url: 'https://moyasar.com/thanks',
+                methods: ['creditcard'],
+                on_completed: 'https://localhost:7143/Payments/SavePayment'
+            }});
+        ";
+
+        await JSRuntime.InvokeVoidAsync("eval", initializationScript);
+    }
+}

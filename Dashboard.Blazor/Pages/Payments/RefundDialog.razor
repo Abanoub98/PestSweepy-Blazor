@@ -1,0 +1,22 @@
+﻿<MudDialog>
+    <DialogContent>
+        <h3>Moyasar Payment</h3>
+        <div class="d-flex justify-content-between my-3">
+            <div class="form-group">
+                <label for="amountInput">Amount:</label>
+                <input id="amountInput" class="form-control" @bind="Amount" />
+            </div>
+            <button class="btn btn-primary">Refund</button>
+        </div>
+    </DialogContent>
+    <DialogActions>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    [CascadingParameter] MudDialogInstance MudDialog { get; set; } = default!;
+    [Parameter][EditorRequired]public int Amount { get; set; }
+
+    void Submit() => MudDialog.Close(DialogResult.Ok(true));
+    void Cancel() => MudDialog.Cancel();
+}

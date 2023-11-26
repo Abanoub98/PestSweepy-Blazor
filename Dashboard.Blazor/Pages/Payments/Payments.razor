@@ -1,0 +1,87 @@
+﻿@page "/Payments"
+@attribute [Authorize]
+@inherits BasePage
+
+<BrowserViewportObserver TableHeightChanged="TableHeightChanged" />
+
+<PageTitle>@languageContainer.Keys["Payments"]</PageTitle>
+<MudBreadcrumbs Items="breadcrumbItems"></MudBreadcrumbs>
+
+<MudCard Elevation=" 25">
+    <MudCardContent>
+        <MudDataGrid T="PaymentDto" Dense="true" Elevation="0" FixedHeader="true" Height="@($"{tableHight}px")"
+                     Loading="@(isLoading)" LoadingProgressColor="Color.Info" Filterable="true"
+                     Items="payments" Hover="true" SortMode="SortMode.Single" QuickFilter="@FilterFunc">
+
+            <ToolBarContent>
+                <div class="d-flex justify-content-between flex-column align-items-center flex-md-row w-100">
+                    <div class="w-md-25 w-100">
+                        <div class="d-flex align-items-center">
+                            <MudAvatar Rounded="true" Color="Color.Info">
+                                <MudIcon Icon="@Icons.Material.Filled.Payment" />
+                            </MudAvatar>
+                            <MudText Class="mx-3" Typo="Typo.h5">@languageContainer.Keys["Payments"]</MudText>
+                            <MudIconButton OnClick="OpenPaymentDialog" Icon="@Icons.Material.Filled.Add" Color="Color.Success"></MudIconButton>
+                        </div>
+                    </div>
+                    <div class="w-md-50 w-100">
+                        <MudTextField @bind-Value="searchString" Adornment="Adornment.Start" Class="mt-0 mb-5" Immediate="true"
+                                        Placeholder=@($"{languageContainer.Keys["Search For"]} User Id, Type, Table Name, Date")
+                                        AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" />
+                    </div>
+                </div>
+            </ToolBarContent>
+
+            <NoRecordsContent>
+                <NoDataToDisply />
+            </NoRecordsContent>
+
+            <Columns>
+                <PropertyColumn Property="x => x.Created_at" Title="Created At" />
+
+                <TemplateColumn Context="payment">
+                    <HeaderTemplate>
+                        <MudText>Status</MudText>
+                    </HeaderTemplate>
+                    <CellTemplate>
+                        <MudText>@payment.Item?.Status</MudText>
+                    </CellTemplate>
+                </TemplateColumn>
+
+                <TemplateColumn Context="payment">
+                    <HeaderTemplate>
+                        <MudText>Type</MudText>
+                    </HeaderTemplate>
+                    <CellTemplate>
+                        <MudText>@payment.Item?.Source.Type</MudText>
+                    </CellTemplate>
+                </TemplateColumn>
+
+                <PropertyColumn Property="x => x.Amount" Title="Amount" />
+                <PropertyColumn Property="x => x.Id" Title="Amount" />
+
+                <TemplateColumn CellStyle="width:250px" CellClass="text-center" Context="payment" HeaderClass="text-center" Sortable="false" Filterable="false">
+                    <HeaderTemplate>
+                        <MudText Class="w-100">Actions</MudText>
+                    </HeaderTemplate>
+                    <CellTemplate>
+                        <a title="Show Details" class="btn btn-sm btn-light-info me-1">
+                            <i class="fa-solid fa-circle-info"></i>
+                        </a>
+                        <a title="Refund" class="btn btn-sm btn-light-warning me-1">
+                            <i class="fa-solid fa-rotate-left"></i>
+                        </a>
+                        <a title="Delete" class="btn btn-sm btn-light-danger me-1">
+                            <i class="fa-solid fa-circle-xmark"></i>
+                        </a>
+                    </CellTemplate>
+                </TemplateColumn>
+            </Columns>
+
+            <PagerContent>
+                <MudDataGridPager T="PaymentDto" />
+            </PagerContent>
+        </MudDataGrid>
+    </MudCardContent>
+</MudCard>
+
