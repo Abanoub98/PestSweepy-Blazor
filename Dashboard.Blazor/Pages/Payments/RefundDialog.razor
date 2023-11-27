@@ -64,9 +64,12 @@
     {
         StartProcessing();
 
+        errorMessage = null;
+
         if (Amount > maxAmount)
         {
             errorMessage = "Amount more than the payment amount";
+            StopProcessing();
             return;
         }
 

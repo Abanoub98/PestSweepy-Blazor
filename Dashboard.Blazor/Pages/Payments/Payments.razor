@@ -48,7 +48,8 @@
                         <MudChip Variant="Variant.Text" Size="Size.Small"
                                 Color="@(payment.Item?.Status == "paid" ? Color.Success :
                                 payment.Item?.Status == "initiated" ? Color.Info :
-                                payment.Item?.Status == "refunded" || payment.Item?.Status == "voided" ? Color.Warning : Color.Error)">
+                                payment.Item?.Status == "refunded" ?  Color.Primary :
+                                payment.Item?.Status == "voided" ? Color.Warning : Color.Error)">
 
                             @payment.Item?.Status
                         </MudChip>
