@@ -1,19 +1,15 @@
-﻿<MudDialog>
-    <DialogContent>
-        <div class="form-group mb-3">
-            <label for="amountInput">Amount:</label>
-            <input id="amountInput" class="form-control" @bind="Amount" />
-        </div>
-        <button class="btn btn-sm btn-primary" @onclick="InitializeMoyasar">Initialize Moyasar</button>
+﻿@page "/AddPayment"
 
-        @if (Amount > 0)
-        {
-            <div class="mysr-form mt-5"></div>
-        }
-    </DialogContent>
-    <DialogActions>
-    </DialogActions>
-</MudDialog>
+<div class="form-group mb-3">
+    <label for="amountInput">Amount:</label>
+    <input id="amountInput" class="form-control" @bind="Amount" />
+</div>
+<button class="btn btn-sm btn-primary" @onclick="InitializeMoyasar">Initialize Moyasar</button>
+
+@if (Amount > 0)
+{
+    <div class="mysr-form mt-5"></div>
+}
 
 @code {
     [Inject] IJSRuntime JSRuntime { get; set; } = default!;
@@ -30,11 +26,11 @@
         string initializationScript = $@"
             Moyasar.init({{
                 element: '.mysr-form',
-                amount: {Amount},
+                amount: {Amount}, 
                 currency: 'SAR',
                 description: 'Test Payment',
                 publishable_api_key: 'pk_test_Eaq1zMjsvHtZXKdnhoieg3ugdAq4KNhagtg8A6DH',
-                callback_url: 'https://pestsweepy.com/Payments',
+                callback_url: 'https://localhost:44320/Payments',
                 methods: ['creditcard'],
                 on_completed: 'https://api.pestsweepy.com/Payments/SavePayment'
             }});

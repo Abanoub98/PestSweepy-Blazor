@@ -2,7 +2,7 @@
 
 public partial class Payments
 {
-    private List<PaymentDto> payments = new();
+    private List<PaymentBaseDto> payments = new();
     private string searchString = string.Empty;
     private readonly string detailsUri = "Payments/Details";
 
@@ -17,37 +17,62 @@ public partial class Payments
             new(languageContainer.Keys["Payments"], href: null, disabled: true, icon: Icons.Material.Filled.Payment),
         };
 
-        payments = await GetAllAsync<PaymentDto>("Payments?OrderBy=id&Asc=false");
+        payments = await GetAllAsync<PaymentBaseDto>("Payments?OrderBy=CreatedAt&Asc=false");
 
         StopProcessing();
     }
 
-    private async Task OpenPaymentDialog()
+    private async Task RefundPayment(decimal amount, string paymentId)
     {
         DialogOptions dialogOptions = new()
         {
             CloseOnEscapeKey = true,
             MaxWidth = MaxWidth.Small,
             FullWidth = true,
-            Position = DialogPosition.Center,
+            Position = DialogPosition.TopCenter,
             CloseButton = true
         };
 
-        var dialog = await DialogService.ShowAsync<MoyasarDialog>("Create Payment", dialogOptions);
-        await dialog.Result;
+        DialogParameters<RefundDialog> formParameters = new()
+        {
+            { x => x.Amount, amount },
+            { x => x.PaymentId, paymentId }
+        };
 
-        await OnInitializedAsync();
+        var dialog = await DialogService.ShowAsync<RefundDialog>("Refund Payment", formParameters, dialogOptions);
+        var result = await dialog.Result;
+
+        if (!result.Canceled)
+            await OnInitializedAsync();
+
     }
 
-    private bool FilterFunc(PaymentDto element)
+    private async Task VoidPayment(string paymentId)
+    {
+        StartProcessing();
+
+        var isConfirmed = await ShowConfirmation("You want to avoid this payment?");
+
+        if (isConfirmed)
+        {
+            var result = await PostAsync<PaymentDto>($"/Payments/VoidPayment/{paymentId}");
+
+            if (result.isSucces)
+                await OnInitializedAsync();
+        }
+
+        StopProcessing();
+    }
+
+    private bool FilterFunc(PaymentBaseDto element)
     {
         if (string.IsNullOrWhiteSpace(searchString))
             return true;
-        if (element.Created_at.ToString().Contains(searchString, StringComparison.OrdinalIgnoreCase))
+        if (element.CreatedAt.ToString().Contains(searchString, StringComparison.OrdinalIgnoreCase))
             return true;
         if (element.Status.Contains(searchString, StringComparison.OrdinalIgnoreCase))
             return true;
-        if (element.Source.Type.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+        if (element.Company.Contains(searchString, StringComparison.OrdinalIgnoreCase))
             return true;
         if (element.Amount.ToString().Contains(searchString, StringComparison.OrdinalIgnoreCase))
             return true;

@@ -1,5 +1,17 @@
 ﻿namespace Dashboard.Blazor.Models.Dtos;
 
+public class PaymentBaseDto
+{
+    public string Id { get; set; } = null!;
+    public string? Status { get; set; }
+    public decimal Amount { get; set; }
+    public string? AmountFormat { get; set; }
+    public DateTime CreatedAt { get; set; }
+    public string? Description { get; set; }
+    public string? Type { get; set; }
+    public string? Company { get; set; }
+}
+
 public class PaymentDto
 {
     public string Id { get; set; } = null!;

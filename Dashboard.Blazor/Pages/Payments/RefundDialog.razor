@@ -1,13 +1,47 @@
-﻿<MudDialog>
+﻿@inherits BasePage
+
+<MudDialog>
     <DialogContent>
-        <h3>Moyasar Payment</h3>
-        <div class="d-flex justify-content-between my-3">
-            <div class="form-group">
-                <label for="amountInput">Amount:</label>
-                <input id="amountInput" class="form-control" @bind="Amount" />
+        <div class="form-group mb-5">
+            <div class="d-flex justify-content-between align-items-end">
+                <div class="px-3">
+                    <label for="amountInput mb-3">Amount:</label>
+                    <input id="amountInput" class="form-control" @bind="Amount" />
+                    @if (errorMessage is not null)
+                    {
+                        <div class="text-danger">
+                            @errorMessage
+                        </div>
+                    }
+                </div>
+                <div class="px-3">
+                    <button @onclick="Refund" class="btn btn-sm btn-warning @(isDisable? "disabled" : string.Empty)">Refund</button>
+                </div>
             </div>
-            <button class="btn btn-primary">Refund</button>
         </div>
+        <!--begin::Notice-->
+        <div class="notice d-flex bg-light-warning rounded border-warning border p-6">
+            <!--begin::Icon-->
+            <i class="ki-duotone ki-information fs-2tx text-warning me-4"><span class="path1"></span><span class="path2"></span><span class="path3"></span></i>
+            <!--end::Icon-->
+            <!--begin::Wrapper-->
+            <div class="d-flex flex-stack flex-grow-1 flex-wrap flex-md-nowrap">
+                <!--begin::Content-->
+                <div class="mb-3 mb-md-0 fw-semibold">
+                    <h4 class="text-gray-900 fw-bold">@languageContainer.Keys["Attention: Refund Payment Warning"]</h4>
+
+                    <div class="fs-6 text-gray-700">
+                        @languageContainer.Keys["There is no option for rollback or cancellation."]
+                        <br />
+                        @languageContainer.Keys["Please ensure that this refund is absolutely necessary, as it will have a lasting impact on payment transaction."]
+                    </div>
+                </div>
+                <!--end::Content-->
+            </div>
+            <!--end::Wrapper-->
+            <MudImage Src="/images/warning.png" Width="120"></MudImage>
+        </div>
+        <!--end::Notice-->
     </DialogContent>
     <DialogActions>
     </DialogActions>
@@ -15,8 +49,33 @@
 
 @code {
     [CascadingParameter] MudDialogInstance MudDialog { get; set; } = default!;
-    [Parameter][EditorRequired]public int Amount { get; set; }
+    [Parameter][EditorRequired] public decimal Amount { get; set; }
+    [Parameter][EditorRequired] public string PaymentId { get; set; } = null!;
 
-    void Submit() => MudDialog.Close(DialogResult.Ok(true));
-    void Cancel() => MudDialog.Cancel();
+    private decimal maxAmount = 0;
+    private string? errorMessage;
+
+    protected override void OnParametersSet()
+    {
+        maxAmount = Amount;
+    }
+
+    private async Task Refund()
+    {
+        StartProcessing();
+
+        if (Amount > maxAmount)
+        {
+            errorMessage = "Amount more than the payment amount";
+            return;
+        }
+
+        var result = await PostAsync<PaymentDto>($"/Payments/RefundPayment/{PaymentId}?amountToRefund={Amount}");
+
+        if (result.isSucces)
+            MudDialog.Close(DialogResult.Ok(true));
+        
+        StopProcessing();
+    }
+
 }
