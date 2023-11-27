@@ -1,9 +1,9 @@
-﻿using System.Security.Claims;
-
-namespace Dashboard.Blazor.Pages.Authentication;
+﻿namespace Dashboard.Blazor.Pages.Authentication;
 
 public partial class Profile
 {
+    [Inject] ILocalStorageService LocalStorage { get; set; } = default!;
+
     private IEnumerable<Claim>? claims;
     private AccountProfile? accountProfile;
     private int profileCompletion = 0;
@@ -41,6 +41,12 @@ public partial class Profile
         return result;
     }
 
+    private async Task SignOut()
+    {
+        await LocalStorage.RemoveItemAsync("token");
+        await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        StateHasChanged();
+    }
     private void ChangeTwoFactorEnabledValue(bool value)
     {
         accountProfile!.TwoFactorEnabled = value;

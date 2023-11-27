@@ -1,10 +1,4 @@
-﻿using System.Globalization;
-using System.Security.Claims;
-using AKSoftware.Localization.MultiLanguages;
-using Blazored.LocalStorage;
-using Microsoft.AspNetCore.Components.Authorization;
-
-namespace Dashboard.Blazor.Components;
+﻿namespace Dashboard.Blazor.Components;
 
 public partial class UserMenu
 {
@@ -40,5 +34,6 @@ public partial class UserMenu
     {
         await LocalStorage.RemoveItemAsync("token");
         await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        StateHasChanged();
     }
 }

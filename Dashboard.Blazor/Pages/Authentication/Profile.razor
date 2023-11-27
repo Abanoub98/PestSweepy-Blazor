@@ -7,9 +7,10 @@
         <div class="d-flex flex-wrap flex-sm-nowrap mb-3">
             <!--begin: Pic-->
             <div class="me-7 mb-4">
-                <MudAvatar Rounded="true" Class="border border-gray-300" Style="height:140px; width:140px; font-size:2rem;" Color="Color.Info">
-                    <MudImage Src="/images/Logo.webp"></MudImage>
-                </MudAvatar>
+                <div class="symbol symbol-100px symbol-lg-160px symbol-fixed position-relative">
+                    <img src="/images/Logo.webp" alt="image">
+                    <div class="position-absolute translate-middle bottom-0 start-100 mb-6 bg-success rounded-circle border border-4 border-body h-20px w-20px"></div>
+                </div>
             </div>
             <!--end::Pic-->
             <!--begin::Info-->
@@ -44,7 +45,7 @@
                         <!--end::Name-->
                         <!--begin::Info-->
                         <div class="d-flex flex-wrap fw-semibold fs-6 mb-4 pe-2">
-                            <a class="@(accountProfile is null ? "d-flex" : accountProfile.PhoneNumber is null? "d-none" : "d-flex" ) align-items-center text-gray-500 text-hover-primary me-5 mb-2">
+                            <a class="@(accountProfile is null ? "d-flex" : accountProfile.PhoneNumber is null? "d-none" : "d-flex" ) align-items-center text-gray-500 text-hover-primary me-5">
                                 <i class="ki-duotone ki-phone fs-4 me-1">
                                     <span class="path1"></span>
                                     <span class="path2"></span>
@@ -58,28 +59,33 @@
                                     @accountProfile.PhoneNumber
                                 }
                             </a>
-                            <a class="@(accountProfile is null ? "d-flex" : accountProfile.Email is null? "d-none" : "d-flex" ) align-items-center text-gray-500 text-hover-primary mb-2">
-                                <i class="ki-duotone ki-sms fs-4 me-1"><span class="path1"></span><span class="path2"></span></i>
-                                @if (accountProfile is null)
-                                {
-                                    <MudSkeleton Width="100px" Height="20px;" />
-                                }
-                                else
-                                {
-                                    @accountProfile.Email
-                                    @if (accountProfile.EmailConfirmed)
+                            <MudTooltip Arrow="true" Duration="500" Text="Verified" Color="Color.Info">
+                                <a class="@(accountProfile is null ? "d-flex" : accountProfile.Email is null? "d-none" : "d-flex" ) align-items-center text-gray-500 text-hover-primary">
+                                    <i class="ki-duotone ki-sms fs-4 me-1"><span class="path1"></span><span class="path2"></span></i>
+                                    @if (accountProfile is null)
                                     {
-                                        <i class="ki-duotone ki-verify fs-3 text-success ms-1">
-                                            <span class="path1"></span>
-                                            <span class="path2"></span>
-                                        </i>
+                                        <MudSkeleton Width="100px" Height="20px;" />
                                     }
-                                }
-                            </a>
+                                    else
+                                    {
+                                        @accountProfile.Email
+                                        @if (accountProfile.EmailConfirmed)
+                                        {
+                                            <i class="ki-duotone ki-verify fs-3 text-primary ms-1">
+                                                <span class="path1"></span>
+                                                <span class="path2"></span>
+                                            </i>
+                                        }
+                                    }
+                                </a>
+                            </MudTooltip>
                         </div>
                         <!--end::Info-->
                     </div>
                     <!--end::User-->
+                    <div class="d-flex my-4">
+                        <a href="" @onclick="SignOut" class="btn btn-sm btn-danger me-2">Logout</a>
+                    </div>
                 </div>
                 <!--end::Title-->
                 <!--begin::Stats-->
