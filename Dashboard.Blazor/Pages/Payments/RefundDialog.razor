@@ -70,7 +70,7 @@
             return;
         }
 
-        var result = await PostAsync<PaymentDto>($"/Payments/RefundPayment/{PaymentId}?amountToRefund={Amount}");
+        var result = await PostAsync<PaymentDto>($"/Payments/RefundPayment/{PaymentId}?amountToRefund={Uri.EscapeDataString(Amount.ToString())}");
 
         if (result.isSucces)
             MudDialog.Close(DialogResult.Ok(true));
