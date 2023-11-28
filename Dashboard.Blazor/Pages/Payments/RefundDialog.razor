@@ -5,8 +5,8 @@
         <div class="form-group mb-5">
             <div class="d-flex justify-content-between align-items-end">
                 <div class="px-3">
-                    <label for="amountInput mb-3">Amount:</label>
-                    <input id="amountInput" class="form-control" @bind="Amount" />
+                    <label for="amountInput">Amount In SAR:</label>
+                    <input id="amountInput" class="form-control my-1" @bind="amountInSAR" />
                     @if (errorMessage is not null)
                     {
                         <div class="text-danger">
@@ -15,7 +15,20 @@
                     }
                 </div>
                 <div class="px-3">
-                    <button @onclick="Refund" class="btn btn-sm btn-warning @(isDisable? "disabled" : string.Empty)">Refund</button>
+                    <button @onclick="Refund" class="btn btn-sm btn-warning @(isDisable? "disabled" : string.Empty)">
+                        @if (isLoading)
+                        {
+                            <span class="indicator-label">
+                                @languageContainer.Keys["Please Wait"]... <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
+                            </span>
+                        }
+                        else
+                        {
+                            <span class="indicator-label">
+                                @languageContainer.Keys["Refund"]
+                            </span>
+                        }
+                    </button>
                 </div>
             </div>
         </div>
@@ -52,6 +65,7 @@
     [Parameter][EditorRequired] public decimal Amount { get; set; }
     [Parameter][EditorRequired] public string PaymentId { get; set; } = null!;
 
+    private decimal amountInSAR = 0;
     private decimal maxAmount = 0;
     private string? errorMessage;
 
@@ -66,9 +80,18 @@
 
         errorMessage = null;
 
+        Amount = ConvertToHalala(amountInSAR);
+
         if (Amount > maxAmount)
         {
             errorMessage = "Amount more than the payment amount";
+            StopProcessing();
+            return;
+        }
+        
+        if (Amount < 99 )
+        {
+            errorMessage = "Amount less than the acceptable amount";
             StopProcessing();
             return;
         }
@@ -79,6 +102,12 @@
             MudDialog.Close(DialogResult.Ok(true));
         
         StopProcessing();
+    }
+
+    private decimal ConvertToHalala(decimal amount)
+    {
+        decimal halala = (amount * 100);
+        return halala;
     }
 
 }

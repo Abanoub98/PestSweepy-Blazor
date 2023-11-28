@@ -48,8 +48,7 @@
                         <MudChip Variant="Variant.Text" Size="Size.Small"
                                 Color="@(payment.Item?.Status == "paid" ? Color.Success :
                                 payment.Item?.Status == "initiated" ? Color.Info :
-                                payment.Item?.Status == "refunded" ?  Color.Primary :
-                                payment.Item?.Status == "voided" ? Color.Warning : Color.Error)">
+                                payment.Item?.Status == "refunded" ?  Color.Warning : Color.Error)">
 
                             @payment.Item?.Status
                         </MudChip>
@@ -63,25 +62,25 @@
                     <CellTemplate>
                         @if (payment.Item?.Company == "visa")
                         {
-                            <MudAvatar Rounded="true" Color="Color.Info">
+                            <MudAvatar Class="cursor-pointer" @onclick="@(() => ShowImagePreview("/assets/media/logos/visa-logo-800x450.jpg"))" Rounded="true" Color="Color.Info">
                                 <MudImage Src="/assets/media/logos/visa-logo-800x450.jpg"></MudImage>
                             </MudAvatar>
                         }
                         else if (payment.Item?.Company == "master")
                         {
-                            <MudAvatar Rounded="true" Color="Color.Info">
+                            <MudAvatar Class="cursor-pointer" @onclick="@(() => ShowImagePreview("/assets/media/logos/Mastercard_new_logo-1200x865.webp"))" Rounded="true" Color="Color.Info">
                                 <MudImage Src="/assets/media/logos/Mastercard_new_logo-1200x865.webp"></MudImage>
                             </MudAvatar>
                         }
                         else if (payment.Item?.Company == "amex")
                         {
-                            <MudAvatar Rounded="true" Color="Color.Info">
+                            <MudAvatar Class="cursor-pointer" @onclick="@(() => ShowImagePreview("/assets/media/logos/1026px-American_Express_logo_(2018).svg.png"))" Rounded="true" Color="Color.Info">
                                 <MudImage Src="/assets/media/logos/1026px-American_Express_logo_(2018).svg.png"></MudImage>
                             </MudAvatar>
                         }
                         else if (payment.Item?.Company == "mada")
                         {
-                            <MudAvatar Rounded="true" Color="Color.Info">
+                            <MudAvatar Class="cursor-pointer" @onclick="@(() => ShowImagePreview("/assets/media/logos/Mada.png"))" Rounded="true" Color="Color.Info">
                                 <MudImage Src="/assets/media/logos/Mada.png"></MudImage>
                             </MudAvatar>
                         }
@@ -94,7 +93,8 @@
                     </CellTemplate>
                 </TemplateColumn>
 
-                <PropertyColumn Property="x => x.Amount" Title="Amount" />
+                <PropertyColumn Property="x => x.AmountFormat" Title="Amount" Sortable="false" Filterable="false" />
+                <PropertyColumn Property="x => x.Description" Title="Description" Sortable="false" Filterable="false" />
 
                 <TemplateColumn CellStyle="width:250px" Title="Actions" CellClass="text-center" Context="payment" HeaderClass="text-center" Sortable="false" Filterable="false">
                     <HeaderTemplate>
@@ -104,10 +104,10 @@
                         <a title="Show Details" class="btn btn-sm btn-light-info me-1 @(isDisable? "disabled" : string.Empty)">
                             <i class="fa-solid fa-circle-info"></i>
                         </a>
-                        <a @onclick="() => RefundPayment(payment.Item.Amount, payment.Item.Id)" title="Refund" class="btn btn-sm btn-light-warning me-1 @(isDisable? "disabled" : string.Empty)">
+                        <a @onclick="() => RefundPayment(payment.Item.Amount, payment.Item.Id)" title="Refund" class="btn btn-sm btn-light-warning me-1 @(!isDisable && payment.Item?.Status == "paid" || payment.Item?.Status == "initiated" ? string.Empty : "disabled")">
                             <i class="fa-solid fa-rotate-left"></i>
                         </a>
-                        <a @onclick="() => VoidPayment(payment.Item.Id)" title="Delete" class="btn btn-sm btn-light-danger me-1 @(isDisable? "disabled" : string.Empty)">
+                        <a @onclick="() => VoidPayment(payment.Item.Id)" title="Delete" class="btn btn-sm btn-light-danger me-1 @(!isDisable && payment.Item?.Status == "paid" ? string.Empty : "disabled")">
                             <i class="fa-solid fa-circle-xmark"></i>
                         </a>
                     </CellTemplate>
