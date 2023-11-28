@@ -1,9 +1,6 @@
 using System.Reflection;
-using AKSoftware.Localization.MultiLanguages;
-using Blazored.LocalStorage;
 using Dashboard.Blazor;
 using Dashboard.Blazor.Extensions;
-using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using MudBlazor.Services;
