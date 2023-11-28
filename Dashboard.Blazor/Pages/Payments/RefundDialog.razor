@@ -6,7 +6,7 @@
             <div class="d-flex justify-content-between align-items-end">
                 <div class="px-3">
                     <label for="amountInput">Amount In SAR:</label>
-                    <input id="amountInput" class="form-control my-1" @bind="amountInSAR" />
+                    <input id="amountInput" class="form-control my-1" @bind="refundedAmountInSAR" />
                     @if (errorMessage is not null)
                     {
                         <div class="text-danger">
@@ -65,13 +65,14 @@
     [Parameter][EditorRequired] public decimal Amount { get; set; }
     [Parameter][EditorRequired] public string PaymentId { get; set; } = null!;
 
-    private decimal amountInSAR = 0;
-    private decimal maxAmount = 0;
+    private decimal refundedAmountInSAR = 0;
+    private int refundedAmountInHalala = 0;
+    private int maxAmount = 0;
     private string? errorMessage;
 
     protected override void OnParametersSet()
     {
-        maxAmount = Amount;
+        maxAmount = (int)Amount;
     }
 
     private async Task Refund()
@@ -80,23 +81,23 @@
 
         errorMessage = null;
 
-        Amount = ConvertToHalala(amountInSAR);
+        refundedAmountInHalala = ConvertToHalala(refundedAmountInSAR);
 
-        if (Amount > maxAmount)
+        if (refundedAmountInHalala > maxAmount)
         {
             errorMessage = "Amount more than the payment amount";
             StopProcessing();
             return;
         }
         
-        if (Amount < 99 )
+        if (refundedAmountInHalala < 99)
         {
             errorMessage = "Amount less than the acceptable amount";
             StopProcessing();
             return;
         }
 
-        var result = await PostAsync<PaymentDto>($"/Payments/RefundPayment/{PaymentId}?amountToRefund={Uri.EscapeDataString(Amount.ToString())}");
+        var result = await PostAsync<PaymentDto>($"/Payments/RefundPayment/{PaymentId}?amountToRefund={refundedAmountInHalala}");
 
         if (result.isSucces)
             MudDialog.Close(DialogResult.Ok(true));
@@ -104,10 +105,11 @@
         StopProcessing();
     }
 
-    private decimal ConvertToHalala(decimal amount)
+    private int ConvertToHalala(decimal amount)
     {
         decimal halala = (amount * 100);
-        return halala;
+
+        return (int)halala;
     }
 
 }

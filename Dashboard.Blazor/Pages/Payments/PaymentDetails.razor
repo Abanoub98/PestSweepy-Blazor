@@ -1,0 +1,574 @@
+@page "/Payments/Details/{Id}"
+@attribute [Authorize]
+@inherits BasePage
+
+<PageTitle>@languageContainer.Keys["Payment Details"]</PageTitle>
+<MudBreadcrumbs Items="breadcrumbItems"></MudBreadcrumbs>
+
+@if (payment is null)
+{
+    <DetailsSkeleton />
+}
+else
+{
+    <MudCard Elevation="25">
+        <MudCardHeader Style="padding:20px">
+            <CardHeaderAvatar>
+                <MudAvatar Size="Size.Large" Rounded="true" Color="Color.Info">
+                    <MudIcon Size="Size.Large" Icon="@Icons.Material.Filled.Payment" />
+                </MudAvatar>
+            </CardHeaderAvatar>
+            <CardHeaderContent>
+                <MudText Typo="Typo.h5">
+                    @payment.Id
+                </MudText>
+                <MudChip Variant="Variant.Text" Size="Size.Small" Icon="@Icons.Material.Filled.Flag" Color="Color.Info">@payment.Description</MudChip>
+                <MudChip Variant="Variant.Text" Size="Size.Small" Icon="@Icons.Material.Filled.Flag" Color="Color.Primary">@payment.Amount_format</MudChip>
+                <MudChip Variant="Variant.Text" Size="Size.Small"
+                             Color="@(payment.Status == "paid" ? Color.Success :
+                                payment.Status == "initiated" ? Color.Info :
+                                payment.Status == "refunded" ?  Color.Warning : Color.Error)">
+
+                        @payment.Status
+                </MudChip>
+            </CardHeaderContent>
+            <CardHeaderActions>
+                <div style="margin:10px">
+                    <MudButton DisableElevation="true" Href="/Payments" Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.ArrowBack" Color="Color.Info">
+                        Back to Payments
+                    </MudButton>
+                </div>
+            </CardHeaderActions>
+        </MudCardHeader>
+    </MudCard>
+    <MudTabs SliderColor="Color.Info" Class="mt-5" Elevation="25" Rounded="true" ApplyEffectsToContainer=true Border=true PanelClass="p-6">
+        <MudTabPanel Icon="@Icons.Material.Filled.Info" Text="General">
+            <div class="d-flex flex-column gap-5 mt-7">
+                <div class="row">
+                    <!--begin::Company name-->
+                    <div class="d-flex flex-column gap-1 col-md-4">
+                        <div class="fw-bold text-muted">@languageContainer.Keys["Payment Id"]</div>
+                        <div class="fw-bold fs-5">
+                            @if (payment.Id is not null)
+                            {
+                                @payment.Id
+                            }
+                            else
+                            {
+                                <span class="text-danger">@languageContainer.Keys["No Data"]</span>
+                            }
+                        </div>
+                    </div>
+                    <!--end::Company name-->
+                    <!--begin::City-->
+                    <div class="d-flex flex-column gap-1 col-md-4">
+                        <div class="fw-bold text-muted">@languageContainer.Keys["Status"]</div>
+                        <div class="fw-bold fs-5">
+                            @if (payment.Status is not null)
+                            {
+                                @payment.Status
+                            }
+                            else
+                            {
+                                <span class="text-danger">@languageContainer.Keys["No Data"]</span>
+                            }
+                        </div>
+                    </div>
+                    <!--end::City-->
+                    <!--begin::Country-->
+                    <div class="d-flex flex-column gap-1 col-md-4">
+                        <div class="fw-bold text-muted">@languageContainer.Keys["Description"]</div>
+                        <div class="fw-bold fs-5">
+                            @if (payment.Description is not null)
+                            {
+                                @payment.Description
+                            }
+                            else
+                            {
+                                <span class="text-danger">@languageContainer.Keys["No Data"]</span>
+                            }
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <!--end::Country-->
+                    <!--begin::Notes-->
+                    <div class="d-flex flex-column gap-1 col-md-4">
+                        <div class="fw-bold text-muted">@languageContainer.Keys["Created At"]</div>
+                        <div class="fw-bold fs-5">
+                            <p>
+                                @if (payment.Created_at != DateTime.MinValue)
+                                {
+                                    @payment.Created_at
+                                }
+                                else
+                                {
+                                    <span class="text-danger">@languageContainer.Keys["No Data"]</span>
+                                }
+                            </p>
+                        </div>
+                    </div>
+                    <!--end::Notes-->
+                    <!--begin::Notes-->
+                    <div class="d-flex flex-column gap-1 col-md-4">
+                        <div class="fw-bold text-muted">@languageContainer.Keys["Updated At"]</div>
+                        <div class="fw-bold fs-5">
+                            <p>
+                                @if (payment.Updated_at != DateTime.MinValue)
+                                {
+                                    @payment.Updated_at
+                                }
+                                else
+                                {
+                                    <span class="text-danger">@languageContainer.Keys["No Data"]</span>
+                                }
+                            </p>
+                        </div>
+                    </div>
+                    <!--end::Notes-->
+                    <!--begin::Notes-->
+                    <div class="d-flex flex-column gap-1 col-md-4">
+                        <div class="fw-bold text-muted">@languageContainer.Keys["Voided At"]</div>
+                        <div class="fw-bold fs-5">
+                            <p>
+                                @if (payment.Voided_at is not null)
+                                {
+                                    @payment.Voided_at
+                                }
+                                else
+                                {
+                                    <span class="text-danger">@languageContainer.Keys["No Data"]</span>
+                                }
+                            </p>
+                        </div>
+                    </div>
+                    <!--end::Notes-->
+                </div>
+                <div class="row">
+                    <!--begin::Notes-->
+                    <div class="d-flex flex-column gap-1 col-md-4">
+                        <div class="fw-bold text-muted">@languageContainer.Keys["Currency"]</div>
+                        <div class="fw-bold fs-5">
+                            <p>
+                                @if (payment.Currency is not null)
+                                {
+                                    @payment.Currency
+                                }
+                                else
+                                {
+                                    <span class="text-danger">@languageContainer.Keys["No Data"]</span>
+                                }
+                            </p>
+                        </div>
+                    </div>
+                    <!--end::Notes-->
+                    <!--begin::Notes-->
+                    <div class="d-flex flex-column gap-1 col-md-4">
+                        <div class="fw-bold text-muted">@languageContainer.Keys["Amount Format"]</div>
+                        <div class="fw-bold fs-5">
+                            <p>
+                                @if (payment.Amount_format is not null)
+                                {
+                                    @payment.Amount_format
+                                }
+                                else
+                                {
+                                    <span class="text-danger">@languageContainer.Keys["No Data"]</span>
+                                }
+                            </p>
+                        </div>
+                    </div>
+                    <!--end::Notes-->
+                    <!--begin::Notes-->
+                    <div class="d-flex flex-column gap-1 col-md-4">
+                        <div class="fw-bold text-muted">@languageContainer.Keys["Amount"]</div>
+                        <div class="fw-bold fs-5">
+                            <p>
+                                @if (payment.Amount != 0)
+                                {
+                                    @payment.Amount
+                                }
+                                else
+                                {
+                                    <span class="text-danger">@languageContainer.Keys["No Data"]</span>
+                                }
+                            </p>
+                        </div>
+                    </div>
+                    <!--end::Notes-->
+                </div>
+                <div class="row">
+                    <!--begin::Notes-->
+                    <div class="d-flex flex-column gap-1 col-md-4">
+                        <div class="fw-bold text-muted">@languageContainer.Keys["Meta Data"]</div>
+                        <div class="fw-bold fs-5">
+                            <p>
+                                @if (payment.Metadata is not null)
+                                {
+                                    @payment.Metadata
+                                }
+                                else
+                                {
+                                    <span class="text-danger">@languageContainer.Keys["No Data"]</span>
+                                }
+                            </p>
+                        </div>
+                    </div>
+                    <!--end::Notes-->
+                    <!--begin::Notes-->
+                    <div class="d-flex flex-column gap-1 col-md-4">
+                        <div class="fw-bold text-muted">@languageContainer.Keys["Fee Format"]</div>
+                        <div class="fw-bold fs-5">
+                            <p>
+                                @if (payment.Fee_format is not null)
+                                {
+                                    @payment.Fee_format
+                                }
+                                else
+                                {
+                                    <span class="text-danger">@languageContainer.Keys["No Data"]</span>
+                                }
+                            </p>
+                        </div>
+                    </div>
+                    <!--end::Notes-->
+                    <!--begin::Notes-->
+                    <div class="d-flex flex-column gap-1 col-md-4">
+                        <div class="fw-bold text-muted">@languageContainer.Keys["Fee"]</div>
+                        <div class="fw-bold fs-5">
+                            <p>
+                                @if (payment.Fee != 0)
+                                {
+                                    @payment.Fee
+                                }
+                                else
+                                {
+                                    <span class="text-danger">@languageContainer.Keys["No Data"]</span>
+                                }
+                            </p>
+                        </div>
+                    </div>
+                    <!--end::Notes-->
+                </div>
+                <div class="row">
+                    <!--begin::Notes-->
+                    <div class="d-flex flex-column gap-1 col-md-4">
+                        <div class="fw-bold text-muted">@languageContainer.Keys["Captured At"]</div>
+                        <div class="fw-bold fs-5">
+                            <p>
+                                @if (payment.Captured_at is not null)
+                                {
+                                    @payment.Captured_at
+                                }
+                                else
+                                {
+                                    <span class="text-danger">@languageContainer.Keys["No Data"]</span>
+                                }
+                            </p>
+                        </div>
+                    </div>
+                    <!--end::Notes-->
+                    <!--begin::Notes-->
+                    <div class="d-flex flex-column gap-1 col-md-4">
+                        <div class="fw-bold text-muted">@languageContainer.Keys["Captured Format"]</div>
+                        <div class="fw-bold fs-5">
+                            <p>
+                                @if (payment.Captured_format is not null)
+                                {
+                                    @payment.Captured_format
+                                }
+                                else
+                                {
+                                    <span class="text-danger">@languageContainer.Keys["No Data"]</span>
+                                }
+                            </p>
+                        </div>
+                    </div>
+                    <!--end::Notes-->
+                    <!--begin::Notes-->
+                    <div class="d-flex flex-column gap-1 col-md-4">
+                        <div class="fw-bold text-muted">@languageContainer.Keys["Captured"]</div>
+                        <div class="fw-bold fs-5">
+                            <p>
+                                @if (payment.Captured != 0)
+                                {
+                                    @payment.Captured
+                                }
+                                else
+                                {
+                                    <span class="text-danger">@languageContainer.Keys["No Data"]</span>
+                                }
+                            </p>
+                        </div>
+                    </div>
+                    <!--end::Notes-->
+                </div>
+                <div class="row">
+                    <!--begin::Notes-->
+                    <div class="d-flex flex-column gap-1 col-md-4">
+                        <div class="fw-bold text-muted">@languageContainer.Keys["Refunded At"]</div>
+                        <div class="fw-bold fs-5">
+                            <p>
+                                @if (payment.Refunded_at is not null)
+                                {
+                                    @payment.Refunded_at
+                                }
+                                else
+                                {
+                                    <span class="text-danger">@languageContainer.Keys["No Data"]</span>
+                                }
+                            </p>
+                        </div>
+                    </div>
+                    <!--end::Notes-->
+                    <!--begin::Notes-->
+                    <div class="d-flex flex-column gap-1 col-md-4">
+                        <div class="fw-bold text-muted">@languageContainer.Keys["Refunded Format"]</div>
+                        <div class="fw-bold fs-5">
+                            <p>
+                                @if (payment.Refunded_format is not null)
+                                {
+                                    @payment.Refunded_format
+                                }
+                                else
+                                {
+                                    <span class="text-danger">@languageContainer.Keys["No Data"]</span>
+                                }
+                            </p>
+                        </div>
+                    </div>
+                    <!--end::Notes-->
+                    <!--begin::Notes-->
+                    <div class="d-flex flex-column gap-1 col-md-4">
+                        <div class="fw-bold text-muted">@languageContainer.Keys["Refunded"]</div>
+                        <div class="fw-bold fs-5">
+                            <p>
+                                @if (payment.Refunded != 0)
+                                {
+                                    @payment.Refunded
+                                }
+                                else
+                                {
+                                    <span class="text-danger">@languageContainer.Keys["No Data"]</span>
+                                }
+                            </p>
+                        </div>
+                    </div>
+                    <!--end::Notes-->
+                </div>
+                <div class="row">
+                    <!--end::Country-->
+                    <!--begin::Notes-->
+                    <div class="d-flex flex-column gap-1 col-md-4">
+                        <div class="fw-bold text-muted">@languageContainer.Keys["Invoice Id"]</div>
+                        <div class="fw-bold fs-5">
+                            <p>
+                                @if (payment.Invoice_id is not null)
+                                {
+                                    @payment.Invoice_id
+                                }
+                                else
+                                {
+                                    <span class="text-danger">@languageContainer.Keys["No Data"]</span>
+                                }
+                            </p>
+                        </div>
+                    </div>
+                    <!--end::Notes-->
+                    <!--begin::Notes-->
+                    <div class="d-flex flex-column gap-1 col-md-4">
+                        <div class="fw-bold text-muted">@languageContainer.Keys["IP"]</div>
+                        <div class="fw-bold fs-5">
+                            <p>
+                                @if (payment.IP is not null)
+                                {
+                                    @payment.IP
+                                }
+                                else
+                                {
+                                    <span class="text-danger">@languageContainer.Keys["No Data"]</span>
+                                }
+                            </p>
+                        </div>
+                    </div>
+                    <!--end::Notes-->
+                    <!--begin::Notes-->
+                    <div class="d-flex flex-column gap-1 col-md-4">
+                        <div class="fw-bold text-muted">@languageContainer.Keys["Call back URL"]</div>
+                        <div class="fw-bold fs-5">
+                            <p>
+                                @if (payment.Callback_url is not null)
+                                {
+                                    @payment.Callback_url
+                                }
+                                else
+                                {
+                                    <span class="text-danger">@languageContainer.Keys["No Data"]</span>
+                                }
+                            </p>
+                        </div>
+                    </div>
+                    <!--end::Notes-->
+                </div>
+            </div>
+        </MudTabPanel>
+        <MudTabPanel Icon="@Icons.Material.Filled.Info" Text="Source Details">
+            <div class="d-flex flex-column gap-5 mt-7">
+                <div class="row">
+                    <!--begin::Company name-->
+                    <div class="d-flex flex-column gap-1 col-md-4">
+                        <div class="fw-bold text-muted">@languageContainer.Keys["Card Holder"]</div>
+                        <div class="fw-bold fs-5">
+                            @if (payment.Source.Name is not null)
+                            {
+                                @payment.Source.Name
+                            }
+                            else
+                            {
+                                <span class="text-danger">@languageContainer.Keys["No Data"]</span>
+                            }
+                        </div>
+                    </div>
+                    <!--end::Company name-->
+                    <!--begin::City-->
+                    <div class="d-flex flex-column gap-1 col-md-4">
+                        <div class="fw-bold text-muted">@languageContainer.Keys["CardType"]</div>
+                        <div class="fw-bold fs-5">
+                            @if (payment.Source.Type is not null)
+                            {
+                                @payment.Source.Type
+                            }
+                            else
+                            {
+                                <span class="text-danger">@languageContainer.Keys["No Data"]</span>
+                            }
+                        </div>
+                    </div>
+                    <!--end::City-->
+                    <!--begin::Country-->
+                    <div class="d-flex flex-column gap-1 col-md-4">
+                        <div class="fw-bold text-muted">@languageContainer.Keys["Card Number"]</div>
+                        <div class="fw-bold fs-5">
+                            @if (payment.Source.Number is not null)
+                            {
+                                @payment.Source.Number
+                            }
+                            else
+                            {
+                                <span class="text-danger">@languageContainer.Keys["No Data"]</span>
+                            }
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <!--end::Country-->
+                    <!--begin::Notes-->
+                    <div class="d-flex flex-column gap-1 col-md-4">
+                        <div class="fw-bold text-muted">@languageContainer.Keys["Gateway Id"]</div>
+                        <div class="fw-bold fs-5">
+                            <p>
+                                @if (payment.Source.Gateway_id is not null)
+                                {
+                                    @payment.Source.Gateway_id
+                                }
+                                else
+                                {
+                                    <span class="text-danger">@languageContainer.Keys["No Data"]</span>
+                                }
+                            </p>
+                        </div>
+                    </div>
+                    <!--end::Notes-->
+                    <!--begin::Notes-->
+                    <div class="d-flex flex-column gap-1 col-md-4">
+                        <div class="fw-bold text-muted">@languageContainer.Keys["Company"]</div>
+                        <div class="fw-bold fs-5">
+                            <p>
+                                @if (payment.Source.Company is not null)
+                                {
+                                    @payment.Source.Company
+                                }
+                                else
+                                {
+                                    <span class="text-danger">@languageContainer.Keys["No Data"]</span>
+                                }
+                            </p>
+                        </div>
+                    </div>
+                    <!--end::Notes-->
+                    <!--begin::Notes-->
+                    <div class="d-flex flex-column gap-1 col-md-4">
+                        <div class="fw-bold text-muted">@languageContainer.Keys["Message"]</div>
+                        <div class="fw-bold fs-5">
+                            <p>
+                                @if (payment.Source.Message is not null)
+                                {
+                                    @payment.Source.Message
+                                }
+                                else
+                                {
+                                    <span class="text-danger">@languageContainer.Keys["No Data"]</span>
+                                }
+                            </p>
+                        </div>
+                    </div>
+                    <!--end::Notes-->
+                </div>
+                <div class="row">
+                    <!--end::Country-->
+                    <!--begin::Notes-->
+                    <div class="d-flex flex-column gap-1 col-md-4">
+                        <div class="fw-bold text-muted">@languageContainer.Keys["Token"]</div>
+                        <div class="fw-bold fs-5">
+                            <p>
+                                @if (payment.Source.Token is not null)
+                                {
+                                    @payment.Source.Token
+                                }
+                                else
+                                {
+                                    <span class="text-danger">@languageContainer.Keys["No Data"]</span>
+                                }
+                            </p>
+                        </div>
+                    </div>
+                    <!--end::Notes-->
+                    <!--begin::Notes-->
+                    <div class="d-flex flex-column gap-1 col-md-4">
+                        <div class="fw-bold text-muted">@languageContainer.Keys["Reference Number"]</div>
+                        <div class="fw-bold fs-5">
+                            <p>
+                                @if (payment.Source.Reference_number is not null)
+                                {
+                                    @payment.Source.Reference_number
+                                }
+                                else
+                                {
+                                    <span class="text-danger">@languageContainer.Keys["No Data"]</span>
+                                }
+                            </p>
+                        </div>
+                    </div>
+                    <!--end::Notes-->
+                    <!--begin::Notes-->
+                    <div class="d-flex flex-column gap-1 col-md-4">
+                        <div class="fw-bold text-muted">@languageContainer.Keys["Transaction URL"]</div>
+                        <div class="fw-bold fs-5">
+                            <p style="line-break:anywhere;">
+                                @if (payment.Source.Transaction_url is not null)
+                                {
+                                    @payment.Source.Transaction_url
+                                }
+                                else
+                                {
+                                    <span class="text-danger">@languageContainer.Keys["No Data"]</span>
+                                }
+                            </p>
+                        </div>
+                    </div>
+                    <!--end::Notes-->
+                </div>
+            </div>
+        </MudTabPanel>
+    </MudTabs>
+}

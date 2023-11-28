@@ -4,7 +4,6 @@ public partial class Payments
 {
     private List<PaymentBaseDto> payments = new();
     private string searchString = string.Empty;
-    private readonly string detailsUri = "Payments/Details";
 
     protected override async Task OnInitializedAsync()
     {

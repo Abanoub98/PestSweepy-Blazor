@@ -101,7 +101,7 @@
                         <MudText Class="w-100">Actions</MudText>
                     </HeaderTemplate>
                     <CellTemplate>
-                        <a title="Show Details" class="btn btn-sm btn-light-info me-1 @(isDisable? "disabled" : string.Empty)">
+                        <a href=@($"/Payments/Details/{payment.Item.Id}") title="Show Details" class="btn btn-sm btn-light-info me-1 @(isDisable? "disabled" : string.Empty)">
                             <i class="fa-solid fa-circle-info"></i>
                         </a>
                         <a @onclick="() => RefundPayment(payment.Item.Amount, payment.Item.Id)" title="Refund" class="btn btn-sm btn-light-warning me-1 @(!isDisable && payment.Item?.Status == "paid" || payment.Item?.Status == "initiated" ? string.Empty : "disabled")">
