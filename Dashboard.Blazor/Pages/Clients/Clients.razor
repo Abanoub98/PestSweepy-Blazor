@@ -42,7 +42,7 @@
                     </HeaderTemplate>
                     <CellTemplate>
                         <div class="d-flex align-items-center">
-                            <MudAvatar Class="cursor-all-scroll" @onclick="() => ShowImagePreview(imageUrl + client.Item!.Image)" Rounded="true" Size="Size.Large">
+                            <MudAvatar Color="Color.Info" Class="cursor-all-scroll" @onclick="() => ShowImagePreview(imageUrl + client.Item!.Image)" Rounded="true" Size="Size.Large">
                                 <MudImage Src="@(imageUrl + client.Item!.Image)" />
                             </MudAvatar>
                             <div class="mx-3">
