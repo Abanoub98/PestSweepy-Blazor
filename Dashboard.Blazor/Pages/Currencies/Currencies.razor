@@ -1,0 +1,83 @@
+﻿@page "/Currencies"
+@attribute [Authorize]
+@inherits BasePage
+
+    <PageTitle>@languageContainer.Keys["Currencies"]</PageTitle>
+    <MudBreadcrumbs Items="breadcrumbItems"></MudBreadcrumbs>
+    <BrowserViewportObserver TableHeightChanged="TableHeightChanged" />
+
+    <MudCard Elevation="25">
+        <MudCardContent>
+            <MudDataGrid T="CurrencyDto" Dense="true" Elevation="0" FixedHeader="true" Height="@($"{tableHight}px")"
+                         Loading="@(isLoading)" LoadingProgressColor="Color.Info" Filterable="true"
+                         Items="currencies" Hover="true" SortMode="SortMode.Single" QuickFilter="@FilterFunc">
+
+                <ToolBarContent>
+                    <div class="d-flex justify-content-between flex-column align-items-center flex-md-row w-100">
+                        <div class="w-md-25 w-100">
+                            <div class="d-flex align-items-center">
+                                <MudAvatar Rounded="true" Color="Color.Info">
+                                    <MudIcon Icon="@EntityIcons.CurrencyIcon" />
+                                </MudAvatar>
+                                <MudText Class="mx-3" Typo="Typo.h5">@languageContainer.Keys["Currencies"]</MudText>
+                            </div>
+                        </div>
+                        <div class="w-md-50 w-100">
+                            <MudTextField @bind-Value="searchString" Adornment="Adornment.Start" Class="mt-0 mb-5" Immediate="true"
+                                          Placeholder=@($"{languageContainer.Keys["Search For"]} User Id, Type, Table Name, Date")
+                                          AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" />
+                        </div>
+                    </div>
+                </ToolBarContent>
+
+                <NoRecordsContent>
+                    <NoDataToDisply />
+                </NoRecordsContent>
+
+                <Columns>
+                    <TemplateColumn Context="currency">
+                        <HeaderTemplate>
+                            <MudText>Currency</MudText>
+                        </HeaderTemplate>
+                        <CellTemplate>
+                            <div class="d-flex align-items-center">
+                                <MudAvatar Class="cursor-all-scroll" @onclick="() => ShowImagePreview(imageUrl + currency.Item!.Image)" Rounded="true" Size="Size.Large">
+                                    <MudImage Src="@(imageUrl + currency.Item!.Image)" />
+                                </MudAvatar>
+                                <div class="mx-3">
+                                    <MudText>@currency.Item!.Name</MudText>
+                                </div>
+                            </div>
+                        </CellTemplate>
+                    </TemplateColumn>
+
+                    <PropertyColumn Property="x => x.Code" Title="Code" />
+                    <PropertyColumn Property="x => x.Symbol" Title="Code" />
+
+                    <TemplateColumn CellStyle="width:150px" SortBy="new Func<CurrencyDto, object>(x=>x.OrderIndex)" Context="currency" HeaderClass="text-center" CellClass="text-center" Filterable="false">
+                        <HeaderTemplate>
+                            <MudText Class="w-100">Order</MudText>
+                        </HeaderTemplate>
+                        <CellTemplate>
+                            <MudText Class="w-100">@(currency.Item!.OrderIndex is not null ? $"#{currency.Item!.OrderIndex}" : string.Empty)</MudText>
+                        </CellTemplate>
+                    </TemplateColumn>
+
+                    <TemplateColumn CellClass="text-center" Context="currency" HeaderClass="text-center" Sortable="false" Filterable="false">
+                        <HeaderTemplate>
+                            <MudText Class="w-100">Actions</MudText>
+                        </HeaderTemplate>
+                        <CellTemplate>
+                            <a @onclick="() => OpenDetails(detailsUri,currency.Item!.Id)" title="Show Details" class="btn btn-sm btn-light-info me-1 @(isDisable ? "disabled" : string.Empty)">
+                                <i class="fa-solid fa-circle-info"></i>
+                            </a>
+                        </CellTemplate>
+                    </TemplateColumn>
+                </Columns>
+
+                <PagerContent>
+                    <MudDataGridPager T="CurrencyDto" />
+                </PagerContent>
+            </MudDataGrid>
+        </MudCardContent>
+    </MudCard>
