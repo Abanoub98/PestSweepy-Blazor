@@ -1,5 +1,115 @@
-﻿<h3>CompanyInfoForm</h3>
+﻿@page "/CompanyInfo/Form"
+@attribute [Authorize]
+@inherits BasePage
 
-@code {
+<PageTitle>@languageContainer.Keys["Edit Company Info"]</PageTitle>
+<MudBreadcrumbs Items="breadcrumbItems"></MudBreadcrumbs>
 
+@if (companyInfoForm is null)
+{
+    <FormLoadingSpinner IsBigForm="true" />
+}
+else
+{
+    <MudCard Elevation="25">
+        <EditForm Model="@companyInfoForm" OnValidSubmit="OnValidSubmit">
+            <DataAnnotationsValidator />
+            <MudCardHeader Style="padding:20px">
+                <CardHeaderAvatar>
+                    <MudAvatar Rounded="true" Color="Color.Info">
+                        <MudIcon Icon="@EntityIcons.CompanyInfoIcon" />
+                    </MudAvatar>
+                </CardHeaderAvatar>
+                <CardHeaderContent>
+                    <MudText Style="display: flex;align-items: center;" Typo="Typo.h5">
+                        @languageContainer.Keys["Edit Company Info"]
+                    </MudText>
+                </CardHeaderContent>
+                <CardHeaderActions>
+                    <MudButton DisableElevation="true" Href="/CompanyInfo" Style="margin:10px" Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.ArrowBack" Color="Color.Info">
+                        Back to Company Info
+                    </MudButton>
+                </CardHeaderActions>
+            </MudCardHeader>
+            <MudCardContent Class="px-5 py-3">
+                <div class="d-flex flex-wrap flex-md-nowrap">
+                    <div class="p-3 w-100 w-md-50">
+                        <MudTextField HelperText="Not Required" Variant="Variant.Outlined" @bind-Value="companyInfoForm.FacebookUrl" For="@(() => companyInfoForm.FacebookUrl)" HelperTextOnFocus="true"
+                                      AdornmentColor="Color.Info" Adornment="Adornment.Start" AdornmentIcon="@Icons.Custom.Brands.Facebook" Label="@languageContainer.Keys["Facebook Url"]" />
+                    </div>
+                    <div class="p-3 w-100 w-md-50">
+                        <MudTextField HelperText="Not Required" Variant="Variant.Outlined" @bind-Value="companyInfoForm.TwitterUrl" For="@(() => companyInfoForm.TwitterUrl)" HelperTextOnFocus="true"
+                                      AdornmentColor="Color.Info" Adornment="Adornment.Start" AdornmentIcon="@Icons.Custom.Brands.Twitter" Label="@languageContainer.Keys["Twitter Url"]" />
+                    </div>
+                </div>
+                <div class="d-flex flex-wrap flex-md-nowrap">
+                    <div class="p-3 w-100 w-md-50">
+                        <MudTextField HelperText="Not Required" Variant="Variant.Outlined" @bind-Value="companyInfoForm.LinkedInUrl" For="@(() => companyInfoForm.LinkedInUrl)" HelperTextOnFocus="true"
+                                      AdornmentColor="Color.Info" Adornment="Adornment.Start" AdornmentIcon="@Icons.Custom.Brands.LinkedIn" Label="@languageContainer.Keys["LinkedIn Url"]" />
+                    </div>
+                    <div class="p-3 w-100 w-md-50">
+                        <MudTextField HelperText="Not Required" Variant="Variant.Outlined" @bind-Value="companyInfoForm.InstagramUrl" For="@(() => companyInfoForm.InstagramUrl)" HelperTextOnFocus="true"
+                                      AdornmentColor="Color.Info" Adornment="Adornment.Start" AdornmentIcon="@Icons.Custom.Brands.Instagram" Label="@languageContainer.Keys["Instagram Url"]" />
+                    </div>
+                </div>
+                <div class="d-flex flex-wrap flex-md-nowrap">
+                    <div class="p-3 w-100 w-md-50">
+                        <MudTextField HelperText="Not Required" Variant="Variant.Outlined" @bind-Value="companyInfoForm.TelegramUrl" For="@(() => companyInfoForm.TelegramUrl)" HelperTextOnFocus="true"
+                                      AdornmentColor="Color.Info" Adornment="Adornment.Start" AdornmentIcon="@Icons.Custom.Brands.Telegram" Label="@languageContainer.Keys["Telegram Url"]" />
+                    </div>
+                    <div class="p-3 w-100 w-md-50">
+                        <MudTextField HelperText="Not Required" Variant="Variant.Outlined" @bind-Value="companyInfoForm.YoutubeUrl" For="@(() => companyInfoForm.YoutubeUrl)" HelperTextOnFocus="true"
+                                      AdornmentColor="Color.Info" Adornment="Adornment.Start" AdornmentIcon="@Icons.Custom.Brands.YouTube" Label="@languageContainer.Keys["Youtube Url"]" />
+                    </div>
+                </div>
+                <div class="d-flex flex-wrap flex-md-nowrap">
+                    <div class="p-3 w-100 w-md-50">
+                        <MudTextField HelperText="Not Required" Variant="Variant.Outlined" @bind-Value="companyInfoForm.Address" For="@(() => companyInfoForm.Address)" HelperTextOnFocus="true"
+                                      AdornmentColor="Color.Info" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.AccountBox" Label="@languageContainer.Keys["Address"]" />
+                    </div>
+                    <div class="p-3 w-100 w-md-50">
+                        <MudTextField HelperText="Not Required" Variant="Variant.Outlined" @bind-Value="companyInfoForm.ContactEmail" For="@(() => companyInfoForm.ContactEmail)" HelperTextOnFocus="true"
+                                      AdornmentColor="Color.Info" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.AccountBox" Label="@languageContainer.Keys["Contact Email"]" />
+                    </div>
+                    <div class="p-3 w-100 w-md-50">
+                        <MudTextField HelperText="Not Required" Variant="Variant.Outlined" @bind-Value="companyInfoForm.VatRegistrationNumber" For="@(() => companyInfoForm.VatRegistrationNumber)" HelperTextOnFocus="true"
+                                      AdornmentColor="Color.Info" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.AccountBox" Label="@languageContainer.Keys["Vat Registration Number"]" />
+                    </div>
+                </div>
+                <div class="d-flex flex-wrap flex-md-nowrap">
+                    <div class="p-3 w-100 w-md-50">
+                        <MudTextField HelperText="Not Required" Variant="Variant.Outlined" @bind-Value="companyInfoForm.ContactMobile" For="@(() => companyInfoForm.ContactMobile)" HelperTextOnFocus="true"
+                                      AdornmentColor="Color.Info" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.AccountBox" Label="@languageContainer.Keys["Contact Mobile"]" />
+                    </div>
+                    <div class="p-3 w-100 w-md-50">
+                        <MudTextField HelperText="Not Required" Variant="Variant.Outlined" @bind-Value="companyInfoForm.Hotline" For="@(() => companyInfoForm.Hotline)" HelperTextOnFocus="true"
+                                      AdornmentColor="Color.Info" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.AccountBox" Label="@languageContainer.Keys["Hotline"]" />
+                    </div>
+                    <div class="p-3 w-100 w-md-50">
+                        <MudTextField HelperText="Not Required" Variant="Variant.Outlined" @bind-Value="companyInfoForm.ContactPhone" For="@(() => companyInfoForm.ContactPhone)" HelperTextOnFocus="true"
+                                      AdornmentColor="Color.Info" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.AccountBox" Label="@languageContainer.Keys["Contact Phone"]" />
+                    </div>
+                </div>
+                <div class="p-3 w-100">
+                    <MudTextField HelperText="Required" Variant="Variant.Outlined" @bind-Value="companyInfoForm.WhoWeAre" For="@(() => companyInfoForm.WhoWeAre)"
+                                  HelperTextOnFocus="true" Placeholder="@Placeholders.Description" Lines="10" Label="@languageContainer.Keys["Who We Are"]" />
+                </div>
+                <div class="p-3 w-100">
+                    <MudTextField HelperText="Required" Variant="Variant.Outlined" @bind-Value="companyInfoForm.Mission" For="@(() => companyInfoForm.Mission)"
+                                  HelperTextOnFocus="true" Placeholder="@Placeholders.Description" Lines="10" Label="@languageContainer.Keys["Mission"]" />
+                </div>
+                <div class="p-3 w-100">
+                    <MudTextField HelperText="Required" Variant="Variant.Outlined" @bind-Value="companyInfoForm.Vision" For="@(() => companyInfoForm.Vision)"
+                                  HelperTextOnFocus="true" Placeholder="@Placeholders.Description" Lines="10" Label="@languageContainer.Keys["Vision"]" />
+                </div>
+                <div class="flex-wrap gap-5 gap-md-0 d-flex flex-md-nowrap align-items-end p-3">
+                    <ImageUpload ImageSelected="CaptureUploadedImage" UploadedImageCleared="ClearUploadedImage" CurrentImage="@(imageUrl + companyInfoForm.Image)" />
+                    <MudSpacer />
+                    <FormButtons IsLoading="@isLoading" />
+                </div>
+            </MudCardContent>
+            <MudCardActions>
+            </MudCardActions>
+        </EditForm>
+    </MudCard>
 }
