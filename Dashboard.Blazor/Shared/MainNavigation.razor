@@ -9,9 +9,23 @@
                 <!--begin:Menu link-->
                 <NavLink Match="NavLinkMatch.All" href="/" class="menu-link">
                     <span class="menu-icon">
-                        <MudIcon Size="Size.Large" Icon="@Icons.Material.Filled.Home" Title="Categories" />
+                        <MudIcon Color="Color.Info" Size="Size.Large" Icon="@Icons.Material.TwoTone.SpaceDashboard" Title="Dashboard" />
                     </span>
-                    <span class="menu-title">@languageContainer.Keys["Home"]</span>
+                    <span class="menu-title">@languageContainer.Keys["Dashboard"]</span>
+                </NavLink>
+                <!--end:Menu link-->
+            </div>
+            <!--end:Menu item-->
+            <!--begin:Menu item-->
+            <div class="menu-item">
+                <!--begin:Menu link-->
+                <NavLink Match="NavLinkMatch.Prefix" class="menu-link" href="/ReferenceData">
+                    <span class="menu-icon">
+                        <MudIcon Color="Color.Info" Size="Size.Large" Icon="@Icons.Material.TwoTone.ManageSearch" Title="ReferenceData" />
+                    </span>
+                    <span class="menu-title">
+                        @languageContainer.Keys["Reference Data"]
+                    </span>
                 </NavLink>
                 <!--end:Menu link-->
             </div>
@@ -21,9 +35,9 @@
                 <!--begin:Menu link-->
                 <span class="menu-link">
                     <span class="menu-icon">
-                        <MudIcon Size="Size.Large" Icon="@Icons.Material.TwoTone.SpaceDashboard" Title="Categories" />
+                        <MudIcon Color="Color.Info" Size="Size.Large" Icon="@Icons.Material.TwoTone.Security" Title="SecurityLogs" />
                     </span>
-                    <span class="menu-title">@languageContainer.Keys["Dashboard"]</span>
+                    <span class="menu-title">@languageContainer.Keys["Security Logs"]</span>
                     <span class="menu-arrow"></span>
                 </span>
                 <!--end:Menu link-->
@@ -34,7 +48,7 @@
                         <!--begin:Menu link-->
                         <NavLink Match="NavLinkMatch.Prefix" class="menu-link" href="/Audits">
                             <span class="menu-icon">
-                                <MudIcon Icon="@Icons.Material.TwoTone.History" Title="Audits" />
+                                <MudIcon Color="Color.Info" Icon="@Icons.Material.TwoTone.History" Title="Audits" />
                             </span>
                             <span class="menu-title">
                                 @languageContainer.Keys["Audits"]
@@ -48,24 +62,10 @@
                         <!--begin:Menu link-->
                         <NavLink Match="NavLinkMatch.Prefix" class="menu-link" href="/LoginLogs">
                             <span class="menu-icon">
-                                <MudIcon Icon="@Icons.Material.TwoTone.Security" Title="LoginLogs" />
+                                <MudIcon Color="Color.Info" Icon="@Icons.Material.TwoTone.SafetyCheck" Title="LoginLogs" />
                             </span>
                             <span class="menu-title">
                                 @languageContainer.Keys["Login Logs"]
-                            </span>
-                        </NavLink>
-                        <!--end:Menu link-->
-                    </div>
-                    <!--end:Menu item-->
-                    <!--begin:Menu item-->
-                    <div class="menu-item">
-                        <!--begin:Menu link-->
-                        <NavLink Match="NavLinkMatch.Prefix" class="menu-link" href="/ReferenceData">
-                            <span class="menu-icon">
-                                <MudIcon Icon="@Icons.Material.TwoTone.ManageSearch" Title="ReferenceData" />
-                            </span>
-                            <span class="menu-title">
-                                @languageContainer.Keys["Reference Data"]
                             </span>
                         </NavLink>
                         <!--end:Menu link-->
@@ -80,7 +80,7 @@
                 <!--begin:Menu link-->
                 <span class="menu-link">
                     <span class="menu-icon">
-                        <MudIcon Size="Size.Large" Icon="@Icons.Material.TwoTone.Apartment" Title="Company" />
+                        <MudIcon Color="Color.Info" Size="Size.Large" Icon="@Icons.Material.TwoTone.Apartment" Title="Company" />
                     </span>
                     <span class="menu-title">@languageContainer.Keys["Company"]</span>
                     <span class="menu-arrow"></span>
@@ -93,7 +93,7 @@
                         <!--begin:Menu link-->
                         <NavLink Match="NavLinkMatch.Prefix" href="/Managers" class="menu-link">
                             <span class="menu-icon">
-                                <MudIcon Icon="@Icons.Material.TwoTone.Diversity3" Title="Managers" />
+                                <MudIcon Color="Color.Info" Icon="@Icons.Material.TwoTone.Diversity3" Title="Managers" />
                             </span>
                             <span class="menu-title">@languageContainer.Keys["Managers"]</span>
                         </NavLink>
@@ -105,7 +105,7 @@
                         <!--begin:Menu link-->
                         <NavLink Match="NavLinkMatch.Prefix" href="/Supervisors" class="menu-link">
                             <span class="menu-icon">
-                                <MudIcon Icon="@Icons.Material.TwoTone.SupervisorAccount" Title="Supervisors" />
+                                <MudIcon Color="Color.Info" Icon="@Icons.Material.TwoTone.SupervisorAccount" Title="Supervisors" />
                             </span>
                             <span class="menu-title">@languageContainer.Keys["Supervisors"]</span>
                         </NavLink>
@@ -117,7 +117,7 @@
                         <!--begin:Menu link-->
                         <NavLink Match="NavLinkMatch.Prefix" href="/Providers" class="menu-link">
                             <span class="menu-icon">
-                                <MudIcon Icon="@Icons.Material.TwoTone.Engineering" Title="Providers" />
+                                <MudIcon Color="Color.Info" Icon="@Icons.Material.TwoTone.Engineering" Title="Providers" />
                             </span>
                             <span class="menu-title">@languageContainer.Keys["Providers"]</span>
                         </NavLink>
@@ -133,7 +133,7 @@
                 <!--begin:Menu link-->
                 <NavLink Match="NavLinkMatch.Prefix" href="/CompanyInfo" class="menu-link">
                     <span class="menu-icon">
-                        <MudIcon Size="Size.Large" Icon="@EntityIcons.CompanyInfoIcon" Title="Company Info" />
+                        <MudIcon Color="Color.Info" Size="Size.Large" Icon="@EntityIcons.CompanyInfoIcon" Title="Company Info" />
                     </span>
                     <span class="menu-title">@languageContainer.Keys["Company Info"]</span>
                 </NavLink>
@@ -145,7 +145,7 @@
                 <!--begin:Menu link-->
                 <NavLink Match="NavLinkMatch.Prefix" href="/Categories" class="menu-link">
                     <span class="menu-icon">
-                        <MudIcon Size="Size.Large" Icon="@Icons.Material.TwoTone.Category" Title="Categories" />
+                        <MudIcon Color="Color.Info" Size="Size.Large" Icon="@Icons.Material.TwoTone.Category" Title="Categories" />
                     </span>
                     <span class="menu-title">@languageContainer.Keys["Categories"]</span>
                 </NavLink>
@@ -157,7 +157,7 @@
                 <!--begin:Menu link-->
                 <NavLink Match="NavLinkMatch.Prefix" href="/Services" class="menu-link">
                     <span class="menu-icon">
-                        <MudIcon Size="Size.Large" Icon="@Icons.Material.TwoTone.Handyman" Title="Services" />
+                        <MudIcon Color="Color.Info" Size="Size.Large" Icon="@Icons.Material.TwoTone.Handyman" Title="Services" />
                     </span>
                     <span class="menu-title">@languageContainer.Keys["Services"]</span>
                 </NavLink>
@@ -169,7 +169,7 @@
                 <!--begin:Menu link-->
                 <NavLink Match="NavLinkMatch.Prefix" href="/Clients" class="menu-link">
                     <span class="menu-icon">
-                        <MudIcon Size="Size.Large" Icon="@Icons.Material.TwoTone.Diversity1" Title="Clients" />
+                        <MudIcon Color="Color.Info" Size="Size.Large" Icon="@Icons.Material.TwoTone.Diversity1" Title="Clients" />
                     </span>
                     <span class="menu-title">@languageContainer.Keys["Clients"]</span>
                 </NavLink>
@@ -181,7 +181,7 @@
                 <!--begin:Menu link-->
                 <NavLink Match="NavLinkMatch.Prefix" href="/Payments" class="menu-link">
                     <span class="menu-icon">
-                        <MudIcon Size="Size.Large" Icon="@Icons.Material.Filled.Payment" Title="Payments" />
+                        <MudIcon Color="Color.Info" Size="Size.Large" Icon="@Icons.Material.Filled.Payment" Title="Payments" />
                     </span>
                     <span class="menu-title">@languageContainer.Keys["Payments"]</span>
                 </NavLink>
@@ -193,7 +193,7 @@
                 <!--begin:Menu link-->
                 <NavLink Match="NavLinkMatch.Prefix" href="/Currencies" class="menu-link">
                     <span class="menu-icon">
-                        <MudIcon Size="Size.Large" Icon="@EntityIcons.CurrencyIcon" Title="Currencies" />
+                        <MudIcon Color="Color.Info" Size="Size.Large" Icon="@EntityIcons.CurrencyIcon" Title="Currencies" />
                     </span>
                     <span class="menu-title">@languageContainer.Keys["Currencies"]</span>
                 </NavLink>
@@ -205,7 +205,7 @@
                 <!--begin:Menu link-->
                 <NavLink Match="NavLinkMatch.Prefix" href="/Quotations" class="menu-link">
                     <span class="menu-icon">
-                        <MudIcon Size="Size.Large" Icon="@EntityIcons.QuotationsIcon" Title="Quotations" />
+                        <MudIcon Color="Color.Info" Size="Size.Large" Icon="@EntityIcons.QuotationsIcon" Title="Quotations" />
                     </span>
                     <span class="menu-title">@languageContainer.Keys["Price Quotations"]</span>
                 </NavLink>
