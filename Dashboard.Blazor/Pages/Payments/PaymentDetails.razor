@@ -29,7 +29,7 @@ else
                                 payment.Status == "initiated" ? Color.Info :
                                 payment.Status == "refunded" ?  Color.Warning : Color.Error)">
 
-                        @payment.Status
+                        @payment.Status?.ToUpper()
                 </MudChip>
             </CardHeaderContent>
             <CardHeaderActions>

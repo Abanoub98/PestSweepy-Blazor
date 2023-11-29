@@ -66,13 +66,13 @@
     [Parameter][EditorRequired] public string PaymentId { get; set; } = null!;
 
     private decimal refundedAmountInSAR = 0;
-    private int refundedAmountInHalala = 0;
-    private int maxAmount = 0;
+    private long refundedAmountInHalala = 0;
+    private long maxAmount = 0;
     private string? errorMessage;
 
     protected override void OnParametersSet()
     {
-        maxAmount = (int)Amount;
+        maxAmount = (long)Amount;
     }
 
     private async Task Refund()
@@ -85,14 +85,14 @@
 
         if (refundedAmountInHalala > maxAmount)
         {
-            errorMessage = "Amount more than the payment amount";
+            errorMessage = $"Amount more than the acceptable amount ({(maxAmount / 100.00)} SAR)";
             StopProcessing();
             return;
         }
-        
+
         if (refundedAmountInHalala < 99)
         {
-            errorMessage = "Amount less than the acceptable amount";
+            errorMessage = "Amount less than the acceptable amount (1 SAR)";
             StopProcessing();
             return;
         }
@@ -101,15 +101,15 @@
 
         if (result.isSucces)
             MudDialog.Close(DialogResult.Ok(true));
-        
+
         StopProcessing();
     }
 
-    private int ConvertToHalala(decimal amount)
+    private long ConvertToHalala(decimal amount)
     {
         decimal halala = (amount * 100);
 
-        return (int)halala;
+        return (long)halala;
     }
 
 }

@@ -1,6 +1,4 @@
 ﻿using System.Net.Http.Headers;
-using System.Security.Claims;
-using Microsoft.AspNetCore.Components.Authorization;
 
 namespace Dashboard.Blazor.Pages;
 
@@ -45,7 +43,7 @@ public class BasePage : ComponentBase
 
         if (!response.IsSuccess)
         {
-            ShowError(response.Error!);
+            ShowError(error: response.Error!);
             return new();
         }
 
@@ -62,13 +60,13 @@ public class BasePage : ComponentBase
         return response.Object!;
     }
 
-    protected async Task<(bool, T?)> AddAsync<T>(string endPoint, T model) where T : class
+    protected async Task<(bool isSucces, T? obj)> AddAsync<T>(string endPoint, T model) where T : class
     {
         var response = await ApiService.AddAsync<T>(endPoint, model);
 
         if (!response.IsSuccess)
         {
-            ShowError(response.Error!);
+            ShowError(error: response.Error!);
             return (false, response.Object);
         }
 
@@ -76,7 +74,7 @@ public class BasePage : ComponentBase
         return (true, response.Object!);
     }
 
-    protected async Task<(bool, ResponseDto?)> UploadImage(string entityName, int id, IBrowserFile image)
+    protected async Task<(bool isSucces, ResponseDto?)> UploadImage(string entityName, int id, IBrowserFile image)
     {
         if (image.Size > maxFileSize)
         {
@@ -103,7 +101,7 @@ public class BasePage : ComponentBase
 
         if (!response.IsSuccess)
         {
-            ShowError(response.Error!);
+            ShowError(error: response.Error!);
             return (false, response.Object);
         }
 
@@ -113,13 +111,13 @@ public class BasePage : ComponentBase
         return (true, response.Object!);
     }
 
-    protected async Task<(bool, T?)> UpdateAsync<T>(string endPoint, T model) where T : class
+    protected async Task<(bool isSucces, T? obj)> UpdateAsync<T>(string endPoint, T model) where T : class
     {
         var response = await ApiService.UpdateAsync<T>(endPoint, model);
 
         if (!response.IsSuccess)
         {
-            ShowError(response.Error!);
+            ShowError(error: response.Error!);
             return (false, response.Object);
         }
 
@@ -138,7 +136,7 @@ public class BasePage : ComponentBase
 
         if (!response.IsSuccess)
         {
-            ShowError(response.Error!);
+            ShowError(error: response.Error!);
             return false;
         }
 
@@ -254,7 +252,7 @@ public class BasePage : ComponentBase
     protected void TableHeightChanged(int newTableHight) => tableHight = newTableHight;
 
     //TODO : Handel All Status Codes
-    private void HandelNavigation(string StatusCode)
+    private void HandelNavigation(string statusCode)
     {
         NavigationManager.NavigateTo("/ServerError");
     }
@@ -274,8 +272,14 @@ public class BasePage : ComponentBase
         return content;
     }
 
-    private void ShowError(string Error)
+    protected void ShowError(string message = "SomeThing Went Wrong!", string? error = null)
     {
+        if (error is null)
+        {
+            Snackbar.Add(message, Severity.Error);
+            return;
+        }
+
         Snackbar.Add("SomeThing Went Wrong!", Severity.Error, config =>
         {
             config.Action = "More info";
@@ -283,13 +287,13 @@ public class BasePage : ComponentBase
             config.ActionVariant = Variant.Filled;
             config.Onclick = snackbar =>
             {
-                ShowErrorDetailsDialog(Error);
+                ShowErrorDetailsDialog(error);
                 return Task.CompletedTask;
             };
         });
     }
 
-    private void ShowErrorDetailsDialog(string Error)
+    private void ShowErrorDetailsDialog(string error)
     {
         DialogOptions dialogOptions = new()
         {
@@ -302,13 +306,13 @@ public class BasePage : ComponentBase
 
         DialogParameters<ErrorDetailsDialog> formParameters = new()
         {
-            { x => x.Error, Error }
+            { x => x.Error, error }
         };
 
         DialogService.Show<ErrorDetailsDialog>("Error Details", formParameters, dialogOptions);
     }
 
-    private void ShowSuccess(string message)
+    protected void ShowSuccess(string message)
     {
         Snackbar.Add(message, Severity.Success);
     }

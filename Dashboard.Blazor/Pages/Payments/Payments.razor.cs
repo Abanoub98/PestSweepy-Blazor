@@ -21,8 +21,14 @@ public partial class Payments
         StopProcessing();
     }
 
-    private async Task RefundPayment(decimal amount, string paymentId)
+    private async Task RefundPayment(decimal amount, string paymentId, string status)
     {
+        if (status != "paid" && status != "initiated")
+        {
+            ShowError(message: "Refund is allowable for initiated and paid payments only");
+            return;
+        }
+
         DialogOptions dialogOptions = new()
         {
             CloseOnEscapeKey = true,
@@ -46,9 +52,16 @@ public partial class Payments
 
     }
 
-    private async Task VoidPayment(string paymentId)
+    private async Task VoidPayment(string paymentId, string status)
     {
         StartProcessing();
+
+        if (status != "paid")
+        {
+            ShowError(message: "Void is allowable for paid payments only");
+            StopProcessing();
+            return;
+        }
 
         var isConfirmed = await ShowConfirmation("You want to avoid this payment?");
 
