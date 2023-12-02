@@ -1,6 +1,4 @@
-﻿using System.Security.Claims;
-
-namespace Dashboard.Blazor.Pages.Authentication;
+﻿namespace Dashboard.Blazor.Pages.Authentication;
 
 public partial class AccountSettings
 {
@@ -74,8 +72,12 @@ public partial class AccountSettings
             CloseButton = true
         };
 
-        var dialog = await DialogService.ShowAsync<ResetPasswordDialog>("Reset Password", dialogOptions);
-        var result = await dialog.Result;
+        DialogParameters<ResetPasswordDialog> Parameters = new()
+        {
+            { x => x.UserId, userId }
+        };
+
+        await DialogService.ShowAsync<ResetPasswordDialog>("Reset Password", Parameters, dialogOptions);
     }
 
     private async Task<TwoFactorAuthDto?> GetTwoFactorAuthInfo(string? userId, bool isTwoFactorEnabled)
