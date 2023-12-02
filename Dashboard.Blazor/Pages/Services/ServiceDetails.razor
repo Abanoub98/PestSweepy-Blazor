@@ -24,7 +24,10 @@ else
                     <MudChip Variant="Variant.Text" Size="Size.Small" Icon="@Icons.Material.Outlined.Sort" Color="Color.Info">#@service.OrderIndex</MudChip>
                 }
                 <MudChip Variant="Variant.Text" Size="Size.Small" Icon="@Icons.Material.Outlined.Timer" Color="Color.Info">@HandelDuration((int)service.DurationInMinutes!)</MudChip>
-                <MudChip Variant="Variant.Text" Size="Size.Small" Icon="@Icons.Material.Outlined.Paid" Color="Color.Warning">240 SAR</MudChip>
+                @foreach (var price in service.Prices)
+                {
+                    <MudChip Variant="Variant.Text" Size="Size.Small" Icon="@EntityIcons.CurrencyIcon" Color="Color.Warning">@($"{price.Amount} {price.Currency?.Symbol}")</MudChip>
+                }        
             </CardHeaderContent>
             <CardHeaderActions>
                 <div style="margin:10px">

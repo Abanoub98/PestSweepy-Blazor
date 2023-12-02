@@ -8,10 +8,6 @@ public class ServiceDto
     public int? OrderIndex { get; set; }
 
     [Required]
-    [Label(name: "Price")]
-    public int? Price { get; set; }
-
-    [Required]
     [Label(name: "Duration")]
     public int? DurationInMinutes { get; set; }
 
@@ -31,4 +27,18 @@ public class ServiceDto
 
     public string Image { get; set; } = null!;
     public IBrowserFile? UploadedImage { get; set; }
+
+    public List<ServicePriceType> Prices { get; set; } = new();
+
+    public ServicePriceType? Price { get; set; } = new();
+}
+
+public class ServicePriceType
+{
+    public int Id { get; set; }
+    public double? Amount { get; set; }
+    public int CurrencyId { get; set; }
+    public CurrencyDto? Currency { get; set; }
+    public IEnumerable<CurrencyDto>? Currencies { get; set; }
+
 }

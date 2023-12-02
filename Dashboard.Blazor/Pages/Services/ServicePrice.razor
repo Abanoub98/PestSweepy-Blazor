@@ -1,0 +1,30 @@
+﻿@attribute [Authorize]
+@inherits BasePage
+
+<EditForm Model="servicePrice" OnValidSubmit="OnValidSubmit">
+    <DataAnnotationsValidator />
+    <div class="@(ServiceId is null? string.Empty : "px-5 my-5")">
+        <div class="d-flex flex-wrap flex-md-nowrap">
+            <div class="p-3 w-100">
+                <MudAutocomplete T="CurrencyDto" SearchFunc="@GetCurrencies" Adornment="Adornment.Start" AnchorOrigin="Origin.BottomCenter" ReadOnly="(IsReadOnly || IsDefault)" Disabled="(IsReadOnly || IsDefault)" TextChanged="SetCurrencyId"
+                                 Variant="Variant.Outlined" ShowProgressIndicator="true" ResetValueOnEmptyText="true" CoerceText="true" AdornmentIcon="@EntityIcons.CurrencyIcon" Immediate="true"
+                                 ProgressIndicatorColor="Color.Info" Clearable @bind-Value="servicePrice.Currency" For="@(() => servicePrice.Currency)" AdornmentColor="Color.Info" Label="@languageContainer.Keys["Currency"]"
+                                  ToStringFunc="@(e=> e == null ? null : $"{e.Name}")" HelperText="@languageContainer.Keys["Required"]" Placeholder="@languageContainer.Keys["Select Currency"]" MaxItems="null" HelperTextOnFocus="true">
+                     <NoItemsTemplate>
+                         <MudText Align="Align.Center" Class="px-4 py-4">
+                             @languageContainer.Keys["No items found"]
+                        </MudText>
+                    </NoItemsTemplate>
+                </MudAutocomplete>
+            </div>
+            <div class="p-3 w-100">
+                <MudNumericField HideSpinButtons="true" HelperText="@languageContainer.Keys["Required"]" @bind-Value="servicePrice.Amount" For="@(() => servicePrice.Amount)" Label="@languageContainer.Keys["Amount"]"
+                                 Variant="Variant.Outlined" AdornmentColor="Color.Info" Adornment="Adornment.End" AdornmentText="@(servicePrice.Currency?.Symbol)" HelperTextOnFocus="true" ReadOnly="IsReadOnly" Disabled="IsReadOnly" />
+            </div>
+        </div>
+        <div class="@(ServiceId is null? "d-none" : "d-flex justify-content-end")">
+            <FormButtons IsLoading="isLoading" />
+        </div>
+    </div>
+
+ </EditForm>

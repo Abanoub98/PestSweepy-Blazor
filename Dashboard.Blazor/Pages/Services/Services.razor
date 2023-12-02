@@ -70,7 +70,7 @@
                         <MudText Class="w-100">Price</MudText>
                     </HeaderTemplate>
                     <CellTemplate>
-                        <MudText>230 SAR</MudText>
+                        <MudText>@service.Item!.Price?.Amount @service.Item!.Price?.Currency?.Symbol</MudText>
                     </CellTemplate>
                 </TemplateColumn>
 
