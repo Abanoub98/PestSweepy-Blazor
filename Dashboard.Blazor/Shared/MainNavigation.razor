@@ -179,6 +179,18 @@
             <!--begin:Menu item-->
             <div class="menu-item here show menu-accordion">
                 <!--begin:Menu link-->
+                <NavLink Match="NavLinkMatch.Prefix" href="/ContractClients" class="menu-link">
+                    <span class="menu-icon">
+                        <MudIcon Color="@(IsDarkMood? Color.Info : Color.Dark)" Size="Size.Large" Icon="@EntityIcons.ContractsIcon" Title="Contract Clients" />
+                    </span>
+                    <span class="menu-title">@languageContainer.Keys["Contract Clients"]</span>
+                </NavLink>
+                <!--end:Menu link-->
+            </div>
+            <!--end:Menu item-->
+            <!--begin:Menu item-->
+            <div class="menu-item here show menu-accordion">
+                <!--begin:Menu link-->
                 <NavLink Match="NavLinkMatch.Prefix" href="/Payments" class="menu-link">
                     <span class="menu-icon">
                         <MudIcon Color="@(IsDarkMood? Color.Info : Color.Dark)" Size="Size.Large" Icon="@Icons.Material.Filled.Payment" Title="Payments" />

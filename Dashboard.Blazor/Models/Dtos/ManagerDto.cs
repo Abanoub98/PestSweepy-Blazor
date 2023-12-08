@@ -1,6 +1,6 @@
 ﻿namespace Dashboard.Blazor.Models.Dtos;
 
-public class ManagerDto
+public class ManagerDto : BaseUser
 {
     public int Id { set; get; }
 
@@ -21,15 +21,5 @@ public class ManagerDto
     public int NationalityId { get; set; }
     public IEnumerable<LookupDto>? Nationalities { get; set; }
 
-    [EmailAddress]
-    [Label(name: "Email")]
-    public string? Email { get; set; }
-
-    [Label(name: "Password")]
-    public string? Password { get; set; }
-
-    [Label(name: "Phone Number")]
-    public string? PhoneNumber { get; set; }
-
-    public List<SupervisorDto> supervisorList { get; set; } = new();
+    public List<SupervisorDto> SupervisorList { get; set; } = new();
 }
