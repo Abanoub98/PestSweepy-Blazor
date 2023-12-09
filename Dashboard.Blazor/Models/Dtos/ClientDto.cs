@@ -20,4 +20,10 @@ public class ClientDto : BaseUser
     public LookupDto? Nationality { get; set; }
     public int NationalityId { get; set; }
     public IEnumerable<LookupDto>? Nationalities { get; set; }
+
+    [Required]
+    [Label(name: "Country")]
+    public LookupDto? Country { get; set; }
+    public int? CountryId { get; set; }
+    public IEnumerable<LookupDto>? Countries { get; set; }
 }

@@ -51,7 +51,8 @@
                         </div>
                     </CellTemplate>
                 </TemplateColumn>
-
+                    <PropertyColumn Property="x => x.ContactEmail" Title="@languageContainer.Keys["Contact Email"]" />
+                    <PropertyColumn Property="x => x.ContactPhone" Title="@languageContainer.Keys["Contact Phone"]" />
                 <TemplateColumn CellStyle="width:300px" CellClass="text-center" Context="manager" HeaderClass="text-center" Sortable="false" Filterable="false">
                     <HeaderTemplate>
                         <MudText Class="w-100">Actions</MudText>

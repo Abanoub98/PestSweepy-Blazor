@@ -34,7 +34,7 @@ else
             </MudCardHeader>
             <MudCardContent Class="px-5 py-3">
                 <div class="d-flex flex-wrap flex-md-nowrap">
-                    <div class="p-3  w-100 w-md-50">
+                    <div class="p-3  w-100 w-md-25">
                         <MudTextField HelperText="Required" Variant="Variant.Outlined" @bind-Value="clientForm.Name" For="@(() => clientForm.Name)" HelperTextOnFocus="true"
                                   AdornmentColor="Color.Info" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.AccountBox" Placeholder="@Placeholders.Name" />
                     </div>
@@ -57,6 +57,18 @@ else
                             </NoItemsTemplate>
                         </MudAutocomplete>
                     </div>
+                     <div class="p-3 w-100 w-md-25">
+                         <MudAutocomplete T="LookupDto" SearchFunc="@GetCountries" Adornment="Adornment.Start" AnchorOrigin="Origin.BottomCenter"
+                                          Variant="Variant.Outlined" ShowProgressIndicator="true" ResetValueOnEmptyText="true" CoerceText="true" AdornmentIcon="@Icons.Material.Filled.Flag"
+                                          ProgressIndicatorColor="Color.Info" Clearable @bind-Value="clientForm.Country" For="@(() => clientForm.Country)" AdornmentColor="Color.Info"
+                                          ToStringFunc="@(e=> e == null ? null : $"{e.Name}")" HelperText="Required" Placeholder="Select Country" MaxItems="null" HelperTextOnFocus="true">
+                             <NoItemsTemplate>
+                                 <MudText Align="Align.Center" Class="px-4 py-4">
+                                     No items found
+                                 </MudText>
+                             </NoItemsTemplate>
+                         </MudAutocomplete>
+                     </div>
                 </div>
                 @if (Id == 0)
                 {
