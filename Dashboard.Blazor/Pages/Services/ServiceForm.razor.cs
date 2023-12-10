@@ -97,11 +97,9 @@ public partial class ServiceForm
         var dialog = await DialogService.ShowAsync<ServicePrice>("Service Price", formParameters, dialogOptions);
         var result = await dialog.Result;
 
-        if (result.Canceled)
+        if (!result.Canceled)
         {
-            StartProcessing();
             serviceForm = await GetByIdAsync<ServiceDto>($"Services/{Id}");
-            StopProcessing();
         }
     }
 
