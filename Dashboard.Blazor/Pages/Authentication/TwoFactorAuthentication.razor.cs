@@ -9,7 +9,9 @@ public partial class TwoFactorAuthentication
 
     private void TrackTwoFactorAuthCodeChanges()
     {
-        if (TwoFactorAuth.Length == 11)
+        var TwoFactorAuthNum = TwoFactorAuth.Replace(" ", "");
+
+        if (TwoFactorAuthNum.Length == 6)
             IsUnlock = true;
         else
             IsUnlock = false;
