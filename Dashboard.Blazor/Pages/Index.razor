@@ -4,7 +4,7 @@
 
 <PageTitle>@languageContainer.Keys["Home"]</PageTitle>
 
-    @if (isLoading)
+@if (isLoading)
 {
     <FormLoadingSpinner IsBigForm="true" />
 }
@@ -17,7 +17,7 @@ else
                     <MudCard Class="bg-transparent" Elevation="0">
                         <MudCardHeader>
                             <CardHeaderContent>
-                                <MudText Typo="Typo.h5">Current User</MudText>
+                                <MudText Typo="Typo.h5">@languageContainer.Keys["Current User"]</MudText>
                             </CardHeaderContent>
                         </MudCardHeader>
                         <MudCardContent>
@@ -25,19 +25,19 @@ else
                                 <div class="col-md-6 col-12">
                                     <div class="d-flex flex-wrap">
                                         <div class="p-3 w-100">
-                                            <MudText Class="fw-bold" Typo="Typo.body1">Email</MudText>
+                                            <MudText Class="fw-bold" Typo="Typo.body1">@languageContainer.Keys["Email"]</MudText>
                                             <MudText>@claims.FirstOrDefault(x => x.Type == ClaimTypes.Email)?.Value</MudText>
                                         </div>
                                         <div class="p-3 w-100">
-                                            <MudText Class="fw-bold" Typo="Typo.body1">Login Date</MudText>
+                                            <MudText Class="fw-bold" Typo="Typo.body1">@languageContainer.Keys["Login Date"]</MudText>
                                             <MudText>@(claims.FirstOrDefault(x => x.Type == "LoginDate")?.Value)</MudText>
                                         </div>
                                         <div class="p-3 w-50">
-                                            <MudText Class="fw-bold" Typo="Typo.body1">Role</MudText>
+                                                <MudText Class="fw-bold" Typo="Typo.body1">@languageContainer.Keys["Role"]</MudText>
                                             <MudText>@claims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value</MudText>
                                         </div>
                                         <div class="p-3 w-50">
-                                            <MudText Class="fw-bold" Typo="Typo.body1">IP Address</MudText>
+                                            <MudText Class="fw-bold" Typo="Typo.body1">@languageContainer.Keys["IP Address"]</MudText>
                                             <MudText>@(claims.FirstOrDefault(x => x.Type == "IpAddress")?.Value)</MudText>
                                         </div>
                                     </div>

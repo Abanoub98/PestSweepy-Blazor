@@ -2,49 +2,70 @@
 @attribute [Authorize]
 @inherits BasePage
 
+<PageTitle>@languageContainer.Keys["Service Details"]</PageTitle>
+<MudBreadcrumbs Items="breadcrumbItems" />
 @if (service is null)
 {
     <FormLoadingSpinner IsBigForm="true" />
 }
 else
 {
-    <MudCard Elevation="25">
-        <MudCardHeader Style="padding:20px">
-            <CardHeaderAvatar>
-                <MudAvatar Class="cursor-all-scroll" @onclick="() => ShowImagePreview(imageUrl + service.Image)" Size="Size.Large" Rounded="true" Color="Color.Info">
-                    <MudImage Src=@(imageUrl + service.Image)></MudImage>
-                </MudAvatar>
-            </CardHeaderAvatar>
-            <CardHeaderContent>
-                <MudText Typo="Typo.h5">
-                    @service.Name
-                </MudText>
-                @if (service.OrderIndex is not null)
-                {
-                    <MudChip Variant="Variant.Text" Size="Size.Small" Icon="@Icons.Material.Outlined.Sort" Color="Color.Info">#@service.OrderIndex</MudChip>
-                }
-                <MudChip Variant="Variant.Text" Size="Size.Small" Icon="@Icons.Material.Outlined.Timer" Color="Color.Info">@HandelDuration((int)service.DurationInMinutes!)</MudChip>
-                @foreach (var price in service.Prices)
-                {
-                    <MudChip Variant="Variant.Text" Size="Size.Small" Icon="@EntityIcons.CurrencyIcon" Color="Color.Warning">@($"{price.Amount} {price.Currency?.Symbol}")</MudChip>
-                }        
-            </CardHeaderContent>
-            <CardHeaderActions>
-                <div style="margin:10px">
-                    <MudButton DisableElevation="true" OnClick="() => OpenForm(formUri,service.Id)" Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Edit" Color="Color.Info">
-                        Edit
-                    </MudButton>
-                    <MudButton DisableElevation="true" Href="/Services" Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.ArrowBack" Color="Color.Info">
-                        Back to Services
-                    </MudButton>
+    <div class="card shadow-sm">
+        <div class="card-header">
+            <div class="fw-bold card-title">
+                @languageContainer.Keys["Service Details"]
+            </div>
+            <div class="card-toolbar">
+                <a href="/Services" class="btn btn-sm btn-primary me-3">
+                    <MudIcon Icon="@Icons.Material.Filled.ArrowBack" />
+                    @languageContainer.Keys["Back To"] @languageContainer.Keys["Services"]
+                </a>
+                <a @onclick="() => OpenForm(formUri,service.Id)" class="btn btn-sm  btn-success">
+                    <MudIcon Icon="@Icons.Material.Filled.Edit" />
+                    @languageContainer.Keys["Edit"]
+                </a>
+            </div>
+        </div>
+        <div class="card-body">
+            <!--begin::Details content-->
+            <div class="py-3 fs-6">
+                <div class="row">
+                    <div class="col-8">
+                        <div class="row">
+                            <div class="col-6">
+                                <!--begin::Details item-->
+                                <div class="fw-bold mt-5 mb-1">@languageContainer.Keys["Name"]:</div>
+                                <div class="text-gray-600">@service.Name</div>
+
+                                <div class="fw-bold mt-5 mb-1">@languageContainer.Keys["Duration In Minutes"]:</div>
+                                <div class="text-gray-600">@HandelDuration((int)service.DurationInMinutes!)</div>
+                                <!--begin::Details item-->
+                                <!--begin::Details item-->
+                                <div class="fw-bold mt-5 mb-1">@languageContainer.Keys["Order Index"]:</div>
+                                <div class="text-gray-600">@(service.OrderIndex is null ? "-" : service.OrderIndex)</div>
+                                <!--begin::Details item-->
+                            </div>
+                            <div class="col-6">
+                                <!--begin::Details item-->
+                                @foreach (var price in service.Prices)
+                                {
+                                    <div class="fw-bold mt-5 mb-1">@languageContainer.Keys["Price In"] @languageContainer.Keys[price.Currency?.Name]:</div>
+                                    <div class="text-gray-600">@($"{price.Amount} {price.Currency?.Symbol}")</div>
+                                }
+                                <!--begin::Details item-->
+                            </div>
+                        </div>
+                    </div>
+                    <div @onclick="@(() => ShowImagePreview(imageUrl + service.Image))" class="col-4 text-center">
+                        <MudImage Class="rounded-lg border border-gray-300 mt-5" Width="300" Src=@(imageUrl + service.Image) />
+                    </div>
                 </div>
-            </CardHeaderActions>
-        </MudCardHeader>
-    </MudCard>
-    <MudTabs SliderColor="Color.Info" Class="mt-5" Elevation="25" Rounded="true" ApplyEffectsToContainer=true Border=true PanelClass="h-300px px-6 pb-6 pt-0">
-        <MudTabPanel Icon="@Icons.Material.Filled.Info" Text="More Info">
-            <MudText Class="mb-1 mt-6" Typo="Typo.h6">Description:</MudText>
-            <MudTextField Value="service.Description" Disabled  Style="color:black" Variant="Variant.Outlined" Lines="10" />
-        </MudTabPanel>
-    </MudTabs>
+                <!--begin::Details item-->
+                <div class="fw-bold mt-5 mb-1">@languageContainer.Keys["Description"]:</div>
+                <div class="text-gray-800 p-3 rounded-lg border border-gray-400">@service.Description</div>
+                <!--begin::Details item-->
+            </div>
+            <!--end::Details content-->
+        </div>
+    </div>
 }

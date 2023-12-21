@@ -59,7 +59,7 @@
                                     @accountProfile.PhoneNumber
                                 }
                             </a>
-                            <MudTooltip Arrow="true" Duration="500" Text="Verified" Color="Color.Info">
+                            <MudTooltip Arrow="true" Duration="500" Text="@languageContainer.Keys["Verified"]" Color="Color.Info">
                                 <a class="@(accountProfile is null ? "d-flex" : accountProfile.Email is null? "d-none" : "d-flex" ) align-items-center text-gray-500 text-hover-primary">
                                     <i class="ki-duotone ki-sms fs-4 me-1"><span class="path1"></span><span class="path2"></span></i>
                                     @if (accountProfile is null)
@@ -84,7 +84,7 @@
                     </div>
                     <!--end::User-->
                     <div class="d-flex my-4">
-                        <a href="" @onclick="SignOut" class="btn btn-sm btn-danger me-2">Logout</a>
+                        <a href="" @onclick="SignOut" class="btn btn-sm btn-danger me-2">@languageContainer.Keys["Logout"]</a>
                     </div>
                 </div>
                 <!--end::Title-->
@@ -94,7 +94,7 @@
                     <ChildContent>
                         <div class="d-flex align-items-center w-200px w-sm-300px flex-column mt-3">
                             <div class="d-flex justify-content-between w-100 mt-auto mb-2">
-                                <span class="fw-semibold fs-6 text-gray-500">Profile Completion</span>
+                                <span class="fw-semibold fs-6 text-gray-500">@languageContainer.Keys["Profile Completion"]</span>
                                 <div>
                                     <span class="fw-bold fs-6 me-1">@profileCompletion%</span>
                                     <MudIcon Color="@(profileCompletion == 100 ? Color.Success : Color.Warning)" Icon="@Icons.Material.Filled.Info" />
@@ -131,7 +131,7 @@
                                 <div>
                                     <div class="d-flex flex-stack flex-grow-1 mb-2">
                                         <!--begin::Content-->
-                                        <div class="fs-6 text-gray-700 fw-bold me-3">Profile Details</div>
+                                        <div class="fs-6 text-gray-700 fw-bold me-3">@languageContainer.Keys["Profile Details"]</div>
                                         <!--end::Content-->
                                         <i class="ki-duotone ki-check-square text-success fs-5">
                                             <span class="path1"></span>
@@ -140,7 +140,7 @@
                                     </div>
                                     <div class="d-flex flex-stack flex-grow-1 mb-2">
                                         <!--begin::Content-->
-                                        <div class="fs-6 @(accountProfile.EmailConfirmed? "text-gray-700 " : "text-danger") fw-bold me-3">Email Confirmed</div>
+                                        <div class="fs-6 @(accountProfile.EmailConfirmed? "text-gray-700 " : "text-danger") fw-bold me-3">@languageContainer.Keys["Email Confirmed"]</div>
                                         <!--end::Content-->
                                         <i class="ki-duotone ki-@(accountProfile.EmailConfirmed? "check-square text-success" : "cross-square text-danger") fs-5">
                                             <span class="path1"></span>
@@ -149,7 +149,7 @@
                                     </div>
                                     <div class="d-flex flex-stack flex-grow-1 mb-2">
                                         <!--begin::Content-->
-                                        <div class="fs-6 @(accountProfile.PhoneNumberConfirmed? "text-gray-700 " : "text-danger") fw-bold me-3">Phone Number Confirmed</div>
+                                        <div class="fs-6 @(accountProfile.PhoneNumberConfirmed? "text-gray-700 " : "text-danger") fw-bold me-3">@languageContainer.Keys["Phone Number Confirmed"]</div>
                                         <!--end::Content-->
                                         <i class="ki-duotone ki-@(accountProfile.PhoneNumberConfirmed? "check-square text-success" : "cross-square text-danger") fs-5">
                                             <span class="path1"></span>
@@ -158,7 +158,7 @@
                                     </div>
                                     <div class="d-flex flex-stack flex-grow-1">
                                         <!--begin::Content-->
-                                        <div class="fs-6 @(accountProfile.TwoFactorEnabled? "text-gray-700 " : "text-danger") fw-bold me-3">Two-Factor Enabled Authentication</div>
+                                        <div class="fs-6 @(accountProfile.TwoFactorEnabled? "text-gray-700 " : "text-danger") fw-bold me-3">@languageContainer.Keys["Two-Factor Enabled Authentication"]</div>
                                         <!--end::Content-->
                                         <i class="ki-duotone ki-@(accountProfile.TwoFactorEnabled? "check-square text-success" : "cross-square text-danger") fs-5">
                                             <span class="path1"></span>
@@ -185,7 +185,7 @@
     <div class="card-header cursor-pointer">
         <!--begin::Card title-->
         <div class="card-title m-0">
-            <h3 class="fw-bold m-0">Profile Details</h3>
+            <h3 class="fw-bold m-0">@languageContainer.Keys["Profile Details"]</h3>
         </div>
         <!--end::Card title-->
     </div>
@@ -195,7 +195,7 @@
         <!--begin::Row-->
         <div class="row mb-7">
             <!--begin::Label-->
-            <label class="col-lg-4 fw-semibold text-muted">Full Name</label>
+            <label class="col-lg-4 fw-semibold text-muted">@languageContainer.Keys["Full Name"]</label>
             <!--end::Label-->
             <!--begin::Col-->
             <div class="col-lg-8">
@@ -216,7 +216,7 @@
         <!--begin::Input group-->
         <div class="row mb-7">
             <!--begin::Label-->
-            <label class="col-lg-4 fw-semibold text-muted">Role</label>
+            <label class="col-lg-4 fw-semibold text-muted">@languageContainer.Keys["Role"]</label>
             <!--end::Label-->
             <!--begin::Col-->
             <div class="col-lg-8 fv-row">
@@ -238,7 +238,7 @@
         <div class="row mb-7">
             <!--begin::Label-->
             <label class="col-lg-4 fw-semibold text-muted">
-                Phone
+                @languageContainer.Keys["Phone"]
             </label>
             <!--end::Label-->
             <!--begin::Col-->
@@ -260,7 +260,7 @@
         <!--begin::Input group-->
         <div class="row">
             <!--begin::Label-->
-            <label class="col-lg-4 fw-semibold text-muted">Email</label>
+            <label class="col-lg-4 fw-semibold text-muted">@languageContainer.Keys["Email"]</label>
             <!--end::Label-->
             <!--begin::Col-->
             <div class="col-lg-8 d-flex align-items-center">
@@ -276,7 +276,7 @@
                 </a>
                 @if (accountProfile is not null && accountProfile.EmailConfirmed)
                 {
-                    <span class="badge badge-success">Verified</span>
+                    <span class="badge badge-success">@languageContainer.Keys["Verified"]</span>
                 }
             </div>
             <!--end::Col-->

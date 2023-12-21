@@ -1,11 +1,11 @@
 ﻿<MudDialog>
     <DialogContent>
-        <MudText>@ConfirmationMessage</MudText>
-        <MudAlert Severity="Severity.Error" Dense="true" Class="my-2">This action cannot be undone.</MudAlert>
+        <MudText>@languageContainer.Keys[ConfirmationMessage]</MudText>
+        <MudAlert Severity="Severity.Error" Dense="true" Class="my-2">@languageContainer.Keys["This action cannot be undone"].</MudAlert>
     </DialogContent>
     <DialogActions>
-        <MudButton OnClick="Cancel">Cancel</MudButton>
-        <MudButton DisableElevation="true" Variant="Variant.Filled" Color="Color.Error" OnClick="Submit">Ok</MudButton>
+        <MudButton OnClick="Cancel">@languageContainer.Keys["Cancel"]</MudButton>
+        <MudButton DisableElevation="true" Variant="Variant.Filled" Color="Color.Error" OnClick="Submit">@languageContainer.Keys["Ok"]</MudButton>
     </DialogActions>
 </MudDialog>
 

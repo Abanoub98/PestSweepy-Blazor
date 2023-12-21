@@ -4,7 +4,7 @@
     <!--begin::Card header-->
     <div class="card-header border-0 cursor-pointer">
         <div class="card-title m-0">
-            <h3 class="fw-bold m-0">Account Settings</h3>
+            <h3 class="fw-bold m-0">@languageContainer.Keys["Account Settings"]</h3>
         </div>
     </div>
     <!--end::Card header-->
@@ -16,13 +16,13 @@
             <div class="d-flex flex-wrap align-items-center">
                 <!--begin::Label-->
                 <div>
-                    <div class="fs-6 fw-bold mb-1">Email Address</div>
+                    <div class="fs-6 fw-bold mb-1">@languageContainer.Keys["Email Address"]</div>
                     <div class="fw-semibold text-gray-600">@Email</div>
                 </div>
                 <!--end::Label-->
                 <!--begin::Action-->
                 <div class="ms-auto">
-                    <button class="btn btn-light-primary">Confirm Email</button>
+                    <button class="btn btn-light-primary">@languageContainer.Keys["Confirm Email"]</button>
                 </div>
                 <!--end::Action-->
             </div>
@@ -31,16 +31,16 @@
             <div class="separator separator-dashed my-6"></div>
             <!--end::Separator-->
             <!--begin::Password-->
-            <div class="d-flex flex-wrap align-items-center mb-10">
+            <div class="d-flex flex-wrap justify-content-between align-items-center mb-10">
                 <!--begin::Label-->
                 <div>
-                    <div class="fs-6 fw-bold mb-1">Password</div>
+                    <div class="fs-6 fw-bold mb-1">@languageContainer.Keys["Password"]</div>
                     <div class="fw-semibold text-gray-600">************</div>
                 </div>
                 <!--end::Label-->
                 <!--begin::Action-->
                 <div class="ms-auto">
-                    <button @onclick="ShowResetPassword" class="btn btn-light-primary">Reset Password</button>
+                    <button @onclick="ShowResetPassword" class="btn btn-light-primary">@languageContainer.Keys["Reset Password"]</button>
                 </div>
                 <!--end::Action-->
             </div>

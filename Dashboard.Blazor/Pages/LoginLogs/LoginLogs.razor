@@ -6,11 +6,10 @@
 <MudBreadcrumbs Items="breadcrumbItems"></MudBreadcrumbs>
 <BrowserViewportObserver TableHeightChanged="TableHeightChanged" />
 
-<MudCard Elevation="25">
+@* <MudCard Elevation="25">
     <MudCardContent>
-        <MudDataGrid T="LoginLogDto" Dense="true" Elevation="0" FixedHeader="true" Height="@($"{tableHight}px")"
-                     Loading="@(isLoading)" LoadingProgressColor="Color.Info" Filterable="true"
-                     Items="loginLogs" Hover="true" SortMode="SortMode.Single" QuickFilter="@FilterFunc">
+        <MudDataGrid Items="pagedData" Dense="true" Elevation="0" FixedHeader="true" Height="@($"{tableHight}px")"
+            Loading="@(isLoading)" LoadingProgressColor="Color.Info" Filterable="true" @ref="table" Hover="true" SortMode="SortMode.Single" T="LoginLogDto">
 
             <ToolBarContent>
                 <div class="d-flex justify-content-between flex-column align-items-center flex-md-row w-100">
@@ -29,9 +28,11 @@
                     </div>
                 </div>
             </ToolBarContent>
+
             <NoRecordsContent>
                 <NoDataToDisply />
             </NoRecordsContent>
+
             <Columns>
                 <PropertyColumn Property="x => x.UserId" Title="User Id" />
                 <PropertyColumn Property="x => x.Role" />
@@ -45,4 +46,4 @@
             </PagerContent>
         </MudDataGrid>
     </MudCardContent>
-</MudCard>
+</MudCard> *@

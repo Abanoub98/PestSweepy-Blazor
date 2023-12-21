@@ -143,6 +143,18 @@
             <!--begin:Menu item-->
             <div class="menu-item here show menu-accordion">
                 <!--begin:Menu link-->
+                <NavLink Match="NavLinkMatch.Prefix" href="/Reviews" class="menu-link">
+                    <span class="menu-icon">
+                        <MudIcon Color="@(IsDarkMood? Color.Info : Color.Dark)" Size="Size.Large" Icon="@EntityIcons.ReviewIcon" Title="Reviews" />
+                    </span>
+                    <span class="menu-title">@languageContainer.Keys["Reviews"]</span>
+                </NavLink>
+                <!--end:Menu link-->
+            </div>
+            <!--end:Menu item-->
+            <!--begin:Menu item-->
+            <div class="menu-item here show menu-accordion">
+                <!--begin:Menu link-->
                 <NavLink Match="NavLinkMatch.Prefix" href="/Categories" class="menu-link">
                     <span class="menu-icon">
                         <MudIcon Color="@(IsDarkMood? Color.Info : Color.Dark)" Size="Size.Large" Icon="@Icons.Material.TwoTone.Category" Title="Categories" />

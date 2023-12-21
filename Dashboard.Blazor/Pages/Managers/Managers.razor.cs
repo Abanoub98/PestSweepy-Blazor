@@ -3,7 +3,6 @@
 public partial class Managers
 {
     private List<ManagerDto> managers = new();
-    private string searchString = string.Empty;
 
     private readonly string formUri = "Managers/Form";
     private readonly string detailsUri = "Managers/Details";

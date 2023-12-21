@@ -30,12 +30,21 @@ Clients: "العملاء"
 Price Quotations: "عروض الأسعار"
 Price Quotation: "عرض السعر"
 Company Info: "معلومات الشركة"
+Payments: "التعاملات المالية"
+Contract Clients: "عملاء التعاقدات"
+Security Logs: "سجلات الأمان"
+Reviews: "التقييمات"
+Currencies: "العملات"
 
 #Components
 No Records To Display: "لا توجد سجلات لعرضها"
 Search For: "البحث عن"
 Audit Details:  "تفاصيل التدقيق"
 Reference Data Tables: "جداول البيانات المرجعية"
+This action cannot be undone: "لا يمكن التراجع عن هذا الإجراء"
+No selected image: "لم يتم تحديد صورة"
+
+#Start::Authentication
 
 #Account Settings
 If you having trouble using the QR code, select manual entry on your app, and enter the code: "إذا كنت تواجه مشكلة في استخدام رمز الاستجابة السريعة ، اختر الإدخال اليدوي على تطبيقك ، وأدخل الرمز"
@@ -45,8 +54,28 @@ Secure Your Account: "أمن حسابك"
 Enable: "تشغيل"
 Disable: "إيقاف"
 Your Account Is Secured: "تم تأمين حسابك"
-Using an authenticator app like: "استخدام تطبيق المصادقة مثل"
+Use the authenticator app: "استخدام تطبيق المصادقة"
 scan the QR code and It will generate a 6 digit code for you: "قم بمسح رمز الاستجابة السريعة وسيقوم بتوليد رمز مكون من 6 أرقام لك"
+Authenticator App: "تطبيق المصادقة"
+Disable Two-Factor Authentication: "تعطيل تطبيق المصادقة"
+Confirm New Password: "تأكيد كلمة المرور الجديدة"
+New Password: "كلمة المرور الجديدة"
+Current Password: "كلمة المرور الحالية"
+Email Address: "البريد الإلكتروني"
+More Info: "مزيد من المعلومات"
+Reset Password: "إعادة تعيين كلمة المرور"
+Confirm Email: "تأكيد البريد الإلكتروني"
+
+#Profile
+Profile Details: "تفاصيل الحساب"
+Full Name: "الاسم الكامل"
+Role: "الدور"
+Phone: "الهاتف"
+Verified: "تم التحقق"
+Profile Completion: "اكتمال الملف الشخصي"
+Email Confirmed: "تم تأكيد البريد الإلكتروني"
+Phone Number Confirmed: "تم تأكيد رقم الهاتف"
+Two-Factor Enabled Authentication: "تطبيق المصادقة مفعل"
 
 #Login
 Email: "البريد الإلكتروني"
@@ -62,6 +91,32 @@ Enter 6-digit code from your authenticator application: "أدخل الرمز ا�
 2FA Code: "رمز المصادقة الثنائية"
 Welcome to: "مرحبًا بك في"
 We provide you with the best quality, according to international standards, for cleaning services, pest extermination, and home and hotel services.: ".نحن نقدم لك أفضل جودة، وفقًا للمعايير الدولية، لخدمات التنظيف واستبعاد الآفات وخدمات المنزل والفندق"
+
+#End::Authentication
+
+#Index
+Login Date: "تاريخ الدخول"
+IP Address: "عنوان بروتوكول الإنترنت"
+Current User: "المستخدم الحالي"
+
+#CompanyInfo
+Edit Company Info: "تعديل معلومات الشركة"
+Back to Company Info: "العودة إلى معلومات الشركة"
+Who We Are: "من نحن"
+Vision: "الرؤية"
+Mission: "الرسالة"
+Contact Email: "البريد الإلكتروني"
+Contact Phone: "رقم الهاتف"
+Contact Mobile: "الهاتف المحمول"
+VAT Registration Number: "رقم تسجيل ضريبة القيمة المضافة"
+Hotline: "الخط الساخن"
+Address: "العنوان"
+
+#Reviews
+Review Details: "تفاصيل التقييم"
+Rate: "التقييم"
+Title: "العنوان"
+Feedback: "التعليق"
 
 #Forms
 Add: "إضافة"

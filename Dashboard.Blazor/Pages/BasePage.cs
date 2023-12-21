@@ -12,6 +12,7 @@ public class BasePage : ComponentBase
 
     //Variables
     protected List<BreadcrumbItem> breadcrumbItems = new();
+    protected string searchString = string.Empty;
     protected int tableHight;
     protected bool isLoading;
     protected bool isDisable;

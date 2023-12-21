@@ -5,9 +5,9 @@
 <PageTitle>@languageContainer.Keys["Company Info"]</PageTitle>
 <MudBreadcrumbs Items="breadcrumbItems"></MudBreadcrumbs>
 
-<div class="card mb-5">
+<div class="card mb-5 border border-gray-300 shadow-sm">
     <!--begin::Card body-->
-    <div class="card-body pt-5">
+    <div class="card-body">
         <!--begin::Profile-->
         <div class="d-flex gap-7 align-items-start">
             <!--begin::Avatar-->
@@ -34,6 +34,9 @@
                         }
                         else
                         {
+                            <span class="fw-bold">
+                                @languageContainer.Keys["Contact Email"]:
+                            </span>
                             @companyInfo.ContactEmail
                         }
                     </a>
@@ -49,6 +52,9 @@
                         }
                         else
                         {
+                            <span class="fw-bold">
+                                @languageContainer.Keys["Contact Phone"]:
+                            </span>
                             @companyInfo.ContactPhone
                         }
                     </a>
@@ -68,6 +74,9 @@
                         }
                         else
                         {
+                            <span class="fw-bold">
+                                @languageContainer.Keys["Contact Mobile"]:
+                            </span>
                             @companyInfo.ContactMobile
                         }
                     </a>
@@ -89,6 +98,9 @@
                         }
                         else
                         {
+                            <span class="fw-bold">
+                                @languageContainer.Keys["VAT Registration Number"]:
+                            </span>
                             @companyInfo.VatRegistrationNumber
                         }
                     </a>
@@ -108,6 +120,9 @@
                         }
                         else
                         {
+                            <span class="fw-bold">
+                                @languageContainer.Keys["Hotline"]:
+                            </span>
                             @companyInfo.Hotline
                         }
                     </a>
@@ -126,6 +141,9 @@
                         }
                         else
                         {
+                            <span class="fw-bold">
+                                @languageContainer.Keys["Address"]:
+                            </span>
                             @companyInfo.Address
                         }
                     </a>
@@ -136,7 +154,7 @@
             <div class="d-flex my-4">
                 <a href="/CompanyInfo/Form" class="btn btn-primary">
                     <i class="fa-solid fa-pen-to-square me-1"></i>
-                    Edit
+                    @languageContainer.Keys["Edit"]
                 </a>
             </div>
         </div>
@@ -145,7 +163,7 @@
     <!--end::Card body-->
 </div>
 
-<div class="card">
+<div class="card border border-gray-300 shadow-sm">
     <!--begin::Body-->
     <div class="card-body">
         <!--begin::About-->
@@ -155,7 +173,7 @@
                 <!--begin::Top-->
                 <div class="text-center mb-5">
                     <!--begin::Title-->
-                    <h3 class="fs-1 fw-bold xtext-gray-900">Who We Are</h3>
+                    <h3 class="fs-1 fw-bold xtext-gray-900">@languageContainer.Keys["Who We Are"]</h3>
                     <!--end::Title-->
                 </div>
                 <!--begin::Description-->
@@ -186,7 +204,7 @@
                 <!--begin::Top-->
                 <div class="text-center mb-5">
                     <!--begin::Title-->
-                    <h3 class="fs-1 fw-bold text-gray-900">Vision</h3>
+                    <h3 class="fs-1 fw-bold text-gray-900">@languageContainer.Keys["Vision"]</h3>
                     <!--end::Title-->
                 </div>
                 <!--begin::Description-->
@@ -217,7 +235,7 @@
                 <!--begin::Top-->
                 <div class="text-center mb-5">
                     <!--begin::Title-->
-                    <h3 class="fs-1 fw-bold text-gray-900">Mission</h3>
+                    <h3 class="fs-1 fw-bold text-gray-900">@languageContainer.Keys["Mission"]</h3>
                     <!--end::Title-->
                 </div>
                 <!--begin::Description-->
@@ -301,7 +319,3 @@
     </div>
     <!--end::Body-->
 </div>
-
-@code {
-
-}

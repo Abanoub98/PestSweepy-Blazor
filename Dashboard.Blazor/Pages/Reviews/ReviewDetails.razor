@@ -1,0 +1,62 @@
+﻿@page "/Reviews/Details/{Id:int}"
+@attribute [Authorize]
+@inherits BasePage
+
+<PageTitle>@languageContainer.Keys["Review Details"]</PageTitle>
+<MudBreadcrumbs Items="breadcrumbItems" />
+@if (review is null)
+{
+    <FormLoadingSpinner IsBigForm="true" />
+}
+else
+{
+    <div class="card shadow-sm">
+        <div class ="card-header">
+            <div class="fw-bold card-title">
+                @languageContainer.Keys["Review Details"]
+            </div>
+            <div class="card-toolbar">
+                <a href="/Supervisors" class="btn bt-sm btn-primary">
+                    <MudIcon Icon="@Icons.Material.Filled.ArrowBack" />
+                    @languageContainer.Keys["Back To"] @languageContainer.Keys["Reviews"]
+                </a>
+            </div>
+        </div>
+        <div class="card-body">
+            <!--begin::Details content-->
+            <div class="py-3 fs-6">
+                <div class="row">
+                    <div class="col-6">
+                        <!--begin::Details item-->
+                        <div class="fw-bold mb-1">@languageContainer.Keys["Client"]:</div>
+                        <a href="/Clients/Details/@review.Client.Id" class="text-gray-600 text-hover-primary">@review.Client.Name</a>
+                        <!--begin::Details item-->
+                        <!--begin::Details item-->
+                        <div class="fw-bold mt-5 mb-1">@languageContainer.Keys["Order"]:</div>
+                        <a class="text-gray-600 text-hover-primary">#2156465</a>
+                        <!--begin::Details item-->
+                    </div>
+                    <div class="col-6">
+                        <!--begin::Details item-->
+                        <div class="fw-bold mb-1">@languageContainer.Keys["Date"]:</div>
+                        <div class="text-gray-600">@review.Date</div>
+                        <!--begin::Details item-->
+                        <!--begin::Details item-->
+                        <div class="fw-bold mt-5 mb-1">@languageContainer.Keys["Rate"]: @review.Rate</div>
+                        <MudRating SelectedValue="@((int)review.Rate)" />
+                        <!--begin::Details item-->
+                    </div>
+                </div>
+                <!--begin::Details item-->
+                <div class="fw-bold mt-5 mb-1">@languageContainer.Keys["Title"]:</div>
+                <div class="text-gray-600">@review.Title</div>
+                <!--begin::Details item-->
+                <!--begin::Details item-->
+                <div class="fw-bold mt-5 mb-1">@languageContainer.Keys["Feedback"]:</div>
+                <div class="text-gray-600 p-3 rounded-lg border border-gray-300">@review.Feedback</div>
+                <!--begin::Details item-->
+            </div>
+            <!--end::Details content-->
+        </div>
+    </div>
+}

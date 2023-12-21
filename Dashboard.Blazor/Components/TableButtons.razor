@@ -1,17 +1,28 @@
-﻿
-<a @onclick="DetailsClicked" title="Show Details" class="btn btn-sm btn-light-info me-1">
-    <i class="fa-solid fa-circle-info"></i>
-</a>
-<a @onclick="EditClicked" title="Edit Record" class="btn btn-sm btn-light-primary me-1">
-    <i class="fa-solid fa-pen-to-square"></i>
-</a>
-<a @onclick="DeleteClicked" title="Delete Record" class="btn btn-sm btn-light-danger me-1">
-    <i class="fa-solid fa-trash"></i>
-</a>
+﻿@if (!IsDetailsHide)
+{
+    <a @onclick="DetailsClicked" title="@languageContainer.Keys["Show Details"]" class="btn btn-sm btn-light-info me-1">
+        <i class="fa-solid fa-circle-info"></i>
+    </a>
+}
+@if (!IsEditHide)
+{
+    <a @onclick="EditClicked" title="@languageContainer.Keys["Edit Record"]" class="btn btn-sm btn-light-primary me-1">
+        <i class="fa-solid fa-pen-to-square"></i>
+    </a>
+}
+@if (!IsDeleteHide)
+{
+    <a @onclick="DeleteClicked" title="@languageContainer.Keys["Delete Record"]" class="btn btn-sm btn-light-danger me-1">
+        <i class="fa-solid fa-trash"></i>
+    </a>
+}
 
 @code {
-    [Parameter][EditorRequired] public bool IsDisable { get; set; }
-    [Parameter][EditorRequired] public EventCallback EditClicked { get; set; }
-    [Parameter][EditorRequired] public EventCallback DetailsClicked { get; set; }
-    [Parameter][EditorRequired] public EventCallback DeleteClicked { get; set; }
+    [Parameter] public EventCallback EditClicked { get; set; }
+    [Parameter] public EventCallback DetailsClicked { get; set; }
+    [Parameter] public EventCallback DeleteClicked { get; set; }
+    [Parameter] public bool IsDisable { get; set; }
+    [Parameter] public bool IsEditHide { get; set; }
+    [Parameter] public bool IsDetailsHide { get; set; }
+    [Parameter] public bool IsDeleteHide { get; set; }
 }
