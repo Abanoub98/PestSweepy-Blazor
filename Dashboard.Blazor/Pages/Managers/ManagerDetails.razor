@@ -1,5 +1,5 @@
 ﻿@page "/Managers/Details/{Id:int}"
-@attribute [Authorize]
+@attribute [Authorize(Roles = Roles.AdminRole)]
 @inherits BasePage
 
 <PageTitle>@languageContainer.Keys["Manager Details"]</PageTitle>

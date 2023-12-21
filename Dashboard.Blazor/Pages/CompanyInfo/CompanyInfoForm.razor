@@ -1,5 +1,5 @@
 ﻿@page "/CompanyInfo/Form"
-@attribute [Authorize]
+@attribute [Authorize(Roles = Roles.AdminRole)]
 @inherits BasePage
 
 <PageTitle>@languageContainer.Keys["Edit Company Info"]</PageTitle>

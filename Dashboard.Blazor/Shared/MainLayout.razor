@@ -14,7 +14,7 @@
             <!--begin::Wrapper-->
             <div class="app-wrapper flex-column flex-row-fluid" id="kt_app_wrapper">
                 <!--begin::Sidebar-->
-                <MainNavigation IsDarkMood="IsDarkMode" />
+                <MainNavigation IsDarkMood="IsDarkMode" UserClaims="claims" />
                 <!--end::Sidebar-->
                 <!--begin::Main-->
                 <div class="app-main flex-column flex-row-fluid" id="kt_app_main">
@@ -51,14 +51,24 @@
 
     [Inject] IJSRuntime JSRuntime { get; set; } = default!;
     [Inject] ILocalStorageService LocalStorage { get; set; } = default!;
+    [Inject] AuthenticationStateProvider AuthenticationStateProvider { get; set; } = default!;
 
     private string CurrentCulture = string.Empty;
     private bool IsDarkMode;
     private bool IsRightToLeft = false;
     MudTheme MyCustomTheme = new MudTheme();
+    private IEnumerable<Claim> claims = Enumerable.Empty<Claim>();
 
     protected override async Task OnInitializedAsync()
     {
+        claims = await GetClaimsPrincipalData();
+
+        foreach (var item in claims)
+        {
+            Console.WriteLine(item);
+
+        }
+
         CurrentCulture = await LocalStorage.GetItemAsync<string>("CurrentCulture");
 
         if (CurrentCulture == "ar-EG")
@@ -90,6 +100,17 @@
             await JSRuntime.InvokeVoidAsync("KTComponents.init");
         }
         catch{}
+    }
 
+    protected async Task<IEnumerable<Claim>> GetClaimsPrincipalData()
+    {
+        var authState = await AuthenticationStateProvider
+           .GetAuthenticationStateAsync();
+        var user = authState.User;
+
+        if (user.Identity is not null && user.Identity.IsAuthenticated)
+            return user.Claims;
+
+        return Enumerable.Empty<Claim>();
     }
 }

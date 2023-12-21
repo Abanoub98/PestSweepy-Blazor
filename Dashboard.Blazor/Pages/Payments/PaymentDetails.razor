@@ -1,5 +1,5 @@
 @page "/Payments/Details/{Id}"
-@attribute [Authorize]
+@attribute [Authorize(Roles = Roles.AdminRole)]
 @inherits BasePage
 
 <PageTitle>@languageContainer.Keys["Payment Details"]</PageTitle>

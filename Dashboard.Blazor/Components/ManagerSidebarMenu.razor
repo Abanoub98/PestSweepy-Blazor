@@ -1,0 +1,5 @@
+﻿@attribute [Authorize(Roles = Roles.ManagerRole)]
+
+@code {
+    [Parameter][EditorRequired] public bool IsDarkMood { get; set; }
+}

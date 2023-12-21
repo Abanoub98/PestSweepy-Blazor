@@ -1,243 +1,25 @@
-﻿    <!--begin::Sidebar-->
+﻿@attribute [Authorize]
+
+<!--begin::Sidebar-->
 <div id="kt_app_sidebar" class="app-sidebar flex-column" data-kt-drawer="true" data-kt-drawer-name="app-sidebar" data-kt-drawer-activate="{default: true, lg: false}" data-kt-drawer-overlay="true" data-kt-drawer-width="250px" data-kt-drawer-direction="start" data-kt-drawer-toggle="#kt_app_sidebar_mobile_toggle">
     <!--begin::Main-->
     <div class="d-flex flex-column justify-content-between h-100 hover-scroll-overlay-y my-2 d-flex flex-column" id="kt_app_sidebar_main" data-kt-scroll="true" data-kt-scroll-activate="true" data-kt-scroll-height="auto" data-kt-scroll-dependencies="#kt_app_header" data-kt-scroll-wrappers="#kt_app_main" data-kt-scroll-offset="5px">
-        <!--begin::Sidebar menu-->
-        <div id="#kt_app_sidebar_menu" data-kt-menu="true" data-kt-menu-expand="false" class="flex-column-fluid menu menu-sub-indention menu-column menu-rounded menu-active-bg mb-7">
-            <!--begin:Menu item-->
-            <div class="menu-item here show menu-accordion">
-                <!--begin:Menu link-->
-                <NavLink Match="NavLinkMatch.All" href="/" class="menu-link">
-                    <span class="menu-icon">
-                        <MudIcon Color="@(IsDarkMood? Color.Info : Color.Dark)" Size="Size.Large" Icon="@Icons.Material.TwoTone.SpaceDashboard" Title="Dashboard" />
-                    </span>
-                    <span class="menu-title">@languageContainer.Keys["Dashboard"]</span>
-                </NavLink>
-                <!--end:Menu link-->
-            </div>
-            <!--end:Menu item-->
-            <!--begin:Menu item-->
-            <div class="menu-item">
-                <!--begin:Menu link-->
-                <NavLink Match="NavLinkMatch.Prefix" class="menu-link" href="/ReferenceData">
-                    <span class="menu-icon">
-                        <MudIcon Color="@(IsDarkMood? Color.Info : Color.Dark)" Size="Size.Large" Icon="@Icons.Material.TwoTone.ManageSearch" Title="ReferenceData" />
-                    </span>
-                    <span class="menu-title">
-                        @languageContainer.Keys["Reference Data"]
-                    </span>
-                </NavLink>
-                <!--end:Menu link-->
-            </div>
-            <!--end:Menu item-->
-            <!--begin:Menu item-->
-            <div data-kt-menu-trigger="click" class="menu-item here menu-accordion">
-                <!--begin:Menu link-->
-                <span class="menu-link">
-                    <span class="menu-icon">
-                        <MudIcon Color="@(IsDarkMood? Color.Info : Color.Dark)" Size="Size.Large" Icon="@Icons.Material.TwoTone.Security" Title="SecurityLogs" />
-                    </span>
-                    <span class="menu-title">@languageContainer.Keys["Security Logs"]</span>
-                    <span class="menu-arrow"></span>
-                </span>
-                <!--end:Menu link-->
-                <!--begin:Menu sub-->
-                <div class="menu-sub menu-sub-accordion">
-                    <!--begin:Menu item-->
-                    <div class="menu-item">
-                        <!--begin:Menu link-->
-                        <NavLink Match="NavLinkMatch.Prefix" class="menu-link" href="/Audits">
-                            <span class="menu-icon">
-                                <MudIcon Color="@(IsDarkMood? Color.Info : Color.Dark)" Icon="@Icons.Material.TwoTone.History" Title="Audits" />
-                            </span>
-                            <span class="menu-title">
-                                @languageContainer.Keys["Audits"]
-                            </span>
-                        </NavLink>
-                        <!--end:Menu link-->
-                    </div>
-                    <!--end:Menu item-->
-                    <!--begin:Menu item-->
-                    <div class="menu-item">
-                        <!--begin:Menu link-->
-                        <NavLink Match="NavLinkMatch.Prefix" class="menu-link" href="/LoginLogs">
-                            <span class="menu-icon">
-                                <MudIcon Color="@(IsDarkMood? Color.Info : Color.Dark)" Icon="@Icons.Material.TwoTone.SafetyCheck" Title="LoginLogs" />
-                            </span>
-                            <span class="menu-title">
-                                @languageContainer.Keys["Login Logs"]
-                            </span>
-                        </NavLink>
-                        <!--end:Menu link-->
-                    </div>
-                    <!--end:Menu item-->
-                </div>
-                <!--end:Menu sub-->
-            </div>
-            <!--end:Menu item-->
-            <!--begin:Menu item-->
-            <div data-kt-menu-trigger="click" class="menu-item here menu-accordion">
-                <!--begin:Menu link-->
-                <span class="menu-link">
-                    <span class="menu-icon">
-                        <MudIcon Color="@(IsDarkMood? Color.Info : Color.Dark)" Size="Size.Large" Icon="@Icons.Material.TwoTone.Apartment" Title="Company" />
-                    </span>
-                    <span class="menu-title">@languageContainer.Keys["Company"]</span>
-                    <span class="menu-arrow"></span>
-                </span>
-                <!--end:Menu link-->
-                <!--begin:Menu sub-->
-                <div class="menu-sub menu-sub-accordion">
-                    <!--begin:Menu item-->
-                    <div class="menu-item here show menu-accordion">
-                        <!--begin:Menu link-->
-                        <NavLink Match="NavLinkMatch.Prefix" href="/Managers" class="menu-link">
-                            <span class="menu-icon">
-                                <MudIcon Color="@(IsDarkMood? Color.Info : Color.Dark)" Icon="@Icons.Material.TwoTone.Diversity3" Title="Managers" />
-                            </span>
-                            <span class="menu-title">@languageContainer.Keys["Managers"]</span>
-                        </NavLink>
-                        <!--end:Menu link-->
-                    </div>
-                    <!--end:Menu item-->
-                    <!--begin:Menu item-->
-                    <div class="menu-item here show menu-accordion">
-                        <!--begin:Menu link-->
-                        <NavLink Match="NavLinkMatch.Prefix" href="/Supervisors" class="menu-link">
-                            <span class="menu-icon">
-                                <MudIcon Color="@(IsDarkMood? Color.Info : Color.Dark)" Icon="@Icons.Material.TwoTone.SupervisorAccount" Title="Supervisors" />
-                            </span>
-                            <span class="menu-title">@languageContainer.Keys["Supervisors"]</span>
-                        </NavLink>
-                        <!--end:Menu link-->
-                    </div>
-                    <!--end:Menu item-->
-                    <!--begin:Menu item-->
-                    <div class="menu-item here show menu-accordion">
-                        <!--begin:Menu link-->
-                        <NavLink Match="NavLinkMatch.Prefix" href="/Providers" class="menu-link">
-                            <span class="menu-icon">
-                                <MudIcon Color="@(IsDarkMood? Color.Info : Color.Dark)" Icon="@Icons.Material.TwoTone.Engineering" Title="Providers" />
-                            </span>
-                            <span class="menu-title">@languageContainer.Keys["Providers"]</span>
-                        </NavLink>
-                        <!--end:Menu link-->
-                    </div>
-                    <!--end:Menu item-->
-                </div>
-                <!--end:Menu sub-->
-            </div>
-            <!--end:Menu item-->
-            <!--begin:Menu item-->
-            <div class="menu-item here show menu-accordion">
-                <!--begin:Menu link-->
-                <NavLink Match="NavLinkMatch.Prefix" href="/CompanyInfo" class="menu-link">
-                    <span class="menu-icon">
-                        <MudIcon Color="@(IsDarkMood? Color.Info : Color.Dark)" Size="Size.Large" Icon="@EntityIcons.CompanyInfoIcon" Title="Company Info" />
-                    </span>
-                    <span class="menu-title">@languageContainer.Keys["Company Info"]</span>
-                </NavLink>
-                <!--end:Menu link-->
-            </div>
-            <!--end:Menu item-->
-            <!--begin:Menu item-->
-            <div class="menu-item here show menu-accordion">
-                <!--begin:Menu link-->
-                <NavLink Match="NavLinkMatch.Prefix" href="/Reviews" class="menu-link">
-                    <span class="menu-icon">
-                        <MudIcon Color="@(IsDarkMood? Color.Info : Color.Dark)" Size="Size.Large" Icon="@EntityIcons.ReviewIcon" Title="Reviews" />
-                    </span>
-                    <span class="menu-title">@languageContainer.Keys["Reviews"]</span>
-                </NavLink>
-                <!--end:Menu link-->
-            </div>
-            <!--end:Menu item-->
-            <!--begin:Menu item-->
-            <div class="menu-item here show menu-accordion">
-                <!--begin:Menu link-->
-                <NavLink Match="NavLinkMatch.Prefix" href="/Categories" class="menu-link">
-                    <span class="menu-icon">
-                        <MudIcon Color="@(IsDarkMood? Color.Info : Color.Dark)" Size="Size.Large" Icon="@Icons.Material.TwoTone.Category" Title="Categories" />
-                    </span>
-                    <span class="menu-title">@languageContainer.Keys["Categories"]</span>
-                </NavLink>
-                <!--end:Menu link-->
-            </div>
-            <!--end:Menu item-->
-            <!--begin:Menu item-->
-            <div class="menu-item here show menu-accordion">
-                <!--begin:Menu link-->
-                <NavLink Match="NavLinkMatch.Prefix" href="/Services" class="menu-link">
-                    <span class="menu-icon">
-                        <MudIcon Color="@(IsDarkMood? Color.Info : Color.Dark)" Size="Size.Large" Icon="@Icons.Material.TwoTone.Handyman" Title="Services" />
-                    </span>
-                    <span class="menu-title">@languageContainer.Keys["Services"]</span>
-                </NavLink>
-                <!--end:Menu link-->
-            </div>
-            <!--end:Menu item-->
-            <!--begin:Menu item-->
-            <div class="menu-item here show menu-accordion">
-                <!--begin:Menu link-->
-                <NavLink Match="NavLinkMatch.Prefix" href="/Clients" class="menu-link">
-                    <span class="menu-icon">
-                        <MudIcon Color="@(IsDarkMood? Color.Info : Color.Dark)" Size="Size.Large" Icon="@Icons.Material.TwoTone.Diversity1" Title="Clients" />
-                    </span>
-                    <span class="menu-title">@languageContainer.Keys["Clients"]</span>
-                </NavLink>
-                <!--end:Menu link-->
-            </div>
-            <!--end:Menu item-->
-            <!--begin:Menu item-->
-            <div class="menu-item here show menu-accordion">
-                <!--begin:Menu link-->
-                <NavLink Match="NavLinkMatch.Prefix" href="/ContractClients" class="menu-link">
-                    <span class="menu-icon">
-                        <MudIcon Color="@(IsDarkMood? Color.Info : Color.Dark)" Size="Size.Large" Icon="@EntityIcons.ContractsIcon" Title="Contract Clients" />
-                    </span>
-                    <span class="menu-title">@languageContainer.Keys["Contract Clients"]</span>
-                </NavLink>
-                <!--end:Menu link-->
-            </div>
-            <!--end:Menu item-->
-            <!--begin:Menu item-->
-            <div class="menu-item here show menu-accordion">
-                <!--begin:Menu link-->
-                <NavLink Match="NavLinkMatch.Prefix" href="/Payments" class="menu-link">
-                    <span class="menu-icon">
-                        <MudIcon Color="@(IsDarkMood? Color.Info : Color.Dark)" Size="Size.Large" Icon="@Icons.Material.Filled.Payment" Title="Payments" />
-                    </span>
-                    <span class="menu-title">@languageContainer.Keys["Payments"]</span>
-                </NavLink>
-                <!--end:Menu link-->
-            </div>
-            <!--end:Menu item-->
-            <!--begin:Menu item-->
-            <div class="menu-item here show menu-accordion">
-                <!--begin:Menu link-->
-                <NavLink Match="NavLinkMatch.Prefix" href="/Currencies" class="menu-link">
-                    <span class="menu-icon">
-                        <MudIcon Color="@(IsDarkMood? Color.Info : Color.Dark)" Size="Size.Large" Icon="@EntityIcons.CurrencyIcon" Title="Currencies" />
-                    </span>
-                    <span class="menu-title">@languageContainer.Keys["Currencies"]</span>
-                </NavLink>
-                <!--end:Menu link-->
-            </div>
-            <!--end:Menu item-->
-            <!--begin:Menu item-->
-            <div class="menu-item here show menu-accordion">
-                <!--begin:Menu link-->
-                <NavLink Match="NavLinkMatch.Prefix" href="/Quotations" class="menu-link">
-                    <span class="menu-icon">
-                        <MudIcon Color="@(IsDarkMood? Color.Info : Color.Dark)" Size="Size.Large" Icon="@EntityIcons.QuotationsIcon" Title="Quotations" />
-                    </span>
-                    <span class="menu-title">@languageContainer.Keys["Price Quotations"]</span>
-                </NavLink>
-                <!--end:Menu link-->
-            </div>
-            <!--end:Menu item-->
-        </div>
-        <!--end::Sidebar menu-->
+        @if (role == Roles.AdminRole)
+        {
+            <AdminSidebarMenu IsDarkMood="IsDarkMood" />
+        }
+        else if (role == Roles.ManagerRole)
+        {
+            <ManagerSidebarMenu IsDarkMood="IsDarkMood" />
+        }
+        else if (role == Roles.SupervisorRole)
+        {
+            <SupervisorSidebarMenu IsDarkMood="IsDarkMood" />
+        }
+        else if (role == Roles.ProviderRole)
+        {
+            <ProviderSidebarMenu IsDarkMood="IsDarkMood" />
+        }
         <!--begin::Footer-->
         <div class="app-sidebar-project-default app-sidebar-project-minimize text-center flex-column-auto d-flex flex-column justify-content-end"
              id="kt_app_sidebar_footer">
@@ -263,7 +45,17 @@
 <!--end::Sidebar-->
 @code {
     [Inject] IJSRuntime JSRuntime { get; set; } = default!;
+
     [Parameter][EditorRequired] public bool IsDarkMood { get; set; }
+    [Parameter][EditorRequired] public IEnumerable<Claim> UserClaims { get; set; } = Enumerable.Empty<Claim>();
+
+    private string role = null!;
+
+    protected override void OnParametersSet()
+    {
+        role = UserClaims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value ?? string.Empty;
+    }
 
     private async Task DownloadAsync() => await JSRuntime.InvokeVoidAsync("Download");
+
 }

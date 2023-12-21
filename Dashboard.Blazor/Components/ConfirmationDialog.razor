@@ -1,4 +1,6 @@
-﻿<MudDialog>
+﻿@attribute [Authorize]
+
+<MudDialog>
     <DialogContent>
         <MudText>@languageContainer.Keys[ConfirmationMessage]</MudText>
         <MudAlert Severity="Severity.Error" Dense="true" Class="my-2">@languageContainer.Keys["This action cannot be undone"].</MudAlert>

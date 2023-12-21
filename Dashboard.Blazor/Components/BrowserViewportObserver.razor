@@ -1,5 +1,6 @@
 ﻿@implements IBrowserViewportObserver
 @implements IAsyncDisposable
+@attribute [Authorize]
 
 @code{
     [Parameter][EditorRequired] public EventCallback<int> TableHeightChanged { get; set; }

@@ -1,5 +1,5 @@
 ﻿@page "/LoginLogs"
-@attribute [Authorize]
+@attribute [Authorize(Roles = Roles.AdminRole)]
 @inherits BasePage
 
 <PageTitle>@languageContainer.Keys["Login Logs"]</PageTitle>

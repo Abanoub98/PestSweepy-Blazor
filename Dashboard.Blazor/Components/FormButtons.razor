@@ -1,4 +1,6 @@
-﻿<button type="submit" style="height:fit-content" class="btn btn-success @(IsLoading? "disabled" : string.Empty)">
+﻿@attribute [Authorize]
+
+<button type="submit" style="height:fit-content" class="btn btn-success @(IsLoading? "disabled" : string.Empty)">
     @if (IsLoading)
     {
         <span class="indicator-label">

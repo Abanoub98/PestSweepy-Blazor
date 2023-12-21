@@ -41,8 +41,4 @@
 		<PackageReference Include="MudBlazor" Version="6.11.0" />
 	</ItemGroup>
 
-	<ItemGroup>
-	  <Folder Include="Pages\Coupons\" />
-	</ItemGroup>
-
 </Project>

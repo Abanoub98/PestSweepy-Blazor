@@ -1,5 +1,5 @@
 ﻿@page "/Quotations"
-@attribute [Authorize]
+@attribute [Authorize(Roles = Roles.AdminRole)]
 @inherits BasePage
 
 <PageTitle>@languageContainer.Keys["Price Quotations"]</PageTitle>

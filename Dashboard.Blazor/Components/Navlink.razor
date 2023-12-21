@@ -1,0 +1,24 @@
+﻿@attribute [Authorize]
+
+<!--begin:Menu item-->
+<div class="menu-item">
+    <!--begin:Menu link-->
+    <NavLink Match="@NavLinkMatch" href="@Href" class="menu-link">
+        <span class="menu-icon">
+            <MudIcon Color="@(IsDarkMood? Color.Info : Color.Dark)" Size="@Size" Icon="@Icon" Title="@MenuTitle" />
+        </span>
+        <span class="menu-title">@languageContainer.Keys[MenuTitle]</span>
+    </NavLink>
+    <!--end:Menu link-->
+</div>
+<!--end:Menu item-->
+
+@code {
+    [Parameter][EditorRequired] public bool IsDarkMood { set; get; }
+    [Parameter][EditorRequired] public string MenuTitle { set; get; } = null!;
+    [Parameter][EditorRequired] public string Href { set; get; } = null!;
+    [Parameter][EditorRequired] public string Icon { set; get; } = null!;
+
+    [Parameter] public Size Size { set; get; } = Size.Large;
+    [Parameter] public NavLinkMatch NavLinkMatch { set; get; } = NavLinkMatch.Prefix;
+}

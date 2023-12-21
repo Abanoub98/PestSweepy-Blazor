@@ -1,6 +1,6 @@
 ﻿@page "/Supervisors/Form/{Id:int}"
 @page "/Supervisors/Form"
-@attribute [Authorize]
+@attribute [Authorize(Roles = Roles.AdminRole)]
 @inherits BasePage
 
 <PageTitle>@languageContainer.Keys[(Id == 0 ? "Add" : "Edit") + " Supervisor"]</PageTitle>
