@@ -1,16 +1,16 @@
-﻿@page "/ContractClients"
+﻿@page "/Contracts"
 @attribute [Authorize(Roles = Roles.AdminRole)]
 @inherits BasePage
 
-<PageTitle>@languageContainer.Keys["Contract Clients"]</PageTitle>
+<PageTitle>@languageContainer.Keys["Contracts"]</PageTitle>
 <MudBreadcrumbs Items="breadcrumbItems"></MudBreadcrumbs>
 <BrowserViewportObserver TableHeightChanged="TableHeightChanged" />
 
 <MudCard Elevation="25">
         <MudCardContent>
-            <MudDataGrid T="ContractClientDto" Dense="true" Elevation="0" FixedHeader="true" Height="@($"{tableHight}px")"
+            <MudDataGrid T="ContractDto" Dense="true" Elevation="0" FixedHeader="true" Height="@($"{tableHight}px")"
                          Loading="@(isLoading)" LoadingProgressColor="Color.Info" Filterable="true"
-                         Items="contractClients" Hover="true" SortMode="SortMode.Single" QuickFilter="@FilterFunc">
+                         Items="contracts" Hover="true" SortMode="SortMode.Single" QuickFilter="@FilterFunc">
 
                 <ToolBarContent>
                     <div class="d-flex justify-content-between flex-column align-items-center flex-md-row w-100">
@@ -34,12 +34,11 @@
                 <NoRecordsContent>
                     <NoDataToDisply />
                 </NoRecordsContent>
-
+                  
                 <Columns>
-                    <PropertyColumn Property="x => x.Number" Title="@languageContainer.Keys["Serial Number"]" />
-                    <PropertyColumn Property="x => x.FirstParty" Title="@languageContainer.Keys["Client Name"]" />
-                    <PropertyColumn Property="x => x.SecondParty" Title="@languageContainer.Keys["Total Price"]" />
-                    <PropertyColumn Property="x => x.Date" Title="@languageContainer.Keys[" Date"]" />
+                    <PropertyColumn Property="x => x.ContractClient.Name" Title="@languageContainer.Keys["Contract Client"]" />
+                    <PropertyColumn Property="x => x.EffectiveDate" Title="@languageContainer.Keys["Effective Date"]" />
+                    <PropertyColumn Property="x => x.CreatedAt" Title="@languageContainer.Keys["Created Date"]" />
 
                     <TemplateColumn CellStyle="width:300px" CellClass="text-center" Context="contractClient" HeaderClass="text-center" Sortable="false" Filterable="false">
                         <HeaderTemplate>
@@ -53,7 +52,7 @@
                 </Columns>
 
                 <PagerContent>
-                    <MudDataGridPager T="ContractClientDto" />
+                    <MudDataGridPager T="ContractDto" />
                 </PagerContent>
             </MudDataGrid>
         </MudCardContent>

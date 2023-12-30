@@ -1,0 +1,110 @@
+﻿@page "/Contracts/Details/{Id:int}"
+@attribute [Authorize(Roles = Roles.AdminRole)]
+@inherits BasePage
+
+<PageTitle>
+    @languageContainer.Keys["Contract Details"]
+</PageTitle>
+<MudBreadcrumbs Items="breadcrumbItems" />
+
+@if (contract is null)
+{
+    <FormLoadingSpinner IsBigForm="true" />
+}
+else
+{
+    <div class="card shadow-sm">
+        <div class="card-header">
+            <div class="fw-bold card-title">
+                @languageContainer.Keys["Coupon Details"]
+            </div>
+            <div class="card-toolbar">
+                <a href="/Contracts" class="btn btn-sm btn-primary me-3">
+                    <MudIcon Icon="@Icons.Material.Filled.ArrowBack" />
+                    @languageContainer.Keys["Back To"] @languageContainer.Keys["Contract"]
+                </a>
+                <a @onclick="() => OpenForm(formUri,contract.Id)" class="btn btn-sm btn-success">
+                    <MudIcon Icon="@Icons.Material.Filled.Edit" />
+                    @languageContainer.Keys["Edit"]
+                </a>
+            </div>
+        </div>
+        <div class="card-body">
+            <!--begin::Details content-->
+            <div class="py-3 fs-6">
+                <div class="row">
+                    <div class="col-8">
+                        <div class="row">
+                            <div class="col-4">
+                                <!--begin::Details item-->
+                                <div class="fw-bold mb-1">@languageContainer.Keys["Number"]:</div>
+                                <div class="text-gray-600">@contract.Number</div>
+                                <!--begin::Details item-->
+                                <div class="fw-bold mt-5 mb-1">@languageContainer.Keys["Contract Client"]:</div>
+                                <a href="/ContractClients/Form/@contract.ContractClient?.Id" class="text-gray-600 text-hover-primary">@contract.ContractClient?.Name</a>
+                                <!--begin::Details item-->
+                                <div class="fw-bold mt-5 mb-1">@languageContainer.Keys["Created Date"]:</div>
+                                <div class="text-gray-600">@contract.CreatedAt!.Value.ToString("d")</div>
+                                <!--begin::Details item-->
+                                <div class="fw-bold mt-5  mb-1">@languageContainer.Keys["Effective Date"]:</div>
+                                <div class="text-gray-600">@contract.EffectiveDate!.Value.ToString("d")</div>
+                            </div>
+                            <div class="col-4 ps-5">
+                                <!--begin::Details item-->
+                                <div class="fw-bold mb-1">@languageContainer.Keys["First Party"]:</div>
+                                <div class="text-gray-600">@contract.FirstParty</div>
+                                <!--begin::Details item-->
+                                <div class="fw-bold mt-5 mb-1">@languageContainer.Keys["First Party CEO"]:</div>
+                                <div class="text-gray-600">@contract.FpExecutiveOfficer</div>
+                                <!--begin::Details item-->
+                                <div class="fw-bold mt-5 mb-1">@languageContainer.Keys["First Party Commercial Registration No."]:</div>
+                                <div class="text-gray-600">@contract.FpCommercialRegistrationNo</div>
+                            </div>
+                            <div class="col-4 ps-5">
+                                <!--begin::Details item-->
+                                <div class="fw-bold mb-1">@languageContainer.Keys["Second Party"]:</div>
+                                <div class="text-gray-600">@contract.SecondParty</div>
+                                <!--begin::Details item-->
+                                <div class="fw-bold mt-5 mb-1">@languageContainer.Keys["Second Party CEO"]:</div>
+                                <div class="text-gray-600">@contract.SpExecutiveOfficer</div>
+                                <!--begin::Details item-->
+                                <div class="fw-bold mt-5 mb-1">@languageContainer.Keys["Second Party Commercial Registration No."]:</div>
+                                <div class="text-gray-600">@contract.SpCommercialRegistrationNo</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--begin::Details item-->
+                <div class="fw-bold mt-5 mb-1">@languageContainer.Keys["Intro"]:</div>
+                <div class="text-gray-800 p-3 rounded-lg border border-gray-400">
+                    @contract.ContractIntro
+                </div>
+                <!--begin::Details item-->
+                <!--begin::Details item-->
+                <div class="fw-bold mt-5 mb-1">@languageContainer.Keys["Terms"]:</div>
+                <div class="text-gray-800 p-3 rounded-lg border border-gray-400">
+                    @foreach (var term in contract.Terms)
+                    {
+                        <MudDivider Class="my-5" Light="true" />
+                        @(term.Term)
+                        <MudDivider Class="my-5" Light="true" />
+                    }
+                </div>
+                <!--begin::Details item-->
+                <!--begin::Details item-->
+                <div class="fw-bold mt-5 mb-1">@languageContainer.Keys["Notes"]:</div>
+                <div class="text-gray-800 p-3 rounded-lg border border-gray-400">
+                    @contract.Notes
+                </div>
+                <!--begin::Details item-->
+                <!--begin::Details item-->
+                <div class="fw-bold mt-5 mb-1">@languageContainer.Keys["Contract Conclusion"]:</div>
+                <div class="text-gray-800 p-3 rounded-lg border border-gray-400">
+                    @contract.ContractConculsion
+                </div>
+                <!--begin::Details item-->
+            </div>
+            <!--end::Details content-->
+        </div>
+    </div>
+}

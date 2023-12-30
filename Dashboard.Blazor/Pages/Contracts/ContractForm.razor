@@ -1,0 +1,162 @@
+﻿@page "/Contracts/Form/{Id:int}"
+@page "/Contracts/Form"
+@attribute [Authorize(Roles = Roles.AdminRole)]
+@inherits BasePage
+
+<PageTitle>@languageContainer.Keys[(Id == 0 ? "Add" : "Edit") + " Contract"]</PageTitle>
+<MudBreadcrumbs Items="breadcrumbItems"></MudBreadcrumbs>
+
+@if (contractForm is null)
+{
+    <FormLoadingSpinner IsBigForm="true" />
+}
+else
+{
+    <MudCard Elevation="25">
+        <EditForm Model="@contractForm" OnValidSubmit="OnValidSubmit">
+            <DataAnnotationsValidator />
+            <MudCardHeader Style="padding:20px">
+                <CardHeaderAvatar>
+                    <MudAvatar Rounded="true" Color="Color.Info">
+                        <MudIcon Icon="@EntityIcons.ContractsIcon" />
+                    </MudAvatar>
+                </CardHeaderAvatar>
+                <CardHeaderContent>
+                    <MudText Style="display: flex;align-items: center;" Typo="Typo.h5">
+                        @(Id == 0 ? $"{languageContainer.Keys["Add"]} {languageContainer.Keys["Contract"]}" : $"{languageContainer.Keys["Edit"]} {contractForm.Number}")
+                    </MudText>
+                </CardHeaderContent>
+                <CardHeaderActions>
+                    <MudButton DisableElevation="true" Href="/Contracts" Style="margin:10px" Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.ArrowBack" Color="Color.Info">
+                        @languageContainer.Keys["Back To"] @languageContainer.Keys["Contracts"]
+                    </MudButton>
+                </CardHeaderActions>
+            </MudCardHeader>
+            <MudCardContent Class="px-5 py-3">
+                <div class="d-flex flex-wrap flex-md-nowrap">
+                    <div class="p-3 w-100">
+                        <MudAutocomplete T="LookupDto" SearchFunc="@GetContractClients" @bind-Value="contractForm.ContractClient" For="@(() => contractForm.ContractClient)" ToStringFunc="@(e=> e == null ? null : $"{e.Name}")"
+                                         Variant="Variant.Outlined" ShowProgressIndicator="true" ResetValueOnEmptyText="true" CoerceText="true" ProgressIndicatorColor="Color.Info" Clearable
+                                          AdornmentColor="Color.Info" Adornment="Adornment.Start" AdornmentIcon="@EntityIcons.QuotationsIcon" AnchorOrigin="Origin.BottomCenter" MaxItems="null" HelperTextOnFocus="true"
+                                          Placeholder="@languageContainer.Keys["Select Contract Client"]" Label="@languageContainer.Keys["Contract Client"]" HelperText="@languageContainer.Keys["Required"]">
+                             <NoItemsTemplate>
+                                 <MudText Align="Align.Center" Class="px-4 py-4">
+                                     No items found
+                                 </MudText>
+                             </NoItemsTemplate>
+                         </MudAutocomplete>
+                     </div>
+                     <div class="p-3 w-100">
+                         <MudDatePicker AdornmentColor="Color.Info" Variant="Variant.Outlined" @bind-Date="contractForm.CreatedAt" For="@(() => contractForm.CreatedAt)" Placeholder="@languageContainer.Keys["Select Date"]" Label="@languageContainer.Keys["Created Date"]" />
+                     </div>
+                     <div class="p-3 w-100">
+                         <MudDatePicker AdornmentColor="Color.Info" Variant="Variant.Outlined" @bind-Date="contractForm.EffectiveDate" For="@(() => contractForm.EffectiveDate)" Placeholder="@languageContainer.Keys["Select Date"]" Label="@languageContainer.Keys["Effective Date"]" />
+                     </div>
+                     <div class="p-3 w-100">
+                         <MudTextField HelperText="@languageContainer.Keys["Required"]" Variant="Variant.Outlined" @bind-Value="contractForm.Number" For="@(() => contractForm.Number)" HelperTextOnFocus="true"
+                                       AdornmentColor="Color.Info" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.AccountBox" Placeholder="@languageContainer.Keys["Contract Number"]" Label="@languageContainer.Keys["Number"]" />
+                     </div>
+                     <div class="p-3 w-100">
+                         <MudAutocomplete T="LookupDto" SearchFunc="@GetQuotations" ToStringFunc="@(e=> e == null ? null : $"{e.Name}")" @bind-Value="contractForm.Quotation" For="@(() => contractForm.Quotation)"
+                                          ShowProgressIndicator="true" ResetValueOnEmptyText="true" CoerceText="true" MaxItems="null" HelperTextOnFocus="true"
+                                          ProgressIndicatorColor="Color.Info" Clearable AdornmentColor="Color.Info" AnchorOrigin="Origin.BottomCenter" Variant="Variant.Outlined" Adornment="Adornment.Start"
+                                          HelperText="@languageContainer.Keys["Required"]" Label="@languageContainer.Keys["Quotation"]" Placeholder="@languageContainer.Keys["Select Quotation"]" AdornmentIcon="@EntityIcons.QuotationsIcon">
+                             <NoItemsTemplate>
+                                 <MudText Align="Align.Center" Class="px-4 py-4">
+                                     No items found
+                                 </MudText>
+                             </NoItemsTemplate>
+                         </MudAutocomplete>
+                     </div>
+                 </div>
+                <div class="d-flex flex-wrap flex-md-nowrap">
+                    <div class="p-3 w-100">
+                        <MudTextField HelperText="@languageContainer.Keys["Required"]" Variant="Variant.Outlined" @bind-Value="contractForm.FirstParty" For="@(() => contractForm.FirstParty)" HelperTextOnFocus="true"
+                                      AdornmentColor="Color.Info" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.AccountBox" Placeholder="@languageContainer.Keys[Placeholders.Name]" Label="@languageContainer.Keys["First Party"]" />
+                    </div>
+                    <div class="p-3 w-100">
+                        <MudTextField HelperText="@languageContainer.Keys["Required"]" Variant="Variant.Outlined" @bind-Value="contractForm.FpExecutiveOfficer" For="@(() => contractForm.FpExecutiveOfficer)" HelperTextOnFocus="true"
+                                      AdornmentColor="Color.Info" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.AccountBox" Placeholder="@languageContainer.Keys[Placeholders.Name]" Label="@languageContainer.Keys["First Party Executive Officer"]" />
+                    </div>
+                    <div class="p-3 w-100">
+                        <MudTextField HelperText="@languageContainer.Keys["Required"]" Variant="Variant.Outlined" @bind-Value="contractForm.FpCommercialRegistrationNo" For="@(() => contractForm.FpCommercialRegistrationNo)" HelperTextOnFocus="true"
+                                      AdornmentColor="Color.Info" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.AccountBox" Placeholder="@languageContainer.Keys[Placeholders.Name]" Label="@languageContainer.Keys["First Party Commercial Registration No."]" />
+                    </div>
+                </div>
+                <div class="d-flex flex-wrap flex-md-nowrap">
+                    <div class="p-3 w-100">
+                        <MudTextField HelperText="@languageContainer.Keys["Required"]" Variant="Variant.Outlined" @bind-Value="contractForm.SecondParty" For="@(() => contractForm.SecondParty)" HelperTextOnFocus="true"
+                                      AdornmentColor="Color.Info" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.AccountBox" Placeholder="@languageContainer.Keys[Placeholders.Name]" Label="@languageContainer.Keys["Second Party"]" />
+                    </div>
+                    <div class="p-3 w-100">
+                        <MudTextField HelperText="@languageContainer.Keys["Required"]" Variant="Variant.Outlined" @bind-Value="contractForm.SpExecutiveOfficer" For="@(() => contractForm.SpExecutiveOfficer)" HelperTextOnFocus="true"
+                                      AdornmentColor="Color.Info" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.AccountBox" Placeholder="@languageContainer.Keys[Placeholders.Name]" Label="@languageContainer.Keys["Second Party Executive Officer"]" />
+                    </div>
+                    <div class="p-3 w-100">
+                        <MudTextField HelperText="@languageContainer.Keys["Required"]" Variant="Variant.Outlined" @bind-Value="contractForm.SpCommercialRegistrationNo" For="@(() => contractForm.SpCommercialRegistrationNo)" HelperTextOnFocus="true"
+                                      AdornmentColor="Color.Info" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.AccountBox" Placeholder="@languageContainer.Keys[Placeholders.Name]" Label="@languageContainer.Keys["Second Party Commercial Registration No."]" />
+                    </div>
+                </div>
+                 <div class="p-3 w-100">
+                     <MudTextField HelperText="@languageContainer.Keys["Required"]" Variant="Variant.Outlined" @bind-Value="contractForm.ContractIntro" For="@(() => contractForm.ContractIntro)"
+                                   HelperTextOnFocus="true" Placeholder="@languageContainer.Keys["Contract Intro"]" Lines="10" Label="@languageContainer.Keys["Contract Intro"]" />
+                 </div>
+                <MudCard Class="p-3 mb-3 border" Elevation="0">
+                    <MudCardHeader>
+                        <CardHeaderContent>
+                            <MudText Typo="Typo.h5">@languageContainer.Keys["Contract Terms"]:</MudText>
+                        </CardHeaderContent>
+                    </MudCardHeader>
+                    <MudCardContent>
+                        @{
+                            TermNumber = 0;
+                        }
+                        @foreach (var term in contractForm.Terms)
+                        {
+                            <div class="d-flex align-items-center">
+                                <MudText Typo="Typo.h6">@languageContainer.Keys["Term"] @(++TermNumber):</MudText>
+                                @if (contractForm.Terms.Count > 1)
+                                {
+                                    <MudIconButton OnClick="() => DeleteTerm(term)" Icon="@Icons.Material.Filled.Delete" Color="Color.Error"></MudIconButton>
+                                }
+                                <MudSpacer />
+                                <MudAutocomplete T="string" SearchFunc="@GetTerms" @bind-Value="term.SelectedTerm" TextChanged="() => CopyTermToTextArea(term)"
+                                                 ShowProgressIndicator="true" ResetValueOnEmptyText="true" CoerceText="true" Clearable MaxItems="null" HelperTextOnFocus="true"
+                                                 ProgressIndicatorColor="Color.Info" Adornment="Adornment.Start" AdornmentColor="Color.Info"  Variant="Variant.Outlined" AnchorOrigin="Origin.BottomCenter"
+                                                 Label="@languageContainer.Keys["Term"]" HelperText="@languageContainer.Keys["Optional"]" Placeholder="@languageContainer.Keys["Select Term"]" AdornmentIcon="@EntityIcons.QuotationsIcon">
+                                     <NoItemsTemplate>
+                                         <MudText Align="Align.Center" Class="px-4 py-4">
+                                             No items found
+                                         </MudText>
+                                     </NoItemsTemplate>
+                                 </MudAutocomplete>
+                            </div>
+                            <div class="mt-2">
+                                <MudTextField HelperText="@languageContainer.Keys["Required"]" Variant="Variant.Outlined" @bind-Value="term.Term" For="@(() => term.Term)"
+                                              HelperTextOnFocus="true" Placeholder="@languageContainer.Keys["Term"]" Lines="5" Label="@languageContainer.Keys["Term"]" />
+                            </div>
+                            <MudDivider Light=true DividerType="DividerType.Middle" Class="mb-3" />
+                        }
+                    </MudCardContent>
+                    <MudCardActions>
+                        <MudButton DisableElevation="true" OnClick="@AddTerm" EndIcon="@Icons.Material.Filled.Add" Variant="Variant.Filled" Color="Color.Success">@languageContainer.Keys["Add Term"]</MudButton>
+                    </MudCardActions>
+                </MudCard>
+                <div class="p-3 w-100">
+                        <MudTextField HelperText="@languageContainer.Keys["Required"]" Variant="Variant.Outlined" @bind-Value="contractForm.Notes" For="@(() => contractForm.Notes)"
+                                      HelperTextOnFocus="true" Placeholder="@languageContainer.Keys["Contract Notes"]" Lines="10" Label="@languageContainer.Keys["Contract Notes"]" />
+                </div>
+                <div class="p-3 w-100">
+                        <MudTextField HelperText="@languageContainer.Keys["Required"]" Variant="Variant.Outlined" @bind-Value="contractForm.ContractConculsion" For="@(() => contractForm.ContractConculsion)"
+                                      HelperTextOnFocus="true" Placeholder="@languageContainer.Keys["Contract Conclusion"]" Lines="10" Label="@languageContainer.Keys["Contract Conclusion"]" />
+                </div>
+                <div class="flex-wrap gap-5 gap-md-0 d-flex flex-md-nowrap align-items-end p-3">
+                    <MudSpacer />
+                    <FormButtons IsLoading="@isLoading" />
+                </div>
+            </MudCardContent>
+            <MudCardActions>
+            </MudCardActions>
+        </EditForm>
+    </MudCard>
+}

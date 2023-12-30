@@ -1,0 +1,64 @@
+﻿namespace Dashboard.Blazor.Models.Dtos;
+
+public class ContractDto
+{
+    public int Id { set; get; }
+
+    [Required]
+    public DateTime? CreatedAt { get; set; } = DateTime.Now;
+
+    [Required]
+    public DateTime? EffectiveDate { get; set; } = DateTime.Now;
+
+    [Required]
+    public string Number { get; set; } = null!;
+
+    [Required]
+    public string FirstParty { get; set; } = null!;
+
+    [Required]
+    public string SecondParty { get; set; } = null!;
+
+    [Required]
+    public string SpExecutiveOfficer { get; set; } = null!;
+
+    [Required]
+    public string FpExecutiveOfficer { get; set; } = null!;
+
+    [Required]
+    public string FpCommercialRegistrationNo { get; set; } = null!;
+
+    [Required]
+    public string SpCommercialRegistrationNo { get; set; } = null!;
+
+    [Required]
+    public List<TermDto> Terms { get; set; } = new();
+
+    [Required]
+    public string ContractConculsion { get; set; } = null!;
+
+    [Required]
+    public string Notes { get; set; } = null!;
+
+    [Required]
+    public string ContractIntro { get; set; } = null!;
+
+    [Required]
+    public LookupDto? Quotation { get; set; }
+    public int? QuotationId { get; set; }
+    public IEnumerable<LookupDto>? Quotations { get; set; }
+
+    [Required]
+    public LookupDto? ContractClient { get; set; }
+    public int? ContractClientId { get; set; }
+    public IEnumerable<LookupDto>? ContractClients { get; set; }
+
+    public IEnumerable<TermDto>? UploadedTerms { get; set; }
+}
+
+public class TermDto
+{
+    public string Term { get; set; } = null!;
+    public string SelectedTerm { get; set; } = null!;
+    public int ContractId { get; set; }
+}

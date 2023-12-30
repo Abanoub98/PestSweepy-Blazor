@@ -1,4 +1,4 @@
-﻿namespace Bookify.Web.Core.Consts
+﻿namespace Dashboard.Blazor.Models.Consts
 {
     public static class RegexPatterns
     {

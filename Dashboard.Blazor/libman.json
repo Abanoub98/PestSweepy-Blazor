@@ -1,0 +1,13 @@
+{
+  "version": "1.0",
+  "defaultProvider": "cdnjs",
+  "libraries": [
+    {
+      "library": "jspdf@2.5.1",
+      "destination": "wwwroot/libraries/jspdf/",
+      "files": [
+        "jspdf.umd.min.js"
+      ]
+    }
+  ]
+}

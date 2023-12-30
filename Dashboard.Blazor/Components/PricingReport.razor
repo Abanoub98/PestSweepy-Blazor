@@ -1,0 +1,142 @@
+﻿@attribute [Authorize]
+@page "/PricingReport"
+@layout BlankLayout
+
+<div class="w-100 d-flex flex-column align-items-center py-5">
+    <div class="border rounded-lg border-gray-600" style="width:992px;height:1403px;background-color:white !important">
+        <div id="Report" class="px-8 py-5 h-100">
+            <div class="d-flex flex-column justify-content-between h-100">
+                <div>
+                    <div class="row mb-10">
+                        <div class="col-8">
+                            <h1>Pricing Report</h1>
+                            <div class="mt-10">
+                                <div class="fs-5 mb-1">Date: <span class="fw-bold">@DateTime.Now.ToString("d")</span></div>
+                                <div class="fs-5 mb-1">Report Number: <span class="fw-bold">#266262121</span></div>
+                                <div class="fs-5 mb-1">Customer: <span class="fw-bold">Abanoub Raaft</span></div>
+                                <div class="fs-5">CEO Name: <span class="fw-bold">Youssef Ahmed</span></div>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="d-flex flex-column align-items-center">
+                                <MudImage Src="/images/Logo.png" Width="150" />
+                                <div class="fs-5 fw-bold text-center text-success">
+                                    Control company for Operation
+                                    and Maintenance
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="my-10">
+                        <div class="fs-5 fw-bold mb-3">
+                            Offer summery:
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-bordered border-gray-800">
+                                <thead>
+                                    <tr class="fw-bold fs-6 text-gray-800">
+                                        <th>Service Type</th>
+                                        <th>Unit</th>
+                                        <th>Quantity</th>
+                                        <th>Price</th>
+                                        <th>Discount Value</th>
+                                        <th>Discount Percentage %</th>
+                                        <th>Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Tiger Nixon</td>
+                                        <td>12</td>
+                                        <td>5</td>
+                                        <td>1000</td>
+                                        <td>25</td>
+                                        <td>750</td>
+                                        <td>1000000</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Tiger Nixon</td>
+                                        <td>12</td>
+                                        <td>5</td>
+                                        <td>1000</td>
+                                        <td>25</td>
+                                        <td>750</td>
+                                        <td>1000000</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Tiger Nixon</td>
+                                        <td>12</td>
+                                        <td>5</td>
+                                        <td>1000</td>
+                                        <td>25</td>
+                                        <td>750</td>
+                                        <td>1000000</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="fs-5 fw-bold mb-3">Notes:</div>
+                        <div class="text-gray-800 p-3 rounded-lg border border-gray-800">
+                            Sed et eos veniam no et accusam ipsum facilisis aliquyam ut facilisi diam eirmod lorem invidunt dolor no clita invidunt at ea eleifend sit ea et no odio tempor amet ipsum consetetur voluptua dolor dolor veniam ut sed nulla iriure duo sed sed nisl diam sit elit rebum nonumy consectetuer sed exerci at magna labore consetetur dolor consequat dolor elitr dolor dolores velit eu sadipscing elitr ut nostrud in te sit ea amet sit dolor luptatum clita dolor labore rebum
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div class="d-flex justify-content-around mt-10 mb-5">
+                        <a class="align-items-center text-gray-800 text-hover-primary">
+                            <i class="ki-duotone ki-phone fs-4 me-1">
+                                <span class="path1"></span>
+                                <span class="path2"></span>
+                            </i>
+                            +966 567 780 260
+                        </a>
+                        <a class="align-items-center text-gray-800 text-hover-primary">
+                            <i class="ki-duotone ki-sms fs-4 me-1">
+                                <span class="path1"></span>
+                                <span class="path2"></span>
+                            </i>
+                            Info@pestsweepy.com
+                        </a>
+                        <a class="align-items-center text-gray-800 text-hover-primary">
+                            <i class="ki-duotone ki-tablet fs-4 me-1">
+                                <span class="path1"></span>
+                                <span class="path2"></span>
+                                <span class="path3"></span>
+                            </i>
+                            920013270
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <button @onclick="PrintReport" class="btn btn-lg btn-success mt-5">
+        @languageContainer.Keys["Print"]
+    </button>
+</div>
+
+
+@code {
+    [Inject] IJSRuntime JSRuntime { get; set; } = default!;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await PrintReport();
+        }
+    }
+
+    private async Task PrintReport()
+    {
+        // await using var module = await JSRuntime.InvokeAsync<IJSObjectReference>("import", "./assets/js/printReport.js");
+
+        // // Generate and download the PDF
+        // await module.InvokeVoidAsync("generateAndDownloadPdf", "PricingReport.pdf");
+
+        await JSRuntime.InvokeVoidAsync("DownloadPdf");
+    }
+}

@@ -1,5 +1,5 @@
 ﻿@page "/ReferenceData"
-@attribute [Authorize(Roles = Roles.AdminRole)]
+@attribute [Authorize(Roles = $"{Roles.AdminRole},{Roles.ManagerRole},{Roles.SupervisorRole},{Roles.ProviderRole}")]
 @inherits BasePage
 
 <PageTitle>@languageContainer.Keys["Reference Data"]</PageTitle>

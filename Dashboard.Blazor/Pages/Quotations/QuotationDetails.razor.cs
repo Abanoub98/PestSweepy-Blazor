@@ -60,4 +60,25 @@ public partial class QuotationDetails
             new(quotation.SerialNumber, href: null, disabled: true),
         });
     }
+
+    private async Task Print()
+    {
+
+
+        DialogOptions dialogOptions = new()
+        {
+            CloseOnEscapeKey = true,
+            MaxWidth = MaxWidth.Medium,
+            FullWidth = true,
+            Position = DialogPosition.Center,
+            CloseButton = true
+        };
+
+        //DialogParameters<PricingReport> formParameters = new()
+        //{
+        //    { x => x.ImageUrl, imageUrl }
+        //};
+
+        await DialogService.ShowAsync<PricingReport>("Image Preview", dialogOptions);
+    }
 }

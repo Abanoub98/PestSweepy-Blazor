@@ -1,7 +1,6 @@
 ﻿@page "/Login"
 @page "/Login/{ReturnUrl}"
 @layout LoginLayout
-@attribute [Authorize(Roles = Roles.AdminRole)]
 
 <!--begin::Form-->
 <EditForm Model="loginDto" OnValidSubmit="HandleLogin" class="form w-100 fv-plugins-bootstrap5 fv-plugins-framework" id="kt_sign_in_form">

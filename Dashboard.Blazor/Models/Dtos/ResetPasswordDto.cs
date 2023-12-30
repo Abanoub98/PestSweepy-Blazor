@@ -1,6 +1,4 @@
-﻿using Bookify.Web.Core.Consts;
-
-namespace Dashboard.Blazor.Models.Dtos;
+﻿namespace Dashboard.Blazor.Models.Dtos;
 
 public class ResetPasswordDto
 {
