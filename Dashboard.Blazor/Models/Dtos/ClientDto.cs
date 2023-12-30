@@ -8,6 +8,8 @@ public class ClientDto : BaseUser
     [Label(name: "Name")]
     public string Name { get; set; } = null!;
 
+    public DateTime? CreatedAt { get; set; }
+
     public string Image { get; set; } = null!;
     public IBrowserFile? UploadedImage { get; set; }
 

@@ -18,7 +18,7 @@ public partial class ContractForm
         {
             new(languageContainer.Keys["Home"], href: "/", icon: Icons.Material.Filled.Home),
             new(languageContainer.Keys["Contracts"], href: "/Contracts", icon: EntityIcons.ContractsIcon),
-            new(languageContainer.Keys[Id == 0 ? "Add Contract" : $"Edit {contractForm.Number}"], href: null, disabled: true),
+            new(languageContainer.Keys[Id == 0 ? "Add Contract" : $"Edit {contractForm.ContractClient!.Name} Contract"], href: null, disabled: true),
         });
     }
 

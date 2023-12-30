@@ -23,7 +23,7 @@ else
                 </CardHeaderAvatar>
                 <CardHeaderContent>
                     <MudText Style="display: flex;align-items: center;" Typo="Typo.h5">
-                        @(Id == 0 ? $"{languageContainer.Keys["Add"]} {languageContainer.Keys["Contract"]}" : $"{languageContainer.Keys["Edit"]} {contractForm.Number}")
+                        @(Id == 0 ? $"{languageContainer.Keys["Add"]} {languageContainer.Keys["Contract"]}" : $"{languageContainer.Keys["Edit"]} {contractForm.ContractClient!.Name} Contract")
                     </MudText>
                 </CardHeaderContent>
                 <CardHeaderActions>
@@ -47,14 +47,7 @@ else
                          </MudAutocomplete>
                      </div>
                      <div class="p-3 w-100">
-                         <MudDatePicker AdornmentColor="Color.Info" Variant="Variant.Outlined" @bind-Date="contractForm.CreatedAt" For="@(() => contractForm.CreatedAt)" Placeholder="@languageContainer.Keys["Select Date"]" Label="@languageContainer.Keys["Created Date"]" />
-                     </div>
-                     <div class="p-3 w-100">
                          <MudDatePicker AdornmentColor="Color.Info" Variant="Variant.Outlined" @bind-Date="contractForm.EffectiveDate" For="@(() => contractForm.EffectiveDate)" Placeholder="@languageContainer.Keys["Select Date"]" Label="@languageContainer.Keys["Effective Date"]" />
-                     </div>
-                     <div class="p-3 w-100">
-                         <MudTextField HelperText="@languageContainer.Keys["Required"]" Variant="Variant.Outlined" @bind-Value="contractForm.Number" For="@(() => contractForm.Number)" HelperTextOnFocus="true"
-                                       AdornmentColor="Color.Info" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.AccountBox" Placeholder="@languageContainer.Keys["Contract Number"]" Label="@languageContainer.Keys["Number"]" />
                      </div>
                      <div class="p-3 w-100">
                          <MudAutocomplete T="LookupDto" SearchFunc="@GetQuotations" ToStringFunc="@(e=> e == null ? null : $"{e.Name}")" @bind-Value="contractForm.Quotation" For="@(() => contractForm.Quotation)"

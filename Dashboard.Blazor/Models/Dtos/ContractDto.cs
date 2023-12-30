@@ -4,14 +4,10 @@ public class ContractDto
 {
     public int Id { set; get; }
 
-    [Required]
-    public DateTime? CreatedAt { get; set; } = DateTime.Now;
+    public DateTime? CreatedAt { get; set; }
 
     [Required]
     public DateTime? EffectiveDate { get; set; } = DateTime.Now;
-
-    [Required]
-    public string Number { get; set; } = null!;
 
     [Required]
     public string FirstParty { get; set; } = null!;

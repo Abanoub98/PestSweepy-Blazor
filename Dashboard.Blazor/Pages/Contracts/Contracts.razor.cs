@@ -40,8 +40,6 @@ public partial class Contracts
             return true;
         if (element.CreatedAt.ToString().Contains(searchString, StringComparison.OrdinalIgnoreCase))
             return true;
-        if (element.Number.ToString().Contains(searchString, StringComparison.OrdinalIgnoreCase))
-            return true;
         if (element.FirstParty.Contains(searchString, StringComparison.OrdinalIgnoreCase))
             return true;
         if (element.SecondParty.Contains(searchString, StringComparison.OrdinalIgnoreCase))
