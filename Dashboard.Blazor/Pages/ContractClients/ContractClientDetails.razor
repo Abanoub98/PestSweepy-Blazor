@@ -1,0 +1,56 @@
+﻿@page "/ContractClients/Details/{Id:int}"
+@attribute [Authorize(Roles = Roles.AdminRole)]
+@inherits BasePage
+
+<PageTitle>
+    @languageContainer.Keys["Contract Client Details"]
+</PageTitle>
+<MudBreadcrumbs Items="breadcrumbItems"></MudBreadcrumbs>
+
+@if (contractClient is null)
+{
+    <FormLoadingSpinner IsBigForm="true" />
+}
+else
+{
+    <MudCard Elevation="25">
+        <MudCardHeader Style="padding:20px">
+            <CardHeaderAvatar>
+                <MudAvatar Class="cursor-all-scroll" @onclick="() => ShowImagePreview(imageUrl + contractClient.Image)" Size="Size.Large" Rounded="true" Color="Color.Info">
+                    <MudImage Src=@(imageUrl + contractClient.Image)></MudImage>
+                </MudAvatar>
+            </CardHeaderAvatar>
+            <CardHeaderContent>
+                <MudText Typo="Typo.h5">
+                    @contractClient.Name
+                </MudText>
+                <MudChip Variant="Variant.Text" Size="Size.Small" Icon="@Icons.Material.Filled.Flag" Color="Color.Info">
+                    @contractClient.Nationality?.Name
+                </MudChip>
+                @if (contractClient.Gender == "Male")
+                {
+                    <MudChip Variant="Variant.Filled" Size="Size.Small" Icon="@Icons.Material.Filled.Male" Color="Color.Info">Male</MudChip>
+                }
+                else
+                {
+                    <MudChip Variant="Variant.Filled" Size="Size.Small" Icon="@Icons.Material.Filled.Female" Color="Color.Secondary">Female</MudChip>
+                }
+            </CardHeaderContent>
+            <CardHeaderActions>
+                <div style="margin:10px">
+                    <MudButton DisableElevation="true" OnClick="() => OpenForm(formUri,contractClient.Id)" Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Edit" Color="Color.Info">
+                        Edit
+                    </MudButton>
+                    <MudButton DisableElevation="true" Href="/ContractClients" Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.ArrowBack" Color="Color.Info">
+                        Back to  Contract Clients
+                    </MudButton>
+                </div>
+            </CardHeaderActions>
+        </MudCardHeader>
+    </MudCard>
+    <MudTabs SliderColor="Color.Info" Class="mt-5" Elevation="25" Rounded="true" ApplyEffectsToContainer=true Border=true PanelClass="h-300px px-6 pb-6 pt-0">
+        <MudTabPanel Icon="@Icons.Material.Filled.Info" Text="More Info">
+
+        </MudTabPanel>
+    </MudTabs>
+}
