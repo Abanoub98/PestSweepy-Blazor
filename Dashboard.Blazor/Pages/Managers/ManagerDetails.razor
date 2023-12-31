@@ -11,45 +11,167 @@
 }
 else
 {
-    <MudCard Elevation="25">
-        <MudCardHeader Style="padding:20px">
-            <CardHeaderAvatar>
-                <MudAvatar Class="cursor-all-scroll" @onclick="() => ShowImagePreview(imageUrl + manager.Image)" Size="Size.Large" Rounded="true" Color="Color.Info">
-                    <MudImage Src=@(imageUrl + manager.Image)></MudImage>
-                </MudAvatar>
-            </CardHeaderAvatar>
-            <CardHeaderContent>
-                <MudText Typo="Typo.h5">
-                    @manager.Name
-                </MudText>
-                <MudChip Variant="Variant.Text" Size="Size.Small" Icon="@Icons.Material.Filled.Flag" Color="Color.Info">@manager.Nationality?.Name</MudChip>
-                @if (manager.Gender == "Male")
-                {
-                    <MudChip Variant="Variant.Filled" Size="Size.Small" Icon="@Icons.Material.Filled.Male" Color="Color.Info">Male</MudChip>
-                }
-                else
-                {
-                    <MudChip Variant="Variant.Filled" Size="Size.Small" Icon="@Icons.Material.Filled.Female" Color="Color.Secondary">Female</MudChip>
-                }
-            </CardHeaderContent>
-            <CardHeaderActions>
-                <div style="margin:10px">
-                    <MudButton DisableElevation="true" OnClick="() => OpenForm(formUri,manager.Id)" Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Edit" Color="Color.Info">
-                        Edit
-                    </MudButton>
-                    <MudButton DisableElevation="true" Href="/Managers" Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.ArrowBack" Color="Color.Info">
-                        Back to Managers
-                    </MudButton>
+    <div class="d-flex flex-column flex-md-row">
+        <!--begin::Sidebar-->
+        <div class="flex-column flex-lg-row-auto w-100 w-xl-350px mb-10">
+            <!--begin::Card-->
+            <div class="card mb-5 mb-xl-8 shadow-sm">
+                <!--begin::Card body-->
+                <div class="card-body pt-15">
+                    <!--begin::Summary-->
+                    <div class="d-flex flex-center flex-column">
+                        <!--begin::Avatar-->
+                        <MudAvatar Class="border border-gray-300" Style="height:200px; width:200px;" Rounded="true" @onclick="() => ShowImagePreview(imageUrl + manager.Image)" Color="Color.Primary">
+                            <MudImage Src="@(imageUrl + manager.Image)"></MudImage>
+                        </MudAvatar>
+                        <!--end::Avatar-->
+                        <!--begin::Name-->
+                        <a class="fs-3 text-gray-800 text-hover-primary fw-bold my-2">
+                            @manager.Name
+                        </a>
+                        <!--end::Name-->
+                        <!--begin::Position-->
+                        <div class="fs-5 fw-semibold text-muted">
+                            @manager.ContactEmail
+                        </div>
+                        <!--end::Position-->
+                        <!--begin::Position-->
+                        <div class="fs-5 fw-semibold text-muted mb-6">
+                            @manager.ContactPhone
+                        </div>
+                        <!--end::Position-->
+                    </div>
+                    <!--end::Summary-->
                 </div>
-            </CardHeaderActions>
-        </MudCardHeader>
-    </MudCard>
-    <MudTabs SliderColor="Color.Info" Class="mt-5" Elevation="25" Rounded="true" ApplyEffectsToContainer=true Border=true PanelClass="px-6 pb-6 pt-0">
-        <MudTabPanel Icon="@Icons.Material.Filled.Info" Text="More Info">
-
-        </MudTabPanel>
-        <MudTabPanel Icon="@Icons.Material.Filled.SupervisedUserCircle" Text="Supervisors">
-            <Supervisors ManagerId="manager.Id" />
-        </MudTabPanel>
-    </MudTabs>
+                <!--end::Card body-->
+            </div>
+            <!--end::Card-->
+            <div class="card shadow-sm">
+                <div class="card-header border-0 cursor-pointer">
+                    <div class="card-title m-0">
+                        <h3 class="fw-bold m-0">Account Settings</h3>
+                    </div>
+                </div>
+                <!--begin::Card body-->
+                <div class="card-body">
+                    <!--begin::Email Address-->
+                    <div class="d-flex d-md-inline flex-wrap align-items-center">
+                        <!--begin::Label-->
+                        <div>
+                            <div class="fs-6 fw-bold mb-1">Email Address</div>
+                            <div class="fw-semibold text-gray-600">Test@EmailAddressAttribute.com</div>
+                        </div>
+                        <!--end::Label-->
+                        <!--begin::Action-->
+                        <div class="ms-auto mt-md-3">
+                            <button class="btn btn-light-primary">Change Email</button>
+                        </div>
+                        <!--end::Action-->
+                    </div>
+                    <!--end::Email Address-->
+                    <!--begin::Separator-->
+                    <div class="separator separator-dashed my-6"></div>
+                    <!--end::Separator-->
+                    <!--begin::Password-->
+                    <div class="d-flex d-md-inline flex-wrap align-items-center mb-10">
+                        <!--begin::Label-->
+                        <div>
+                            <div class="fs-6 fw-bold mb-1">Password</div>
+                            <div class="fw-semibold text-gray-600">************</div>
+                        </div>
+                        <!--end::Label-->
+                        <!--begin::Action-->
+                        <div class="ms-auto mt-md-3">
+                            <button class="btn btn-light-primary">Reset Password</button>
+                        </div>
+                        <!--end::Action-->
+                    </div>
+                    <!--end::Password-->
+                </div>
+                <!--end::Card body-->
+            </div>
+        </div>
+        <!--end::Sidebar-->
+        <!--begin::Content-->
+        <div class="flex-lg-row-fluid ms-lg-15">
+            <!--begin:::Tabs-->
+            <ul class="nav nav-custom nav-tabs nav-line-tabs nav-line-tabs-2x border-0 fs-4 fw-semibold mb-8" role="tablist">
+                <!--begin:::Tab item-->
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link text-active-primary pb-4 active" data-bs-toggle="tab" href="#kt_customer_view_overview_tab" aria-selected="true" role="tab">Overview</a>
+                </li>
+                <!--end:::Tab item-->
+                <!--begin:::Tab item-->
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link text-active-primary pb-4" data-bs-toggle="tab" href="#kt_customer_view_overview_events_and_logs_tab" aria-selected="false" role="tab" tabindex="-1">Supervisors</a>
+                </li>
+                <!--end:::Tab item-->
+                <!--begin:::Tab item-->
+                <li class="nav-item ms-auto">
+                    <!--begin::Action menu-->
+                    <a href="/Managers" class="btn btn-primary ps-7">
+                        <MudIcon Icon="@Icons.Material.Filled.ArrowBack" />
+                        Back To Managers
+                    </a>
+                    <!--end::Menu-->
+                </li>
+                <!--end:::Tab item-->
+            </ul>
+            <!--end:::Tabs-->
+            <!--begin:::Tab content-->
+            <div class="tab-content" id="myTabContent">
+                <!--begin:::Tab pane-->
+                <div class="tab-pane fade active show" id="kt_customer_view_overview_tab" role="tabpanel">
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            <div class="d-flex flex-stack fs-4 py-3">
+                                <div class="fw-bold">
+                                    Details
+                                </div>
+                                <span>
+                                    <a @onclick="() => OpenForm(formUri,manager.Id)" class="btn btn-sm btn-light-primary">
+                                        Edit
+                                    </a>
+                                </span>
+                            </div>
+                            <!--end::Details toggle-->
+                            <div class="separator separator-dashed"></div>
+                            <!--begin::Details content-->
+                            <div class="py-3 fs-6">
+                                <!--begin::Details item-->
+                                <div class="fw-bold mt-5">Nationality</div>
+                                <div class="text-gray-600">@manager.Nationality?.Name</div>
+                                <!--begin::Details item-->
+                                <!--begin::Details item-->
+                                <div class="fw-bold mt-5">Gender</div>
+                                <div class="text-gray-600">@manager.Gender</div>
+                                <!--begin::Details item-->
+                                <!--begin::Details item-->
+                                <div class="fw-bold mt-5">Contact Email</div>
+                                <div class="text-gray-600">@manager.ContactEmail</div>
+                                <!--begin::Details item-->
+                                <!--begin::Details item-->
+                                <div class="fw-bold mt-5">Contact Phone</div>
+                                <div class="text-gray-600">@manager.ContactPhone</div>
+                                <!--begin::Details item-->
+                            </div>
+                            <!--end::Details content-->
+                        </div>
+                    </div>
+                </div>
+                <!--end:::Tab pane-->
+                <!--begin:::Tab pane-->
+                <div class="tab-pane fade" id="kt_customer_view_overview_events_and_logs_tab" role="tabpanel">
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            <Supervisors ManagerId="manager.Id" />
+                        </div>
+                    </div>
+                </div>
+                <!--end:::Tab pane-->
+            </div>
+            <!--end:::Tab content-->
+        </div>
+        <!--end::Content-->
+    </div>
 }

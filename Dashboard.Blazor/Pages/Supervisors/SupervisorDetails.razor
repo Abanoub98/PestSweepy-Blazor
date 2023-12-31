@@ -2,7 +2,9 @@
 @attribute [Authorize(Roles = $"{Roles.AdminRole},{Roles.ManagerRole}")]
 @inherits BasePage
 
-<PageTitle>@languageContainer.Keys["Supervisor Details"]</PageTitle>
+<PageTitle>
+    @languageContainer.Keys["Supervisor Details"]
+</PageTitle>
 <MudBreadcrumbs Items="breadcrumbItems" />
 
 @if (supervisor is null)
@@ -21,7 +23,7 @@ else
                     <!--begin::Summary-->
                     <div class="d-flex flex-center flex-column">
                         <!--begin::Avatar-->
-                        <MudAvatar Class="border border-gray-300" Style="height:200px; width:200px;" Rounded="true"  @onclick="() => ShowImagePreview(imageUrl + supervisor.Image)" Color="Color.Primary">
+                        <MudAvatar Class="border border-gray-300" Style="height:200px; width:200px;" Rounded="true" @onclick="() => ShowImagePreview(imageUrl + supervisor.Image)" Color="Color.Primary">
                             <MudImage Src="@(imageUrl + supervisor.Image)"></MudImage>
                         </MudAvatar>
                         <!--end::Avatar-->
@@ -51,7 +53,7 @@ else
                     <div class="card-title m-0">
                         <h3 class="fw-bold m-0">Account Settings</h3>
                     </div>
-                </div>                                                                                                                  
+                </div>
                 <!--begin::Card body-->
                 <div class="card-body">
                     <!--begin::Email Address-->

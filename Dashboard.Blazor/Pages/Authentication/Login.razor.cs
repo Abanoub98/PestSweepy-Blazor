@@ -1,6 +1,4 @@
 ﻿using System.Net;
-using Blazored.LocalStorage;
-using Microsoft.AspNetCore.Components.Authorization;
 
 namespace Dashboard.Blazor.Pages.Authentication;
 
@@ -18,6 +16,8 @@ public partial class Login
     private LoginDto loginDto = new();
     private string? errorMessage;
     private bool isLoading;
+    private bool isPasswordVisible;
+    private string? passwordInputType = "password";
 
     private async Task HandleLogin()
     {
@@ -102,5 +102,16 @@ public partial class Login
 
         if (response is not null)
             errorMessage = response.Message;
+    }
+
+    private void ChangePasswordStatus(object? value)
+    {
+        if (value is null)
+            return;
+
+        if ((bool)value)
+            passwordInputType = null;
+        else
+            passwordInputType = "password";
     }
 }

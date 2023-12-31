@@ -31,9 +31,15 @@
         </div>
         <!--end::Wrapper-->
         <!--begin::Input-->
-        <InputText @bind-Value="loginDto.Password" class="form-control form-control-lg form-control-solid" type="password" name="password" />
+        <InputText @bind-Value="loginDto.Password" class="form-control form-control-lg form-control-solid" type="@passwordInputType" name="password" />
         <!--end::Input-->
         <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div>
+        <div class="form-check mt-3">
+            <input class="form-check-input" type="checkbox" @onchange="eventArgs => { ChangePasswordStatus(eventArgs.Value); }" id="flexCheckDefault" />
+            <label class="form-check-label" for="flexCheckDefault">
+                Show Password
+            </label>
+        </div>
     </div>
     <!--end::Input group-->
     <!--begin::Actions-->
