@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <meta charset="utf-8" />
+    <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title>Pest Sweepy</title>
     <base href="/" />
@@ -11,9 +11,14 @@
     <link rel="apple-touch-icon" sizes="512x512" href="images/icon-512.png" />
     <link rel="apple-touch-icon" sizes="192x192" href="images/icon-192.png" />
 
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto+Sans+Arabic">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@100;200;300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,400,500,600,700" />
-
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700&display=swap"
+          rel="stylesheet" />
     <!-- Moyasar Styles -->
     <link rel="stylesheet" href="https://cdn.moyasar.com/mpf/1.12.0/moyasar.css" />
 
@@ -62,66 +67,72 @@
     </script>
 </head>
 
-<body id="kt_app_body" data-kt-app-header-fixed="true" data-kt-app-header-fixed-mobile="true" data-kt-app-sidebar-enabled="true"
-      data-kt-app-sidebar-fixed="true" data-kt-app-sidebar-hoverable="true" data-kt-app-sidebar-push-toolbar="true"
-      data-kt-app-sidebar-push-footer="true" data-kt-app-toolbar-enabled="true" data-kt-app-aside-enabled="true" class="app-default"
-      data-kt-app-aside-fixed="true" data-kt-app-aside-push-toolbar="true" data-kt-app-aside-push-footer="true">
+    <body id="kt_app_body" data-kt-app-header-fixed="true" data-kt-app-header-fixed-mobile="true" data-kt-app-sidebar-enabled="true"
+          data-kt-app-sidebar-fixed="true" data-kt-app-sidebar-hoverable="true" data-kt-app-sidebar-push-toolbar="true"
+          data-kt-app-sidebar-push-footer="true" data-kt-app-toolbar-enabled="true" data-kt-app-aside-enabled="true" class="app-default"
+          data-kt-app-aside-fixed="true" data-kt-app-aside-push-toolbar="true" data-kt-app-aside-push-footer="true">
 
-    <!--begin::Theme mode setup on page load-->
-    <script>
-        var defaultThemeMode = "light";
-        var themeMode;
-        if (document.documentElement) {
-            if (document.documentElement.hasAttribute("data-bs-theme-mode")) {
-                themeMode = document.documentElement.getAttribute("data-bs-theme-mode");
-            }
-            else {
-                if (localStorage.getItem("data-bs-theme") !== null) {
-                    themeMode = localStorage.getItem("data-bs-theme");
+        <!--begin::Theme mode setup on page load-->
+        <script>
+            var defaultThemeMode = "light";
+            var themeMode;
+            if (document.documentElement) {
+                if (document.documentElement.hasAttribute("data-bs-theme-mode")) {
+                    themeMode = document.documentElement.getAttribute("data-bs-theme-mode");
                 }
                 else {
-                    themeMode = defaultThemeMode;
+                    if (localStorage.getItem("data-bs-theme") !== null) {
+                        themeMode = localStorage.getItem("data-bs-theme");
+                    }
+                    else {
+                        themeMode = defaultThemeMode;
+                    }
                 }
+                if (themeMode === "system") {
+                    themeMode = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+                } document.documentElement.setAttribute("data-bs-theme", themeMode);
             }
-            if (themeMode === "system") {
-                themeMode = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
-            } document.documentElement.setAttribute("data-bs-theme", themeMode);
-        }
-    </script>
-    <!--end::Theme mode setup on page load-->
+        </script>
+        <!--end::Theme mode setup on page load-->
 
-    <div style="height:100%" id="app">
-        <div style="height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center;">
-            <img class="loadingImage" src="/images/Logo.png" />
-            <span class="loader"></span>
-            <div style="margin-top:10px" class="loading-progress-text"></div>
+        <div style="height:100%" id="app">
+            <div style="height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                <img class="loadingImage" src="/images/Logo.png" />
+                <span class="loader"></span>
+                <div style="margin-top:10px" class="loading-progress-text"></div>
+            </div>
         </div>
-    </div>
 
-    <div id="blazor-error-ui">
-        An unhandled error has occurred.
-        <a href="" class="reload">Reload</a>
-        <a class="dismiss">🗙</a>
-    </div>
-    <script src="_framework/blazor.webassembly.js"></script>
-    <script>navigator.serviceWorker.register('assets/js/service-worker.js');</script>
+        <div id="blazor-error-ui">
+            An unhandled error has occurred.
+            <a href="" class="reload">Reload</a>
+            <a class="dismiss">🗙</a>
+        </div>
+        <script src="_framework/blazor.webassembly.js"></script>
+        <script>navigator.serviceWorker.register('assets/js/service-worker.js');</script>
 
-    <script src="_content/MudBlazor/MudBlazor.min.js"></script>
+        <!-- MudBlazor -->
+        <script src="_content/MudBlazor/MudBlazor.min.js"></script>
 
-    <!--begin::Global Javascript Bundle(mandatory for all pages)-->
-    <script>var hostUrl = "assets/";</script>
-    <script src="assets/plugins/global/plugins.bundle.js"></script>
-    <script src="assets/js/scripts.bundle.js"></script>
-    <!--end::Global Javascript Bundle-->
+        <!--begin::Global Javascript Bundle(mandatory for all pages)-->
+        <script>var hostUrl = "assets/";</script>
+        <script src="assets/plugins/global/plugins.bundle.js"></script>
+        <script src="assets/js/scripts.bundle.js"></script>
+        <!--end::Global Javascript Bundle-->
 
-    <script src="assets/js/InstallApp.js"></script>
-    <script src="assets/js/fullscreen.js"></script>
-    <script src="assets/js/printReport.js"></script>
+        <!-- jsPDF references -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>
+        <script src="https://raw.githack.com/eKoopmans/html2pdf/master/dist/html2pdf.bundle.js"></script>
 
-    <!-- Moyasar Scripts -->
-    <script src="https://polyfill.io/v3/polyfill.min.js?features=fetch"></script>
-    <script src="https://cdn.moyasar.com/mpf/1.12.0/moyasar.js"></script>
+        <!-- js files -->
+        <script src="assets/js/InstallApp.js"></script>
+        <script src="assets/js/fullscreen.js"></script>
+        <script src="assets/js/printReport.js"></script>
 
-</body>
+        <!-- Moyasar Scripts -->
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=fetch"></script>
+        <script src="https://cdn.moyasar.com/mpf/1.12.0/moyasar.js"></script>
+
+    </body>
 
 </html>

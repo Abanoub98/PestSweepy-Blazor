@@ -34,6 +34,25 @@ public partial class Contracts
         StopProcessing();
     }
 
+    private async Task ShowContract(int id)
+    {
+        DialogOptions dialogOptions = new()
+        {
+            CloseOnEscapeKey = true,
+            MaxWidth = MaxWidth.Large,
+            FullWidth = true,
+            Position = DialogPosition.Center,
+            CloseButton = true
+        };
+
+        DialogParameters<ContractReport> Parameters = new()
+        {
+            { x => x.Id, id }
+        };
+
+        await DialogService.ShowAsync<ContractReport>("Contract Report", Parameters, dialogOptions);
+    }
+
     private bool FilterFunc(ContractDto element)
     {
         if (string.IsNullOrWhiteSpace(searchString))

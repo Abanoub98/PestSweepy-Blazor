@@ -1,0 +1,161 @@
+﻿@attribute [Authorize]
+@layout BlankLayout
+@inherits BasePage
+
+<MudDialog>
+    <DialogContent>
+        <div class="w-100 d-flex flex-column align-items-center py-5">
+            @if (contract is null)
+            {
+                <FormLoadingSpinner IsBigForm="true" />
+            }
+            else
+            {
+                <div class="border rounded-lg border-gray-600" style="width:992px;background-color:white !important">
+                    <div dir="rtl" style="direction:rtl;" id="Report" class="px-8 py-5 h-100">
+                        <div class="d-flex flex-column h-100">
+                            <div>
+                                <div class="row align-items-center justify-content-between mb-20">
+                                    <div class="col-auto px-5">
+                                        <div class="d-flex flex-column align-items-center">
+                                            <p class="fs-1 fw-bold text-primary">
+                                                شركة المكافحة المتميزة
+                                            </p>
+                                            <p class="fs-1 fw-bold text-success">
+                                                للتشغيل والصيانة
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="col-auto px-5">
+                                        <MudImage Src="/images/Logo.png" Width="150" />
+                                    </div>
+                                </div>
+                                <div class="text-center mb-10">
+                                    <div style="width: fit-content;" class="fs-2 fw-bold border border-gray-600 rounded-lg p-3 m-auto">
+                                        عقد زيارات مكافحة الحشرات
+                                    </div>
+                                </div>
+                                <div class="h5">
+                                    <p>التاريخ: 1/1/2024</p>
+                                </div>
+                                <div class="h5">
+                                    <p>بوجب هذا العقد قد تم الإتفاق بين كل من:</p>
+                                    <p>السادة/ شركة المكافحة المتيمزة للتشغيل والصيانة. ويشار إليها في العقد بوصفها الطرف الأول. سجل تجاري: 4030427513 جدة</p>
+                                    <p>ويمثل الطرف الأول في هذا التعاقد الدكتور/خليل إبراهيم عباس. هوية وطنية رقم 5548559887 بصفته رئيس الشؤون الإدارية</p>
+                                    <p>البريد الإلكتروني المعتمد لدى للطرف الأول: Info@@PestSweepy.com</p>
+                                    <p>السادة/ شركة أنظمة الطاقة. ويشار إليها في العقد بوصفها الطرف الثاني. سجل تجاري: 55665654 الرياض</p>
+                                    <p>ويمثل الطرف الثاني في هذا التعاقد المهندس/أحمد عبدالفتاح. هوية وطنية رقم 1651651654 بصفته رئيس الشؤون الإدارية</p>
+                                    <p>البريد الإلكتروني المعتمد لدى للطرف الأول: Info@@eng.com</p>
+                                </div>
+                                <div class="h3 mt-5 fw-bold text-center">
+                                    <p>التمهيد</p>
+                                </div>
+                                <div class="h5">
+                                    <p>تعمل الشركة الطرف الأول فى مجال المقاولات العمومية والتجارة ورصف الطرق  وحيث أن خبرتها الكبيرة فى هذا المجال مكنتها من التعاقد  مع لتنفيذ مشروع  وذلك بموجب عقد المقاولة  رقم 5554 بتاريخ 1/1/2024 وفى إطار سعيها الدائم فى التعاقد من الباطن مع شركات المقاولات المتخصصة فى البنود المراد تنفيذها فى عقد المقاولة الرئيسى المذكور . ولما للطرف الثانى من خبرة كبيرة فى مجال تنفيذ الاعمال الخرسانية فقد تلاقت إرادة الطرفان على الاتفاق على تنفيذ الطرف الثانى البند السادس من بنود عقد المقاولة المذكور وهو البند المتعلق بلاعمال الخرسانية لذلك فقد اتفق الطرفان وهما بكامل أهليتهما المعتبرة للتعاقد على ما يلي :-</p>
+                                </div>
+                                <div class="h5">
+                                    <p>البند الأول: - رفع المقاسات : يقر الطرف الثانى ” المقاول من الباطن ” بانه اطلع على عقد المقاولة المبرم فيما بين الطرف الاول – والجهة مالكة المشروع محل التنفيذ وأنة  قد احاط ببنوده احاطة تامة , كما قام بمعاينة موقع تنفيذ هذا العقد و انه قبل ابرام هذا العقد على هذاالاساس .</p>
+                                </div>
+                                <div class="h5">
+                                    <p>البند الثاني: - إقرار الذمة : كما يلتزم الطرف الأول بستخراج كافة التصاريح والتراخيص الازمة لقيام الطرف الثانى بتنفيذ الاعمال الخرسانية موضوع هذا العقد . كما يكون ملتزم بعمل كافة التنسيقات مع الجهة صاحبة عقد المقاولة الرئيسى وحضور الطرف الثانى لكافة الاجتماعات مع كافة الجهات الحكومية والغير حكومية والجهة مالكة المشروع  محل عقد المقاولة الرئيسى من أجل عرض ما تم إنجازة ومن أجل عرض وتزليل كافة المشاكل والعقبات التى تواجة الطرف الثانى فى تنفيذ الاعمال الخرسانية موضوع هذا العقد.</p>
+                                </div>
+                                <div class="h5">
+                                    <p>البند الثالث: - تطورات العمل :  يلتزم الطرف الاول بتوفير كافة التصميمات المتعلقة بالمشروع كاكل وتوفير كافة الرسومات الهندسية المتعلق بالاعمال الخرسانية المتفق على تنفيذها . كما يلتزم بتقديمها للطرف الثانى ولا تبراء زمة الطرف الأول من هذا الالتزام الا بتوقيع الطرف الثانى على إقرار بستلامة كافة التصميمات والرسومات الهندسية المتعلقة بالمشروع وبالاعمال الخرسانية موضوع هذا العقد .</p>
+                                </div>
+                                <div class="h5">
+                                    <p>البند الرابع: - الحسابات البنكية : يلتزم الطرف الأول التزامآ تامآ بالمحافظة على سرية المعلومات والمستندات والوثائق المتعلقة بأعمال الطرف الثاني والتي سيتم الإطلاع عليها لتنفيذ أعمال هذا العقد ، ويتعهد الطرف الأول باستخدامها في أغراض تنفيذ أعمال العقد فقط بما يحفظ حقوق الطرف الثاني ، كما يتعهد الطرف الأول أثناء وبعد الانتهاء من هذه الأعمال أو بعد انتهاء مدة هذا العقد بعدم الإفصاح عن أية بيانات أو معلومات أو مستندات للغير وعدم استغلالها بأية طريقة كانت.</p>
+                                </div>
+                                <div class="h5">
+                                    <p>البند الخامس: - الشروط الجزائية : يقر الطرف الثانى ” المقاول من الباطن ” بانه اطلع على عقد المقاولة المبرم فيما بين الطرف الاول – والجهة مالكة المشروع محل التنفيذ وأنة  قد احاط ببنوده احاطة تامة , كما قام بمعاينة موقع تنفيذ هذا العقد و انه قبل ابرام هذا العقد على هذاالاساس .</p>
+                                </div>
+                                <div class="h3 mt-5 fw-bold text-center">
+                                    <p>ملاحظات</p>
+                                </div>
+                                <div class="h5">
+                                    <p>يحق فى جميع الاحوال للطرف الثانى فسخ هذا العقد متى أخل الطرف الأول بأى من إلتزاماتة التعاقدية الثابتة فى بنود هذا العقد مع أحقيتة فى مطالبة للطرف الأول بأى مبالغ قد قام بصرفها أثناء تنفيذ بنود هذا العقد كما يحق لة مطالبتة بمبلغ ٤۰۰۰۰۰۰ جنية ( أربعة مليون جنية مصرى ) كاتعويض إتفاقى دون أن يؤثر ذلك فى أحقية الطرف الثانى فى التمسك بالأثر القانونى لأى بند من بنود هذا العقد .</p>
+                                </div>
+                                <div style="margin-bottom:300px" class="row align-items-center justify-content-around mt-20">
+                                    <div class="col-auto">
+                                        <div class="d-flex flex-column align-items-center">
+                                            <p class="fs-4 fw-bold">
+                                                الطرف الأول
+                                            </p>
+                                            <p class="fs-4 fw-bold">
+                                                شركة المكافحة المتيمزة للتشغيل والصيانة
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="col-auto">
+                                        <div class="d-flex flex-column align-items-center">
+                                            <p class="fs-4 fw-bold">
+                                                الطرف الثاني
+                                            </p>
+                                            <p class="fs-4 fw-bold">
+                                                شركة أنظمة الطاقة
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="d-flex justify-content-around mt-10 mb-5">
+                                    <a class="align-items-center text-gray-800 text-hover-primary">
+                                        <i class="ki-duotone ki-phone fs-4 me-1">
+                                            <span class="path1"></span>
+                                            <span class="path2"></span>
+                                        </i>
+                                        +966 567 780 260
+                                    </a>
+                                    <a class="align-items-center text-gray-800 text-hover-primary">
+                                        <i class="ki-duotone ki-sms fs-4 me-1">
+                                            <span class="path1"></span>
+                                            <span class="path2"></span>
+                                        </i>
+                                        Info@pestsweepy.com
+                                    </a>
+                                    <a class="align-items-center text-gray-800 text-hover-primary">
+                                        <i class="ki-duotone ki-tablet fs-4 me-1">
+                                            <span class="path1"></span>
+                                            <span class="path2"></span>
+                                            <span class="path3"></span>
+                                        </i>
+                                        920013270
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+
+            <button @onclick="PrintReport" class="btn btn-lg btn-success mt-5">
+                @languageContainer.Keys["Print"]
+            </button>
+        </div>
+
+    </DialogContent>
+    <DialogActions>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    [Inject] IJSRuntime JSRuntime { get; set; } = default!;
+    [Parameter][EditorRequired] public int Id { get; set; }
+
+    private ContractDto? contract;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        contract = new();
+    }
+
+    private async Task PrintReport()
+    {
+        // await using var module = await JSRuntime.InvokeAsync<IJSObjectReference>("import", "./assets/js/printReport.js");
+
+        // // Generate and download the PDF
+        // await module.InvokeVoidAsync("generateAndDownloadPdf", "PricingReport.pdf");
+
+        await JSRuntime.InvokeVoidAsync("DownloadPdf", "PricingReport.pdf");
+    }
+}

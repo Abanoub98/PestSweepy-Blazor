@@ -2,6 +2,9 @@
 
 public class ContractDto
 {
+    [Required]
+    public string Title { get; set; } = null!;
+
     public int Id { set; get; }
 
     public DateTime? CreatedAt { get; set; }
@@ -22,6 +25,18 @@ public class ContractDto
     public string FpExecutiveOfficer { get; set; } = null!;
 
     [Required]
+    public string SpMail { get; set; } = null!;
+
+    [Required]
+    public string FpMail { get; set; } = null!;
+
+    [Required]
+    public string SpExecutiveOfficerJob { get; set; } = null!;
+
+    [Required]
+    public string FpExecutiveOfficerJob { get; set; } = null!;
+
+    [Required]
     public string FpCommercialRegistrationNo { get; set; } = null!;
 
     [Required]
@@ -31,7 +46,7 @@ public class ContractDto
     public List<TermDto> Terms { get; set; } = new();
 
     [Required]
-    public string ContractConculsion { get; set; } = null!;
+    public string ContractConclusion { get; set; } = null!;
 
     [Required]
     public string Notes { get; set; } = null!;
@@ -45,6 +60,11 @@ public class ContractDto
     public IEnumerable<LookupDto>? Quotations { get; set; }
 
     [Required]
+    public LookupDto? ContractDuration { get; set; }
+    public int? ContractDurationId { get; set; }
+    public IEnumerable<LookupDto>? ContractDurations { get; set; }
+
+    [Required]
     public LookupDto? ContractClient { get; set; }
     public int? ContractClientId { get; set; }
     public IEnumerable<LookupDto>? ContractClients { get; set; }
@@ -54,7 +74,9 @@ public class ContractDto
 
 public class TermDto
 {
+    public string Title { get; set; } = null!;
+
     public string Term { get; set; } = null!;
+
     public string SelectedTerm { get; set; } = null!;
-    public int ContractId { get; set; }
 }
