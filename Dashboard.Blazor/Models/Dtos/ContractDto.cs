@@ -7,7 +7,7 @@ public class ContractDto
 
     public int Id { set; get; }
 
-    public DateTime? CreatedAt { get; set; }
+    public DateTime CreatedAt { get; set; }
 
     [Required]
     public DateTime? EffectiveDate { get; set; } = DateTime.Now;
@@ -42,7 +42,6 @@ public class ContractDto
     [Required]
     public string SpCommercialRegistrationNo { get; set; } = null!;
 
-    [Required]
     public List<TermDto> Terms { get; set; } = new();
 
     [Required]
@@ -54,7 +53,6 @@ public class ContractDto
     [Required]
     public string ContractIntro { get; set; } = null!;
 
-    [Required]
     public LookupDto? Quotation { get; set; }
     public int? QuotationId { get; set; }
     public IEnumerable<LookupDto>? Quotations { get; set; }

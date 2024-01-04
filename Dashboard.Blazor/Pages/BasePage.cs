@@ -192,7 +192,8 @@ public class BasePage : ComponentBase
             MaxWidth = MaxWidth.Small,
             FullWidth = true,
             Position = DialogPosition.TopCenter,
-            CloseButton = true
+            CloseButton = true,
+            ClassBackground = "dialogBackgroundBlur"
         };
 
         DialogParameters<ConfirmationDialog> formParameters = new();

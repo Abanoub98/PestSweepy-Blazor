@@ -26,8 +26,8 @@ public partial class ContractForm
     {
         StartProcessing();
 
-        contractForm!.QuotationId = contractForm.Quotation!.Id;
         contractForm!.ContractClientId = contractForm.ContractClient!.Id;
+        contractForm!.ContractDurationId = contractForm.ContractDuration!.Id;
 
 
         (bool isSuccess, ContractDto? contractDto) result;

@@ -51,7 +51,7 @@ else
                          </MudAutocomplete>
                      </div>
                      <div class="p-3 w-100">
-                         <MudAutocomplete T="LookupDto" SearchFunc="@GetQuotations" ToStringFunc="@(e=> e == null ? null : $"{e.Name}")" @bind-Value="contractForm.Quotation" For="@(() => contractForm.Quotation)"
+                         <MudAutocomplete T="LookupDto" SearchFunc="@GetQuotations" ToStringFunc="@(e=> e == null ? null : $"{e.Name}")" @bind-Value="contractForm.ContractDuration" For="@(() => contractForm.ContractDuration)"
                                           ShowProgressIndicator="true" ResetValueOnEmptyText="true" CoerceText="true" MaxItems="null" HelperTextOnFocus="true"
                                           ProgressIndicatorColor="Color.Info" Clearable AdornmentColor="Color.Info" AnchorOrigin="Origin.BottomCenter" Variant="Variant.Outlined" Adornment="Adornment.Start"
                                           HelperText="@languageContainer.Keys["Required"]" Label="@languageContainer.Keys["Contract Duration"]" Placeholder="@languageContainer.Keys["Select Contract Duration"]" AdornmentIcon="@EntityIcons.QuotationsIcon">

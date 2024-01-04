@@ -150,3 +150,7 @@ a, .btn-link {
 .mud-tabs-panels {
     background: var(--mud-palette-surface);
 }
+
+.dialogBackgroundBlur {
+    backdrop-filter: blur(10px);
+}

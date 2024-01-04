@@ -1,10 +1,9 @@
 ﻿@attribute [Authorize]
-@layout BlankLayout
 @inherits BasePage
 
 <MudDialog>
     <DialogContent>
-        <div class="w-100 d-flex flex-column align-items-center py-5">
+        <div id="unique_id_scroll_section" class="w-100 d-flex flex-column align-items-center py-5" style="height: 60vh;overflow: auto;">
             @if (contract is null)
             {
                 <FormLoadingSpinner IsBigForm="true" />
@@ -12,17 +11,14 @@
             else
             {
                 <div class="border rounded-lg border-gray-600" style="width:992px;background-color:white !important">
-                    <div dir="rtl" style="direction:rtl;" id="Report" class="px-8 py-5 h-100">
-                        <div class="d-flex flex-column h-100">
+                    <div id="Report" class="px-8 py-5 h-100">
+                        <div dir="rtl" style="direction:rtl;border-left: solid 30px #00a2e5;background-image: url(/images/LogoOpacity.png);background-repeat: no-repeat;background-size: 400px 400px;background-position: center;" class="d-flex flex-column h-100">
                             <div>
                                 <div class="row align-items-center justify-content-between mb-20">
                                     <div class="col-auto px-5">
                                         <div class="d-flex flex-column align-items-center">
-                                            <p class="fs-1 fw-bold text-primary">
-                                                شركة المكافحة المتميزة
-                                            </p>
-                                            <p class="fs-1 fw-bold text-success">
-                                                للتشغيل والصيانة
+                                            <p class="fs-1 fw-bold text-primary text-center">
+                                                شركة المكافحة المتميزة<br /><span class="text-success">للتشغيل والصيانة</span>
                                             </p>
                                         </div>
                                     </div>
@@ -31,48 +27,39 @@
                                     </div>
                                 </div>
                                 <div class="text-center mb-10">
-                                    <div style="width: fit-content;" class="fs-2 fw-bold border border-gray-600 rounded-lg p-3 m-auto">
-                                        عقد زيارات مكافحة الحشرات
+                                    <div style="width: fit-content;" class="fs-2 fw-bold border border-gray-600 border-4 rounded-lg p-3 m-auto">
+                                        @contract.Title
                                     </div>
                                 </div>
                                 <div class="h5">
-                                    <p>التاريخ: 1/1/2024</p>
+                                    <p>التاريخ: @contract.CreatedAt.ToShortDateString()</p>
                                 </div>
                                 <div class="h5">
                                     <p>بوجب هذا العقد قد تم الإتفاق بين كل من:</p>
-                                    <p>السادة/ شركة المكافحة المتيمزة للتشغيل والصيانة. ويشار إليها في العقد بوصفها الطرف الأول. سجل تجاري: 4030427513 جدة</p>
-                                    <p>ويمثل الطرف الأول في هذا التعاقد الدكتور/خليل إبراهيم عباس. هوية وطنية رقم 5548559887 بصفته رئيس الشؤون الإدارية</p>
-                                    <p>البريد الإلكتروني المعتمد لدى للطرف الأول: Info@@PestSweepy.com</p>
-                                    <p>السادة/ شركة أنظمة الطاقة. ويشار إليها في العقد بوصفها الطرف الثاني. سجل تجاري: 55665654 الرياض</p>
-                                    <p>ويمثل الطرف الثاني في هذا التعاقد المهندس/أحمد عبدالفتاح. هوية وطنية رقم 1651651654 بصفته رئيس الشؤون الإدارية</p>
-                                    <p>البريد الإلكتروني المعتمد لدى للطرف الأول: Info@@eng.com</p>
+                                    <p>السادة/ @contract.FirstParty . ويشار إليها في العقد بوصفها الطرف الأول . سجل تجاري: @contract.FpCommercialRegistrationNo</p>
+                                    <p>ويمثل الطرف الأول في هذا التعاقد @contract.FpExecutiveOfficer . بصفته @contract.FpExecutiveOfficerJob</p>
+                                    <p>البريد الإلكتروني المعتمد لدى للطرف الأول: @contract.FpMail</p>
+                                    <p>السادة/ @contract.SecondParty . ويشار إليها في العقد بوصفها الطرف الثاني . سجل تجاري: @contract.SpCommercialRegistrationNo </p>
+                                    <p>ويمثل الطرف الثاني في هذا التعاقد  @contract.SpExecutiveOfficer . بصفته @contract.SpExecutiveOfficerJob</p>
+                                    <p>البريد الإلكتروني المعتمد لدى للطرف الأول: @contract.SpMail</p>
                                 </div>
                                 <div class="h3 mt-5 fw-bold text-center">
                                     <p>التمهيد</p>
                                 </div>
                                 <div class="h5">
-                                    <p>تعمل الشركة الطرف الأول فى مجال المقاولات العمومية والتجارة ورصف الطرق  وحيث أن خبرتها الكبيرة فى هذا المجال مكنتها من التعاقد  مع لتنفيذ مشروع  وذلك بموجب عقد المقاولة  رقم 5554 بتاريخ 1/1/2024 وفى إطار سعيها الدائم فى التعاقد من الباطن مع شركات المقاولات المتخصصة فى البنود المراد تنفيذها فى عقد المقاولة الرئيسى المذكور . ولما للطرف الثانى من خبرة كبيرة فى مجال تنفيذ الاعمال الخرسانية فقد تلاقت إرادة الطرفان على الاتفاق على تنفيذ الطرف الثانى البند السادس من بنود عقد المقاولة المذكور وهو البند المتعلق بلاعمال الخرسانية لذلك فقد اتفق الطرفان وهما بكامل أهليتهما المعتبرة للتعاقد على ما يلي :-</p>
+                                    <p>@contract.ContractIntro</p>
                                 </div>
-                                <div class="h5">
-                                    <p>البند الأول: - رفع المقاسات : يقر الطرف الثانى ” المقاول من الباطن ” بانه اطلع على عقد المقاولة المبرم فيما بين الطرف الاول – والجهة مالكة المشروع محل التنفيذ وأنة  قد احاط ببنوده احاطة تامة , كما قام بمعاينة موقع تنفيذ هذا العقد و انه قبل ابرام هذا العقد على هذاالاساس .</p>
-                                </div>
-                                <div class="h5">
-                                    <p>البند الثاني: - إقرار الذمة : كما يلتزم الطرف الأول بستخراج كافة التصاريح والتراخيص الازمة لقيام الطرف الثانى بتنفيذ الاعمال الخرسانية موضوع هذا العقد . كما يكون ملتزم بعمل كافة التنسيقات مع الجهة صاحبة عقد المقاولة الرئيسى وحضور الطرف الثانى لكافة الاجتماعات مع كافة الجهات الحكومية والغير حكومية والجهة مالكة المشروع  محل عقد المقاولة الرئيسى من أجل عرض ما تم إنجازة ومن أجل عرض وتزليل كافة المشاكل والعقبات التى تواجة الطرف الثانى فى تنفيذ الاعمال الخرسانية موضوع هذا العقد.</p>
-                                </div>
-                                <div class="h5">
-                                    <p>البند الثالث: - تطورات العمل :  يلتزم الطرف الاول بتوفير كافة التصميمات المتعلقة بالمشروع كاكل وتوفير كافة الرسومات الهندسية المتعلق بالاعمال الخرسانية المتفق على تنفيذها . كما يلتزم بتقديمها للطرف الثانى ولا تبراء زمة الطرف الأول من هذا الالتزام الا بتوقيع الطرف الثانى على إقرار بستلامة كافة التصميمات والرسومات الهندسية المتعلقة بالمشروع وبالاعمال الخرسانية موضوع هذا العقد .</p>
-                                </div>
-                                <div class="h5">
-                                    <p>البند الرابع: - الحسابات البنكية : يلتزم الطرف الأول التزامآ تامآ بالمحافظة على سرية المعلومات والمستندات والوثائق المتعلقة بأعمال الطرف الثاني والتي سيتم الإطلاع عليها لتنفيذ أعمال هذا العقد ، ويتعهد الطرف الأول باستخدامها في أغراض تنفيذ أعمال العقد فقط بما يحفظ حقوق الطرف الثاني ، كما يتعهد الطرف الأول أثناء وبعد الانتهاء من هذه الأعمال أو بعد انتهاء مدة هذا العقد بعدم الإفصاح عن أية بيانات أو معلومات أو مستندات للغير وعدم استغلالها بأية طريقة كانت.</p>
-                                </div>
-                                <div class="h5">
-                                    <p>البند الخامس: - الشروط الجزائية : يقر الطرف الثانى ” المقاول من الباطن ” بانه اطلع على عقد المقاولة المبرم فيما بين الطرف الاول – والجهة مالكة المشروع محل التنفيذ وأنة  قد احاط ببنوده احاطة تامة , كما قام بمعاينة موقع تنفيذ هذا العقد و انه قبل ابرام هذا العقد على هذاالاساس .</p>
-                                </div>
+                                @foreach (var term in contract.Terms)
+                                {
+                                    <div class="h5">
+                                        <p><span class="fw-bold text-decoration-underline">@term.Title: </span>@term.Term</p>
+                                    </div>
+                                }        
                                 <div class="h3 mt-5 fw-bold text-center">
                                     <p>ملاحظات</p>
                                 </div>
                                 <div class="h5">
-                                    <p>يحق فى جميع الاحوال للطرف الثانى فسخ هذا العقد متى أخل الطرف الأول بأى من إلتزاماتة التعاقدية الثابتة فى بنود هذا العقد مع أحقيتة فى مطالبة للطرف الأول بأى مبالغ قد قام بصرفها أثناء تنفيذ بنود هذا العقد كما يحق لة مطالبتة بمبلغ ٤۰۰۰۰۰۰ جنية ( أربعة مليون جنية مصرى ) كاتعويض إتفاقى دون أن يؤثر ذلك فى أحقية الطرف الثانى فى التمسك بالأثر القانونى لأى بند من بنود هذا العقد .</p>
+                                    <p>@contract.Notes</p>
                                 </div>
                                 <div style="margin-bottom:300px" class="row align-items-center justify-content-around mt-20">
                                     <div class="col-auto">
@@ -81,7 +68,7 @@
                                                 الطرف الأول
                                             </p>
                                             <p class="fs-4 fw-bold">
-                                                شركة المكافحة المتيمزة للتشغيل والصيانة
+                                                @contract.FirstParty
                                             </p>
                                         </div>
                                     </div>
@@ -91,7 +78,7 @@
                                                 الطرف الثاني
                                             </p>
                                             <p class="fs-4 fw-bold">
-                                                شركة أنظمة الطاقة
+                                                @contract.SecondParty
                                             </p>
                                         </div>
                                     </div>
@@ -127,35 +114,42 @@
                     </div>
                 </div>
             }
-
-            <button @onclick="PrintReport" class="btn btn-lg btn-success mt-5">
+            <MudScrollToTop  TopOffset="100"
+                            Selector="#unique_id_scroll_section"
+                            VisibleCssClass="visible absolute me-10"
+                            HiddenCssClass="invisible">
+                <MudFab Color="Color.Primary" IconSize="Size.Large" StartIcon="@Icons.Material.Filled.KeyboardDoubleArrowUp" />
+            </MudScrollToTop>
+        </div>
+    </DialogContent>
+    <DialogActions>
+        <div class="w-100 text-center">
+            <button @onclick="PrintReport" class="btn btn-lg btn-success m-5">
                 @languageContainer.Keys["Print"]
             </button>
         </div>
-
-    </DialogContent>
-    <DialogActions>
     </DialogActions>
 </MudDialog>
+
 
 @code {
     [Inject] IJSRuntime JSRuntime { get; set; } = default!;
     [Parameter][EditorRequired] public int Id { get; set; }
+    [CascadingParameter] MudDialogInstance MudDialog { get; set; } = default!;
+
 
     private ContractDto? contract;
 
     protected override async Task OnParametersSetAsync()
     {
-        contract = new();
+        contract = await GetByIdAsync<ContractDto>($"Contracts/{Id}");
     }
 
+    void Cancel() => MudDialog.Cancel();
+
     private async Task PrintReport()
-    {
-        // await using var module = await JSRuntime.InvokeAsync<IJSObjectReference>("import", "./assets/js/printReport.js");
+    {;
 
-        // // Generate and download the PDF
-        // await module.InvokeVoidAsync("generateAndDownloadPdf", "PricingReport.pdf");
-
-        await JSRuntime.InvokeVoidAsync("DownloadPdf", "PricingReport.pdf");
+        await JSRuntime.InvokeVoidAsync("DownloadPdf");
     }
 }

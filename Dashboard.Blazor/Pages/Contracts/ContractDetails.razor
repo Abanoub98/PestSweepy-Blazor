@@ -41,7 +41,7 @@ else
                                 <a href="/ContractClients/Form/@contract.ContractClient?.Id" class="text-gray-600 text-hover-primary">@contract.ContractClient?.Name</a>
                                 <!--begin::Details item-->
                                 <div class="fw-bold mt-5 mb-1">@languageContainer.Keys["Created Date"]:</div>
-                                <div class="text-gray-600">@contract.CreatedAt!.Value.ToString("d")</div>
+                                <div class="text-gray-600">@contract.CreatedAt!.ToString("d")</div>
                                 <!--begin::Details item-->
                                 <div class="fw-bold mt-5  mb-1">@languageContainer.Keys["Effective Date"]:</div>
                                 <div class="text-gray-600">@contract.EffectiveDate!.Value.ToString("d")</div>
