@@ -58,16 +58,16 @@ public partial class ContractForm
         term.Term = term.SelectedTerm;
     }
 
-    private async Task<IEnumerable<LookupDto>> GetQuotations(string value)
+    private async Task<IEnumerable<LookupDto>> GetDurations(string value)
     {
-        if (contractForm!.Quotations is null)
-            contractForm.Quotations = new List<LookupDto>() { new LookupDto { Id = 0, Name = "Test" } };
+        if (contractForm!.ContractDurations is null)
+            contractForm.ContractDurations = await GetAllLookupsAsync("ReferenceData?tableName=Durations");
 
         // if text is null or empty, show complete list
         if (string.IsNullOrEmpty(value))
-            return contractForm.Quotations;
+            return contractForm.ContractDurations;
 
-        return contractForm.Quotations.Where(x => x.Name.Contains(value, StringComparison.InvariantCultureIgnoreCase));
+        return contractForm.ContractDurations.Where(x => x.Name.Contains(value, StringComparison.InvariantCultureIgnoreCase));
     }
 
     private async Task<IEnumerable<LookupDto>> GetContractClients(string value)

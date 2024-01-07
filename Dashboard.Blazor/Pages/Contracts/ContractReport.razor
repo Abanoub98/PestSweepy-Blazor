@@ -12,109 +12,135 @@
             {
                 <div class="border rounded-lg border-gray-600" style="width:992px;background-color:white !important">
                     <div id="Report" class="px-8 py-5 h-100">
-                        <div dir="rtl" style="direction:rtl;border-left: solid 30px #00a2e5;background-image: url(/images/LogoOpacity.png);background-repeat: no-repeat;background-size: 400px 400px;background-position: center;" class="d-flex flex-column h-100">
-                            <div>
-                                <div class="row align-items-center justify-content-between mb-20">
-                                    <div class="col-auto px-5">
-                                        <div class="d-flex flex-column align-items-center">
-                                            <p class="fs-1 fw-bold text-primary text-center">
-                                                شركة المكافحة المتميزة<br /><span class="text-success">للتشغيل والصيانة</span>
-                                            </p>
+                        <div class="row" dir="rtl" style="direction:rtl;">
+                            <div class="col-11">
+                                <div class="d-flex flex-column h-100">
+                                    <div>
+                                        <div class="row align-items-center justify-content-between mb-20">
+                                            <div class="col-auto px-5">
+                                                <div class="d-flex flex-column align-items-center">
+                                                    <p class="fs-1 fw-bold text-primary text-center">
+                                                        شركة المكافحة المتميزة<br /><span class="text-success">للتشغيل والصيانة</span>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <div class="col-auto px-5">
+                                                <MudImage Src="/images/Logo.png" Width="150" />
+                                            </div>
+                                        </div>
+                                        <div class="text-center mb-10">
+                                            <div style="width: fit-content;" class="fs-2 fw-bold border border-black border-4 rounded-lg p-3 m-auto">
+                                                @contract.Title
+                                            </div>
+                                        </div>
+                                        <div class="h5">
+                                            <p>التاريخ: @contract.CreatedAt.ToShortDateString()</p>
+                                        </div>
+                                        <div class="h5">
+                                            <p>بوجب هذا العقد قد تم الإتفاق بين كل من:</p>
+                                            <p>السادة/ @contract.FirstParty . ويشار إليها في العقد بوصفها الطرف الأول . سجل تجاري: @contract.FpCommercialRegistrationNo</p>
+                                            <p>ويمثل الطرف الأول في هذا التعاقد @contract.FpExecutiveOfficer . بصفته @contract.FpExecutiveOfficerJob</p>
+                                            <p>البريد الإلكتروني المعتمد لدى للطرف الأول: @contract.FpEmail</p>
+                                            <p>السادة/ @contract.SecondParty . ويشار إليها في العقد بوصفها الطرف الثاني . سجل تجاري: @contract.SpCommercialRegistrationNo </p>
+                                            <p>ويمثل الطرف الثاني في هذا التعاقد  @contract.SpExecutiveOfficer . بصفته @contract.SpExecutiveOfficerJob</p>
+                                            <p>البريد الإلكتروني المعتمد لدى للطرف الأول: @contract.SpEmail</p>
+                                        </div>
+                                        <div class="h3 mt-5 fw-bold text-center">
+                                            <p>التمهيد</p>
+                                        </div>
+                                        <div class="h5">
+                                            <p>@contract.ContractIntro</p>
+                                        </div>
+                                        @{
+                                            var termNumber = 1;
+                                            foreach (var term in contract.Terms)
+                                            {
+                                                <div class="h5">
+                                                    <p><span class="fw-bold text-decoration-underline">@($"{GetTermText(termNumber++)}-{term.Title}"): </span>@term.Term</p>
+                                                </div>
+                                            }
+                                        }
+                                        <div class="h5">
+                                            <p>ويعتبر هذا العقد ساريا إعتبارا من تاريخ: @contract.EffectiveDate!.Value.ToShortDateString()</p>
+                                        </div>
+                                        <div class="h3 mt-5 fw-bold text-center">
+                                            <p>ملاحظات</p>
+                                        </div>
+                                        <div class="h5">
+                                            <p>@contract.Notes</p>
+                                        </div>
+                                        <div style="margin-bottom:300px" class="row align-items-center justify-content-around mt-20">
+                                            <div class="col-auto">
+                                                <div class="d-flex flex-column align-items-center">
+                                                    <p class="fs-4 fw-bold">
+                                                        الطرف الأول
+                                                    </p>
+                                                    <p class="fs-4 fw-bold">
+                                                        @contract.FirstParty
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <div class="col-auto">
+                                                <div class="d-flex flex-column align-items-center">
+                                                    <p class="fs-4 fw-bold">
+                                                        الطرف الثاني
+                                                    </p>
+                                                    <p class="fs-4 fw-bold">
+                                                        @contract.SecondParty
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div style="position: absolute;
+                                            top: 50%;
+                                            left: 50%;
+                                            transform: translate(-50%, -50%);">
+                                            <MudImage Src="/images/LogoOpacity.png" Width="400" />
                                         </div>
                                     </div>
-                                    <div class="col-auto px-5">
-                                        <MudImage Src="/images/Logo.png" Width="150" />
-                                    </div>
-                                </div>
-                                <div class="text-center mb-10">
-                                    <div style="width: fit-content;" class="fs-2 fw-bold border border-gray-600 border-4 rounded-lg p-3 m-auto">
-                                        @contract.Title
-                                    </div>
-                                </div>
-                                <div class="h5">
-                                    <p>التاريخ: @contract.CreatedAt.ToShortDateString()</p>
-                                </div>
-                                <div class="h5">
-                                    <p>بوجب هذا العقد قد تم الإتفاق بين كل من:</p>
-                                    <p>السادة/ @contract.FirstParty . ويشار إليها في العقد بوصفها الطرف الأول . سجل تجاري: @contract.FpCommercialRegistrationNo</p>
-                                    <p>ويمثل الطرف الأول في هذا التعاقد @contract.FpExecutiveOfficer . بصفته @contract.FpExecutiveOfficerJob</p>
-                                    <p>البريد الإلكتروني المعتمد لدى للطرف الأول: @contract.FpMail</p>
-                                    <p>السادة/ @contract.SecondParty . ويشار إليها في العقد بوصفها الطرف الثاني . سجل تجاري: @contract.SpCommercialRegistrationNo </p>
-                                    <p>ويمثل الطرف الثاني في هذا التعاقد  @contract.SpExecutiveOfficer . بصفته @contract.SpExecutiveOfficerJob</p>
-                                    <p>البريد الإلكتروني المعتمد لدى للطرف الأول: @contract.SpMail</p>
-                                </div>
-                                <div class="h3 mt-5 fw-bold text-center">
-                                    <p>التمهيد</p>
-                                </div>
-                                <div class="h5">
-                                    <p>@contract.ContractIntro</p>
-                                </div>
-                                @foreach (var term in contract.Terms)
-                                {
-                                    <div class="h5">
-                                        <p><span class="fw-bold text-decoration-underline">@term.Title: </span>@term.Term</p>
-                                    </div>
-                                }        
-                                <div class="h3 mt-5 fw-bold text-center">
-                                    <p>ملاحظات</p>
-                                </div>
-                                <div class="h5">
-                                    <p>@contract.Notes</p>
-                                </div>
-                                <div style="margin-bottom:300px" class="row align-items-center justify-content-around mt-20">
-                                    <div class="col-auto">
-                                        <div class="d-flex flex-column align-items-center">
-                                            <p class="fs-4 fw-bold">
-                                                الطرف الأول
-                                            </p>
-                                            <p class="fs-4 fw-bold">
-                                                @contract.FirstParty
-                                            </p>
+                                    <div dir="ltr" style="direction:ltr;">
+                                        <div class="text-center">
+                                            <a class="align-items-center text-gray-800 text-hover-primary fs-2">
+                                                <i class="ki-duotone ki-geolocation fs-2 me-1">
+                                                    <span class="path1"></span>
+                                                    <span class="path2"></span>
+                                                </i>
+                                                Saudi Arabia - Jeddah Khalid Ibn Alwaleed - AI Rabie Commercial Centere
+                                            </a>
                                         </div>
-                                    </div>
-                                    <div class="col-auto">
-                                        <div class="d-flex flex-column align-items-center">
-                                            <p class="fs-4 fw-bold">
-                                                الطرف الثاني
-                                            </p>
-                                            <p class="fs-4 fw-bold">
-                                                @contract.SecondParty
-                                            </p>
+                                        <div class="d-flex justify-content-center mt-10 mb-5">
+                                            <a class="align-items-center text-gray-800 text-hover-primary fs-2 me-3">
+                                                <i class="ki-duotone ki-phone fs-2 me-1">
+                                                    <span class="path1"></span>
+                                                    <span class="path2"></span>
+                                                </i>
+                                                +966 567 780 260
+                                            </a>
+                                            <a class="align-items-center text-gray-800 text-hover-primary fs-2 me-3">
+                                                <i class="ki-duotone ki-sms fs-2 me-1">
+                                                    <span class="path1"></span>
+                                                    <span class="path2"></span>
+                                                </i>
+                                                Info@pestsweepy.com
+                                            </a>
+                                            <a class="align-items-center text-gray-800 text-hover-primary fs-2 me-3">
+                                                <i class="ki-duotone ki-tablet fs-2 me-1">
+                                                    <span class="path1"></span>
+                                                    <span class="path2"></span>
+                                                    <span class="path3"></span>
+                                                </i>
+                                                920013270
+                                            </a>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div>
-                                <div class="d-flex justify-content-around mt-10 mb-5">
-                                    <a class="align-items-center text-gray-800 text-hover-primary">
-                                        <i class="ki-duotone ki-phone fs-4 me-1">
-                                            <span class="path1"></span>
-                                            <span class="path2"></span>
-                                        </i>
-                                        +966 567 780 260
-                                    </a>
-                                    <a class="align-items-center text-gray-800 text-hover-primary">
-                                        <i class="ki-duotone ki-sms fs-4 me-1">
-                                            <span class="path1"></span>
-                                            <span class="path2"></span>
-                                        </i>
-                                        Info@pestsweepy.com
-                                    </a>
-                                    <a class="align-items-center text-gray-800 text-hover-primary">
-                                        <i class="ki-duotone ki-tablet fs-4 me-1">
-                                            <span class="path1"></span>
-                                            <span class="path2"></span>
-                                            <span class="path3"></span>
-                                        </i>
-                                        920013270
-                                    </a>
-                                </div>
-                            </div>
+                            <div class="col-1" style="border-left: solid 30px #00a2e5;"></div>
                         </div>
                     </div>
                 </div>
             }
-            <MudScrollToTop  TopOffset="100"
+            <MudScrollToTop TopOffset="100"
                             Selector="#unique_id_scroll_section"
                             VisibleCssClass="visible absolute me-10"
                             HiddenCssClass="invisible">
@@ -148,8 +174,97 @@
     void Cancel() => MudDialog.Cancel();
 
     private async Task PrintReport()
-    {;
+    {
 
         await JSRuntime.InvokeVoidAsync("DownloadPdf");
+    }
+
+    private string GetTermText(int termNumber)
+    {
+        string termText = string.Empty;
+
+        switch (termNumber)
+        {
+            case 1:
+                termText = "البند الأول";
+                break;
+            case 2:
+                termText = "البند الثاني";
+                break;
+            case 3:
+                termText = "البند الثالث";
+                break;
+            case 4:
+                termText = "البند الرابع";
+                break;
+            case 5:
+                termText = "البند الخامس";
+                break;
+            case 6:
+                termText = "البند السادس";
+                break;
+            case 7:
+                termText = "البند السابع";
+                break;
+            case 8:
+                termText = "البند الثامن";
+                break;
+            case 9:
+                termText = "البند التاسع";
+                break;
+            case 10:
+                termText = "البند العاشر";
+                break;
+            case 11:
+                termText = "البند الحادي عشر";
+                break;
+            case 12:
+                termText = "البند الثاني عشر";
+                break;
+            case 13:
+                termText = "البند الثالث عشر";
+                break;
+            case 14:
+                termText = "البند الرابع عشر";
+                break;
+            case 15:
+                termText = "البند الخامس عشر";
+                break;
+            case 16:
+                termText = "البند السادس عشر";
+                break;
+            case 17:
+                termText = "البند السابع عشر";
+                break;
+            case 18:
+                termText = "البند الثامن عشر";
+                break;
+            case 19:
+                termText = "البند التاسع عشر";
+                break;
+            case 20:
+                termText = "البند العشرون";
+                break;
+            case 21:
+                termText = "البند الحادي والعشرون";
+                break;
+            case 22:
+                termText = "البند الثاني والعشرون";
+                break;
+            case 23:
+                termText = "البند الثالث والعشرون";
+                break;
+            case 24:
+                termText = "البند الرابع والعشرون";
+                break;
+            case 25:
+                termText = "البند الخامس والعشرون";
+                break;
+            default:
+                termText = $"{termNumber} البند";
+                break;
+        }
+
+        return termText;
     }
 }

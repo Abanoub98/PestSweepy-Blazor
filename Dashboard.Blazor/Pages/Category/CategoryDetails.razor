@@ -11,41 +11,52 @@
 }
 else
 {
-    <MudCard Elevation="25">
-        <MudCardHeader Style="padding:20px">
-            <CardHeaderAvatar>
-                <MudAvatar Class="cursor-all-scroll" @onclick="() => ShowImagePreview(imageUrl + category.Image)" Size="Size.Large" Rounded="true" Color="Color.Info">
-                    <MudImage Src=@(imageUrl + category.Image)></MudImage>
-                </MudAvatar>
-            </CardHeaderAvatar>
-            <CardHeaderContent>
-                <MudText Typo="Typo.h5">
-                    @category.Name
-                </MudText>
-                @if (category.OrderIndex is not null)
-                {
-                    <MudChip Variant="Variant.Text" Size="Size.Small" Icon="@Icons.Material.Outlined.Sort" Color="Color.Info">#@category.OrderIndex</MudChip>
-                }
-                <MudChip Variant="Variant.Filled" Size="Size.Small" Icon="@Icons.Material.Filled.ColorLens" Style=@($"background:{@category.Color}")>@category.Color</MudChip>
-            </CardHeaderContent>
-            <CardHeaderActions>
-                <div style="margin:10px">
-                    <MudButton DisableElevation="true" OnClick="() => OpenForm(formUri,category.Id)" Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Edit" Color="Color.Info">
-                        Edit
-                    </MudButton>
-                    <MudButton DisableElevation="true" Href="/Categories" Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.ArrowBack" Color="Color.Info">
-                        Back to Categories
-                    </MudButton>
-                </div>
-            </CardHeaderActions>
-        </MudCardHeader>
-    </MudCard>
-    <MudTabs SliderColor="Color.Info" Class="mt-5" Elevation="25" Rounded="true" ApplyEffectsToContainer=true Border=true PanelClass="h-100 px-6 pb-6 pt-0">
-        <MudTabPanel Icon="@Icons.Material.Filled.Info" Text="More Info">
+    <div class="card shadow-sm">
+        <div class="card-header">
+            <div class="fw-bold card-title">
+                @languageContainer.Keys["Category Details"]
+            </div>
+            <div class="card-toolbar">
+                <a href="/Categories" class="btn btn-sm btn-primary me-3">
+                    <MudIcon Icon="@Icons.Material.Filled.ArrowBack" />
+                    @languageContainer.Keys["Back To"] @languageContainer.Keys["Category"]
+                </a>
+                <a @onclick="() => OpenForm(formUri,category.Id)" class="btn btn-sm  btn-success">
+                    <MudIcon Icon="@Icons.Material.Filled.Edit" />
+                    @languageContainer.Keys["Edit"]
+                </a>
+            </div>
+        </div>
+        <div class="card-body">
+            <!--begin::Details content-->
+            <div class="py-3 fs-6">
+                <div class="row">
+                    <div class="col-8">
+                        <!--begin::Details item-->
+                        <div class="fw-bold mt-5 mb-1">@languageContainer.Keys["Name"]:</div>
+                        <div class="text-gray-600">@category.Name</div>
 
-        </MudTabPanel>
-        <MudTabPanel Icon="@Icons.Material.Filled.Handyman" Text="Services">
+                        <div class="fw-bold mt-5 mb-1">@languageContainer.Keys["Color"]:</div>
+                        <div class="text-gray-600">
+                            <MudAvatar Square="true" Style=@($"background-color: {category.Color}")></MudAvatar>
+                        </div>
+                        <!--begin::Details item-->
+                        <!--begin::Details item-->
+                        <div class="fw-bold mt-5 mb-1">@languageContainer.Keys["Order Index"]:</div>
+                        <div class="text-gray-600">@(category.OrderIndex is null ? "-" : category.OrderIndex)</div>
+                        <!--begin::Details item-->
+                    </div>
+                    <div @onclick="@(() => ShowImagePreview(imageUrl + category.Image))" class="col-4 text-center">
+                        <MudImage Class="rounded-lg border border-gray-300 mt-5" Width="300" Src=@(imageUrl + category.Image) />
+                    </div>
+                </div>
+            </div>
+            <!--end::Details content-->
+        </div>
+    </div>
+    <div class="card shadow-sm mt-10">
+        <div class="card-body">
             <Services CategoryId="category.Id" />
-        </MudTabPanel>
-    </MudTabs>
+        </div>
+    </div>
 }
