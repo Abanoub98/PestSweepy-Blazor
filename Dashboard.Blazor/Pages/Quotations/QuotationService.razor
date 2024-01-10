@@ -17,9 +17,9 @@
              </MudAutocomplete>
          </div>
          <div class="p-3 w-100">
-             <MudAutocomplete T="ServiceDto" SearchFunc="@GetServices" Adornment="Adornment.Start" AnchorOrigin="Origin.BottomCenter" ValueChanged="GetServicePrice" Disabled="IsReadOnly"
+            <MudAutocomplete T="ServiceDto" SearchFunc="@GetServices" Adornment="Adornment.Start" AnchorOrigin="Origin.BottomCenter" @bind-Value="quotationService.Service" Disabled="IsReadOnly"
                              Variant="Variant.Outlined" ShowProgressIndicator="true" ResetValueOnEmptyText="true" CoerceText="true" AdornmentIcon="@Icons.Material.Filled.Handyman" Label="@languageContainer.Keys["Service"]"
-                              ProgressIndicatorColor="Color.Info" Clearable For="@(() => quotationService.Service)" AdornmentColor="Color.Info" ReadOnly="IsReadOnly" Value="quotationService.Service"
+                              ProgressIndicatorColor="Color.Info" Clearable For="@(() => quotationService.Service)" AdornmentColor="Color.Info" ReadOnly="IsReadOnly"
                               ToStringFunc="@(e=> e == null ? null : $"{e.Name}")" HelperText="@languageContainer.Keys["Required"]" Placeholder="@languageContainer.Keys["Select Service"]" MaxItems="null" HelperTextOnFocus="true">
                  <NoItemsTemplate>
                      <MudText Align="Align.Center" Class="px-4 py-4">
@@ -29,28 +29,61 @@
              </MudAutocomplete>
          </div>
          <div class="p-3 w-100">
-             <MudTextField HelperText="@languageContainer.Keys["Required"]" Variant="Variant.Outlined" @bind-Value="quotationService.Unit" For="@(() => quotationService.Unit)" HelperTextOnFocus="true"
-                          AdornmentColor="Color.Info" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Home" Placeholder="@languageContainer.Keys["Unit"]" ReadOnly="IsReadOnly" Disabled="IsReadOnly" Label="@languageContainer.Keys["Unit"]" />
+            <MudAutocomplete T="LookupDto" SearchFunc="@GetUnits" Adornment="Adornment.Start" AnchorOrigin="Origin.BottomCenter" ReadOnly="IsReadOnly" Disabled="IsReadOnly"
+                             Variant="Variant.Outlined" ShowProgressIndicator="true" ResetValueOnEmptyText="true" CoerceText="true" AdornmentIcon="@Icons.Material.Filled.Category"
+                             ProgressIndicatorColor="Color.Info" Clearable @bind-Value="quotationService.Unit" For="@(() => quotationService.Unit)" AdornmentColor="Color.Info" Label="@languageContainer.Keys["Unit"]"
+                              ToStringFunc="@(e=> e == null ? null : $"{e.Name}")" HelperText="@languageContainer.Keys["Required"]" Placeholder="@languageContainer.Keys["Select Unit"]" MaxItems="null" HelperTextOnFocus="true">
+                 <NoItemsTemplate>
+                     <MudText Align="Align.Center" Class="px-4 py-4">
+                         @languageContainer.Keys["No items found"]
+                    </MudText>
+                </NoItemsTemplate>
+            </MudAutocomplete>
          </div>
+        <div class="p-3 w-100">
+            <MudAutocomplete T="LookupDto" SearchFunc="@GetTypes" Adornment="Adornment.Start" AnchorOrigin="Origin.BottomCenter" ReadOnly="IsReadOnly" Disabled="IsReadOnly"
+                             Variant="Variant.Outlined" ShowProgressIndicator="true" ResetValueOnEmptyText="true" CoerceText="true" AdornmentIcon="@Icons.Material.Filled.Category"
+                             ProgressIndicatorColor="Color.Info" Clearable @bind-Value="quotationService.Type" For="@(() => quotationService.Type)" AdornmentColor="Color.Info" Label="@languageContainer.Keys["Type"]"
+                              ToStringFunc="@(e=> e == null ? null : $"{e.Name}")" HelperText="@languageContainer.Keys["Required"]" Placeholder="@languageContainer.Keys["Select Type"]" MaxItems="null" HelperTextOnFocus="true">
+                 <NoItemsTemplate>
+                     <MudText Align="Align.Center" Class="px-4 py-4">
+                         @languageContainer.Keys["No items found"]
+                    </MudText>
+                </NoItemsTemplate>
+            </MudAutocomplete>
+        </div>
      </div>
      <div class="flex-wrap d-flex flex-md-nowrap">
-        <MudNumericField Class="p-3 w-100" HideSpinButtons="true" HelperText="@languageContainer.Keys["Required"]" @bind-Value="quotationService.Area" For="@(() => quotationService.Area)" Label="@languageContainer.Keys["Area"]"
-                         Variant="Variant.Outlined" AdornmentColor="Color.Info" Adornment="Adornment.End" AdornmentText="@languageContainer.Keys["M²"]" HelperTextOnFocus="true" ReadOnly="IsReadOnly" Disabled="IsReadOnly" />
+        @if (quotationService.Type?.Name == "Area")
+        {
+            <MudNumericField Class="p-3 w-100" HideSpinButtons="true" HelperText="@languageContainer.Keys["Required"]" @bind-Value="quotationService.Area" For="@(() => quotationService.Area)" Label="@languageContainer.Keys["Area"]" TextChanged="CalculateTotalPrice"
+                             Variant="Variant.Outlined" AdornmentColor="Color.Info" Adornment="Adornment.End" AdornmentText="@languageContainer.Keys["M²"]" HelperTextOnFocus="true" ReadOnly="IsReadOnly" Disabled="IsReadOnly" />
+        }
+        else if (quotationService.Type?.Name == "Quantity")
+        {
+            <MudNumericField Class="p-3 w-100" HideSpinButtons="true" HelperText="@languageContainer.Keys["Required"]" @bind-Value="quotationService.Quantity" For="@(() => quotationService.Quantity)" Immediate="true" TextChanged="CalculateTotalPrice"
+                             Variant="Variant.Outlined" AdornmentColor="Color.Info" Adornment="Adornment.End" AdornmentText="@languageContainer.Keys["Units"]" HelperTextOnFocus="true" ReadOnly="IsReadOnly" Disabled="IsReadOnly" Label="@languageContainer.Keys["Count"]" />
+        }
+        else
+        {
+            <MudNumericField Class="p-3 w-100" HideSpinButtons="true" HelperText="@languageContainer.Keys["Required"]" T="int"
+                             Variant="Variant.Outlined" HelperTextOnFocus="true" ReadOnly="true" Disabled="true" />
+        }
 
-        <MudNumericField Class="p-3 w-100" HideSpinButtons="true" HelperText="@languageContainer.Keys["Required"]" @bind-Value="quotationService.Quantity" For="@(() => quotationService.Quantity)" Immediate="true" TextChanged="CalculateTotalPrice"
-                         Variant="Variant.Outlined" AdornmentColor="Color.Info" Adornment="Adornment.End" AdornmentText="@languageContainer.Keys["Units"]" HelperTextOnFocus="true" ReadOnly="IsReadOnly" Disabled="IsReadOnly" Label="@languageContainer.Keys["Count"]" />
+        <MudNumericField Class="p-3 w-100" HideSpinButtons="true" HelperText="@languageContainer.Keys["Required"]" @bind-Value="quotationService.NoOfVisits" For="@(() => quotationService.NoOfVisits)" Immediate="true" TextChanged="CalculateTotalPrice"
+                         Variant="Variant.Outlined" HelperTextOnFocus="true" ReadOnly="IsReadOnly" Disabled="IsReadOnly" Label="@languageContainer.Keys["Number of visits"]" />
 
-         <MudNumericField Class="p-3 w-100" HideSpinButtons="true" HelperText="@languageContainer.Keys["Required"]" @bind-Value="quotationService.DiscountRate" For="@(() => quotationService.DiscountRate)" Immediate="true" TextChanged="CalculateDiscountPrice"
+        <MudNumericField Class="p-3 w-100" HideSpinButtons="true" HelperText="@languageContainer.Keys["Required"]" @bind-Value="quotationService.DiscountRate" For="@(() => quotationService.DiscountRate)" Immediate="true" TextChanged="CalculateTotalPrice"
                          Variant="Variant.Outlined" AdornmentColor="Color.Info" Adornment="Adornment.End" AdornmentText="%" HelperTextOnFocus="true" ReadOnly="IsReadOnly" Disabled="IsReadOnly" Label="@languageContainer.Keys["Discount Rate"]" />
 
-         <MudNumericField Class="p-3 w-100" HideSpinButtons="true" HelperText="@languageContainer.Keys["Required"]" @bind-Value="quotationService.Price" For="@(() => quotationService.Price)" Immediate="true" Disabled
-                          Variant="Variant.Outlined" AdornmentColor="Color.Info" Adornment="Adornment.End" AdornmentText="@languageContainer.Keys["SAR"]" HelperTextOnFocus="true" ReadOnly="IsReadOnly" Label="@languageContainer.Keys["Price"]" />
+        <MudNumericField Class="p-3 w-100" HideSpinButtons="true" HelperText="@languageContainer.Keys["Required"]" @bind-Value="quotationService.Price" For="@(() => quotationService.Price)" Immediate="true" Disabled="IsReadOnly" TextChanged="CalculateTotalPrice"
+                         Variant="Variant.Outlined" AdornmentColor="Color.Info" Adornment="Adornment.End" AdornmentText="@languageContainer.Keys[Currency?.Symbol]" HelperTextOnFocus="true" ReadOnly="IsReadOnly" Label="@languageContainer.Keys["Price"]" />
 
          <MudNumericField Class="p-3 w-100" HideSpinButtons="true" HelperText="@languageContainer.Keys["Required"]" @bind-Value="quotationService.DiscountPrice" For="@(() => quotationService.DiscountPrice)" Disabled
-                          Variant="Variant.Outlined" AdornmentColor="Color.Info" Adornment="Adornment.End" AdornmentText="@languageContainer.Keys["SAR"]" HelperTextOnFocus="true" ReadOnly="IsReadOnly" Label="@languageContainer.Keys["Discount Price"]" />
+                          Variant="Variant.Outlined" AdornmentColor="Color.Info" Adornment="Adornment.End" AdornmentText="@languageContainer.Keys[Currency?.Symbol]" HelperTextOnFocus="true" ReadOnly="IsReadOnly" Label="@languageContainer.Keys["Discount Price"]" />
 
          <MudNumericField Class="p-3 w-100" HideSpinButtons="true" HelperText="@languageContainer.Keys["Required"]" @bind-Value="quotationService.TotalPrice" For="@(() => quotationService.TotalPrice)" Disabled ReadOnly="IsReadOnly"
-                          Variant="Variant.Outlined" AdornmentColor="Color.Info" Adornment="Adornment.End" AdornmentText="@languageContainer.Keys["SAR"]" HelperTextOnFocus="true" TextChanged="CallBackTotalValue" Label="@languageContainer.Keys["Total Price"]" />
+                          Variant="Variant.Outlined" AdornmentColor="Color.Info" Adornment="Adornment.End" AdornmentText="@languageContainer.Keys[Currency?.Symbol]" HelperTextOnFocus="true" TextChanged="CallBackTotalValue" Label="@languageContainer.Keys["Total Price"]" />
      </div>
 
 </EditForm>

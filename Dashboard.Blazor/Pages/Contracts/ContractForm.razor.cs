@@ -58,7 +58,13 @@ public partial class ContractForm
 
     private void CopyTermToTextArea(TermDto term) => term.Term = term.SelectedTerm;
 
-    private void DeleteQuotation(TermDto term) => term.Quotation = null;
+    private void DeleteQuotation(bool args, TermDto term)
+    {
+        term.ShowQuotationsList = args;
+
+        if (!term.ShowQuotationsList)
+            term.Quotation = null;
+    }
 
     private async Task<IEnumerable<LookupDto>> GetDurations(string value)
     {

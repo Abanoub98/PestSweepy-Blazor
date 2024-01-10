@@ -51,6 +51,14 @@ public partial class QuotationForm
         StartProcessing();
 
         quotationForm!.ClientId = quotationForm.Client?.Id;
+        quotationForm!.PriceCurrencyId = quotationForm.PriceCurrency!.Id;
+
+        foreach (var body in quotationForm.QuotationBodies)
+        {
+            body.ServiceId = body.Service!.Id;
+            body.UnitId = body.Unit!.Id;
+            body.TypeId = body.Type!.Id;
+        }
 
         (bool result, QuotationDto? quotationDtoResult) = (Id == 0) ?
             await AddAsync("Quotations", quotationForm!) :
@@ -77,5 +85,17 @@ public partial class QuotationForm
             return quotationForm.Clients;
 
         return quotationForm.Clients.Where(x => x.Name.Contains(value, StringComparison.InvariantCultureIgnoreCase));
+    }
+
+    private async Task<IEnumerable<CurrencyDto>> GetCurrencies(string value)
+    {
+        if (quotationForm!.PriceCurrencies is null)
+            quotationForm.PriceCurrencies = await GetAllAsync<CurrencyDto>("Currencies");
+
+        // if text is null or empty, show complete list
+        if (string.IsNullOrEmpty(value))
+            return quotationForm.PriceCurrencies;
+
+        return quotationForm.PriceCurrencies.Where(x => x.Name.Contains(value, StringComparison.InvariantCultureIgnoreCase));
     }
 }

@@ -3,6 +3,7 @@
 public partial class QuotationService
 {
     [Parameter][EditorRequired] public QuotationServiceType? Service { get; set; }
+    [Parameter] public CurrencyDto? Currency { get; set; }
     [Parameter] public EventCallback TotalValueChanged { get; set; }
     [Parameter] public bool IsReadOnly { get; set; }
 
@@ -25,6 +26,30 @@ public partial class QuotationService
         return quotationService.Categories.Where(x => x.Name.Contains(value, StringComparison.InvariantCultureIgnoreCase));
     }
 
+    private async Task<IEnumerable<LookupDto>> GetTypes(string value)
+    {
+        if (quotationService!.Types is null)
+            quotationService.Types = await GetAllLookupsAsync("ReferenceData?tableName=Types");
+
+        // if text is null or empty, show complete list
+        if (string.IsNullOrEmpty(value))
+            return quotationService.Types;
+
+        return quotationService.Types.Where(x => x.Name.Contains(value, StringComparison.InvariantCultureIgnoreCase));
+    }
+
+    private async Task<IEnumerable<LookupDto>> GetUnits(string value)
+    {
+        if (quotationService!.Units is null)
+            quotationService.Units = await GetAllLookupsAsync("ReferenceData?tableName=Units");
+
+        // if text is null or empty, show complete list
+        if (string.IsNullOrEmpty(value))
+            return quotationService.Units;
+
+        return quotationService.Units.Where(x => x.Name.Contains(value, StringComparison.InvariantCultureIgnoreCase));
+    }
+
     private async Task<IEnumerable<ServiceDto>?> GetServices(string value)
     {
         if (quotationService!.Category is null)
@@ -39,23 +64,15 @@ public partial class QuotationService
         return quotationService.Services.Where(x => x.Name.Contains(value, StringComparison.InvariantCultureIgnoreCase));
     }
 
-    private void CalculateDiscountPrice()
-    {
-        quotationService!.DiscountPrice = quotationService.DiscountRate < 100 ?
-            quotationService.Price * (quotationService.DiscountRate / 100) : 0;
-
-        CalculateTotalPrice();
-    }
-
     private void CalculateTotalPrice()
     {
-        quotationService!.TotalPrice = (quotationService.Price - quotationService.DiscountPrice) * quotationService.Quantity;
-    }
+        if (quotationService!.Type is null)
+            return;
 
-    private void GetServicePrice(ServiceDto? service)
-    {
-        quotationService!.Service = service;
-        quotationService.Price = quotationService.Service?.Price?.Amount ?? 1500;
+        quotationService!.DiscountPrice = quotationService.DiscountRate < 100 ? quotationService.Price * (quotationService.DiscountRate / 100) : 0;
+
+        var variable = quotationService.Type.Name == "Area" ? quotationService.Area : quotationService.Quantity;
+        quotationService!.TotalPrice = (quotationService.Price - quotationService.DiscountPrice) * variable;
     }
 
     private async Task CallBackTotalValue()

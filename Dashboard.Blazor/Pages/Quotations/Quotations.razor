@@ -47,7 +47,7 @@
                     </HeaderTemplate>
                     <CellTemplate>
                         <TableButtons IsDisable="isDisable" EditClicked="() => OpenForm(formUri,quotation.Item!.Id)"
-                                        DeleteClicked="() => Delete(quotation.Item!.Id)" DetailsClicked="() => OpenDetails(detailsUri,quotation.Item!.Id)" />
+                                      IsDeleteHide="true" DetailsClicked="() => OpenDetails(detailsUri,quotation.Item!.Id)" />
                     </CellTemplate>
                 </TemplateColumn>
             </Columns>
