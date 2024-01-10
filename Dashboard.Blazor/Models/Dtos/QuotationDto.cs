@@ -7,7 +7,7 @@ public class QuotationDto
 
     [Required]
     [Label(name: "Date")]
-    public DateTime? Date { get; set; } = DateTime.Now;
+    public DateTime? CreatedAt { get; set; } = DateTime.Now;
 
     [Required]
     [Label(name: "Notes")]
@@ -16,7 +16,7 @@ public class QuotationDto
     [Required]
     [EmailAddress]
     [Label(name: "Receiver Email")]
-    public string ReceiverEmail { get; set; } = null!;
+    public string ClientEmail { get; set; } = null!;
 
     [Label(name: "Client")]
     public LookupDto? Client { get; set; }
@@ -27,16 +27,22 @@ public class QuotationDto
     public string ClientName { get; set; } = null!;
 
     [Required]
+    public string Ceo { get; set; } = null!;
+
+    [Required]
     [Label(name: "Total Price")]
     public double TotalPrice { get; set; }
 
-    public List<QuotationServiceType> QuotationServices { get; set; } = new();
+    [Required]
+    public CurrencyDto? PriceCurrency { get; set; }
+    public int PriceCurrencyId { get; set; }
+    public IEnumerable<CurrencyDto>? PriceCurrencies { get; set; }
 
+    public List<QuotationServiceType> QuotationBodies { get; set; } = new();
 }
 
 public class QuotationServiceType
 {
-
     [Required]
     public LookupDto? Category { get; set; }
     public int CategoryId { get; set; }
@@ -49,12 +55,22 @@ public class QuotationServiceType
     public IEnumerable<ServiceDto>? Services { get; set; }
 
     [Required]
-    [Label(name: "Area")]
-    public double Area { get; set; }
+    [Label(name: "Unit")]
+    public LookupDto? Unit { get; set; }
+    public int UnitId { get; set; }
+    public IEnumerable<LookupDto>? Units { get; set; }
 
     [Required]
-    [Label(name: "Unit")]
-    public string Unit { get; set; } = null!;
+    [Label(name: "Type")]
+    public LookupDto? Type { get; set; }
+    public int TypeId { get; set; }
+    public IEnumerable<LookupDto>? Types { get; set; }
+
+    public int NoOfVisits { get; set; }
+
+    [Required]
+    [Label(name: "Area")]
+    public double Area { get; set; }
 
     [Required]
     [Label(name: "Price")]
@@ -73,6 +89,6 @@ public class QuotationServiceType
     public double TotalPrice { get; set; }
 
     [Required]
-    [Label(name: "Count")]
-    public int Count { get; set; }
+    [Label(name: "Quantity")]
+    public int Quantity { get; set; }
 }

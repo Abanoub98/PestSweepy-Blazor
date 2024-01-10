@@ -37,7 +37,7 @@
         <MudNumericField Class="p-3 w-100" HideSpinButtons="true" HelperText="@languageContainer.Keys["Required"]" @bind-Value="quotationService.Area" For="@(() => quotationService.Area)" Label="@languageContainer.Keys["Area"]"
                          Variant="Variant.Outlined" AdornmentColor="Color.Info" Adornment="Adornment.End" AdornmentText="@languageContainer.Keys["M²"]" HelperTextOnFocus="true" ReadOnly="IsReadOnly" Disabled="IsReadOnly" />
 
-         <MudNumericField Class="p-3 w-100" HideSpinButtons="true" HelperText="@languageContainer.Keys["Required"]" @bind-Value="quotationService.Count" For="@(() => quotationService.Count)" Immediate="true" TextChanged="CalculateTotalPrice"
+        <MudNumericField Class="p-3 w-100" HideSpinButtons="true" HelperText="@languageContainer.Keys["Required"]" @bind-Value="quotationService.Quantity" For="@(() => quotationService.Quantity)" Immediate="true" TextChanged="CalculateTotalPrice"
                          Variant="Variant.Outlined" AdornmentColor="Color.Info" Adornment="Adornment.End" AdornmentText="@languageContainer.Keys["Units"]" HelperTextOnFocus="true" ReadOnly="IsReadOnly" Disabled="IsReadOnly" Label="@languageContainer.Keys["Count"]" />
 
          <MudNumericField Class="p-3 w-100" HideSpinButtons="true" HelperText="@languageContainer.Keys["Required"]" @bind-Value="quotationService.DiscountRate" For="@(() => quotationService.DiscountRate)" Immediate="true" TextChanged="CalculateDiscountPrice"

@@ -56,11 +56,11 @@ else
                         }
                     </div>
                     <div class="p-3 w-100 w-md-25">
-                        <MudDatePicker AdornmentColor="Color.Info" Variant="Variant.Outlined" @bind-Date="quotationForm.Date" For="@(() => quotationForm.Date)" Placeholder="@languageContainer.Keys["Select Date"]" Label="@languageContainer.Keys["Date"]" />
+                        <MudDatePicker AdornmentColor="Color.Info" Variant="Variant.Outlined" @bind-Date="quotationForm.CreatedAt" For="@(() => quotationForm.CreatedAt)" Placeholder="@languageContainer.Keys["Select Date"]" Label="@languageContainer.Keys["Date"]" />
                     </div>
                     <div class="p-3 w-100 w-md-50">
                         <MudTextField HelperText="@languageContainer.Keys["Required"]" Variant="Variant.Outlined" AdornmentColor="Color.Info" Adornment="Adornment.Start" HelperTextOnFocus="true"
-                                      @bind-Value="quotationForm.ReceiverEmail" For="@(() => quotationForm.ReceiverEmail)" AdornmentIcon="@Icons.Material.Filled.Email" Placeholder="@Placeholders.Email" Label="@languageContainer.Keys["Email"]" />
+                                      @bind-Value="quotationForm.ClientEmail" For="@(() => quotationForm.ClientEmail)" AdornmentIcon="@Icons.Material.Filled.Email" Placeholder="@Placeholders.Email" Label="@languageContainer.Keys["Email"]" />
                     </div>
                 </div>
                 <MudCard Class="p-3 mb-3 border" Elevation="0">
@@ -73,11 +73,11 @@ else
                         @{
                             ServiceNumber = 0;
                         }
-                        @foreach (var quotationService in quotationForm.QuotationServices)
+                        @foreach (var quotationService in quotationForm.QuotationBodies)
                         {
                             <div class="d-flex align-items-center">
                                 <MudText Typo="Typo.h6">@languageContainer.Keys["Service"] @(++ServiceNumber):</MudText>
-                                @if (quotationForm.QuotationServices.Count > 1)
+                                @if (quotationForm.QuotationBodies.Count > 1)
                                 {
                                     <MudIconButton OnClick="() => DeleteService(quotationService)" Icon="@Icons.Material.Filled.Delete" Color="Color.Error"></MudIconButton>
                                 }

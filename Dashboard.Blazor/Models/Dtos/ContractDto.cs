@@ -53,11 +53,6 @@ public class ContractDto
     [Required]
     public string ContractIntro { get; set; } = null!;
 
-    public LookupDto? Quotation { get; set; }
-    public int? QuotationId { get; set; }
-    public IEnumerable<LookupDto>? Quotations { get; set; }
-
-
     [Required]
     public LookupDto? ContractDuration { get; set; }
     public int? ContractDurationId { get; set; }
@@ -69,6 +64,7 @@ public class ContractDto
     public IEnumerable<LookupDto>? ContractClients { get; set; }
 
     public IEnumerable<TermDto>? UploadedTerms { get; set; }
+    public IEnumerable<QuotationDto>? Quotations { get; set; }
 }
 
 public class TermDto
@@ -78,4 +74,9 @@ public class TermDto
     public string Term { get; set; } = null!;
 
     public string SelectedTerm { get; set; } = null!;
+
+    public QuotationDto? Quotation { get; set; }
+    public int? QuotationId { get; set; }
+
+    public bool ShowQuotationsList { get; set; }
 }

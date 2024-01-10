@@ -12,7 +12,7 @@
             {
                 <div class="border rounded-lg border-gray-600" style="width:992px;background-color:white !important">
                     <div id="Report" class="px-8 py-5 h-100">
-                        <div class="row" dir="rtl" style="direction:rtl;">
+                        <div class="row" dir="rtl" style="direction:rtl;background-color:white !important;">
                             <div class="col-11">
                                 <div class="d-flex flex-column h-100">
                                     <div>
@@ -51,15 +51,53 @@
                                         <div class="h5">
                                             <p>@contract.ContractIntro</p>
                                         </div>
-                                        @{
-                                            var termNumber = 1;
-                                            foreach (var term in contract.Terms)
-                                            {
-                                                <div class="h5">
-                                                    <p><span class="fw-bold text-decoration-underline">@($"{GetTermText(termNumber++)}-{term.Title}"): </span>@term.Term</p>
-                                                </div>
+                                        <div style="background-image: url(/images/LogoOpacity.png);background-repeat:no-repeat;background-size: 400px 400px;background-position: top;">
+                                            @{
+                                                var termNumber = 1;
+                                                foreach (var term in contract.Terms)
+                                                {
+                                                    <div class="h5">
+                                                        <p><span class="fw-bold text-decoration-underline">@($"{GetTermText(termNumber++)}-{term.Title}"): </span>@term.Term</p>
+                                                    </div>
+                                                    if (term.Quotation is not null)
+                                                    {
+                                                        <div class="h5">
+                                                            <div class="table-responsive">
+                                                                <table class="table table-bordered border-gray-800">
+                                                                    <thead>
+                                                                        <tr class="fw-bold fs-6 text-gray-800">
+                                                                            <th>نوع الخدمة</th>
+                                                                            <th>عدد الزيارات</th>
+                                                                            <th>الوحدة</th>
+                                                                            <th>العدد</th>
+                                                                            <th>السعر</th>
+                                                                            <th>قيمة الخصم</th>
+                                                                            <th>نسبة الخصم %</th>
+                                                                            <th>المجموع الكلي</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        @foreach (var body in term.Quotation.QuotationBodies)
+                                                                        {
+                                                                            <tr>
+                                                                                <td>@body.Service?.Name</td>
+                                                                                <td>@body.NoOfVisits</td>
+                                                                                <td>@body.Unit?.Name</td>
+                                                                                <td>@body.Quantity</td>
+                                                                                <td>@body.Price</td>
+                                                                                <td>@body.DiscountPrice</td>
+                                                                                <td>@body.DiscountRate</td>
+                                                                                <td>@body.TotalPrice</td>
+                                                                            </tr>
+                                                                        }
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                    }
+                                                }
                                             }
-                                        }
+                                        </div>
                                         <div class="h5">
                                             <p>ويعتبر هذا العقد ساريا إعتبارا من تاريخ: @contract.EffectiveDate!.Value.ToShortDateString()</p>
                                         </div>
@@ -91,12 +129,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div style="position: absolute;
-                                            top: 50%;
-                                            left: 50%;
-                                            transform: translate(-50%, -50%);">
-                                            <MudImage Src="/images/LogoOpacity.png" Width="400" />
-                                        </div>
+
                                     </div>
                                     <div dir="ltr" style="direction:ltr;">
                                         <div class="text-center">

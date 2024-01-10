@@ -5,14 +5,18 @@ public partial class ContractForm
     [Parameter][EditorRequired] public int Id { get; set; }
 
     private ContractDto? contractForm;
-    private int TermNumber;
 
     protected override async Task OnParametersSetAsync()
     {
-        contractForm = (Id == 0) ? new() { Terms = new() { new TermDto() } } : contractForm = await GetByIdAsync<ContractDto>($"Contracts/{Id}");
+        contractForm = (Id == 0) ? new() { Terms = new() { new TermDto() } } : await GetByIdAsync<ContractDto>($"Contracts/{Id}");
 
         if (contractForm is null)
             return;
+
+        foreach (var term in contractForm.Terms.Where(t => t.Quotation is not null))
+        {
+            term.ShowQuotationsList = true;
+        }
 
         breadcrumbItems.AddRange(new List<BreadcrumbItem>
         {
@@ -29,6 +33,11 @@ public partial class ContractForm
         contractForm!.ContractClientId = contractForm.ContractClient!.Id;
         contractForm!.ContractDurationId = contractForm.ContractDuration!.Id;
 
+        foreach (var term in contractForm.Terms.Where(t => t.ShowQuotationsList))
+        {
+            term.QuotationId = term.Quotation?.Id;
+        }
+
 
         (bool isSuccess, ContractDto? contractDto) result;
 
@@ -43,20 +52,13 @@ public partial class ContractForm
         StopProcessing();
     }
 
-    private void AddTerm()
-    {
-        contractForm!.Terms.Add(new());
-    }
+    private void AddTerm() => contractForm!.Terms.Add(new());
 
-    private void DeleteTerm(TermDto term)
-    {
-        contractForm!.Terms.Remove(term);
-    }
+    private void DeleteTerm(TermDto term) => contractForm!.Terms.Remove(term);
 
-    private void CopyTermToTextArea(TermDto term)
-    {
-        term.Term = term.SelectedTerm;
-    }
+    private void CopyTermToTextArea(TermDto term) => term.Term = term.SelectedTerm;
+
+    private void DeleteQuotation(TermDto term) => term.Quotation = null;
 
     private async Task<IEnumerable<LookupDto>> GetDurations(string value)
     {
@@ -92,5 +94,17 @@ public partial class ContractForm
             return contractForm.UploadedTerms.Select(t => t.Term).Distinct().ToList();
 
         return contractForm.UploadedTerms.Where(x => x.Term!.Contains(value, StringComparison.InvariantCultureIgnoreCase)).Select(t => t.Term).Distinct().ToList();
+    }
+
+    private async Task<IEnumerable<QuotationDto>> GetQuotations(string value)
+    {
+        if (contractForm!.Quotations is null)
+            contractForm.Quotations = await GetAllAsync<QuotationDto>("/Quotations");
+
+        // if text is null or empty, show complete list
+        if (string.IsNullOrEmpty(value))
+            return contractForm.Quotations;
+
+        return contractForm.Quotations.Where(x => x.Client?.Name.Contains(value, StringComparison.InvariantCultureIgnoreCase) ?? x.ClientName.Contains(value, StringComparison.InvariantCultureIgnoreCase));
     }
 }

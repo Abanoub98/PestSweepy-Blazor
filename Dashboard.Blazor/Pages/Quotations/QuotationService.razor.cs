@@ -49,7 +49,7 @@ public partial class QuotationService
 
     private void CalculateTotalPrice()
     {
-        quotationService!.TotalPrice = (quotationService.Price - quotationService.DiscountPrice) * quotationService.Count;
+        quotationService!.TotalPrice = (quotationService.Price - quotationService.DiscountPrice) * quotationService.Quantity;
     }
 
     private void GetServicePrice(ServiceDto? service)
