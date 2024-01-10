@@ -35,6 +35,7 @@
                                         </div>
                                         <div class="h5">
                                             <p>التاريخ: @contract.CreatedAt.ToShortDateString()</p>
+                                            <p>مدة العقد: @contract.ContractDuration?.Name</p>
                                         </div>
                                         <div class="h5">
                                             <p>بوجب هذا العقد قد تم الإتفاق بين كل من:</p>
@@ -70,10 +71,11 @@
                                                                             <th>عدد الزيارات</th>
                                                                             <th>الوحدة</th>
                                                                             <th>العدد</th>
+                                                                            <th>المساحة</th>
                                                                             <th>السعر</th>
                                                                             <th>قيمة الخصم</th>
                                                                             <th>نسبة الخصم %</th>
-                                                                            <th>المجموع الكلي</th>
+                                                                            <th>المجموع</th>
                                                                         </tr>
                                                                     </thead>
                                                                     <tbody>
@@ -83,13 +85,22 @@
                                                                                 <td>@body.Service?.Name</td>
                                                                                 <td>@body.NoOfVisits</td>
                                                                                 <td>@body.Unit?.Name</td>
-                                                                                <td>@body.Quantity</td>
-                                                                                <td>@body.Price</td>
-                                                                                <td>@body.DiscountPrice</td>
-                                                                                <td>@body.DiscountRate</td>
-                                                                                <td>@body.TotalPrice</td>
+                                                                                <td>@(body.Quantity == 0 ? "-" : body.Quantity)</td>
+                                                                                <td>@(body.Area == 0 ? "-" : body.Area)</td>
+                                                                                <td>@($"{body.Price} {term.Quotation.PriceCurrency?.Symbol}")</td>
+                                                                                <td>@($"{body.DiscountPrice} {term.Quotation.PriceCurrency?.Symbol}")</td>
+                                                                                <td>@body.DiscountRate %</td>
+                                                                                <td>@($"{body.TotalPrice} {term.Quotation.PriceCurrency?.Symbol}")</td>
                                                                             </tr>
                                                                         }
+                                                                        <tr>
+                                                                            <td colspan="8" class="text-center">
+                                                                                المجموع الكلي
+                                                                            </td>
+                                                                            <td>
+                                                                                @($"{term.Quotation.TotalPrice} {term.Quotation.PriceCurrency?.Symbol}")
+                                                                            </td>
+                                                                        </tr>
                                                                     </tbody>
                                                                 </table>
                                                             </div>

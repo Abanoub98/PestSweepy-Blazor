@@ -153,7 +153,7 @@ else
                                                   HelperTextOnFocus="true" Placeholder="@languageContainer.Keys["Term"]" Lines="5" Label="@languageContainer.Keys["Term"]" />
                                 </div>
                                 <div class="d-flex align-items-center">
-                                    <MudCheckBox @bind-Checked="@term.ShowQuotationsList" Label="@(languageContainer.Keys["Show Quotation?"])" Color="Color.Info"></MudCheckBox>
+                                    <MudCheckBox @bind-Checked="@term.ShowQuotationsList" Label="@(languageContainer.Keys["Add Quotation?"])" Color="Color.Info"></MudCheckBox>
                                     <MudSpacer />
                                     <MudAutocomplete T="QuotationDto" SearchFunc="@GetQuotations" ToStringFunc="@(e=> e == null ? null : $"{e.Client?.Name ?? e.ClientName}")" @bind-Value="term.Quotation" Class="@(term.ShowQuotationsList ? string.Empty : "d-none")"
                                                      ShowProgressIndicator="true" ResetValueOnEmptyText="true" CoerceText="true" Clearable MaxItems="null" HelperTextOnFocus="true"
