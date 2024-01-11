@@ -1,5 +1,16 @@
 ﻿@attribute [Authorize]
 @inherits BasePage
+<style>
+    .table-responsive {
+        overflow-x: auto;
+    }
+
+    .table th {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+</style>
 
 <MudDialog>
     <DialogContent>
@@ -62,6 +73,23 @@
                                                     </div>
                                                     if (term.Quotation is not null)
                                                     {
+                                                        var currency = string.Empty;
+                                                        if (term.Quotation.PriceCurrency?.Symbol=="AED")
+                                                        {
+                                                            currency = "د.إ";
+                                                        }
+                                                        else if (term.Quotation.PriceCurrency?.Symbol=="SAR")
+                                                        {
+                                                            currency = "ر.س";
+                                                        }
+                                                        else if (term.Quotation.PriceCurrency?.Symbol=="EGP")
+                                                        {
+                                                            currency = "ج.م";
+                                                        }
+                                                        else if (term.Quotation.PriceCurrency?.Symbol == "$")
+                                                        {
+                                                            currency = "$";
+                                                        }
                                                         <div class="h5">
                                                             <div class="table-responsive">
                                                                 <table class="table table-bordered border-gray-800">
@@ -72,10 +100,10 @@
                                                                             <th>الوحدة</th>
                                                                             <th>العدد</th>
                                                                             <th>المساحة</th>
-                                                                            <th>السعر</th>
+                                                                            <th>السعر (@currency)</th>
                                                                             <th>قيمة الخصم</th>
-                                                                            <th>نسبة الخصم %</th>
-                                                                            <th>المجموع</th>
+                                                                            <th>نسبة الخصم</th>
+                                                                            <th>المجموع (@currency)</th>
                                                                         </tr>
                                                                     </thead>
                                                                     <tbody>
@@ -87,10 +115,10 @@
                                                                                 <td>@body.Unit?.Name</td>
                                                                                 <td>@(body.Quantity == 0 ? "-" : body.Quantity)</td>
                                                                                 <td>@(body.Area == 0 ? "-" : body.Area)</td>
-                                                                                <td>@($"{body.Price} {term.Quotation.PriceCurrency?.Symbol}")</td>
-                                                                                <td>@($"{body.DiscountPrice} {term.Quotation.PriceCurrency?.Symbol}")</td>
+                                                                                <td>@(body.Price)</td>
                                                                                 <td>@body.DiscountRate %</td>
-                                                                                <td>@($"{body.TotalPrice} {term.Quotation.PriceCurrency?.Symbol}")</td>
+                                                                                <td>@(body.DiscountPrice)</td>
+                                                                                <td>@(body.TotalPrice)</td>
                                                                             </tr>
                                                                         }
                                                                         <tr>
@@ -98,7 +126,7 @@
                                                                                 المجموع الكلي
                                                                             </td>
                                                                             <td>
-                                                                                @($"{term.Quotation.TotalPrice} {term.Quotation.PriceCurrency?.Symbol}")
+                                                                                @(term.Quotation.TotalPrice)
                                                                             </td>
                                                                         </tr>
                                                                     </tbody>
