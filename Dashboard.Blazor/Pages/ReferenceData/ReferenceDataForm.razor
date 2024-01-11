@@ -1,0 +1,30 @@
+﻿@attribute [Authorize]
+@inherits BasePage
+
+<MudDialog>
+    <DialogContent>
+        @if (lookupDto is null)
+        {
+            <FormLoadingSpinner />
+        }
+        else
+        {
+            <EditForm Model="@lookupDto" OnValidSubmit="OnValidSubmit">
+                <DataAnnotationsValidator />
+                <div class="d-flex flex-wrap flex-md-nowrap">
+                    <div class="p-3  w-100">
+                        <MudTextField HelperText="Required" Variant="Variant.Outlined" @bind-Value="lookupDto.Name" For="@(() => lookupDto.Name)" HelperTextOnFocus="true" Label="@languageContainer.Keys["Name"]"
+                                      AdornmentColor="Color.Info" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.AccountBox" Placeholder="@Placeholders.Name" />
+                    </div>
+                    <div class="p-3 w-100">
+                        <MudNumericField HideSpinButtons="true" @bind-Value="lookupDto.OrderIndex" For="@(() => lookupDto.OrderIndex)" HelperTextOnFocus="true"
+                                         Variant="Variant.Outlined" AdornmentColor="Color.Info" Adornment="Adornment.End" AdornmentText="#" Placeholder="@Placeholders.OrderIndex" />
+                    </div>
+                </div>
+                <div class="flex-wrap w-100 gap-5 gap-md-0 d-flex flex-md-nowrap align-items-end px-3 mb-10">
+                    <FormButtons IsLoading="@isLoading" />
+                </div>
+            </EditForm>
+        }
+    </DialogContent>
+</MudDialog>

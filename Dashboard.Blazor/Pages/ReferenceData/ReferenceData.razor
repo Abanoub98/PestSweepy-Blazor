@@ -28,7 +28,7 @@
                                     </MudText>
                                 </NoItemsTemplate>
                             </MudAutocomplete>
-                            <MudIconButton Icon="@Icons.Material.Filled.Add" Color="Color.Success"></MudIconButton>
+                            <MudIconButton OnClick="() => ShowForm()" Icon="@Icons.Material.Filled.Add" Color="Color.Success"></MudIconButton>
                         </div>
                     </div>
                     <div class="w-md-25 w-100">
@@ -58,7 +58,7 @@
                         <MudText Class="w-100">Actions</MudText>
                     </HeaderTemplate>
                     <CellTemplate>
-                            <TableButtons IsDisable="isDisable" EditClicked="() => OpenForm(formUri,Refdata.Item!.Id)" DeleteClicked="() => Delete(Refdata.Item!.Id)" />
+                         <TableButtons IsDetailsHide="true" IsDisable="isDisable" EditClicked="() => ShowForm(Refdata.Item!.Id)" DeleteClicked="() => Delete(Refdata.Item!.Id)" />
                     </CellTemplate>
                 </TemplateColumn>
             </Columns>

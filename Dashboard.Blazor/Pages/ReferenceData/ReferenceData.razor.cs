@@ -7,7 +7,6 @@ public partial class ReferenceData
     private string? SelectedTable;
     private List<LookupDto>? LookupList = new();
 
-    private string searchString = string.Empty;
     private readonly string formUri = "Services/Form";
 
     protected override void OnInitialized()
@@ -34,9 +33,41 @@ public partial class ReferenceData
         StopProcessing();
     }
 
+    private async Task ShowForm(int id = 0)
+    {
+        DialogOptions dialogOptions = new()
+        {
+            CloseOnEscapeKey = true,
+            MaxWidth = MaxWidth.Small,
+            FullWidth = true,
+            Position = DialogPosition.TopCenter,
+            CloseButton = true
+        };
+
+        DialogParameters<ReferenceDataForm> Parameters = new()
+        {
+            { x => x.Id, id },
+            {x => x.TableName, SelectedTable}
+        };
+
+        var dialog = await DialogService.ShowAsync<ReferenceDataForm>(id == 0 ? $"Add {SelectedTable}" : $"Edit {SelectedTable}", Parameters, dialogOptions);
+        var result = await dialog.Result;
+
+        if (!result.Canceled)
+            LookupList = string.IsNullOrWhiteSpace(SelectedTable) ?
+            new() : await GetAllLookupsAsync("ReferenceData?tableName=" + SelectedTable);
+    }
+
     private async Task Delete(int id)
     {
+        StartProcessing();
 
+        var isSuccess = await DeleteAsync<LookupDto>($"ReferenceData/{SelectedTable}/{id}");
+
+        if (isSuccess)
+            LookupList!.Remove(LookupList.FirstOrDefault(x => x.Id == id)!);
+
+        StopProcessing();
     }
 
     private async Task<IEnumerable<string>> GetTablesAsync(string value)
