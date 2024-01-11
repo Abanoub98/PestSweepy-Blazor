@@ -37,7 +37,7 @@
 
             <Columns>
                 <PropertyColumn Property="x => x.SerialNumber" Title="@languageContainer.Keys["Serial Number"]" />
-                <PropertyColumn Property="x => x.ClientName" Title="@languageContainer.Keys["Client Name"]" />
+                <PropertyColumn Property="x => (x.Client == null ? x.ClientName : x.Client.Name)" Title="@languageContainer.Keys["Client Name"]" />
                 <PropertyColumn Property="x => x.CreatedAt" Title="@languageContainer.Keys[" Date"]" />
                 <PropertyColumn Property="x => x.TotalPrice" Title="@languageContainer.Keys["Total Price"]" />
 
@@ -46,8 +46,7 @@
                         <MudText Class="w-100">@languageContainer.Keys["Actions"]</MudText>
                     </HeaderTemplate>
                     <CellTemplate>
-                        <TableButtons IsDisable="isDisable" EditClicked="() => OpenForm(formUri,quotation.Item!.Id)"
-                                      IsDeleteHide="true" DetailsClicked="() => OpenDetails(detailsUri,quotation.Item!.Id)" />
+                        <TableButtons IsDisable="isDisable" IsEditHide="true" IsDeleteHide="true" DetailsClicked="() => OpenDetails(detailsUri,quotation.Item!.Id)" />
                     </CellTemplate>
                 </TemplateColumn>
             </Columns>

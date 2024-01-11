@@ -24,7 +24,7 @@ public class QuotationDto
     public IEnumerable<LookupDto>? Clients { get; set; }
 
     [Label(name: "Client Name")]
-    public string ClientName { get; set; } = null!;
+    public string? ClientName { get; set; }
 
     [Required]
     public string Ceo { get; set; } = null!;

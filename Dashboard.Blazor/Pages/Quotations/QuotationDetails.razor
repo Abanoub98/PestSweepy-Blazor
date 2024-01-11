@@ -44,7 +44,7 @@ else
                 <div class="d-flex flex-column gap-1">
                     <div class="fw-bold text-muted">@languageContainer.Keys["Client Name"]</div>
                     <div class="fw-bold fs-5">
-                        @quotation.ClientName
+                        @(quotation.Client is null ? quotation.ClientName: quotation.Client.Name)
                     </div>
                 </div>
             </div>
