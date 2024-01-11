@@ -155,7 +155,7 @@ else
                                 <div class="d-flex align-items-center">
                                     <MudCheckBox T="bool" Value="term.ShowQuotationsList" ValueChanged="(args) => DeleteQuotation(args, term)" Label="@(languageContainer.Keys["Add Quotation?"])" Color="Color.Info"></MudCheckBox>
                                     <MudSpacer />
-                                    <MudAutocomplete T="QuotationDto" SearchFunc="@GetQuotations" ToStringFunc="@(e=> e == null ? null : $"{e.Client?.Name ?? e.ClientName}")" @bind-Value="term.Quotation" Class="@(term.ShowQuotationsList ? string.Empty : "d-none")"
+                                    <MudAutocomplete T="QuotationDto" SearchFunc="@GetQuotations" ToStringFunc="@(e=> e == null ? null :$"{e.SerialNumber}" )" @bind-Value="term.Quotation" Class="@(term.ShowQuotationsList ? string.Empty : "d-none")"
                                                      ShowProgressIndicator="true" ResetValueOnEmptyText="true" CoerceText="true" Clearable MaxItems="null" HelperTextOnFocus="true"
                                                       ProgressIndicatorColor="Color.Info" Adornment="Adornment.Start" AdornmentColor="Color.Info" Variant="Variant.Outlined" AnchorOrigin="Origin.BottomCenter"
                                                       Label="@languageContainer.Keys["Quotation"]" HelperText="@languageContainer.Keys["Optional"]" Placeholder="@languageContainer.Keys["Select Quotation"]" AdornmentIcon="@EntityIcons.QuotationsIcon">
