@@ -35,7 +35,7 @@ else
             <MudCardContent Class="px-5 py-3">
                 <div class="d-flex flex-wrap flex-md-nowrap">
                     <div class="p-3  w-100 w-md-25">
-                        <MudTextField HelperText="Required" Variant="Variant.Outlined" @bind-Value="serviceForm.Name" For="@(() => serviceForm.Name)" HelperTextOnFocus="true"
+                        <MudTextField HelperText="@languageContainer.Keys[("Required")]" Variant="Variant.Outlined" @bind-Value="serviceForm.Name" For="@(() => serviceForm.Name)" HelperTextOnFocus="true"
                                   AdornmentColor="Color.Info" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.AccountBox" Placeholder="@Placeholders.Name" />
                     </div>
                     <div class="p-3 w-100 w-md-25">
@@ -43,14 +43,14 @@ else
                                      Variant="Variant.Outlined" AdornmentColor="Color.Info" Adornment="Adornment.End" AdornmentText="#" HelperTextOnFocus="true" />
                     </div>
                     <div class="p-3 w-100 w-md-25">
-                        <MudNumericField HideSpinButtons="true" HelperText="Required" @bind-Value="serviceForm.DurationInMinutes" For="@(() => serviceForm.DurationInMinutes)"
+                        <MudNumericField HideSpinButtons="true" HelperText="@languageContainer.Keys[("Required")]" @bind-Value="serviceForm.DurationInMinutes" For="@(() => serviceForm.DurationInMinutes)"
                                      Variant="Variant.Outlined" AdornmentColor="Color.Info" Adornment="Adornment.End" AdornmentText="Min" HelperTextOnFocus="true" Placeholder="@Placeholders.DurationInMinutes" />
                     </div>
                     <div class="p-3 w-100 w-md-25">
                         <MudAutocomplete T="LookupDto" SearchFunc="@GetCategories" Adornment="Adornment.Start" AnchorOrigin="Origin.BottomCenter"
                                      Variant="Variant.Outlined" ShowProgressIndicator="true" ResetValueOnEmptyText="true" CoerceText="true" AdornmentIcon="@Icons.Material.Filled.Category"
                                      ProgressIndicatorColor="Color.Info" Clearable @bind-Value="serviceForm.Category" For="@(() => serviceForm.Category)" AdornmentColor="Color.Info"
-                                     ToStringFunc="@(e=> e == null ? null : $"{e.Name}")" HelperText="Required" Placeholder="@Placeholders.CategoryDropDown" MaxItems="null" HelperTextOnFocus="true">
+                                     ToStringFunc="@(e=> e == null ? null : $"{e.Name}")" HelperText="@languageContainer.Keys[("Required")]" Placeholder="@Placeholders.CategoryDropDown" MaxItems="null" HelperTextOnFocus="true">
                             <NoItemsTemplate>
                                 <MudText Align="Align.Center" Class="px-4 py-4">
                                     No items found
@@ -97,7 +97,7 @@ else
                     </MudCardActions>
                 </MudCard>
                 <div class="p-3 w-100">
-                    <MudTextField HelperText="Required" Variant="Variant.Outlined" @bind-Value="serviceForm.Description" For="@(() => serviceForm.Description)"
+                    <MudTextField HelperText="@languageContainer.Keys[("Required")]" Variant="Variant.Outlined" @bind-Value="serviceForm.Description" For="@(() => serviceForm.Description)"
                         HelperTextOnFocus="true" Placeholder="@Placeholders.Description" Lines="10" />
                 </div>
                 <div class="flex-wrap gap-5 gap-md-0 d-flex flex-md-nowrap align-items-end p-3">

@@ -3,7 +3,7 @@
 @attribute [Authorize(Roles = Roles.AdminRole)]
 @inherits BasePage
 
-<PageTitle>@languageContainer.Keys[(Id == 0 ? "Add" : "Edit") + " Category"]</PageTitle>
+<PageTitle>@($"{languageContainer.Keys[(Id == 0 ? "Add" : "Edit")]} {languageContainer.Keys[("Category")]}")</PageTitle>
 <MudBreadcrumbs Items="breadcrumbItems"></MudBreadcrumbs>
 
 @if (categoryForm is null)
@@ -18,33 +18,33 @@ else
             <MudCardHeader Style="padding:20px">
                 <CardHeaderAvatar>
                     <MudAvatar Rounded="true" Color="Color.Info">
-                        <MudIcon Icon="@Icons.Material.Filled.Person3" />
+                        <MudIcon Icon="@EntityIcons.CategoriesIcon" />
                     </MudAvatar>
                 </CardHeaderAvatar>
                 <CardHeaderContent>
                     <MudText Style="display: flex;align-items: center;" Typo="Typo.h5">
-                        @(Id == 0 ? "Add Category" : $"Edit {categoryForm.Name}")
+                        @(Id == 0 ? $"{languageContainer.Keys[("Add")]} {languageContainer.Keys[("Category")]}" : $"{languageContainer.Keys[("Edit")]} {categoryForm.Name}")
                     </MudText>
                 </CardHeaderContent>
                 <CardHeaderActions>
                     <MudButton DisableElevation="true" Href="/Categories" Style="margin:10px" Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.ArrowBack" Color="Color.Info">
-                        Back to Managers
+                        @($"{languageContainer.Keys[("Back to")]} {languageContainer.Keys[("Categories")]}")
                     </MudButton>
                 </CardHeaderActions>
             </MudCardHeader>
             <MudCardContent Class="px-5 py-3">
                 <div class="d-flex flex-wrap flex-md-nowrap">
                     <div class="p-3  w-100 w-md-50">
-                        <MudTextField HelperText="Required" Variant="Variant.Outlined" @bind-Value="categoryForm.Name" For="@(() => categoryForm.Name)" HelperTextOnFocus="true"
-                                  AdornmentColor="Color.Info" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.AccountBox" Placeholder="@Placeholders.Name" />
+                        <MudTextField HelperText="@languageContainer.Keys[("Required")]" Variant="Variant.Outlined" @bind-Value="categoryForm.Name" For="@(() => categoryForm.Name)" HelperTextOnFocus="true" Label="@languageContainer.Keys[("Name")]"
+                                      AdornmentColor="Color.Info" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.AccountBox" Placeholder="@languageContainer.Keys[(Placeholders.Name)]" />
                     </div>
                     <div class="p-3  w-100 w-md-25">
-                        <MudNumericField HideSpinButtons="true" @bind-Value="categoryForm.OrderIndex" For="@(() => categoryForm.OrderIndex)" HelperTextOnFocus="true"
-                                     Variant="Variant.Outlined" AdornmentColor="Color.Info" Adornment="Adornment.End" AdornmentText="#" Placeholder="@Placeholders.OrderIndex" />
+                        <MudNumericField HideSpinButtons="true" @bind-Value="categoryForm.OrderIndex" For="@(() => categoryForm.OrderIndex)" HelperTextOnFocus="true" Label="@languageContainer.Keys[("Order Index")]"
+                                         Variant="Variant.Outlined" AdornmentColor="Color.Info" Adornment="Adornment.End" AdornmentText="#" Placeholder="@languageContainer.Keys[(Placeholders.OrderIndex)]" />
                     </div>
                     <div class="p-3  w-100 w-md-25">
-                        <MudColorPicker @bind-Text="categoryForm.Color" Placeholder="Select Color" Clearable ColorPickerMode="ColorPickerMode.HEX" Variant="Variant.Outlined"
-                                    DisableAlpha=true DisableToolbar=true DisableColorField=true DisableModeSwitch=true AnchorOrigin="Origin.BottomCenter" />
+                        <MudColorPicker @bind-Text="categoryForm.Color" Placeholder="@languageContainer.Keys[("Select Color")]" Clearable ColorPickerMode="ColorPickerMode.HEX" Variant="Variant.Outlined"
+                                         DisableAlpha=true DisableToolbar=true DisableColorField=true DisableModeSwitch=true AnchorOrigin="Origin.BottomCenter" Label="@languageContainer.Keys[("Color")]" />
                     </div>
                 </div>
                 <div class="flex-wrap gap-5 gap-md-0 d-flex flex-md-nowrap align-items-end p-3">

@@ -43,7 +43,21 @@ Audit Details:  "تفاصيل التدقيق"
 Reference Data Tables: "جداول البيانات المرجعية"
 This action cannot be undone: "لا يمكن التراجع عن هذا الإجراء"
 No selected image: "لم يتم تحديد صورة"
-
+You want to delete this?: "هل تريد حذف هذا؟"
+This is an alert: "تنبيه"
+Cancel: "إلغاء"
+Ok, I got it: "حسنًا، فهمت"
+Upload Image: "تحميل الصورة"
+Something Went Wrong!: "حدث خطأ ما!"
+Added Successfully: "تمت الإضافة بنجاح"
+Image Preview: "معاينة الصورة"
+File size must be less than 2Mb: "يجب أن يكون حجم الملف أقل من 2 ميجابايت"
+Hours and: "ساعات و"
+Minutes: "دقائق"
+Updated Successfully: "تم التحديث بنجاح"
+Error Details: "تفاصيل الخطأ"
+Deleted Successfully: "تم الحذف بنجاح"
+Are you sure?: "هل أنت متأكد؟"
 #Start::Authentication
 
 #Account Settings
@@ -94,6 +108,14 @@ We provide you with the best quality, according to international standards, for 
 
 #End::Authentication
 
+#Categories
+Order Index: "فهرس الترتيب "
+Color: "اللون"
+Category: "الفئة"
+Select Color: "اختر اللون"
+Back to: "العودة إلى"
+Details: "تفاصيل"
+
 #Index
 Login Date: "تاريخ الدخول"
 IP Address: "عنوان بروتوكول الإنترنت"
@@ -117,6 +139,14 @@ Review Details: "تفاصيل التقييم"
 Rate: "التقييم"
 Title: "العنوان"
 Feedback: "التعليق"
+
+Overview: "نظرة عامة"
+
+Change Email: "تغيير البريد الإلكتروني"
+
+Nationality: "الجنسية"
+
+Gender: "الجنس"
 
 #Forms
 Add: "إضافة"
@@ -151,7 +181,6 @@ Count: "العدد"
 Area: "مساحه"
 Unit: "الوحدة"
 Units: "وحدات"
-Category: "الفئة"
 Select Service: "اختر الخدمة"
 Date: "تاريخ"
 Client: "العميل"

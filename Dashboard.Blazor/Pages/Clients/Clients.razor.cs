@@ -3,7 +3,6 @@
 public partial class Clients
 {
     private List<ClientDto> clients = new();
-    private string searchString = string.Empty;
 
     private readonly string formUri = "Clients/Form";
     private readonly string detailsUri = "Clients/Details";
@@ -31,6 +30,21 @@ public partial class Clients
 
         if (isSuccess)
             clients.Remove(clients.FirstOrDefault(x => x.Id == id)!);
+
+        StopProcessing();
+    }
+
+    private void SelectedItemsChanged(HashSet<ClientDto> items) => selectedIds = items.Select(i => i.Id).ToList();
+
+    private async Task DeleteAll()
+    {
+        StartProcessing();
+
+        var isSuccess = await DeleteAllAsync<ClientDto>($"Clients/DeleteMultiple", selectedIds);
+
+        if (isSuccess)
+            clients.RemoveAll(x => selectedIds.Contains(x.Id));
+
 
         StopProcessing();
     }

@@ -7,5 +7,6 @@ public interface IApiService
     Task<ApiResponse<T>> AddAsync<T>(string endPoint, T model) where T : class;
     Task<ApiResponse<T>> UpdateAsync<T>(string endPoint, T model) where T : class;
     Task<ApiResponse<T>> DeleteAsync<T>(string endPoint) where T : class;
+    Task<ApiResponse<T>> DeleteAllAsync<T>(string endPoint, List<int> deletedIds) where T : class;
     Task<ApiResponse<T>> PostAsync<T>(string endPoint, HttpContent? model = null) where T : class;
 }

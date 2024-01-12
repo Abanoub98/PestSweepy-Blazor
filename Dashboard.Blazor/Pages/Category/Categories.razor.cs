@@ -3,7 +3,7 @@
 public partial class Categories
 {
     private List<CategoryDto> categories = new();
-    private string searchString = string.Empty;
+
     private readonly string formUri = "Categories/Form";
     private readonly string detailsUri = "Categories/Details";
 
@@ -14,7 +14,7 @@ public partial class Categories
         breadcrumbItems.AddRange(new List<BreadcrumbItem>
         {
             new(languageContainer.Keys["Home"], href: "/", icon: Icons.Material.Filled.Home),
-            new(languageContainer.Keys["Categories"], href: null, disabled: true, icon: Icons.Material.TwoTone.Category),
+            new(languageContainer.Keys["Categories"], href: null, disabled: true, icon: EntityIcons.CategoriesIcon),
         });
 
         categories = await GetAllAsync<CategoryDto>("Categories?OrderBy=id&Asc=false");
@@ -34,6 +34,20 @@ public partial class Categories
         StopProcessing();
     }
 
+    private void SelectedItemsChanged(HashSet<CategoryDto> items) => selectedIds = items.Select(i => i.Id).ToList();
+
+    private async Task DeleteAll()
+    {
+        StartProcessing();
+
+        var isSuccess = await DeleteAllAsync<ClientDto>($"Categories/DeleteMultiple", selectedIds);
+
+        if (isSuccess)
+            categories.RemoveAll(x => selectedIds.Contains(x.Id));
+
+
+        StopProcessing();
+    }
     private bool FilterFunc(CategoryDto element)
     {
         if (string.IsNullOrWhiteSpace(searchString))

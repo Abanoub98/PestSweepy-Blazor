@@ -2,7 +2,9 @@
 @attribute [Authorize(Roles = Roles.AdminRole)]
 @inherits BasePage
 
-<PageTitle>@languageContainer.Keys["Category Details"]</PageTitle>
+<PageTitle>
+    @($"{languageContainer.Keys["Category"]} {languageContainer.Keys["Details"]}")
+</PageTitle>
 <MudBreadcrumbs Items="breadcrumbItems"></MudBreadcrumbs>
 
 @if (category is null)
@@ -14,7 +16,7 @@ else
     <div class="card shadow-sm">
         <div class="card-header">
             <div class="fw-bold card-title">
-                @languageContainer.Keys["Category Details"]
+                @($"{languageContainer.Keys["Category"]} {languageContainer.Keys["Details"]}")
             </div>
             <div class="card-toolbar">
                 <a href="/Categories" class="btn btn-sm btn-primary me-3">
@@ -31,7 +33,7 @@ else
             <!--begin::Details content-->
             <div class="py-3 fs-6">
                 <div class="row">
-                    <div class="col-8">
+                    <div class="col-8 align-self-start">
                         <!--begin::Details item-->
                         <div class="fw-bold mt-5 mb-1">@languageContainer.Keys["Name"]:</div>
                         <div class="text-gray-600">@category.Name</div>

@@ -111,7 +111,7 @@ else
                         </MudCardActions>
                     </MudCard>
                     <div class="p-3 w-100">
-                        <MudTextField HelperText="Required" Variant="Variant.Outlined" @bind-Value="quotationForm.Notes" For="@(() => quotationForm.Notes)"
+                        <MudTextField HelperText="@languageContainer.Keys[("Required")]" Variant="Variant.Outlined" @bind-Value="quotationForm.Notes" For="@(() => quotationForm.Notes)"
                                       HelperTextOnFocus="true" Placeholder="@languageContainer.Keys["Notes"]" Lines="10" Label="@languageContainer.Keys["Notes"]" />
                     </div>
                     <div class="flex-wrap gap-5 gap-md-0 d-flex flex-md-nowrap align-items-end p-3">

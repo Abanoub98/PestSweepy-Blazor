@@ -25,7 +25,7 @@ public partial class CompanyInfoForm
 
         var result = await UpdateAsync($"CompanyInfo/1", companyInfoForm!);
 
-        if (result.isSucces)
+        if (result.isSuccess)
         {
             if (companyInfoForm!.UploadedImage is not null)
                 await UploadImage("CompanyInfo", companyInfoForm.Id, companyInfoForm.UploadedImage);

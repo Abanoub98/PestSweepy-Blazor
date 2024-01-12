@@ -17,7 +17,7 @@ public partial class CategoryDetails
         breadcrumbItems.AddRange(new List<BreadcrumbItem>
         {
             new(languageContainer.Keys["Home"], href: "/", icon: Icons.Material.Filled.Home),
-            new(languageContainer.Keys["Categories"], href: "/Categories", icon: Icons.Material.TwoTone.Category),
+            new(languageContainer.Keys["Categories"], href: "/Categories", icon: EntityIcons.CategoriesIcon),
             new(category.Name, href: null, disabled: true),
         });
     }

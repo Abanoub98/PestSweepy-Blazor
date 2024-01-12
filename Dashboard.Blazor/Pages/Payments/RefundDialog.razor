@@ -100,7 +100,7 @@
 
         var result = await PostAsync<PaymentDto>($"/Payments/RefundPayment/{PaymentId}?amountToRefund={refundedAmountInHalala}");
 
-        if (result.isSucces)
+        if (result.isSuccess)
             MudDialog.Close(DialogResult.Ok(true));
 
         StopProcessing();

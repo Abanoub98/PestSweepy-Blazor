@@ -69,7 +69,7 @@ public partial class Payments
         {
             var result = await PostAsync<PaymentDto>($"/Payments/VoidPayment/{paymentId}");
 
-            if (result.isSucces)
+            if (result.isSuccess)
                 await OnInitializedAsync();
         }
 

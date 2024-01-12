@@ -91,15 +91,15 @@ else
                     </div>
                 </div>
                 <div class="p-3 w-100">
-                    <MudTextField HelperText="Required" Variant="Variant.Outlined" @bind-Value="companyInfoForm.WhoWeAre" For="@(() => companyInfoForm.WhoWeAre)"
+                    <MudTextField HelperText="@languageContainer.Keys[("Required")]" Variant="Variant.Outlined" @bind-Value="companyInfoForm.WhoWeAre" For="@(() => companyInfoForm.WhoWeAre)"
                                   HelperTextOnFocus="true" Placeholder="@Placeholders.Description" Lines="10" Label="@languageContainer.Keys["Who We Are"]" />
                 </div>
                 <div class="p-3 w-100">
-                    <MudTextField HelperText="Required" Variant="Variant.Outlined" @bind-Value="companyInfoForm.Mission" For="@(() => companyInfoForm.Mission)"
+                    <MudTextField HelperText="@languageContainer.Keys[("Required")]" Variant="Variant.Outlined" @bind-Value="companyInfoForm.Mission" For="@(() => companyInfoForm.Mission)"
                                   HelperTextOnFocus="true" Placeholder="@Placeholders.Description" Lines="10" Label="@languageContainer.Keys["Mission"]" />
                 </div>
                 <div class="p-3 w-100">
-                    <MudTextField HelperText="Required" Variant="Variant.Outlined" @bind-Value="companyInfoForm.Vision" For="@(() => companyInfoForm.Vision)"
+                    <MudTextField HelperText="@languageContainer.Keys[("Required")]" Variant="Variant.Outlined" @bind-Value="companyInfoForm.Vision" For="@(() => companyInfoForm.Vision)"
                                   HelperTextOnFocus="true" Placeholder="@Placeholders.Description" Lines="10" Label="@languageContainer.Keys["Vision"]" />
                 </div>
                 <div class="flex-wrap gap-5 gap-md-0 d-flex flex-md-nowrap align-items-end p-3">

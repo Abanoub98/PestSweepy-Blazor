@@ -9,10 +9,12 @@ public class BasePage : ComponentBase
     [Inject] protected AuthenticationStateProvider AuthenticationStateProvider { get; set; } = default!;
     [Inject] private IApiService ApiService { get; set; } = default!;
     [Inject] private ISnackbar Snackbar { get; set; } = default!;
+    [Inject] private ILanguageContainerService languageContainer { get; set; } = default!;
 
     //Variables
     protected List<BreadcrumbItem> breadcrumbItems = new();
     protected string searchString = string.Empty;
+    protected List<int> selectedIds = new();
     protected int tableHight;
     protected bool isLoading;
     protected bool isDisable;
@@ -61,7 +63,7 @@ public class BasePage : ComponentBase
         return response.Object!;
     }
 
-    protected async Task<(bool isSucces, T? obj)> AddAsync<T>(string endPoint, T model) where T : class
+    protected async Task<(bool isSuccess, T? obj)> AddAsync<T>(string endPoint, T model) where T : class
     {
         var response = await ApiService.AddAsync<T>(endPoint, model);
 
@@ -75,7 +77,7 @@ public class BasePage : ComponentBase
         return (true, response.Object!);
     }
 
-    protected async Task<(bool isSucces, ResponseDto?)> UploadImage(string entityName, int id, IBrowserFile image)
+    protected async Task<(bool isSuccess, ResponseDto?)> UploadImage(string entityName, int id, IBrowserFile image)
     {
         if (image.Size > maxFileSize)
         {
@@ -96,7 +98,7 @@ public class BasePage : ComponentBase
         return (true, response.Object!);
     }
 
-    protected async Task<(bool isSucces, T? obj)> PostAsync<T>(string endPoint, string successMessage = "Added Successfully", bool showSuccess = true) where T : class
+    protected async Task<(bool isSuccess, T? obj)> PostAsync<T>(string endPoint, string successMessage = "Added Successfully", bool showSuccess = true) where T : class
     {
         var response = await ApiService.PostAsync<T>(endPoint);
 
@@ -112,7 +114,7 @@ public class BasePage : ComponentBase
         return (true, response.Object!);
     }
 
-    protected async Task<(bool isSucces, T? obj)> UpdateAsync<T>(string endPoint, T model) where T : class
+    protected async Task<(bool isSuccess, T? obj)> UpdateAsync<T>(string endPoint, T model) where T : class
     {
         var response = await ApiService.UpdateAsync<T>(endPoint, model);
 
@@ -134,6 +136,25 @@ public class BasePage : ComponentBase
             return false;
 
         var response = await ApiService.DeleteAsync<T>(endPoint);
+
+        if (!response.IsSuccess)
+        {
+            ShowError(error: response.Error!);
+            return false;
+        }
+
+        ShowSuccess("Deleted Successfully");
+        return true;
+    }
+
+    protected async Task<bool> DeleteAllAsync<T>(string endPoint, List<int> deletedIds) where T : class
+    {
+        var isConfirmed = await ShowConfirmation();
+
+        if (!isConfirmed)
+            return false;
+
+        var response = await ApiService.DeleteAllAsync<T>(endPoint, deletedIds);
 
         if (!response.IsSuccess)
         {
@@ -192,8 +213,9 @@ public class BasePage : ComponentBase
             MaxWidth = MaxWidth.Small,
             FullWidth = true,
             Position = DialogPosition.TopCenter,
-            CloseButton = true,
-            ClassBackground = "dialogBackgroundBlur"
+            ClassBackground = "dialogBackgroundBlur",
+            NoHeader = true
+
         };
 
         DialogParameters<ConfirmationDialog> formParameters = new();
@@ -201,7 +223,7 @@ public class BasePage : ComponentBase
         if (confirmationMessage is not null)
             formParameters.Add(x => x.ConfirmationMessage, confirmationMessage);
 
-        var dialog = await DialogService.ShowAsync<ConfirmationDialog>("Are you sure?", formParameters, dialogOptions);
+        var dialog = await DialogService.ShowAsync<ConfirmationDialog>(languageContainer.Keys["Are you sure?"], formParameters, dialogOptions);
         var result = await dialog.Result;
 
         if (result.Canceled)
@@ -226,17 +248,17 @@ public class BasePage : ComponentBase
             { x => x.ImageUrl, imageUrl }
         };
 
-        await DialogService.ShowAsync<ImagePreview>("Image Preview", formParameters, dialogOptions);
+        await DialogService.ShowAsync<ImagePreview>(languageContainer.Keys["Image Preview"], formParameters, dialogOptions);
     }
 
     protected string HandelDuration(int durationInMin)
     {
         if (durationInMin <= 60)
-            return $"{durationInMin} Minutes";
+            return $"{durationInMin} {languageContainer.Keys["Minutes"]}";
 
         int hours = durationInMin / 60;
         int remainingMinutes = durationInMin % 60;
-        return $"{hours} hours and {remainingMinutes} minutes";
+        return $"{hours} {languageContainer.Keys["Hours and"]} {remainingMinutes} {languageContainer.Keys["Minutes"]}";
     }
 
     protected async Task<IEnumerable<Claim>> GetClaimsPrincipalData()
@@ -274,17 +296,17 @@ public class BasePage : ComponentBase
         return content;
     }
 
-    protected void ShowError(string message = "SomeThing Went Wrong!", string? error = null)
+    protected void ShowError(string message = "Something Went Wrong!", string? error = null)
     {
         if (error is null)
         {
-            Snackbar.Add(message, Severity.Error);
+            Snackbar.Add(languageContainer.Keys[message], Severity.Error);
             return;
         }
 
-        Snackbar.Add("SomeThing Went Wrong!", Severity.Error, config =>
+        Snackbar.Add(languageContainer.Keys[message], Severity.Error, config =>
         {
-            config.Action = "More info";
+            config.Action = languageContainer.Keys["More Info"];
             config.ActionColor = Color.Surface;
             config.ActionVariant = Variant.Filled;
             config.Onclick = snackbar =>
@@ -311,11 +333,11 @@ public class BasePage : ComponentBase
             { x => x.Error, error }
         };
 
-        DialogService.Show<ErrorDetailsDialog>("Error Details", formParameters, dialogOptions);
+        DialogService.Show<ErrorDetailsDialog>(languageContainer.Keys["Error Details"], formParameters, dialogOptions);
     }
 
     protected void ShowSuccess(string message)
     {
-        Snackbar.Add(message, Severity.Success);
+        Snackbar.Add(languageContainer.Keys[message], Severity.Success);
     }
 }

@@ -2,14 +2,16 @@
 @attribute [Authorize(Roles = Roles.AdminRole)]
 @inherits BasePage
 
-<PageTitle>@languageContainer.Keys["Categories"]</PageTitle>
+<PageTitle>
+    @languageContainer.Keys["Categories"]
+</PageTitle>
 <MudBreadcrumbs Items="breadcrumbItems"></MudBreadcrumbs>
 <BrowserViewportObserver TableHeightChanged="TableHeightChanged" />
 
 <MudCard Elevation="25">
     <MudCardContent>
-        <MudDataGrid T="CategoryDto" Dense="true" Elevation="0" FixedHeader="true" Height="@($"{tableHight}px")"
-                     Loading="@(isLoading)" LoadingProgressColor="Color.Info" Filterable="true"
+        <MudDataGrid T="CategoryDto" Dense="true" Elevation="0" FixedHeader="true" Height="@($"{tableHight}px")" SelectedItemsChanged="SelectedItemsChanged"
+                     Loading="@(isLoading)" LoadingProgressColor="Color.Info" Filterable="true" MultiSelection="true"
                      Items="categories" Hover="true" SortMode="SortMode.Single" QuickFilter="@FilterFunc">
 
             <ToolBarContent>
@@ -17,15 +19,18 @@
                     <div class="w-md-25 w-100">
                         <div class="d-flex align-items-center">
                             <MudAvatar Rounded="true" Color="Color.Info">
-                                <MudIcon Icon="@Icons.Material.Filled.Category" />
+                                <MudIcon Icon="@EntityIcons.CategoriesIcon" />
                             </MudAvatar>
-                            <MudText Class="mx-3" Typo="Typo.h5">@languageContainer.Keys["Categories"]</MudText>
+                            <MudText Class="mx-3" Typo="Typo.h5">
+                                @languageContainer.Keys["Categories"]
+                            </MudText>
                             <MudIconButton OnClick="() => OpenForm(formUri)" Icon="@Icons.Material.Filled.Add" Color="Color.Success"></MudIconButton>
+                            <MudIconButton OnClick="DeleteAll" Disabled="@(selectedIds.Count() < 2 ? true : false)" Icon="@Icons.Material.Filled.DeleteForever" Color="Color.Error"></MudIconButton>
                         </div>
                     </div>
                     <div class="w-md-50 w-100">
                         <MudTextField @bind-Value="searchString" Adornment="Adornment.Start" Class="mt-0 mb-5" Immediate="true"
-                                      Placeholder=@($"{languageContainer.Keys["Search For"]} User Id, Type, Table Name, Date")
+                                      Placeholder=@($"{languageContainer.Keys["Search For"]} {languageContainer.Keys["Name"]}, {languageContainer.Keys["Order Index"]}, {languageContainer.Keys["Color"]}")
                                       AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" />
                     </div>
                 </div>
@@ -36,45 +41,34 @@
             </NoRecordsContent>
 
             <Columns>
-                <TemplateColumn Context="category">
-                    <HeaderTemplate>
-                        <MudText>Category</MudText>
-                    </HeaderTemplate>
+                <SelectColumn T="CategoryDto" ShowInFooter="false" />
+
+                <TemplateColumn CellClass="text-center" HeaderClass="text-center" Context="category" Sortable="false" Filterable="false">
                     <CellTemplate>
-                        <div class="d-flex align-items-center">
-                            <MudAvatar Class="cursor-all-scroll" @onclick="() => ShowImagePreview(imageUrl + category.Item!.Image)" Rounded="true" Size="Size.Large">
-                                <MudImage Src="@(imageUrl + category.Item!.Image)" />
-                            </MudAvatar>
-                            <div class="mx-3">
-                                <MudText>@category.Item!.Name</MudText>
-                            </div>
-                        </div>
+                        <MudAvatar Class="cursor-all-scroll" @onclick="() => ShowImagePreview(imageUrl + category.Item!.Image)" Rounded="true" Size="Size.Large">
+                            <MudImage Src="@(imageUrl + category.Item!.Image)" />
+                        </MudAvatar>
                     </CellTemplate>
                 </TemplateColumn>
 
-                <TemplateColumn Context="category" Sortable="false" Filterable="false" HeaderClass="text-center" CellClass="text-center" CellStyle="width:150px">
+                <PropertyColumn Property="x => x.Name" Title="@($"{languageContainer.Keys["Name"]}")" />
+
+                <PropertyColumn Property="x => x.OrderIndex" Title="@($"{languageContainer.Keys["Order Index"]}")" />
+
+                <TemplateColumn Context="category" Title="Color" Sortable="false" Filterable="false" HeaderClass="text-center" CellClass="text-center">
                     <HeaderTemplate>
-                        <MudText Class="w-100">Color</MudText>
+                        <MudText Class="w-100">@($"{languageContainer.Keys["Color"]}")</MudText>
                     </HeaderTemplate>
                     <CellTemplate>
-                        <MudTooltip role="button" Text="@category.Item!.Color" Style="@($"background-color: {category.Item.Color}")" Placement="Placement.Left">
+                        <MudTooltip role="button" Text="@category.Item!.Color" Style="@($"background-color: {category.Item.Color};")" Placement="Placement.Left">
                             <MudAvatar Class="cursor-help" Style=@($"background-color: {category.Item.Color}")></MudAvatar>
                         </MudTooltip>
                     </CellTemplate>
                 </TemplateColumn>
 
-                <TemplateColumn CellStyle="width:150px" SortBy="new Func<CategoryDto, object>(x=>x.OrderIndex)" Context="category" HeaderClass="text-center" CellClass="text-center" Filterable="false">
+                <TemplateColumn Title="Actions" CellClass="text-center" Context="category" HeaderClass="text-center" Sortable="false" Filterable="false">
                     <HeaderTemplate>
-                        <MudText Class="w-100">Order</MudText>
-                    </HeaderTemplate>
-                    <CellTemplate>
-                        <MudText Class="w-100">@(category.Item!.OrderIndex is not null ? $"#{category.Item!.OrderIndex}" : string.Empty)</MudText>
-                    </CellTemplate>
-                </TemplateColumn>
-
-                <TemplateColumn CellStyle="width:250px" CellClass="text-center" Context="category" HeaderClass="text-center" Sortable="false" Filterable="false">
-                    <HeaderTemplate>
-                        <MudText Class="w-100">Actions</MudText>
+                        <MudText Class="w-100">@($"{languageContainer.Keys["Actions"]}")</MudText>
                     </HeaderTemplate>
                     <CellTemplate>
                         <TableButtons IsDisable="isDisable" EditClicked="() => OpenForm(formUri,category.Item!.Id)" DeleteClicked="() => Delete(category.Item!.Id)"
@@ -86,6 +80,6 @@
             <PagerContent>
                 <MudDataGridPager T="CategoryDto" />
             </PagerContent>
-            </MudDataGrid>
-        </MudCardContent>
-    </MudCard>
+        </MudDataGrid>
+    </MudCardContent>
+</MudCard>

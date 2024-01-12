@@ -13,7 +13,7 @@
                 <DataAnnotationsValidator />
                 <div class="d-flex flex-wrap flex-md-nowrap">
                     <div class="p-3  w-100">
-                        <MudTextField HelperText="Required" Variant="Variant.Outlined" @bind-Value="lookupDto.Name" For="@(() => lookupDto.Name)" HelperTextOnFocus="true" Label="@languageContainer.Keys["Name"]"
+                        <MudTextField HelperText="@languageContainer.Keys[("Required")]" Variant="Variant.Outlined" @bind-Value="lookupDto.Name" For="@(() => lookupDto.Name)" HelperTextOnFocus="true" Label="@languageContainer.Keys["Name"]"
                                       AdornmentColor="Color.Info" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.AccountBox" Placeholder="@Placeholders.Name" />
                     </div>
                     <div class="p-3 w-100">

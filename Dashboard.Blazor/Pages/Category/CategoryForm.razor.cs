@@ -15,9 +15,9 @@ public partial class CategoryForm
 
         breadcrumbItems.AddRange(new List<BreadcrumbItem>
         {
-            new BreadcrumbItem(languageContainer.Keys["Home"], href: "/", icon: Icons.Material.Filled.Home),
-            new BreadcrumbItem(languageContainer.Keys["Categories"], href: "/Categories", icon: Icons.Material.TwoTone.Person3),
-            new BreadcrumbItem(languageContainer.Keys[Id == 0 ? "Add Category" : $"Edit {categoryForm.Name}"], href: null, disabled: true),
+            new(languageContainer.Keys["Home"], href: "/", icon: Icons.Material.Filled.Home),
+            new(languageContainer.Keys["Categories"], href: "/Categories", icon: EntityIcons.CategoriesIcon),
+            new(Id == 0 ? $"{languageContainer.Keys[("Add")]} {languageContainer.Keys[("Category")]}" : $"{languageContainer.Keys[("Edit")]} {categoryForm.Name}", href: null, disabled: true),
         });
     }
 
@@ -25,18 +25,14 @@ public partial class CategoryForm
     {
         StartProcessing();
 
-        bool result;
-        CategoryDto? categoryDtoResult;
+        var result = (Id == 0) ?
+            await AddAsync("Categories", categoryForm!) :
+            await UpdateAsync($"Categories/{Id}", categoryForm!);
 
-        if (Id == 0)
-            (result, categoryDtoResult) = await AddAsync("Categories", categoryForm!);
-        else
-            (result, categoryDtoResult) = await UpdateAsync($"Categories/{Id}", categoryForm!);
-
-        if (result)
+        if (result.isSuccess)
         {
             if (Id == 0)
-                categoryForm!.Id = categoryDtoResult!.Id;
+                categoryForm!.Id = result.obj!.Id;
 
             if (categoryForm!.UploadedImage is not null)
                 await UploadImage("Categories", categoryForm.Id, categoryForm.UploadedImage);

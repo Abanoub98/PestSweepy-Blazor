@@ -28,18 +28,14 @@ public partial class ClientForm
         clientForm!.NationalityId = clientForm.Nationality!.Id;
         clientForm!.CountryId = clientForm.Country!.Id;
 
-        bool result;
-        ClientDto? clientDtoResult;
+        var result = Id == 0 ?
+            await AddAsync("Clients", clientForm!) :
+            await UpdateAsync($"Clients/{Id}", clientForm!);
 
-        if (Id == 0)
-            (result, clientDtoResult) = await AddAsync("Clients", clientForm!);
-        else
-            (result, clientDtoResult) = await UpdateAsync($"Clients/{Id}", clientForm!);
-
-        if (result)
+        if (result.isSuccess)
         {
             if (Id == 0)
-                clientForm!.Id = clientDtoResult!.Id;
+                clientForm!.Id = result.obj!.Id;
 
             if (clientForm.UploadedImage is not null)
                 await UploadImage("Clients", clientForm.Id, clientForm.UploadedImage);

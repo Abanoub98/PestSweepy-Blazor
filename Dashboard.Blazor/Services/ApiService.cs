@@ -1,4 +1,7 @@
-﻿namespace Dashboard.Blazor.Services;
+﻿using System.Text;
+using System.Text.Json;
+
+namespace Dashboard.Blazor.Services;
 
 public class ApiService : IApiService
 {
@@ -85,6 +88,40 @@ public class ApiService : IApiService
         return await GetErrorAsync<T>(responseMessage);
     }
 
+    public async Task<ApiResponse<T>> DeleteAllAsync<T>(string endPoint, List<int> deletedIds) where T : class
+    {
+        HttpResponseMessage responseMessage = new();
+
+        try
+        {
+            // Serialize the list of deletedIds to JSON
+            string jsonBody = JsonSerializer.Serialize(deletedIds);
+
+            // Create the HTTP request content
+            HttpContent content = new StringContent(jsonBody, Encoding.UTF8, "application/json");
+
+            // Create the DELETE request with the content
+            HttpRequestMessage request = new HttpRequestMessage
+            {
+                Method = HttpMethod.Delete,
+                RequestUri = new Uri($"https://api.pestsweepy.com/{endPoint}"),
+                Content = content
+            };
+
+            // Send the DELETE request
+            responseMessage = await _httpClient.SendAsync(request);
+        }
+        catch (Exception ex)
+        {
+            return await GetErrorAsync<T>(responseMessage, ex);
+        }
+
+        if (responseMessage.IsSuccessStatusCode)
+            return await GetResponseMessage<T>(responseMessage);
+
+        return await GetErrorAsync<T>(responseMessage);
+    }
+
     public async Task<ApiResponse<T>> PostAsync<T>(string endPoint, HttpContent? model = null) where T : class
     {
         HttpResponseMessage responseMessage = new();
@@ -134,9 +171,14 @@ public class ApiService : IApiService
         };
     }
 
-    private static async Task<ApiResponse<T>> GetErrorAsync<T>(HttpResponseMessage responseMessage) where T : class
+    private static async Task<ApiResponse<T>> GetErrorAsync<T>(HttpResponseMessage responseMessage, Exception? exception = null) where T : class
     {
-        var error = await responseMessage.Content.ReadAsStringAsync();
+        string error = await responseMessage.Content.ReadAsStringAsync() ?? string.Empty;
+
+        if (exception is not null)
+        {
+            error = $"{error}, {exception.Message}";
+        }
 
         return new ApiResponse<T>
         {
