@@ -43,8 +43,10 @@ public partial class Categories
         var isSuccess = await DeleteAllAsync<ClientDto>($"Categories/DeleteMultiple", selectedIds);
 
         if (isSuccess)
+        {
             categories.RemoveAll(x => selectedIds.Contains(x.Id));
-
+            selectedIds = new();
+        }
 
         StopProcessing();
     }
