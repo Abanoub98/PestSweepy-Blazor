@@ -16,7 +16,7 @@ public partial class Providers
         breadcrumbItems.AddRange(new List<BreadcrumbItem>
         {
             new(languageContainer.Keys["Home"], href: "/", icon: Icons.Material.Filled.Home),
-            new(languageContainer.Keys["Providers"], href: null, disabled: true, icon: Icons.Material.TwoTone.Engineering),
+            new(languageContainer.Keys["Providers"], href: null, disabled: true, icon: Icons.Material.Outlined.Engineering),
         });
 
         providers = SupervisorId is not null ?

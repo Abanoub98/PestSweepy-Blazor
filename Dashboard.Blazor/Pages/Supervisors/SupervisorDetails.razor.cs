@@ -17,7 +17,7 @@ public partial class SupervisorDetails
         breadcrumbItems.AddRange(new List<BreadcrumbItem>
         {
             new(languageContainer.Keys["Home"], href: "/", icon: Icons.Material.Filled.Home),
-            new(languageContainer.Keys["Supervisors"], href: "/Supervisors", icon: Icons.Material.TwoTone.SupervisorAccount),
+            new(languageContainer.Keys["Supervisors"], href: "/Supervisors", icon: Icons.Material.Outlined.SupervisorAccount),
             new(supervisor.Name, href: null, disabled: true),
         });
     }

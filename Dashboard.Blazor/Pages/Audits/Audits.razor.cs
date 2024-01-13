@@ -12,7 +12,7 @@ public partial class Audits
         breadcrumbItems.AddRange(new List<BreadcrumbItem>
         {
             new(languageContainer.Keys["Home"], href: "/", icon: Icons.Material.Filled.Home),
-            new(languageContainer.Keys["Audits"], href: null, disabled: true, icon: @Icons.Material.TwoTone.History),
+            new(languageContainer.Keys["Audits"], href: null, disabled: true, icon: @Icons.Material.Outlined.History),
         });
 
         audits = await GetAllAsync<AuditDto>("SecuirtyLogs/Audits?OrderBy=id&Asc=false");

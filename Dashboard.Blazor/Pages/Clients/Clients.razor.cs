@@ -14,7 +14,7 @@ public partial class Clients
         breadcrumbItems.AddRange(new List<BreadcrumbItem>
         {
             new(languageContainer.Keys["Home"], href: "/", icon: Icons.Material.Filled.Home),
-            new(languageContainer.Keys["Clients"], href: null, disabled: true, icon: Icons.Material.TwoTone.Diversity1),
+            new(languageContainer.Keys["Clients"], href: null, disabled: true, icon: Icons.Material.Outlined.Diversity1),
         });
 
         clients = await GetAllAsync<ClientDto>("Clients?OrderBy=id&Asc=false");

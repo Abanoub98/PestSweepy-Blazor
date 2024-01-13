@@ -17,7 +17,7 @@ public partial class ServiceDetails
         breadcrumbItems.AddRange(new List<BreadcrumbItem>
         {
             new(languageContainer.Keys["Home"], href: "/", icon: Icons.Material.Filled.Home),
-            new(languageContainer.Keys["Services"], href: "/Services", icon: Icons.Material.TwoTone.Handyman),
+            new(languageContainer.Keys["Services"], href: "/Services", icon: Icons.Material.Outlined.Handyman),
             new(service.Name, href: null, disabled: true),
         });
     }

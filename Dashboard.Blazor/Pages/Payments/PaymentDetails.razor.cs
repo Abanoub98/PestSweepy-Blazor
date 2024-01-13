@@ -16,7 +16,7 @@ public partial class PaymentDetails
         breadcrumbItems.AddRange(new List<BreadcrumbItem>
         {
             new(languageContainer.Keys["Home"], href: "/", icon: Icons.Material.Filled.Home),
-            new(languageContainer.Keys["Payments"], href: "/Payments", icon: Icons.Material.TwoTone.Payment),
+            new(languageContainer.Keys["Payments"], href: "/Payments", icon: Icons.Material.Outlined.Payment),
             new(payment.Id, href: null, disabled: true),
         });
     }

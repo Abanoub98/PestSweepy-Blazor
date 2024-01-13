@@ -16,7 +16,7 @@ public partial class ManagerForm
         breadcrumbItems.AddRange(new List<BreadcrumbItem>
         {
             new(languageContainer.Keys["Home"], href: "/", icon: Icons.Material.Filled.Home),
-            new(languageContainer.Keys["Managers"], href: "/Managers", icon: Icons.Material.TwoTone.Diversity3),
+            new(languageContainer.Keys["Managers"], href: "/Managers", icon: Icons.Material.Outlined.Diversity3),
             new(languageContainer.Keys[Id == 0 ? "Add Manager" : $"Edit {managerForm.Name}"], href: null, disabled: true),
         });
     }

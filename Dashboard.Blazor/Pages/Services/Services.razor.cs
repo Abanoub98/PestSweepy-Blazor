@@ -16,7 +16,7 @@ public partial class Services
         breadcrumbItems.AddRange(new List<BreadcrumbItem>
         {
             new(languageContainer.Keys["Home"], href: "/", icon: Icons.Material.Filled.Home),
-            new(languageContainer.Keys["Services"], href: null, disabled: true, icon: Icons.Material.TwoTone.Handyman),
+            new(languageContainer.Keys["Services"], href: null, disabled: true, icon: Icons.Material.Outlined.Handyman),
         });
 
         services = CategoryId is not null ?

@@ -16,7 +16,7 @@ public partial class SupervisorForm
         breadcrumbItems.AddRange(new List<BreadcrumbItem>
         {
             new(languageContainer.Keys["Home"], href: "/", icon: Icons.Material.Filled.Home),
-            new(languageContainer.Keys["Supervisors"], href: "/Supervisors", icon: Icons.Material.TwoTone.SupervisorAccount),
+            new(languageContainer.Keys["Supervisors"], href: "/Supervisors", icon: Icons.Material.Outlined.SupervisorAccount),
             new(languageContainer.Keys[Id == 0 ? "Add Supervisor" : $"Edit {supervisorForm.Name}"], href: null, disabled: true),
         });
     }

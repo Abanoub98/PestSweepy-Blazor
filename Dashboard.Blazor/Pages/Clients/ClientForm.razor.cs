@@ -16,7 +16,7 @@ public partial class ClientForm
         breadcrumbItems.AddRange(new List<BreadcrumbItem>
         {
             new(languageContainer.Keys["Home"], href: "/", icon: Icons.Material.Filled.Home),
-            new(languageContainer.Keys["Clients"], href: "/Clients", icon: Icons.Material.TwoTone.Diversity1),
+            new(languageContainer.Keys["Clients"], href: "/Clients", icon: Icons.Material.Outlined.Diversity1),
             new(languageContainer.Keys[Id == 0 ? "Add Client" : $"Edit {clientForm.Name}"], href: null, disabled: true),
         });
     }

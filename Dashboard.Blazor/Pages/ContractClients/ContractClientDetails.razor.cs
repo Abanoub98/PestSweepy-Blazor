@@ -17,7 +17,7 @@ public partial class ContractClientDetails
         breadcrumbItems.AddRange(new List<BreadcrumbItem>
         {
             new(languageContainer.Keys["Home"], href: "/", icon: Icons.Material.Filled.Home),
-            new(languageContainer.Keys["Contract Clients"], href: "/ContractClients", icon: Icons.Material.TwoTone.Diversity1),
+            new(languageContainer.Keys["Contract Clients"], href: "/ContractClients", icon: Icons.Material.Outlined.Diversity1),
             new(contractClient.Name, href: null, disabled: true),
         });
     }

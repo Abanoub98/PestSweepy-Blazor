@@ -29,7 +29,7 @@ public partial class LoginLogs
         breadcrumbItems.AddRange(new List<BreadcrumbItem>
         {
             new(languageContainer.Keys["Home"], href: "/", icon: Icons.Material.Filled.Home),
-            new(languageContainer.Keys["Login Logs"], href: null, disabled: true, icon: Icons.Material.TwoTone.Security),
+            new(languageContainer.Keys["Login Logs"], href: null, disabled: true, icon: Icons.Material.Outlined.Security),
         });
 
         StopProcessing();

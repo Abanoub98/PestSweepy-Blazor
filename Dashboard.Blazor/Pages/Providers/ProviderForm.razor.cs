@@ -16,7 +16,7 @@ public partial class ProviderForm
         breadcrumbItems.AddRange(new List<BreadcrumbItem>
         {
             new(languageContainer.Keys["Home"], href: "/", icon: Icons.Material.Filled.Home),
-            new(languageContainer.Keys["Providers"], href: "/Providers", icon: Icons.Material.TwoTone.Engineering),
+            new(languageContainer.Keys["Providers"], href: "/Providers", icon: Icons.Material.Outlined.Engineering),
             new(languageContainer.Keys[Id == 0 ? "Add Provider" : $"Edit {providerForm.Name}"], href: null, disabled: true),
         });
     }
