@@ -1,0 +1,216 @@
+﻿@attribute [Authorize]
+@inherits BasePage
+
+<MudDialog>
+    <DialogContent>
+        <div id="unique_id_scroll_section" class="w-100 d-flex flex-column align-items-center py-5" style="height: 60vh;overflow: auto;">
+            @if (quotation is null)
+            {
+                <FormLoadingSpinner IsBigForm="true" />
+            }
+            else
+            {
+                <div class="border rounded-lg border-gray-600" style="width:992px;background-color:white !important">
+                    <div id="Report" class="px-8 py-5 h-100">
+                        <div class="row" dir="rtl" style="direction:rtl;background-color:white !important;">
+                            <div class="col-11">
+                                <div class="d-flex flex-column h-100">
+                                    <div>
+                                        <div class="row align-items-center justify-content-between mb-20">
+                                            <div class="col-auto px-5">
+                                                <div class="d-flex flex-column align-items-center">
+                                                    <p class="fs-1 fw-bold text-primary text-center">
+                                                        شركة المكافحة المتميزة<br /><span class="text-success">للتشغيل والصيانة</span>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <div class="col-auto px-5">
+                                                <MudImage Src="/images/Logo.png" Width="150" />
+                                            </div>
+                                        </div>
+                                        <div class="text-center mb-10">
+                                            <div style="width: fit-content;" class="fs-3x fw-bold p-3 m-auto">
+                                                عرض سعر
+                                            </div>
+                                        </div>
+                                        <div class="h5">
+                                            <p>التاريخ: @quotation.CreatedAt!.Value.ToShortDateString()</p>
+                                        </div>
+                                        <div class="h5">
+                                            <p>
+                                                السادة/ @quotation.ClientName الموقرين...
+                                            </p>
+                                            <p>
+                                                ويمثلهم/ @quotation.Ceo
+                                            </p>
+                                            <p>
+                                                نتشرف بتقديم عرض أسعارنا للخدمات التاليه:
+                                            </p>
+                                        </div>
+                                        <div style="background-image: url(/images/LogoOpacity.png);background-repeat:no-repeat;background-size: 400px 400px;background-position: top;">
+                                            @{
+                                                if (quotation is not null)
+                                                {
+                                                    var currency = string.Empty;
+                                                    if (quotation.PriceCurrency?.Symbol == "AED")
+                                                    {
+                                                        currency = "د.إ";
+                                                    }
+                                                    else if (quotation.PriceCurrency?.Symbol == "SAR")
+                                                    {
+                                                        currency = "ر.س";
+                                                    }
+                                                    else if (quotation.PriceCurrency?.Symbol == "EGP")
+                                                    {
+                                                        currency = "ج.م";
+                                                    }
+                                                    else if (quotation.PriceCurrency?.Symbol == "$")
+                                                    {
+                                                        currency = "$";
+                                                    }
+                                                    <div class="h5">
+                                                        <div class="table-responsive">
+                                                            <table class="table table-bordered border-gray-800">
+                                                                <thead>
+                                                                    <tr class="fw-bold fs-6 text-gray-800">
+                                                                        <th>نوع الخدمة</th>
+                                                                        <th>عدد الزيارات</th>
+                                                                        <th>الوحدة</th>
+                                                                        <th>العدد</th>
+                                                                        <th>المساحة</th>
+                                                                        <th>السعر (@currency)</th>
+                                                                        <th>قيمة الخصم</th>
+                                                                        <th>نسبة الخصم</th>
+                                                                        <th>المجموع (@currency)</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    @foreach (var body in quotation.QuotationBodies)
+                                                                    {
+                                                                        <tr>
+                                                                            <td>@body.Service?.Name</td>
+                                                                            <td>@body.NoOfVisits</td>
+                                                                            <td>@body.Unit?.Name</td>
+                                                                            <td>@(body.Quantity == 0 ? "-" : body.Quantity)</td>
+                                                                            <td>@(body.Area == 0 ? "-" : body.Area)</td>
+                                                                            <td>@(body.Price)</td>
+                                                                            <td>@body.DiscountRate %</td>
+                                                                            <td>@(body.DiscountPrice)</td>
+                                                                            <td>@(body.TotalPrice)</td>
+                                                                        </tr>
+                                                                    }
+                                                                    <tr>
+                                                                        <td colspan="8" class="text-center">
+                                                                            المجموع الكلي
+                                                                        </td>
+                                                                        <td>
+                                                                            @(quotation.TotalPrice)
+                                                                        </td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+
+
+                                                    </div>
+                                                }
+                                            }
+                                            <div class="h3 mt-5 fw-bold text-center">
+                                                <p>ملاحظات</p>
+                                            </div>
+                                            <div class="h5">
+                                                <p>@quotation.Notes</p>
+                                            </div>
+                                            <div style="margin-bottom:100px" class="mt-10">
+                                                <p class="fs-4 fw-bold text-start w-100">
+                                                    شركة المكافحة المتميزة
+                                                </p>
+                                            </div>
+                                            <div dir="ltr" style="direction:ltr;">
+                                                <div class="text-center">
+                                                    <a class="align-items-center text-gray-800 text-hover-primary fs-2">
+                                                        <i class="ki-duotone ki-geolocation fs-2 me-1">
+                                                            <span class="path1"></span>
+                                                            <span class="path2"></span>
+                                                        </i>
+                                                        Saudi Arabia - Jeddah Khalid Ibn Alwaleed - AI Rabie Commercial Centere
+                                                    </a>
+                                                </div>
+                                                <div class="d-flex justify-content-center mt-10 mb-5">
+                                                    <a class="align-items-center text-gray-800 text-hover-primary fs-2 me-3">
+                                                        <i class="ki-duotone ki-phone fs-2 me-1">
+                                                            <span class="path1"></span>
+                                                            <span class="path2"></span>
+                                                        </i>
+                                                        +966 567 780 260
+                                                    </a>
+                                                    <a class="align-items-center text-gray-800 text-hover-primary fs-2 me-3">
+                                                        <i class="ki-duotone ki-sms fs-2 me-1">
+                                                            <span class="path1"></span>
+                                                            <span class="path2"></span>
+                                                        </i>
+                                                        Info@pestsweepy.com
+                                                    </a>
+                                                    <a class="align-items-center text-gray-800 text-hover-primary fs-2 me-3">
+                                                        <i class="ki-duotone ki-tablet fs-2 me-1">
+                                                            <span class="path1"></span>
+                                                            <span class="path2"></span>
+                                                            <span class="path3"></span>
+                                                        </i>
+                                                        920013270
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-1" style="border-left: solid 30px #00a2e5;"></div>
+                        </div>
+                    </div>
+                </div>
+                <MudScrollToTop TopOffset="100"
+                                Selector="#unique_id_scroll_section"
+                                VisibleCssClass="visible absolute me-10"
+                                HiddenCssClass="invisible">
+                    <MudFab Color="Color.Primary" IconSize="Size.Large" StartIcon="@Icons.Material.Filled.KeyboardDoubleArrowUp" />
+                </MudScrollToTop>
+            }
+        </div>
+    </DialogContent>
+    <DialogActions>
+        <div class="w-100 text-center">
+            <button @onclick="PrintReport" class="btn btn-lg btn-success m-5">
+                @languageContainer.Keys["Print"]
+            </button>
+        </div>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    [Inject] IJSRuntime JSRuntime { get; set; } = default!;
+    [Parameter][EditorRequired] public int Id { get; set; }
+    [CascadingParameter] MudDialogInstance MudDialog { get; set; } = default!;
+
+
+    private QuotationDto? quotation;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        quotation = await GetByIdAsync<QuotationDto>($"Quotations/{Id}");
+
+        if (quotation.Client is not null)
+        {
+            quotation.ClientName = quotation.Client.Name;
+        }
+    }
+
+    void Cancel() => MudDialog.Cancel();
+
+    private async Task PrintReport()
+    {
+
+        await JSRuntime.InvokeVoidAsync("DownloadPdf");
+    }
+}
+

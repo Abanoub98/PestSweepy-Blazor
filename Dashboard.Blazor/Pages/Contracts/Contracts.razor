@@ -41,16 +41,18 @@
                     <PropertyColumn Property="x => x.CreatedAt" Title="@languageContainer.Keys["Created Date"]" />
                     <PropertyColumn Property="x => x.EffectiveDate" Title="@languageContainer.Keys["Effective Date"]" />
 
-                    <TemplateColumn CellStyle="width:300px" CellClass="text-center" Context="contractClient" HeaderClass="text-center" Sortable="false" Filterable="false">
+                    <TemplateColumn CellClass="text-center" Context="contract" HeaderClass="text-center" Sortable="false" Filterable="false">
                         <HeaderTemplate>
                             <MudText Class="w-100">@languageContainer.Keys["Actions"]</MudText>
                         </HeaderTemplate>
                         <CellTemplate>
-                            <TableButtons IsDisable="isDisable" EditClicked="() => OpenForm(formUri,contractClient.Item!.Id)"
-                                          IsDeleteHide="true" DetailsClicked="() => OpenDetails(detailsUri,contractClient.Item!.Id)" />
-                            <a @onclick="() => ShowContract(contractClient.Item!.Id)" title="@languageContainer.Keys["Show Report"]" class="btn btn-sm btn-light-success me-1">
-                                <i class="fa-solid fa-file-pdf"></i>
-                            </a>
+                            <div>
+                                <TableButtons IsDisable="isDisable" EditClicked="() => OpenForm(formUri,contract.Item!.Id)"
+                                              IsDeleteHide="true" DetailsClicked="() => OpenDetails(detailsUri,contract.Item!.Id)" />
+                                <a @onclick="() => ShowContract(contract.Item!.Id)" title="@languageContainer.Keys["Show Report"]" class="btn btn-sm btn-light-success me-1">
+                                    <i class="fa-solid fa-file-pdf"></i>
+                                </a>
+                            </div>
                         </CellTemplate>
                     </TemplateColumn>
                 </Columns>

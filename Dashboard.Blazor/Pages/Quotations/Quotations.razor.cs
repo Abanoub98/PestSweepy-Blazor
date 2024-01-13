@@ -1,4 +1,5 @@
-﻿namespace Dashboard.Blazor.Pages.Quotations;
+﻿
+namespace Dashboard.Blazor.Pages.Quotations;
 
 public partial class Quotations
 {
@@ -22,18 +23,24 @@ public partial class Quotations
         StopProcessing();
     }
 
-    private async Task Delete(int id)
+    private async Task ShowQuotation(int id)
     {
-        StartProcessing();
+        DialogOptions dialogOptions = new()
+        {
+            CloseOnEscapeKey = true,
+            MaxWidth = MaxWidth.Large,
+            FullWidth = true,
+            Position = DialogPosition.Center,
+            CloseButton = true
+        };
 
-        var isSuccess = await DeleteAsync<QuotationDto>($"Quotations/{id}");
+        DialogParameters<QuotationReport> Parameters = new()
+        {
+            { x => x.Id, id }
+        };
 
-        if (isSuccess)
-            quotations.Remove(quotations.FirstOrDefault(x => x.Id == id)!);
-
-        StopProcessing();
+        await DialogService.ShowAsync<QuotationReport>("Quotation Report", Parameters, dialogOptions);
     }
-
     private bool FilterFunc(QuotationDto element)
     {
         if (string.IsNullOrWhiteSpace(searchString))

@@ -1,6 +1,4 @@
 ﻿@attribute [Authorize]
-
-<div>
     @if (!IsDetailsHide)
     {
         <a @onclick="DetailsClicked" title="@languageContainer.Keys["Show Details"]" class="btn btn-sm btn-light-info me-1">
@@ -19,7 +17,6 @@
             <i class="fa-solid fa-trash"></i>
         </a>
     }
-</div>
 
 
 @code {

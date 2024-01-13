@@ -41,12 +41,17 @@
                 <PropertyColumn Property="x => x.CreatedAt" Title="@languageContainer.Keys[" Date"]" />
                 <PropertyColumn Property="x => x.TotalPrice" Title="@languageContainer.Keys["Total Price"]" />
 
-                <TemplateColumn CellStyle="width:300px" CellClass="text-center" Context="quotation" HeaderClass="text-center" Sortable="false" Filterable="false">
+                <TemplateColumn CellClass="text-center" Context="quotation" HeaderClass="text-center" Sortable="false" Filterable="false">
                     <HeaderTemplate>
                         <MudText Class="w-100">@languageContainer.Keys["Actions"]</MudText>
                     </HeaderTemplate>
                     <CellTemplate>
-                        <TableButtons IsDisable="isDisable" IsEditHide="true" IsDeleteHide="true" DetailsClicked="() => OpenDetails(detailsUri,quotation.Item!.Id)" />
+                        <div>
+                            <TableButtons IsDisable="isDisable" IsEditHide="true" IsDeleteHide="true" DetailsClicked="() => OpenDetails(detailsUri,quotation.Item!.Id)" />
+                            <a @onclick="() => ShowQuotation(quotation.Item!.Id)" title="@languageContainer.Keys["Show Report"]" class="btn btn-sm btn-light-success me-1">
+                                <i class="fa-solid fa-file-pdf"></i>
+                            </a>
+                        </div>
                     </CellTemplate>
                 </TemplateColumn>
             </Columns>

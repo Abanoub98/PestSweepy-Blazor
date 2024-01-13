@@ -6,7 +6,6 @@ public partial class LoginLogs
     private MudGrid table;
 
     private int totalItems;
-    private string? searchString = null;
 
     //private async Task<GridData<LoginLogDto>> ServerReload(GridState<LoginLogDto> state)
     //{
