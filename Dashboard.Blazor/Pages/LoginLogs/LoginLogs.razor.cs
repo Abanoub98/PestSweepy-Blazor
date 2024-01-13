@@ -2,25 +2,8 @@
 
 public partial class LoginLogs
 {
-    private IEnumerable<LoginLogDto> pagedData;
-    private MudGrid table;
-
-    private int totalItems;
-
-    //private async Task<GridData<LoginLogDto>> ServerReload(GridState<LoginLogDto> state)
-    //{
-    //    IEnumerable<LoginLogDto> data = await GetAllAsync<LoginLogDto>("SecuirtyLogs/LoginLogs?OrderBy=id&Asc=false");
-
-    //    totalItems = data.Count();
-
-    //    return new GridData<LoginLogDto>() { TotalItems = totalItems, Items = pagedData };
-    //}
-
-    //private void OnSearch(string text)
-    //{
-    //    searchString = text;
-    //    table.ReloadServerData();
-    //}
+    private List<LoginLogDto> loginLogs = new();
+    private string searchString = string.Empty;
 
     protected override async Task OnInitializedAsync()
     {
@@ -32,6 +15,25 @@ public partial class LoginLogs
             new(languageContainer.Keys["Login Logs"], href: null, disabled: true, icon: Icons.Material.Outlined.Security),
         });
 
+        loginLogs = await GetAllAsync<LoginLogDto>("SecuirtyLogs/LoginLogs?OrderBy=id&Asc=false");
+
         StopProcessing();
+    }
+
+    private bool FilterFunc(LoginLogDto element)
+    {
+        if (string.IsNullOrWhiteSpace(searchString))
+            return true;
+        if (element.UserName.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+            return true;
+        if (element.Role.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+            return true;
+        if (element.UserId.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+            return true;
+        if (element.LoginDate.ToString().Contains(searchString, StringComparison.OrdinalIgnoreCase))
+            return true;
+        if (element.Ip.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+            return true;
+        return false;
     }
 }

@@ -17,7 +17,7 @@
                 <!--end::Separator-->
                 <!--begin::Content-->
                 <div class="mb-9 text-gray-900">
-                    @languageContainer.Keys[ConfirmationMessage], @languageContainer.Keys["This action cannot be undone"]!
+                    @languageContainer.Keys[ConfirmationMessage], @languageContainer.Keys["Note that this action cannot be undone!"]!
                 </div>
                 <!--end::Content-->
                 <!--begin::Buttons-->
@@ -36,7 +36,7 @@
 @code {
     [CascadingParameter] MudDialogInstance MudDialog { get; set; } = default!;
 
-    [Parameter] public string ConfirmationMessage { get; set; } = "You want to delete this?";
+    [Parameter] public string ConfirmationMessage { get; set; } = "Are you sure you want to delete these items?";
 
     void Submit() => MudDialog.Close(DialogResult.Ok(true));
     void Cancel() => MudDialog.Cancel();

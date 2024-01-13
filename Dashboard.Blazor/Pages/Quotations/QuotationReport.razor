@@ -1,6 +1,16 @@
 ﻿@attribute [Authorize]
 @inherits BasePage
+<style>
+    .table-responsive {
+        overflow-x: auto;
+    }
 
+    .table th {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+</style>
 <MudDialog>
     <DialogContent>
         <div id="unique_id_scroll_section" class="w-100 d-flex flex-column align-items-center py-5" style="height: 60vh;overflow: auto;">
@@ -35,7 +45,7 @@
                                         </div>
                                         <div class="h5 d-flex gap-3 mb-5">
                                             <p>التاريخ: @quotation.CreatedAt!.Value.ToShortDateString()</p>
-                                            <p>رقم: @quotation.SerialNumber</p>
+                                            <p>عرض رقم: @quotation.SerialNumber</p>
                                         </div>
                                         <div class="h5">
                                             <p>

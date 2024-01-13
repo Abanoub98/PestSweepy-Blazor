@@ -1,15 +1,18 @@
 ﻿@page "/LoginLogs"
-@attribute [Authorize(Roles = Roles.AdminRole)]
+@attribute [Authorize]
 @inherits BasePage
 
-<PageTitle>@languageContainer.Keys["Login Logs"]</PageTitle>
+<PageTitle>
+    @languageContainer.Keys["Login Logs"]
+</PageTitle>
 <MudBreadcrumbs Items="breadcrumbItems"></MudBreadcrumbs>
 <BrowserViewportObserver TableHeightChanged="TableHeightChanged" />
 
-@* <MudCard Elevation="25">
+<MudCard Elevation="25">
     <MudCardContent>
-        <MudDataGrid Items="pagedData" Dense="true" Elevation="0" FixedHeader="true" Height="@($"{tableHight}px")"
-            Loading="@(isLoading)" LoadingProgressColor="Color.Info" Filterable="true" @ref="table" Hover="true" SortMode="SortMode.Single" T="LoginLogDto">
+        <MudDataGrid T="LoginLogDto" Dense="true" Elevation="0" FixedHeader="true" Height="@($"{tableHight}px")"
+                     Loading="@(isLoading)" LoadingProgressColor="Color.Info" Filterable="true"
+                     Items="loginLogs" Hover="true" SortMode="SortMode.Single" QuickFilter="@FilterFunc">
 
             <ToolBarContent>
                 <div class="d-flex justify-content-between flex-column align-items-center flex-md-row w-100">
@@ -18,7 +21,9 @@
                             <MudAvatar Rounded="true" Color="Color.Info">
                                 <MudIcon Icon="@Icons.Material.Filled.Security" />
                             </MudAvatar>
-                            <MudText Class="mx-3" Typo="Typo.h5">@languageContainer.Keys["Login Logs"]</MudText>
+                            <MudText Class="mx-3" Typo="Typo.h5">
+                                @languageContainer.Keys["Login Logs"]
+                            </MudText>
                         </div>
                     </div>
                     <div class="w-md-50 w-100">
@@ -28,14 +33,12 @@
                     </div>
                 </div>
             </ToolBarContent>
-
             <NoRecordsContent>
                 <NoDataToDisply />
             </NoRecordsContent>
-
             <Columns>
                 <PropertyColumn Property="x => x.UserId" Title="User Id" />
-                <PropertyColumn Property="x => x.Role" />
+                <PropertyColumn Property="x => x.Role" Title="Role" />
                 <PropertyColumn Property="x => x.Ip" Title="Ip Address" />
                 <PropertyColumn Property="x => x.UserName" Title="User Name" />
                 <PropertyColumn Property="x => x.LoginDate" Title="Login Date" />
@@ -46,4 +49,4 @@
             </PagerContent>
         </MudDataGrid>
     </MudCardContent>
-</MudCard> *@
+</MudCard>
