@@ -115,7 +115,7 @@ else
                                       HelperTextOnFocus="true" Placeholder="@languageContainer.Keys["Notes"]" Lines="10" Label="@languageContainer.Keys["Notes"]" />
                     </div>
                     <div class="flex-wrap gap-5 gap-md-0 d-flex flex-md-nowrap align-items-end p-3">
-                        <MudText Typo="Typo.h6">@languageContainer.Keys["Quotation Total Price"] = <span class="text-primary fw-bold">@(quotationForm.TotalPrice)</span> @languageContainer.Keys["SAR"]</MudText>
+                        <MudText Typo="Typo.h6">@languageContainer.Keys["Quotation Total Price"] = <span class="text-primary fw-bold">@(quotationForm.TotalPrice)</span> @languageContainer.Keys[quotationForm.PriceCurrency?.Symbol]</MudText>
                         <MudSpacer />
                         <FormButtons IsLoading="@isLoading" />
                     </div>
