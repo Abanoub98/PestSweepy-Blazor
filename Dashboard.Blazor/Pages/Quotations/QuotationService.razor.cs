@@ -61,7 +61,9 @@ public partial class QuotationService
         if (string.IsNullOrEmpty(value))
             return quotationService.Services;
 
-        return quotationService.Services.Where(x => x.Name.Contains(value, StringComparison.InvariantCultureIgnoreCase));
+        return quotationService.Services.Where(x =>
+            x.NameAr.Contains(value, StringComparison.InvariantCultureIgnoreCase) ||
+            x.NameEn.Contains(value, StringComparison.InvariantCultureIgnoreCase));
     }
 
     private void CalculateTotalPrice()

@@ -72,22 +72,20 @@ else
                     <h2 class="card-title fw-bold">@languageContainer.Keys["Services"]</h2>
                 </div>
                 <div class="card-body pt-0">
-                    <div class="d-flex flex-wrap justify-content-between">
-                        <div>
+                    <div class="d-flex flex-wrap justify-content-md-between flex-column flex-md-row justify-content-center">
+                        <div class="d-flex align-items-md-start flex-column align-items-center">
                             <MudIcon Size="Size.Large" Icon="@Icons.Material.Outlined.Handyman" Title="Services" />
                             <div class="fw-semibold text-gray-400 mt-5">
                                 <span class="text-gray-900 fw-bold fs-2 me-1">@Services.Count</span>
                                 @languageContainer.Keys["Services"]
                             </div>
                         </div>
-                        <div>
-                            <MudButton Class="fw-bold" Href="/Services" Size="Size.Large" Variant="Variant.Text">
-                                <div class="d-flex flex-column align-items-center">
-                                    <MudIcon Size="Size.Large" Class="mb-1" Icon="@Icons.Material.Outlined.ArrowCircleRight" />
-                                    @languageContainer.Keys["More Info"]
-                                </div>
-                            </MudButton>
-                        </div>
+                        <MudButton Class="fw-bold" Href="/Services" Size="Size.Large" Variant="Variant.Text">
+                            <div class="d-flex flex-column align-items-center">
+                                <MudIcon Size="Size.Large" Class="mb-1" Icon="@Icons.Material.Outlined.ArrowCircleRight" />
+                                @languageContainer.Keys["More Info"]
+                            </div>
+                        </MudButton>
                     </div>
                 </div>
             </div>
@@ -98,22 +96,20 @@ else
                     <h2 class="card-title fw-bold">@languageContainer.Keys["Clients"]</h2>
                 </div>
                 <div class="card-body pt-0">
-                    <div class="d-flex flex-wrap justify-content-between">
-                        <div>
+                    <div class="d-flex flex-wrap justify-content-md-between flex-column flex-md-row justify-content-center">
+                        <div class="d-flex align-items-md-start flex-column align-items-center">
                             <MudIcon Size="Size.Large" Icon="@Icons.Material.Outlined.Diversity1" Title="Clients" />
                             <div class="fw-semibold text-gray-400 mt-5">
                                 <span class="text-gray-900 fw-bold fs-2 me-1">@Clients.Count</span>
                                 @languageContainer.Keys["Clients"]
                             </div>
                         </div>
-                        <div>
-                            <MudButton Class="fw-bold" Href="/Clients" Size="Size.Large" Variant="Variant.Text">
-                                <div class="d-flex flex-column align-items-center">
-                                    <MudIcon Size="Size.Large" Class="mb-1" Icon="@Icons.Material.Outlined.ArrowCircleRight" />
-                                    @languageContainer.Keys["More Info"]
-                                </div>
-                            </MudButton>
-                        </div>
+                        <MudButton Class="fw-bold" Href="/Clients" Size="Size.Large" Variant="Variant.Text">
+                            <div class="d-flex flex-column align-items-center">
+                                <MudIcon Size="Size.Large" Class="mb-1" Icon="@Icons.Material.Outlined.ArrowCircleRight" />
+                                @languageContainer.Keys["More Info"]
+                            </div>
+                        </MudButton>
                     </div>
 
                 </div>
@@ -125,22 +121,20 @@ else
                     <h2 class="card-title fw-bold">@languageContainer.Keys["Supervisors"]</h2>
                 </div>
                 <div class="card-body pt-0">
-                    <div class="d-flex flex-wrap justify-content-between">
-                        <div>
+                    <div class="d-flex flex-wrap justify-content-md-between flex-column flex-md-row justify-content-center">
+                        <div class="d-flex align-items-md-start flex-column align-items-center">
                             <MudIcon Size="Size.Large" Icon="@Icons.Material.Outlined.SupervisorAccount" Title="Supervisors" />
                             <div class="fw-semibold text-gray-400 mt-5">
                                 <span class="text-gray-900 fw-bold fs-2 me-1">@Supervisors.Count</span>
                                 @languageContainer.Keys["Supervisors"]
                             </div>
                         </div>
-                        <div>
-                            <MudButton Class="fw-bold" Href="/Supervisors" Size="Size.Large" Variant="Variant.Text">
-                                <div class="d-flex flex-column align-items-center">
-                                    <MudIcon Size="Size.Large" Class="mb-1" Icon="@Icons.Material.Outlined.ArrowCircleRight" />
-                                    @languageContainer.Keys["More Info"]
-                                </div>
-                            </MudButton>
-                        </div>
+                        <MudButton Class="fw-bold" Href="/Supervisors" Size="Size.Large" Variant="Variant.Text">
+                            <div class="d-flex flex-column align-items-center">
+                                <MudIcon Size="Size.Large" Class="mb-1" Icon="@Icons.Material.Outlined.ArrowCircleRight" />
+                                @languageContainer.Keys["More Info"]
+                            </div>
+                        </MudButton>
                     </div>
 
                 </div>
@@ -152,22 +146,20 @@ else
                     <h2 class="card-title fw-bold">@languageContainer.Keys["Managers"]</h2>
                 </div>
                 <div class="card-body pt-0">
-                    <div class="d-flex flex-wrap justify-content-between">
-                        <div>
+                    <div class="d-flex flex-wrap justify-content-md-between flex-column flex-md-row justify-content-center">
+                        <div class="d-flex align-items-md-start flex-column align-items-center">
                             <MudIcon Size="Size.Large" Icon="@Icons.Material.Outlined.Diversity3" Title="Managers" />
                             <div class="fw-semibold text-gray-400 mt-5">
-                                <span class="text-gray-900 fw-bold fs-2 me-1">@Managers.Count</span>
+                                <span class="text-gray-900 fw-bold fs-2 me-md-1">@Managers.Count</span>
                                 @languageContainer.Keys["Managers"]
                             </div>
                         </div>
-                        <div>
-                            <MudButton Class="fw-bold" Href="/Managers" Size="Size.Large" Variant="Variant.Text">
-                                <div class="d-flex flex-column align-items-center">
-                                    <MudIcon Size="Size.Large" Class="mb-1" Icon="@Icons.Material.Outlined.ArrowCircleRight" />
-                                    @languageContainer.Keys["More Info"]
-                                </div>
-                            </MudButton>
-                        </div>
+                        <MudButton Class="fw-bold" Href="/Managers" Size="Size.Large" Variant="Variant.Text">
+                            <div class="d-flex flex-column align-items-center">
+                                <MudIcon Size="Size.Large" Class="mb-1" Icon="@Icons.Material.Outlined.ArrowCircleRight" />
+                                @languageContainer.Keys["More Info"]
+                            </div>
+                        </MudButton>
                     </div>
                 </div>
             </div>

@@ -56,7 +56,9 @@ public partial class Categories
             return true;
         if (element.Color.Contains(searchString, StringComparison.OrdinalIgnoreCase))
             return true;
-        if (element.Name.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+        if (element.NameAr.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+            return true;
+        if (element.NameEn.Contains(searchString, StringComparison.OrdinalIgnoreCase))
             return true;
         if (element.OrderIndex.ToString().Contains(searchString, StringComparison.OrdinalIgnoreCase))
             return true;

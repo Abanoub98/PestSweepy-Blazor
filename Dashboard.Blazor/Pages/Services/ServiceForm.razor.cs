@@ -36,7 +36,7 @@ public partial class ServiceForm
         {
             new(languageContainer.Keys["Home"], href: "/", icon: Icons.Material.Filled.Home),
             new(languageContainer.Keys["Services"], href: "/Services", icon: Icons.Material.Outlined.Handyman),
-            new(languageContainer.Keys[Id == 0 ? "Add Service" : $"Edit {serviceForm.Name}"], href: null, disabled: true),
+            new(languageContainer.Keys[Id == 0 ? "Add Service" : $"Edit {serviceForm.NameEn} - {serviceForm.NameAr}"], href: null, disabled: true),
         });
     }
 

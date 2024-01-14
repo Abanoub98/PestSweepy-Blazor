@@ -17,7 +17,7 @@ public partial class CategoryForm
         {
             new(languageContainer.Keys["Home"], href: "/", icon: Icons.Material.Filled.Home),
             new(languageContainer.Keys["Categories"], href: "/Categories", icon: EntityIcons.CategoriesIcon),
-            new(Id == 0 ? $"{languageContainer.Keys[("Add")]} {languageContainer.Keys[("Category")]}" : $"{languageContainer.Keys[("Edit")]} {categoryForm.Name}", href: null, disabled: true),
+            new(Id == 0 ? $"{languageContainer.Keys["Add"]} {languageContainer.Keys["Category"]}" : $"{languageContainer.Keys["Edit"]} {categoryForm.NameEn} - {categoryForm.NameAr}", href: null, disabled: true),
         });
     }
 

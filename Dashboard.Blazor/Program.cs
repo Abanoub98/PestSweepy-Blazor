@@ -1,4 +1,5 @@
 using System.Reflection;
+using Blazorise;
 using Dashboard.Blazor;
 using Dashboard.Blazor.Extensions;
 using Microsoft.AspNetCore.Components.Web;
@@ -26,6 +27,11 @@ builder.Services.AddMudServices(config =>
     config.SnackbarConfiguration.ShowTransitionDuration = 500;
     config.SnackbarConfiguration.SnackbarVariant = Variant.Filled;
 });
+
+builder.Services.AddBlazorise(options =>
+{
+    options.Immediate = true;
+}).AddEmptyProviders();
 
 var host = builder.Build();
 await host.SetDefaultCulture();

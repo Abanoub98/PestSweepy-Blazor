@@ -18,7 +18,7 @@ public partial class ServiceDetails
         {
             new(languageContainer.Keys["Home"], href: "/", icon: Icons.Material.Filled.Home),
             new(languageContainer.Keys["Services"], href: "/Services", icon: Icons.Material.Outlined.Handyman),
-            new(service.Name, href: null, disabled: true),
+            new($"{service.NameEn} - {service.NameAr}", href: null, disabled: true),
         });
     }
 }

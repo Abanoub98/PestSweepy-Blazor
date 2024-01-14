@@ -12,8 +12,10 @@ public class ServiceDto
     public int? DurationInMinutes { get; set; }
 
     [Required]
-    [Label(name: "Name")]
-    public string Name { get; set; } = null!;
+    public string NameAr { get; set; } = null!;
+
+    [Required]
+    public string NameEn { get; set; } = null!;
 
     [Required]
     [Label(name: "Description")]

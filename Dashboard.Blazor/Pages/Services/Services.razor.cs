@@ -47,7 +47,7 @@ public partial class Services
             return true;
         if (element.DurationInMinutes.ToString()!.Contains(searchString, StringComparison.OrdinalIgnoreCase))
             return true;
-        if (element.Name.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+        if (element.NameEn.Contains(searchString, StringComparison.OrdinalIgnoreCase))
             return true;
         if (element.OrderIndex.ToString()!.Contains(searchString, StringComparison.OrdinalIgnoreCase))
             return true;

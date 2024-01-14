@@ -18,7 +18,7 @@ public partial class CategoryDetails
         {
             new(languageContainer.Keys["Home"], href: "/", icon: Icons.Material.Filled.Home),
             new(languageContainer.Keys["Categories"], href: "/Categories", icon: EntityIcons.CategoriesIcon),
-            new(category.Name, href: null, disabled: true),
+            new($"{category.NameEn} - {category.NameAr}", href: null, disabled: true),
         });
     }
 }

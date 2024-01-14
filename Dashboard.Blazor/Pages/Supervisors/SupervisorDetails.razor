@@ -109,7 +109,7 @@ else
                 </li>
                 <!--end:::Tab item-->
                 <!--begin:::Tab item-->
-                <li class="nav-item ms-auto">
+                <li class="nav-item ms-auto mt-5 mt-md-0">
                     <!--begin::Action menu-->
                     <a href="/Supervisors" class="btn btn-primary ps-7">
                         <MudIcon Icon="@Icons.Material.Filled.ArrowBack" />
@@ -138,26 +138,31 @@ else
                             </div>
                             <!--end::Details toggle-->
                             <div class="separator separator-dashed"></div>
-                            <!--begin::Details content-->
-                            <div class="py-3 fs-6">
-                                <!--begin::Details item-->
-                                <div class="fw-bold mt-5">Nationality</div>
-                                <div class="text-gray-600">@supervisor.Nationality?.Name</div>
-                                <!--begin::Details item-->
-                                <!--begin::Details item-->
-                                <div class="fw-bold mt-5">Gender</div>
-                                <div class="text-gray-600">@supervisor.Gender</div>
-                                <!--begin::Details item-->
-                                <!--begin::Details item-->
-                                <div class="fw-bold mt-5">Contact Email</div>
-                                <div class="text-gray-600">@supervisor.ContactEmail</div>
-                                <!--begin::Details item-->
-                                <!--begin::Details item-->
-                                <div class="fw-bold mt-5">Contact Phone</div>
-                                <div class="text-gray-600">@supervisor.ContactPhone</div>
-                                <!--begin::Details item-->
+                            <div class="d-flex justify-content-between align-items-center">
+                                <!--begin::Details content-->
+                                <div class="py-3 fs-6">
+                                    <!--begin::Details item-->
+                                    <div class="fw-bold mt-5">Nationality</div>
+                                    <div class="text-gray-600">@supervisor.Nationality?.Name</div>
+                                    <!--begin::Details item-->
+                                    <!--begin::Details item-->
+                                    <div class="fw-bold mt-5">Gender</div>
+                                    <div class="text-gray-600">@supervisor.Gender</div>
+                                    <!--begin::Details item-->
+                                    <!--begin::Details item-->
+                                    <div class="fw-bold mt-5">Contact Email</div>
+                                    <div class="text-gray-600">@supervisor.ContactEmail</div>
+                                    <!--begin::Details item-->
+                                    <!--begin::Details item-->
+                                    <div class="fw-bold mt-5">Contact Phone</div>
+                                    <div class="text-gray-600">@supervisor.ContactPhone</div>
+                                    <!--begin::Details item-->
+                                </div>
+                                <!--end::Details content-->
+                                <div>
+                                    <QRCode PixelsPerModule="6" Value="@($"https://pestsweepy.com/Supervisors/Details/{Id}")" Alt="QRCode image" EccLevel="EccLevel.H" Icon="@Base64Images.Logo" />
+                                </div>
                             </div>
-                            <!--end::Details content-->
                         </div>
                     </div>
                 </div>

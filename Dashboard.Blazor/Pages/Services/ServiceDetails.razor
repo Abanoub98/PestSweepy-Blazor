@@ -13,7 +13,7 @@ else
     <div class="card shadow-sm">
         <div class="card-header">
             <div class="fw-bold card-title">
-                @languageContainer.Keys["Service Details"]
+                @($"{service.NameEn} - {service.NameAr} {languageContainer.Keys["Details"]}")
             </div>
             <div class="card-toolbar">
                 <a href="/Services" class="btn btn-sm btn-primary me-3">
@@ -34,8 +34,11 @@ else
                         <div class="row">
                             <div class="col-6">
                                 <!--begin::Details item-->
-                                <div class="fw-bold mt-5 mb-1">@languageContainer.Keys["Name"]:</div>
-                                <div class="text-gray-600">@service.Name</div>
+                                <div class="fw-bold mt-5 mb-1">@languageContainer.Keys["Name English"]:</div>
+                                <div class="text-gray-600">@service.NameEn</div>
+
+                                <div class="fw-bold mt-5 mb-1">@languageContainer.Keys["Name Arabic"]:</div>
+                                <div class="text-gray-600">@service.NameAr</div>
 
                                 <div class="fw-bold mt-5 mb-1">@languageContainer.Keys["Duration In Minutes"]:</div>
                                 <div class="text-gray-600">@HandelDuration((int)service.DurationInMinutes!)</div>
@@ -44,6 +47,9 @@ else
                                 <div class="fw-bold mt-5 mb-1">@languageContainer.Keys["Order Index"]:</div>
                                 <div class="text-gray-600">@(service.OrderIndex is null ? "-" : service.OrderIndex)</div>
                                 <!--begin::Details item-->
+                                <div>
+                                    <QRCode Value="@service.NameEn" Alt="QRCode image" EccLevel="EccLevel.H" Icon="@Base64Images.Logo" />
+                                </div>
                             </div>
                             <div class="col-6">
                                 <!--begin::Details item-->

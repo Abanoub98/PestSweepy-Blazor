@@ -40,7 +40,7 @@
             </NoRecordsContent>
 
             <Columns>
-                <TemplateColumn Context="service" SortBy="new Func<ServiceDto, object>(x=>x.Name)">
+                <TemplateColumn Context="service" SortBy="new Func<ServiceDto, object>(x=>x.NameEn)">
                     <HeaderTemplate>
                         <MudText>Service</MudText>
                     </HeaderTemplate>
@@ -50,7 +50,7 @@
                                 <MudImage Src="@(imageUrl + service.Item!.Image)" />
                             </MudAvatar>
                             <div class="mx-3">
-                                <MudText>@service.Item!.Name</MudText>
+                                <MudText>@service.Item!.NameEn</MudText>
                             </div>
                         </div>
                     </CellTemplate>

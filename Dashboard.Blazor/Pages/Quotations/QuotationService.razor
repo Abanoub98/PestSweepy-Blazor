@@ -20,7 +20,7 @@
             <MudAutocomplete T="ServiceDto" SearchFunc="@GetServices" Adornment="Adornment.Start" AnchorOrigin="Origin.BottomCenter" @bind-Value="quotationService.Service" Disabled="IsReadOnly"
                              Variant="Variant.Outlined" ShowProgressIndicator="true" ResetValueOnEmptyText="true" CoerceText="true" AdornmentIcon="@Icons.Material.Filled.Handyman" Label="@languageContainer.Keys["Service"]"
                               ProgressIndicatorColor="Color.Info" Clearable For="@(() => quotationService.Service)" AdornmentColor="Color.Info" ReadOnly="IsReadOnly"
-                              ToStringFunc="@(e=> e == null ? null : $"{e.Name}")" HelperText="@languageContainer.Keys["Required"]" Placeholder="@languageContainer.Keys["Select Service"]" MaxItems="null" HelperTextOnFocus="true">
+                              ToStringFunc="@(e=> e == null ? null : $"{e.NameAr} - {e.NameEn}")" HelperText="@languageContainer.Keys["Required"]" Placeholder="@languageContainer.Keys["Select Service"]" MaxItems="null" HelperTextOnFocus="true">
                  <NoItemsTemplate>
                      <MudText Align="Align.Center" Class="px-4 py-4">
                          @languageContainer.Keys["No items found"]

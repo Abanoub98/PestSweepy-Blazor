@@ -23,7 +23,7 @@ else
                 </CardHeaderAvatar>
                 <CardHeaderContent>
                     <MudText Style="display: flex;align-items: center;" Typo="Typo.h5">
-                        @(Id == 0 ? $"{languageContainer.Keys[("Add")]} {languageContainer.Keys[("Category")]}" : $"{languageContainer.Keys[("Edit")]} {categoryForm.Name}")
+                        @(Id == 0 ? $"{languageContainer.Keys[("Add")]} {languageContainer.Keys[("Category")]}" : $"{languageContainer.Keys[("Edit")]} {categoryForm.NameEn} - {categoryForm.NameAr}")
                     </MudText>
                 </CardHeaderContent>
                 <CardHeaderActions>
@@ -35,7 +35,11 @@ else
             <MudCardContent Class="px-5 py-3">
                 <div class="d-flex flex-wrap flex-md-nowrap">
                     <div class="p-3  w-100 w-md-50">
-                        <MudTextField HelperText="@languageContainer.Keys[("Required")]" Variant="Variant.Outlined" @bind-Value="categoryForm.Name" For="@(() => categoryForm.Name)" HelperTextOnFocus="true" Label="@languageContainer.Keys[("Name")]"
+                        <MudTextField HelperText="@languageContainer.Keys[("Required")]" Variant="Variant.Outlined" @bind-Value="categoryForm.NameEn" For="@(() => categoryForm.NameEn)" HelperTextOnFocus="true" Label="@languageContainer.Keys[("Name English")]"
+                                      AdornmentColor="Color.Info" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.AccountBox" Placeholder="@languageContainer.Keys[(Placeholders.Name)]" />
+                    </div>
+                    <div class="p-3  w-100 w-md-50">
+                        <MudTextField HelperText="@languageContainer.Keys[("Required")]" Variant="Variant.Outlined" @bind-Value="categoryForm.NameAr" For="@(() => categoryForm.NameAr)" HelperTextOnFocus="true" Label="@languageContainer.Keys[("Name Arabic")]"
                                       AdornmentColor="Color.Info" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.AccountBox" Placeholder="@languageContainer.Keys[(Placeholders.Name)]" />
                     </div>
                     <div class="p-3  w-100 w-md-25">
@@ -45,18 +49,18 @@ else
                     <div class="p-3  w-100 w-md-25">
                         <MudColorPicker @bind-Text="categoryForm.Color" Placeholder="@languageContainer.Keys[("Select Color")]" Clearable ColorPickerMode="ColorPickerMode.HEX" Variant="Variant.Outlined"
                                          DisableAlpha=true DisableToolbar=true DisableColorField=true DisableModeSwitch=true AnchorOrigin="Origin.BottomCenter" Label="@languageContainer.Keys[("Color")]" />
-                    </div>
-                </div>
-                <div class="flex-wrap gap-5 gap-md-0 d-flex flex-md-nowrap align-items-end p-3">
-                    <ImageUpload ImageSelected="CaptureUploadedImage" UploadedImageCleared="ClearUploadedImage" CurrentImage="@(Id == 0 ? null :imageUrl + categoryForm.Image)" />
-                    <MudSpacer />
-                    <FormButtons IsLoading="@isLoading" />
-                </div>
-            </MudCardContent>
-            <MudCardActions>
-            </MudCardActions>
-        </EditForm>
-    </MudCard>
+                     </div>
+                 </div>
+                 <div class="flex-wrap gap-5 gap-md-0 d-flex flex-md-nowrap align-items-end p-3">
+                     <ImageUpload ImageSelected="CaptureUploadedImage" UploadedImageCleared="ClearUploadedImage" CurrentImage="@(Id == 0 ? null :imageUrl + categoryForm.Image)" />
+                     <MudSpacer />
+                     <FormButtons IsLoading="@isLoading" />
+                 </div>
+             </MudCardContent>
+             <MudCardActions>
+             </MudCardActions>
+         </EditForm>
+     </MudCard>
 }
 
 

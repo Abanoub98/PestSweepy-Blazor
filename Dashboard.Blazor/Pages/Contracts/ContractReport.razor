@@ -110,7 +110,7 @@
                                                                         @foreach (var body in term.Quotation.QuotationBodies)
                                                                         {
                                                                             <tr>
-                                                                                <td>@body.Service?.Name</td>
+                                                                                <td>@body.Service?.NameAr</td>
                                                                                 <td>@body.NoOfVisits</td>
                                                                                 <td>@body.Unit?.Name</td>
                                                                                 <td>@(body.Quantity == 0 ? "-" : body.Quantity)</td>
