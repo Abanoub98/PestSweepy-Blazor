@@ -3,8 +3,8 @@
 @inherits BasePage
 
 <PageTitle>@languageContainer.Keys["Service Details"]</PageTitle>
-<MudBreadcrumbs Items="breadcrumbItems" />
-@if (service is null)
+    <MudBreadcrumbs Items="breadcrumbItems" />
+    @if (service is null)
 {
     <FormLoadingSpinner IsBigForm="true" />
 }
@@ -34,31 +34,22 @@ else
                         <div class="row">
                             <div class="col-6">
                                 <!--begin::Details item-->
-                                <div class="fw-bold mt-5 mb-1">@languageContainer.Keys["Name English"]:</div>
-                                <div class="text-gray-600">@service.NameEn</div>
+                                <div class="fw-bold mt-5 mb-1">@languageContainer.Keys["Name"]:</div>
+                                <div class="text-gray-600">@service.NameEn - @service.NameAr</div>
 
-                                <div class="fw-bold mt-5 mb-1">@languageContainer.Keys["Name Arabic"]:</div>
-                                <div class="text-gray-600">@service.NameAr</div>
+                                <div class="fw-bold mt-5 mb-1">@languageContainer.Keys["Category"]:</div>
+                                <div class="text-gray-600">@service.Category?.NameEn - @service.Category?.NameAr</div>
 
                                 <div class="fw-bold mt-5 mb-1">@languageContainer.Keys["Duration In Minutes"]:</div>
-                                <div class="text-gray-600">@HandelDuration((int)service.DurationInMinutes!)</div>
+                                <div class="text-gray-600">@HandelDuration(service.DurationInMinutes)</div>
                                 <!--begin::Details item-->
                                 <!--begin::Details item-->
                                 <div class="fw-bold mt-5 mb-1">@languageContainer.Keys["Order Index"]:</div>
                                 <div class="text-gray-600">@(service.OrderIndex is null ? "-" : service.OrderIndex)</div>
                                 <!--begin::Details item-->
-                                <div>
-                                    <QRCode Value="@service.NameEn" Alt="QRCode image" EccLevel="EccLevel.H" Icon="@Base64Images.Logo" />
-                                </div>
                             </div>
                             <div class="col-6">
-                                <!--begin::Details item-->
-                                @foreach (var price in service.Prices)
-                                {
-                                    <div class="fw-bold mt-5 mb-1">@languageContainer.Keys["Price In"] @languageContainer.Keys[price.Currency?.Name]:</div>
-                                    <div class="text-gray-600">@($"{price.Amount} {price.Currency?.Symbol}")</div>
-                                }
-                                <!--begin::Details item-->
+                                <QRCode Value="@service.NameEn" PixelsPerModule="6" Alt="QRCode image" EccLevel="EccLevel.H" Icon="@Base64Images.Logo" />
                             </div>
                         </div>
                     </div>
@@ -66,6 +57,48 @@ else
                         <MudImage Class="rounded-lg border border-gray-300 mt-5" Width="300" Src=@(imageUrl + service.Image) />
                     </div>
                 </div>
+                <div class="d-flex gap-7 my-10">
+                    @{
+                        foreach (var option in service.ServiceOptions)
+                        {
+                            <div class="card border-gray-400 border-hover-primary w-100">
+                                <!--begin:: Card body-->
+                                <div class="card-body p-9">
+                                    <!--begin::Name-->
+                                    <div class="fs-3 fw-bold text-gray-900 d-flex align-items-center">
+                                        @option.Name
+                                        @if (option.Disabled)
+                                        {
+                                            <MudIcon Class="ms-3" Color="Color.Error" Icon="@Icons.Material.Filled.VisibilityOff" />
+                                        }
+                                    </div>
+                                    <!--end::Name-->
+                                    <!--begin::Description-->
+                                    <p class="text-gray-500 fw-semibold fs-5 mt-1 mb-7">
+                                        @languageContainer.Keys["Order Index"]: @(option.OrderIndex is null ? "-" : option.OrderIndex)
+                                    </p>
+                                    <!--end::Description-->
+                                    <!--begin::Info-->
+                                    <div class="d-flex flex-wrap mb-5">
+                                        @foreach (var price in option.Prices)
+                                        {
+                                            <!--begin::Due-->
+                                            <div class="border border-gray-300 border-dashed rounded min-w-125px py-3 px-4 me-7 mb-3">
+                                                <div class="fs-6 text-gray-800 fw-bold">@price.Amount @languageContainer.Keys[price.Currency?.Code]</div>
+                                                <div class="fw-semibold text-gray-500">@price.Currency?.Name</div>
+                                            </div>
+                                            <!--end::Due-->
+                                        }
+                                    </div>
+                                    <!--end::Info-->
+                                </div>
+                                <!--end:: Card body-->
+                            </div>
+                            <!--begin::Details item-->
+                        }
+                    }
+                </div>
+
                 <!--begin::Details item-->
                 <div class="fw-bold mt-5 mb-1">@languageContainer.Keys["Description"]:</div>
                 <div class="text-gray-800 p-3 rounded-lg border border-gray-400">@service.Description</div>

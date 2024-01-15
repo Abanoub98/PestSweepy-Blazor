@@ -4,11 +4,9 @@ public class ServiceDto
 {
     public int Id { get; set; }
 
-    [Label(name: "Order")]
     public int? OrderIndex { get; set; }
 
     [Required]
-    [Label(name: "Duration")]
     public int? DurationInMinutes { get; set; }
 
     [Required]
@@ -18,11 +16,9 @@ public class ServiceDto
     public string NameEn { get; set; } = null!;
 
     [Required]
-    [Label(name: "Description")]
     public string Description { get; set; } = null!;
 
     [Required]
-    [Label(name: "Category")]
     public LookupDto? Category { get; set; }
     public int CategoryId { get; set; }
     public IEnumerable<LookupDto>? Categories { get; set; }
@@ -30,17 +26,28 @@ public class ServiceDto
     public string Image { get; set; } = null!;
     public IBrowserFile? UploadedImage { get; set; }
 
-    public List<ServicePriceType> Prices { get; set; } = new();
-
-    public ServicePriceType? Price { get; set; } = new();
+    public List<ServiceOption> ServiceOptions { get; set; } = new();
 }
 
-public class ServicePriceType
+public class ServiceOption
+{
+    [Required]
+    public string Name { get; set; } = null!;
+
+    public int? OrderIndex { get; set; }
+
+    public bool Disabled { get; set; }
+
+    public List<ServiceOptionPrice> Prices { get; set; } = new();
+}
+
+
+public class ServiceOptionPrice
 {
     public int Id { get; set; }
+
     public double? Amount { get; set; }
+
     public int CurrencyId { get; set; }
     public CurrencyDto? Currency { get; set; }
-    public IEnumerable<CurrencyDto>? Currencies { get; set; }
-
 }

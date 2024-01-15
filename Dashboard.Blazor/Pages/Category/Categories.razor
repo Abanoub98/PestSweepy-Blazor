@@ -57,7 +57,7 @@
 
                 <PropertyColumn Property="x => x.OrderIndex" Title="@($"{languageContainer.Keys["Order Index"]}")" />
 
-                <TemplateColumn Context="category" Title="Color" Sortable="false" Filterable="false" HeaderClass="text-center" CellClass="text-center">
+                <TemplateColumn Context="category" Title="@($"{languageContainer.Keys["Color"]}")" Sortable="false" Filterable="false" HeaderClass="text-center" CellClass="text-center">
                     <HeaderTemplate>
                         <MudText Class="w-100">@($"{languageContainer.Keys["Color"]}")</MudText>
                     </HeaderTemplate>
@@ -68,7 +68,7 @@
                     </CellTemplate>
                 </TemplateColumn>
 
-                <TemplateColumn Title="Actions" CellClass="text-center" Context="category" HeaderClass="text-center" Sortable="false" Filterable="false">
+                <TemplateColumn Title="@($"{languageContainer.Keys["Actions"]}")" CellClass="text-center" Context="category" HeaderClass="text-center" Sortable="false" Filterable="false">
                     <HeaderTemplate>
                         <MudText Class="w-100">@($"{languageContainer.Keys["Actions"]}")</MudText>
                     </HeaderTemplate>

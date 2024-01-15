@@ -5,7 +5,7 @@ public partial class Services
     [Parameter] public int? CategoryId { get; set; } = null;
 
     private List<ServiceDto> services = new();
-    private string searchString = string.Empty;
+
     private readonly string formUri = "Services/Form";
     private readonly string detailsUri = "Services/Details";
 
@@ -36,6 +36,26 @@ public partial class Services
         if (isSuccess)
         {
             services.Remove(services.FirstOrDefault(x => x.Id == id)!);
+
+            if (selectedIds.Contains(id))
+                selectedIds.Remove(id);
+        }
+
+        StopProcessing();
+    }
+
+    private void SelectedItemsChanged(HashSet<ServiceDto> items) => selectedIds = items.Select(i => i.Id).ToList();
+
+    private async Task DeleteAll()
+    {
+        StartProcessing();
+
+        var isSuccess = await DeleteAllAsync<ServiceDto>($"Services/DeleteMultiple", selectedIds);
+
+        if (isSuccess)
+        {
+            services.RemoveAll(x => selectedIds.Contains(x.Id));
+            selectedIds = new();
         }
 
         StopProcessing();
@@ -48,6 +68,8 @@ public partial class Services
         if (element.DurationInMinutes.ToString()!.Contains(searchString, StringComparison.OrdinalIgnoreCase))
             return true;
         if (element.NameEn.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+            return true;
+        if (element.NameAr.Contains(searchString, StringComparison.OrdinalIgnoreCase))
             return true;
         if (element.OrderIndex.ToString()!.Contains(searchString, StringComparison.OrdinalIgnoreCase))
             return true;

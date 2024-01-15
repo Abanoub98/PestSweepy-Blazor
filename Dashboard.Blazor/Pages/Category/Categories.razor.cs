@@ -40,7 +40,7 @@ public partial class Categories
     {
         StartProcessing();
 
-        var isSuccess = await DeleteAllAsync<ClientDto>($"Categories/DeleteMultiple", selectedIds);
+        var isSuccess = await DeleteAllAsync<CategoryDto>($"Categories/DeleteMultiple", selectedIds);
 
         if (isSuccess)
         {

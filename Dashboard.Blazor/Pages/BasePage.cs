@@ -251,13 +251,16 @@ public class BasePage : ComponentBase
         await DialogService.ShowAsync<ImagePreview>(languageContainer.Keys["Image Preview"], formParameters, dialogOptions);
     }
 
-    protected string HandelDuration(int durationInMin)
+    protected string HandelDuration(int? durationInMin)
     {
+        if (durationInMin is null)
+            return string.Empty;
+
         if (durationInMin <= 60)
             return $"{durationInMin} {languageContainer.Keys["Minutes"]}";
 
-        int hours = durationInMin / 60;
-        int remainingMinutes = durationInMin % 60;
+        int hours = (int)durationInMin / 60;
+        int remainingMinutes = (int)durationInMin % 60;
         return $"{hours} {languageContainer.Keys["Hours and"]} {remainingMinutes} {languageContainer.Keys["Minutes"]}";
     }
 
