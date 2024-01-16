@@ -73,10 +73,27 @@
     <Navlink IsDarkMood="@IsDarkMood" Href="/Services" MenuTitle="Services" Icon="@Icons.Material.Outlined.Handyman" />
     <!--end:Menu item-->
     <!--begin:Menu item-->
-    <Navlink IsDarkMood="@IsDarkMood" Href="/Clients" MenuTitle="Clients" Icon="@Icons.Material.Outlined.Diversity1" />
-    <!--end:Menu item-->
-    <!--begin:Menu item-->
-    <Navlink IsDarkMood="@IsDarkMood" Href="/ContractClients" MenuTitle="Contract Clients" Icon="@Icons.Material.Outlined.Diversity1" />
+    <div data-kt-menu-trigger="click" class="menu-item here menu-accordion">
+        <!--begin:Menu link-->
+        <span class="menu-link">
+            <span class="menu-icon">
+                <MudIcon Color="@(IsDarkMood? Color.Info : Color.Dark)" Size="Size.Large" Icon="@Icons.Material.Outlined.Apartment" Title="Clients" />
+            </span>
+            <span class="menu-title">@languageContainer.Keys["Clients"]</span>
+            <span class="menu-arrow"></span>
+        </span>
+        <!--end:Menu link-->
+        <!--begin:Menu sub-->
+        <div class="menu-sub menu-sub-accordion">
+            <!--begin:Menu item-->
+            <Navlink IsDarkMood="@IsDarkMood" Href="/Clients" MenuTitle="Individual Clients" Icon="@Icons.Material.Outlined.Diversity1" Size="@Size.Medium" />
+            <!--end:Menu item-->
+            <!--begin:Menu item-->
+            <Navlink IsDarkMood="@IsDarkMood" Href="/ContractClients" MenuTitle="Contract Clients" Icon="@Icons.Material.Outlined.Diversity1" Size="@Size.Medium" />
+            <!--end:Menu item-->
+        </div>
+        <!--end:Menu sub-->
+    </div>
     <!--end:Menu item-->
     <!--begin:Menu item-->
     <Navlink IsDarkMood="@IsDarkMood" Href="/Payments" MenuTitle="Payments" Icon="@Icons.Material.Filled.Payment" />

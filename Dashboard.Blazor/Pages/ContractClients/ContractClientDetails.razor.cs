@@ -18,7 +18,7 @@ public partial class ContractClientDetails
         {
             new(languageContainer.Keys["Home"], href: "/", icon: Icons.Material.Filled.Home),
             new(languageContainer.Keys["Contract Clients"], href: "/ContractClients", icon: Icons.Material.Outlined.Diversity1),
-            new(contractClient.Name, href: null, disabled: true),
+            new($"{contractClient.FirstName} {contractClient.LastName}", href: null, disabled: true),
         });
     }
 }

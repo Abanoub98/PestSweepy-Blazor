@@ -25,7 +25,7 @@ else
                 </CardHeaderAvatar>
                 <CardHeaderContent>
                     <MudText Style="display: flex;align-items: center;" Typo="Typo.h5">
-                        @(Id == 0 ? $"{languageContainer.Keys[("Add")]} {languageContainer.Keys[("Category")]}" : $"{languageContainer.Keys[("Edit")]} {clientForm.Name}")
+                        @(Id == 0 ? $"{languageContainer.Keys[("Add")]} {languageContainer.Keys[("Category")]}" : $"{languageContainer.Keys[("Edit")]} {clientForm.FirstName} {clientForm.LastName}")
                     </MudText>
                 </CardHeaderContent>
                 <CardHeaderActions>
@@ -36,11 +36,17 @@ else
             </MudCardHeader>
             <MudCardContent Class="px-5 py-3">
                 <div class="d-flex flex-wrap flex-md-nowrap">
-                    <div class="p-3  w-100 w-md-25">
-                        <MudTextField HelperText="@languageContainer.Keys[("Required")]" Variant="Variant.Outlined" @bind-Value="clientForm.Name" For="@(() => clientForm.Name)" HelperTextOnFocus="true"
+                    <div class="p-3  w-100">
+                        <MudTextField HelperText="@languageContainer.Keys[("Required")]" Variant="Variant.Outlined" @bind-Value="clientForm.FirstName" For="@(() => clientForm.FirstName)" HelperTextOnFocus="true"
                                       AdornmentColor="Color.Info" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.AccountBox" Placeholder="@Placeholders.Name" />
                     </div>
-                    <div class="p-3 w-100 w-md-25">
+                    <div class="p-3  w-100">
+                        <MudTextField HelperText="@languageContainer.Keys[("Required")]" Variant="Variant.Outlined" @bind-Value="clientForm.LastName" For="@(() => clientForm.LastName)" HelperTextOnFocus="true"
+                                      AdornmentColor="Color.Info" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.AccountBox" Placeholder="@Placeholders.Name" />
+                    </div>
+                </div>
+                <div class="d-flex flex-wrap flex-md-nowrap">
+                    <div class="p-3 w-100">
                         <MudSelect HelperText="@languageContainer.Keys[("Required")]" Variant="Variant.Outlined" @bind-Value="clientForm.Gender" For="@(() => clientForm.Gender)" Adornment="Adornment.Start" Clearable
                                     Placeholder="@Placeholders.GenderDropDown" AdornmentIcon="@Icons.Material.Filled.Group" AdornmentColor="Color.Info" AnchorOrigin="Origin.BottomCenter" T="string" HelperTextOnFocus="true">
                              <MudSelectItem Value="@("Male")">
@@ -51,19 +57,19 @@ else
                             </MudSelectItem>
                         </MudSelect>
                     </div>
-                    <div class="p-3 w-100 w-md-25">
+                    <div class="p-3 w-100">
                         <MudAutocomplete T="LookupDto" SearchFunc="@GetNationalities" Adornment="Adornment.Start" AnchorOrigin="Origin.BottomCenter" Label="@languageContainer.Keys[("Nationality")]"
                                          Variant="Variant.Outlined" ShowProgressIndicator="true" ResetValueOnEmptyText="true" CoerceText="true" AdornmentIcon="@Icons.Material.Filled.Flag"
                                          ProgressIndicatorColor="Color.Info" Clearable @bind-Value="clientForm.Nationality" For="@(() => clientForm.Nationality)" AdornmentColor="Color.Info" MaxItems="null" HelperTextOnFocus="true"
                                           ToStringFunc="@(e=> e == null ? null : $"{e.Name}")" HelperText="@languageContainer.Keys[("Required")]" Placeholder="@languageContainer.Keys[(Placeholders.NationalityDropDown)]">
-                            <NoItemsTemplate>
+                             <NoItemsTemplate>
                                  <MudText Align="Align.Center" Class="px-4 py-4">
                                      @languageContainer.Keys[("No items found")]
                                 </MudText>
                             </NoItemsTemplate>
                         </MudAutocomplete>
                     </div>
-                    <div class="p-3 w-100 w-md-25">
+                    <div class="p-3 w-100">
                         <MudAutocomplete T="LookupDto" SearchFunc="@GetCountries" Adornment="Adornment.Start" AnchorOrigin="Origin.BottomCenter" Label="@languageContainer.Keys[("Country")]"
                                          Variant="Variant.Outlined" ShowProgressIndicator="true" ResetValueOnEmptyText="true" CoerceText="true" AdornmentIcon="@Icons.Material.Filled.Flag"
                                          ProgressIndicatorColor="Color.Info" Clearable @bind-Value="clientForm.Country" For="@(() => clientForm.Country)" AdornmentColor="Color.Info" MaxItems="null" HelperTextOnFocus="true"
@@ -72,11 +78,11 @@ else
                                  <MudText Align="Align.Center" Class="px-4 py-4">
                                      @languageContainer.Keys[("No items found")]
                                 </MudText>
-                             </NoItemsTemplate>
-                         </MudAutocomplete>
-                     </div>
-                 </div>
-                 @if (Id == 0)
+                            </NoItemsTemplate>
+                        </MudAutocomplete>
+                    </div>
+                </div>
+                @if (Id == 0)
                 {
                     <div class="flex-wrap d-flex flex-md-nowrap">
                         <div class="p-3 w-100">

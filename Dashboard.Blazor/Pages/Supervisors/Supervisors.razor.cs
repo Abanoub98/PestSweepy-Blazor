@@ -5,7 +5,7 @@ public partial class Supervisors
     [Parameter] public int? ManagerId { get; set; }
 
     private List<SupervisorDto> supervisors = new();
-    private string searchString = string.Empty;
+
     private readonly string formUri = "Supervisors/Form";
     private readonly string detailsUri = "Supervisors/Details";
 
@@ -31,9 +31,30 @@ public partial class Supervisors
         StartProcessing();
 
         var isSuccess = await DeleteAsync<SupervisorDto>($"Supervisors/{id}");
+
         if (isSuccess)
         {
             supervisors.Remove(supervisors.FirstOrDefault(x => x.Id == id)!);
+
+            if (selectedIds.Contains(id))
+                selectedIds.Remove(id);
+        }
+
+        StopProcessing();
+    }
+
+    private void SelectedItemsChanged(HashSet<SupervisorDto> items) => selectedIds = items.Select(i => i.Id).ToList();
+
+    private async Task DeleteAll()
+    {
+        StartProcessing();
+
+        var isSuccess = await DeleteAllAsync<SupervisorDto>($"Supervisors/DeleteMultiple", selectedIds);
+
+        if (isSuccess)
+        {
+            supervisors.RemoveAll(x => selectedIds.Contains(x.Id));
+            selectedIds = new();
         }
 
         StopProcessing();
@@ -43,7 +64,9 @@ public partial class Supervisors
     {
         if (string.IsNullOrWhiteSpace(searchString))
             return true;
-        if (element.Name.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+        if (element.FirstName.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+            return true;
+        if (element.LastName.Contains(searchString, StringComparison.OrdinalIgnoreCase))
             return true;
 
         return false;

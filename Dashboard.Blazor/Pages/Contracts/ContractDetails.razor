@@ -38,7 +38,7 @@ else
                             <div class="col-4">
                                 <!--begin::Details item-->
                                 <div class="fw-bold mt-5 mb-1">@languageContainer.Keys["Contract Client"]:</div>
-                                <a href="/ContractClients/Form/@contract.ContractClient?.Id" class="text-gray-600 text-hover-primary">@contract.ContractClient?.Name</a>
+                                <a href="/ContractClients/Form/@contract.ContractClient?.Id" class="text-gray-600 text-hover-primary">@($"{contract.ContractClient?.FirstName} {contract.ContractClient?.LastName}")</a>
                                 <!--begin::Details item-->
                                 <div class="fw-bold mt-5 mb-1">@languageContainer.Keys["Created Date"]:</div>
                                 <div class="text-gray-600">@contract.CreatedAt!.ToString("d")</div>

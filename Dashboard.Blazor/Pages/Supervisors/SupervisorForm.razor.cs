@@ -17,7 +17,7 @@ public partial class SupervisorForm
         {
             new(languageContainer.Keys["Home"], href: "/", icon: Icons.Material.Filled.Home),
             new(languageContainer.Keys["Supervisors"], href: "/Supervisors", icon: Icons.Material.Outlined.SupervisorAccount),
-            new(languageContainer.Keys[Id == 0 ? "Add Supervisor" : $"Edit {supervisorForm.Name}"], href: null, disabled: true),
+            new(languageContainer.Keys[Id == 0 ? "Add Supervisor" : $"Edit {supervisorForm.FirstName} {supervisorForm.LastName}"], href: null, disabled: true),
         });
     }
 
@@ -75,6 +75,6 @@ public partial class SupervisorForm
         if (string.IsNullOrEmpty(value))
             return supervisorForm.Managers;
 
-        return supervisorForm.Managers.Where(x => x.Name.Contains(value, StringComparison.InvariantCultureIgnoreCase));
+        return supervisorForm.Managers.Where(x => x.FirstName.Contains(value, StringComparison.InvariantCultureIgnoreCase) || x.LastName.Contains(value, StringComparison.InvariantCultureIgnoreCase));
     }
 }

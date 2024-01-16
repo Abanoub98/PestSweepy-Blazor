@@ -5,8 +5,10 @@ public class ClientDto : BaseUser
     public int Id { set; get; }
 
     [Required]
-    [Label(name: "Name")]
-    public string Name { get; set; } = null!;
+    public string FirstName { get; set; } = null!;
+
+    [Required]
+    public string LastName { get; set; } = null!;
 
     public DateTime? CreatedAt { get; set; }
 
@@ -14,17 +16,14 @@ public class ClientDto : BaseUser
     public IBrowserFile? UploadedImage { get; set; }
 
     [Required]
-    [Label(name: "Gender")]
     public string? Gender { get; set; }
 
     [Required]
-    [Label(name: "Nationality")]
     public LookupDto? Nationality { get; set; }
     public int NationalityId { get; set; }
     public IEnumerable<LookupDto>? Nationalities { get; set; }
 
     [Required]
-    [Label(name: "Country")]
     public LookupDto? Country { get; set; }
     public int? CountryId { get; set; }
     public IEnumerable<LookupDto>? Countries { get; set; }

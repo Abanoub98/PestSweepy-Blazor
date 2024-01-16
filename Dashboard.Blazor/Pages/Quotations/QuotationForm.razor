@@ -41,7 +41,7 @@ else
                             <MudAutocomplete T="LookupDto" SearchFunc="@GetClients" Adornment="Adornment.Start" AnchorOrigin="Origin.BottomCenter" Label="@languageContainer.Keys["Client"]"
                                              Variant="Variant.Outlined" ShowProgressIndicator="true" ResetValueOnEmptyText="true" CoerceText="true" AdornmentIcon="@Icons.Material.Filled.Diversity1"
                                              ProgressIndicatorColor="Color.Info" Clearable @bind-Value="quotationForm.Client" For="@(() => quotationForm.Client)" AdornmentColor="Color.Info"
-                                              ToStringFunc="@(e=> e == null ? null : $"{e.Name}")" HelperText="@languageContainer.Keys["Required"]" Placeholder="@languageContainer.Keys["Select Client"]" MaxItems="null" HelperTextOnFocus="true">
+                                              ToStringFunc="@(e=> e == null ? null : $"{e.FirstName} {e.LastName}")" HelperText="@languageContainer.Keys["Required"]" Placeholder="@languageContainer.Keys["Select Client"]" MaxItems="null" HelperTextOnFocus="true">
                                  <NoItemsTemplate>
                                      <MudText Align="Align.Center" Class="px-4 py-4">
                                          @languageContainer.Keys["No items found"]

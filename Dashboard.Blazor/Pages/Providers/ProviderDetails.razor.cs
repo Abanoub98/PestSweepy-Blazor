@@ -18,7 +18,7 @@ public partial class ProviderDetails
         {
             new(languageContainer.Keys["Home"], href: "/", icon: Icons.Material.Filled.Home),
             new(languageContainer.Keys["Providers"], href: "/Providers", icon: Icons.Material.Outlined.Engineering),
-            new(provider.Name, href: null, disabled: true),
+            new($"{provider.FirstName} {provider.LastName}", href: null, disabled: true),
         });
     }
 }

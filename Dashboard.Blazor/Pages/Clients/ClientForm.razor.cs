@@ -17,7 +17,7 @@ public partial class ClientForm
         {
             new(languageContainer.Keys["Home"], href: "/", icon: Icons.Material.Filled.Home),
             new(languageContainer.Keys["Clients"], href: "/Clients", icon: Icons.Material.Outlined.Diversity1),
-            new(languageContainer.Keys[Id == 0 ? "Add Client" : $"Edit {clientForm.Name}"], href: null, disabled: true),
+            new(languageContainer.Keys[Id == 0 ? "Add Client" : $"Edit {clientForm.FirstName} {clientForm.LastName}"], href: null, disabled: true),
         });
     }
 

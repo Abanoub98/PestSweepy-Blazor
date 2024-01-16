@@ -17,10 +17,9 @@ public partial class ContractClientForm
         {
             new(languageContainer.Keys["Home"], href: "/", icon: Icons.Material.Filled.Home),
             new(languageContainer.Keys["Contract Clients"], href: "/ContractClients", icon: Icons.Material.Outlined.Diversity1),
-            new(languageContainer.Keys[Id == 0 ? "Add Contract Client" : $"Edit {contractClientForm.Name}"], href: null, disabled: true),
+            new(languageContainer.Keys[Id == 0 ? "Add Contract Client" : $"Edit {contractClientForm.FirstName} {contractClientForm.LastName}"], href: null, disabled: true),
         });
     }
-
     private async Task OnValidSubmit(EditContext context)
     {
         StartProcessing();

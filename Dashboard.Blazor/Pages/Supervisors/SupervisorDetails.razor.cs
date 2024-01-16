@@ -18,7 +18,7 @@ public partial class SupervisorDetails
         {
             new(languageContainer.Keys["Home"], href: "/", icon: Icons.Material.Filled.Home),
             new(languageContainer.Keys["Supervisors"], href: "/Supervisors", icon: Icons.Material.Outlined.SupervisorAccount),
-            new(supervisor.Name, href: null, disabled: true),
+            new($"{supervisor.FirstName} {supervisor.LastName}", href: null, disabled: true),
         });
     }
 }

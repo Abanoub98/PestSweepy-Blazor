@@ -23,7 +23,7 @@ else
                 </CardHeaderAvatar>
                 <CardHeaderContent>
                     <MudText Style="display: flex;align-items: center;" Typo="Typo.h5">
-                        @(Id == 0 ? "Add Manager" : $"Edit {managerForm.Name}")
+                        @(Id == 0 ? "Add Manager" : $"Edit {managerForm.FirstName} {managerForm.LastName}")
                     </MudText>
                 </CardHeaderContent>
                 <CardHeaderActions>
@@ -33,31 +33,42 @@ else
                 </CardHeaderActions>
             </MudCardHeader>
             <MudCardContent Class="px-5 py-3">
-                <div class="d-flex flex-wrap flex-md-nowrap">
-                    <div class="p-3  w-100 w-md-50">
-                        <MudTextField HelperText="@languageContainer.Keys[("Required")]" Variant="Variant.Outlined" @bind-Value="managerForm.Name" For="@(() => managerForm.Name)" HelperTextOnFocus="true"
-                                  AdornmentColor="Color.Info" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.AccountBox" Placeholder="@Placeholders.Name" />
-                    </div>
-                    <div class="p-3 w-100 w-md-25">
-                        <MudSelect HelperText="@languageContainer.Keys[("Required")]" Variant="Variant.Outlined" @bind-Value="managerForm.Gender" For="@(() => managerForm.Gender)" Adornment="Adornment.Start" Clearable
-                               Placeholder="@Placeholders.GenderDropDown" AdornmentIcon="@Icons.Material.Filled.Group" AdornmentColor="Color.Info" AnchorOrigin="Origin.BottomCenter" T="string" HelperTextOnFocus="true">
-                        <MudSelectItem Value="@("Male")">Male</MudSelectItem>
-                        <MudSelectItem Value="@("Female")">Female</MudSelectItem>
-                        </MudSelect>
-                    </div>
-                    <div class="p-3 w-100 w-md-25">
-                        <MudAutocomplete T="LookupDto" SearchFunc="@GetNationalities" Adornment="Adornment.Start" AnchorOrigin="Origin.BottomCenter"
-                                     Variant="Variant.Outlined" ShowProgressIndicator="true" ResetValueOnEmptyText="true" CoerceText="true" AdornmentIcon="@Icons.Material.Filled.Flag"
-                                     ProgressIndicatorColor="Color.Info" Clearable @bind-Value="managerForm.Nationality" For="@(() => managerForm.Nationality)" AdornmentColor="Color.Info"
-                                     ToStringFunc="@(e=> e == null ? null : $"{e.Name}")" HelperText="@languageContainer.Keys[("Required")]" Placeholder="@Placeholders.NationalityDropDown" MaxItems="null" HelperTextOnFocus="true">
-                            <NoItemsTemplate>
-                                <MudText Align="Align.Center" Class="px-4 py-4">
-                                    No items found
-                                </MudText>
-                            </NoItemsTemplate>
-                        </MudAutocomplete>
-                    </div>
-                </div>
+                 <div class="d-flex flex-wrap flex-md-nowrap">
+                     <div class="p-3 w-100">
+                         <MudTextField HelperText="@languageContainer.Keys[("Required")]" Variant="Variant.Outlined" @bind-Value="managerForm.FirstName" For="@(() => managerForm.FirstName)" HelperTextOnFocus="true"
+                                       AdornmentColor="Color.Info" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.AccountBox" Placeholder="@Placeholders.Name" />
+                     </div>
+                     <div class="p-3 w-100">
+                         <MudTextField HelperText="@languageContainer.Keys[("Required")]" Variant="Variant.Outlined" @bind-Value="managerForm.LastName" For="@(() => managerForm.LastName)" HelperTextOnFocus="true"
+                                       AdornmentColor="Color.Info" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.AccountBox" Placeholder="@Placeholders.Name" />
+                     </div>
+                 </div>
+                 <div class="d-flex flex-wrap flex-md-nowrap">
+                     <div class="p-3 w-100">
+                         <MudSelect HelperText="@languageContainer.Keys[("Required")]" Variant="Variant.Outlined" @bind-Value="managerForm.Gender" For="@(() => managerForm.Gender)" Adornment="Adornment.Start" Clearable
+                                    Placeholder="@Placeholders.GenderDropDown" AdornmentIcon="@Icons.Material.Filled.Group" AdornmentColor="Color.Info" AnchorOrigin="Origin.BottomCenter" T="string" HelperTextOnFocus="true">
+                             <MudSelectItem Value="@("Male")">Male</MudSelectItem>
+                             <MudSelectItem Value="@("Female")">Female</MudSelectItem>
+                         </MudSelect>
+                     </div>
+                     <div class="p-3 w-100">
+                         <MudAutocomplete T="LookupDto" SearchFunc="@GetNationalities" Adornment="Adornment.Start" AnchorOrigin="Origin.BottomCenter"
+                                          Variant="Variant.Outlined" ShowProgressIndicator="true" ResetValueOnEmptyText="true" CoerceText="true" AdornmentIcon="@Icons.Material.Filled.Flag"
+                                          ProgressIndicatorColor="Color.Info" Clearable @bind-Value="managerForm.Nationality" For="@(() => managerForm.Nationality)" AdornmentColor="Color.Info"
+                                          ToStringFunc="@(e=> e == null ? null : $"{e.Name}")" HelperText="@languageContainer.Keys[("Required")]" Placeholder="@Placeholders.NationalityDropDown" MaxItems="null" HelperTextOnFocus="true">
+                             <NoItemsTemplate>
+                                 <MudText Align="Align.Center" Class="px-4 py-4">
+                                     No items found
+                                 </MudText>
+                             </NoItemsTemplate>
+                         </MudAutocomplete>
+                     </div>
+                     <div class="p-3 w-100">
+                         <MudTextField HelperText="@languageContainer.Keys[("Required")]" Variant="Variant.Outlined" @bind-Value="managerForm.NationalId" For="@(() => managerForm.NationalId)" HelperTextOnFocus="true"
+                                       AdornmentColor="Color.Info" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.AccountBox" Placeholder="@Placeholders.Name" />
+
+                     </div>
+                 </div>
                 @if (Id == 0)
                 {
                     <div class="flex-wrap d-flex flex-md-nowrap">

@@ -2,19 +2,21 @@
 @attribute [Authorize(Roles = $"{Roles.AdminRole},{Roles.ManagerRole},{Roles.SupervisorRole}")]
 @inherits BasePage
 
-<PageTitle>@languageContainer.Keys["Providers"]</PageTitle>
 <BrowserViewportObserver TableHeightChanged="TableHeightChanged" />
 
 @if (SupervisorId is null)
 {
+    <PageTitle>
+        @languageContainer.Keys["Providers"]
+    </PageTitle>
     <MudBreadcrumbs Items="breadcrumbItems"></MudBreadcrumbs>
 }
 
 <MudCard Elevation="@(SupervisorId is null? 25 : 0)">
     <MudCardContent>
         <MudDataGrid T="ProviderDto" Dense="true" Elevation="0" FixedHeader="true" Height="@($"{tableHight}px")"
-                     Loading="@(isLoading)" LoadingProgressColor="Color.Info" Filterable="true"
-                     Items="providers" Hover="true" SortMode="SortMode.Single" QuickFilter="@FilterFunc">
+                     Loading="@(isLoading)" LoadingProgressColor="Color.Info" Filterable="true" SelectedItemsChanged="SelectedItemsChanged"
+                     Items="providers" Hover="true" SortMode="SortMode.Single" QuickFilter="@FilterFunc" MultiSelection="true">
 
             <ToolBarContent>
                 <div class="d-flex justify-content-between flex-column align-items-center flex-md-row w-100">
@@ -23,8 +25,11 @@
                             <MudAvatar Rounded="true" Color="Color.Info">
                                 <MudIcon Icon="@Icons.Material.Filled.Engineering" />
                             </MudAvatar>
-                            <MudText Class="mx-3" Typo="Typo.h5">@languageContainer.Keys["Providers"]</MudText>
+                            <MudText Class="mx-3" Typo="Typo.h5">
+                                @languageContainer.Keys["Providers"]
+                            </MudText>
                             <MudIconButton OnClick="() => OpenForm(formUri)" Icon="@Icons.Material.Filled.Add" Color="Color.Success"></MudIconButton>
+                            <MudIconButton OnClick="DeleteAll" Disabled="@(selectedIds.Count() < 2 ? true : false)" Icon="@Icons.Material.Filled.DeleteForever" Color="Color.Error"></MudIconButton>
                         </div>
                     </div>
                     <div class="w-md-50 w-100">
@@ -40,33 +45,32 @@
             </NoRecordsContent>
 
             <Columns>
-                <TemplateColumn Context="provider">
-                    <HeaderTemplate>
-                        <MudText>Provider</MudText>
-                    </HeaderTemplate>
+                <SelectColumn T="ProviderDto" ShowInFooter="false" />
+
+                <TemplateColumn Context="provider" CellClass="text-center" HeaderClass="text-center" Sortable="false" Filterable="false">
                     <CellTemplate>
-                        <div class="d-flex align-items-center">
-                            <MudAvatar Class="cursor-all-scroll" @onclick="() => ShowImagePreview(imageUrl + provider.Item!.Image)" Rounded="true" Size="Size.Large">
-                                <MudImage Src="@(imageUrl + provider.Item!.Image)" />
-                            </MudAvatar>
-                            <div class="mx-3">
-                                <MudText>@provider.Item!.Name</MudText>
-                            </div>
-                        </div>
+                        <MudAvatar Color="Color.Info" Class="cursor-all-scroll" @onclick="() => ShowImagePreview(imageUrl + provider.Item!.Image)" Rounded="true" Size="Size.Large">
+                            <MudImage Src="@(imageUrl + provider.Item!.Image)" />
+                        </MudAvatar>
                     </CellTemplate>
                 </TemplateColumn>
-                @if (SupervisorId is null)
-                {
-                    <PropertyColumn Property="x => x.ContactEmail" Title="@languageContainer.Keys["Contact Email"]" ShowFilterIcon="false" />
-                    <PropertyColumn Property="x => x.ContactPhone" Title="@languageContainer.Keys["Contact Phone"]" ShowFilterIcon="false" />
-                }
-                <TemplateColumn CellStyle="width:300px" CellClass="text-center" Context="provider" HeaderClass="text-center" Sortable="false" Filterable="false">
+
+                <PropertyColumn Property="x => x.FirstName" Title="@languageContainer.Keys["First Name"]" />
+                <PropertyColumn Property="x => x.LastName" Title="@languageContainer.Keys["Last Name"]" />
+                <PropertyColumn Property="x => x.ContactEmail" Title="@languageContainer.Keys["Contact Email"]" />
+                <PropertyColumn Property="x => x.ContactPhone" Title="@languageContainer.Keys["Contact Phone"]" />
+
+                <TemplateColumn Title="@languageContainer.Keys["Actions"]" CellClass="text-center" Context="provider" HeaderClass="text-center" Sortable="false" Filterable="false">
                     <HeaderTemplate>
-                        <MudText Class="w-100">Actions</MudText>
+                        <MudText Class="w-100">
+                            @languageContainer.Keys["Actions"]
+                        </MudText>
                     </HeaderTemplate>
                     <CellTemplate>
-                        <TableButtons IsDisable="isDisable" EditClicked="() => OpenForm(formUri, provider.Item!.Id)" DeleteClicked="() => Delete(provider.Item!.Id)"
-                                      DetailsClicked="() => OpenDetails(detailsUri, provider.Item!.Id)" />
+                        <div>
+                            <TableButtons IsDisable="isDisable" EditClicked="() => OpenForm(formUri, provider.Item!.Id)" DeleteClicked="() => Delete(provider.Item!.Id)"
+                                          DetailsClicked="() => OpenDetails(detailsUri, provider.Item!.Id)" />
+                        </div>
                     </CellTemplate>
                 </TemplateColumn>
             </Columns>

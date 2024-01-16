@@ -27,7 +27,7 @@ else
                         <!--end::Avatar-->
                         <!--begin::Name-->
                         <a class="fs-3 text-gray-800 text-hover-primary fw-bold my-2">
-                            @provider.Name
+                            @provider.FirstName @provider.LastName
                         </a>
                         <!--end::Name-->
                         <!--begin::Position-->
@@ -149,6 +149,10 @@ else
                                     <!--begin::Details item-->
                                     <div class="fw-bold mt-5">Contact Phone</div>
                                     <div class="text-gray-600">@provider.ContactPhone</div>
+                                    <!--begin::Details item-->
+                                    <!--begin::Details item-->
+                                    <div class="fw-bold mt-5">National Id</div>
+                                    <div class="text-gray-600">@provider.NationalId</div>
                                     <!--begin::Details item-->
                                 </div>
                                 <!--end::Details content-->

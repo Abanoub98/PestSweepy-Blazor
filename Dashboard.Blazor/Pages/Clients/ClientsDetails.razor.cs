@@ -18,7 +18,7 @@ public partial class ClientsDetails
         {
             new(languageContainer.Keys["Home"], href: "/", icon: Icons.Material.Filled.Home),
             new(languageContainer.Keys["Clients"], href: "/Clients", icon: EntityIcons.ClientsIcon),
-            new(client.Name, href: null, disabled: true),
+            new($"{client.FirstName} {client.LastName}", href: null, disabled: true),
         });
     }
 }

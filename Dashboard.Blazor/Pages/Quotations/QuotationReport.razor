@@ -49,7 +49,7 @@
                                         </div>
                                         <div class="h5">
                                             <p>
-                                                السادة/ @quotation.ClientName الموقرين...
+                                                السادة/ @(quotation.Client is null ? quotation.ClientName : $"{quotation.Client.FirstName} {quotation.Client.LastName}") الموقرين...
                                             </p>
                                             <p>
                                                 ويمثلهم/ @quotation.Ceo

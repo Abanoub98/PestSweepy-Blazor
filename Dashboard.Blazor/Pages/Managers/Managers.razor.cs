@@ -27,9 +27,30 @@ public partial class Managers
         StartProcessing();
 
         var isSuccess = await DeleteAsync<ManagerDto>($"Managers/{id}");
+
         if (isSuccess)
         {
             managers.Remove(managers.FirstOrDefault(x => x.Id == id)!);
+
+            if (selectedIds.Contains(id))
+                selectedIds.Remove(id);
+        }
+
+        StopProcessing();
+    }
+
+    private void SelectedItemsChanged(HashSet<ManagerDto> items) => selectedIds = items.Select(i => i.Id).ToList();
+
+    private async Task DeleteAll()
+    {
+        StartProcessing();
+
+        var isSuccess = await DeleteAllAsync<ManagerDto>($"Managers/DeleteMultiple", selectedIds);
+
+        if (isSuccess)
+        {
+            managers.RemoveAll(x => selectedIds.Contains(x.Id));
+            selectedIds = new();
         }
 
         StopProcessing();
@@ -39,7 +60,9 @@ public partial class Managers
     {
         if (string.IsNullOrWhiteSpace(searchString))
             return true;
-        if (element.Name.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+        if (element.FirstName.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+            return true;
+        if (element.LastName.Contains(searchString, StringComparison.OrdinalIgnoreCase))
             return true;
 
         return false;

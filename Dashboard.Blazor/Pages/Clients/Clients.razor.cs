@@ -29,7 +29,12 @@ public partial class Clients
         var isSuccess = await DeleteAsync<ClientDto>($"Clients/{id}");
 
         if (isSuccess)
+        {
             clients.Remove(clients.FirstOrDefault(x => x.Id == id)!);
+
+            if (selectedIds.Contains(id))
+                selectedIds.Remove(id);
+        }
 
         StopProcessing();
     }
@@ -48,7 +53,6 @@ public partial class Clients
             selectedIds = new();
         }
 
-
         StopProcessing();
     }
 
@@ -56,7 +60,9 @@ public partial class Clients
     {
         if (string.IsNullOrWhiteSpace(searchString))
             return true;
-        if (element.Name.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+        if (element.FirstName.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+            return true;
+        if (element.LastName.Contains(searchString, StringComparison.OrdinalIgnoreCase))
             return true;
 
         return false;

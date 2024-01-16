@@ -29,7 +29,29 @@ public partial class ContractClients
         var isSuccess = await DeleteAsync<ClientDto>($"ContractClients/{id}");
 
         if (isSuccess)
+        {
             contractClients.Remove(contractClients.FirstOrDefault(x => x.Id == id)!);
+
+            if (selectedIds.Contains(id))
+                selectedIds.Remove(id);
+        }
+
+        StopProcessing();
+    }
+
+    private void SelectedItemsChanged(HashSet<ClientDto> items) => selectedIds = items.Select(i => i.Id).ToList();
+
+    private async Task DeleteAll()
+    {
+        StartProcessing();
+
+        var isSuccess = await DeleteAllAsync<ClientDto>($"ContractClients/DeleteMultiple", selectedIds);
+
+        if (isSuccess)
+        {
+            contractClients.RemoveAll(x => selectedIds.Contains(x.Id));
+            selectedIds = new();
+        }
 
         StopProcessing();
     }
@@ -38,7 +60,9 @@ public partial class ContractClients
     {
         if (string.IsNullOrWhiteSpace(searchString))
             return true;
-        if (element.Name.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+        if (element.FirstName.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+            return true;
+        if (element.LastName.Contains(searchString, StringComparison.OrdinalIgnoreCase))
             return true;
 
         return false;

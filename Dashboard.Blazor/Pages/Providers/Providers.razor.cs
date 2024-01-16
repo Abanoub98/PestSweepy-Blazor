@@ -5,7 +5,7 @@ public partial class Providers
     [Parameter] public int? SupervisorId { get; set; }
 
     private List<ProviderDto> providers = new();
-    private string searchString = string.Empty;
+
     private readonly string formUri = "Providers/Form";
     private readonly string detailsUri = "Providers/Details";
 
@@ -33,7 +33,29 @@ public partial class Providers
         var isSuccess = await DeleteAsync<ProviderDto>($"Providers/{id}");
 
         if (isSuccess)
+        {
             providers.Remove(providers.FirstOrDefault(x => x.Id == id)!);
+
+            if (selectedIds.Contains(id))
+                selectedIds.Remove(id);
+        }
+
+        StopProcessing();
+    }
+
+    private void SelectedItemsChanged(HashSet<ProviderDto> items) => selectedIds = items.Select(i => i.Id).ToList();
+
+    private async Task DeleteAll()
+    {
+        StartProcessing();
+
+        var isSuccess = await DeleteAllAsync<ProviderDto>($"Providers/DeleteMultiple", selectedIds);
+
+        if (isSuccess)
+        {
+            providers.RemoveAll(x => selectedIds.Contains(x.Id));
+            selectedIds = new();
+        }
 
         StopProcessing();
     }
@@ -42,7 +64,9 @@ public partial class Providers
     {
         if (string.IsNullOrWhiteSpace(searchString))
             return true;
-        if (element.Name.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+        if (element.FirstName.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+            return true;
+        if (element.LastName.Contains(searchString, StringComparison.OrdinalIgnoreCase))
             return true;
 
         return false;

@@ -4,9 +4,9 @@
 @inherits BasePage
 
 <PageTitle>@languageContainer.Keys[(Id == 0 ? "Add" : "Edit") + " Contract Clients"]</PageTitle>
-<MudBreadcrumbs Items="breadcrumbItems"></MudBreadcrumbs>
+    <MudBreadcrumbs Items="breadcrumbItems"></MudBreadcrumbs>
 
-@if (contractClientForm is null)
+    @if (contractClientForm is null)
 {
     <FormLoadingSpinner IsBigForm="true" />
 }
@@ -23,7 +23,7 @@ else
                 </CardHeaderAvatar>
                 <CardHeaderContent>
                     <MudText Style="display: flex;align-items: center;" Typo="Typo.h5">
-                        @(Id == 0 ? "Add Contract Clients" : $"Edit {contractClientForm.Name}")
+                        @(Id == 0 ? "Add Contract Clients" : $"Edit {contractClientForm.FirstName} {contractClientForm.LastName}")
                     </MudText>
                 </CardHeaderContent>
                 <CardHeaderActions>
@@ -34,10 +34,16 @@ else
             </MudCardHeader>
             <MudCardContent Class="px-5 py-3">
                 <div class="d-flex flex-wrap flex-md-nowrap">
-                    <div class="p-3  w-100 w-md-25">
-                        <MudTextField HelperText="@languageContainer.Keys[("Required")]" Variant="Variant.Outlined" @bind-Value="contractClientForm.Name" For="@(() => contractClientForm.Name)" HelperTextOnFocus="true"
+                    <div class="p-3  w-100">
+                        <MudTextField HelperText="@languageContainer.Keys[("Required")]" Variant="Variant.Outlined" @bind-Value="contractClientForm.FirstName" For="@(() => contractClientForm.FirstName)" HelperTextOnFocus="true"
                                       AdornmentColor="Color.Info" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.AccountBox" Placeholder="@Placeholders.Name" />
                     </div>
+                    <div class="p-3  w-100">
+                        <MudTextField HelperText="@languageContainer.Keys[("Required")]" Variant="Variant.Outlined" @bind-Value="contractClientForm.LastName" For="@(() => contractClientForm.LastName)" HelperTextOnFocus="true"
+                                      AdornmentColor="Color.Info" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.AccountBox" Placeholder="@Placeholders.Name" />
+                    </div>
+                </div>
+                <div class="d-flex flex-wrap flex-md-nowrap">
                     <div class="p-3 w-100 w-md-25">
                         <MudSelect HelperText="@languageContainer.Keys[("Required")]" Variant="Variant.Outlined" @bind-Value="contractClientForm.Gender" For="@(() => contractClientForm.Gender)" Adornment="Adornment.Start" Clearable
                                     Placeholder="@Placeholders.GenderDropDown" AdornmentIcon="@Icons.Material.Filled.Group" AdornmentColor="Color.Info" AnchorOrigin="Origin.BottomCenter" T="string" HelperTextOnFocus="true">
@@ -69,8 +75,8 @@ else
                              </NoItemsTemplate>
                          </MudAutocomplete>
                      </div>
-                 </div>
-                 @if (Id == 0)
+                </div>
+                @if (Id == 0)
                 {
                     <div class="flex-wrap d-flex flex-md-nowrap">
                         <div class="p-3 w-100">

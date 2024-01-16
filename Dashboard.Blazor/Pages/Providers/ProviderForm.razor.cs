@@ -17,7 +17,7 @@ public partial class ProviderForm
         {
             new(languageContainer.Keys["Home"], href: "/", icon: Icons.Material.Filled.Home),
             new(languageContainer.Keys["Providers"], href: "/Providers", icon: Icons.Material.Outlined.Engineering),
-            new(languageContainer.Keys[Id == 0 ? "Add Provider" : $"Edit {providerForm.Name}"], href: null, disabled: true),
+            new(languageContainer.Keys[Id == 0 ? "Add Provider" : $"Edit {providerForm.FirstName} {providerForm.LastName}"], href: null, disabled: true),
         });
     }
 
@@ -66,7 +66,7 @@ public partial class ProviderForm
         return providerForm.Nationalities.Where(x => x.Name.Contains(value, StringComparison.InvariantCultureIgnoreCase));
     }
 
-    private async Task<IEnumerable<LookupDto>> GetManagers(string value)
+    private async Task<IEnumerable<LookupDto>> GetSupervisors(string value)
     {
         if (providerForm!.Supervisors is null)
             providerForm.Supervisors = await GetAllLookupsAsync("/Supervisors");
@@ -75,6 +75,6 @@ public partial class ProviderForm
         if (string.IsNullOrEmpty(value))
             return providerForm.Supervisors;
 
-        return providerForm.Supervisors.Where(x => x.Name.Contains(value, StringComparison.InvariantCultureIgnoreCase));
+        return providerForm.Supervisors.Where(x => x.FirstName.Contains(value, StringComparison.InvariantCultureIgnoreCase) || x.LastName.Contains(value, StringComparison.InvariantCultureIgnoreCase));
     }
 }

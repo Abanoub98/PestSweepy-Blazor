@@ -40,7 +40,7 @@
                         <MudText>Client</MudText>
                     </HeaderTemplate>
                     <CellTemplate>
-                        <MudLink Href=@($"/Clients/Details/{review.Item.Client.Id}")>@review.Item.Client.Name</MudLink>
+                        <MudLink Href=@($"/Clients/Details/{review.Item.Client.Id}")>@review.Item.Client.FirstName</MudLink>
                     </CellTemplate>
                 </TemplateColumn>
 

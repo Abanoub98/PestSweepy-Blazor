@@ -73,8 +73,10 @@
                         <MudText Class="w-100">@($"{languageContainer.Keys["Actions"]}")</MudText>
                     </HeaderTemplate>
                     <CellTemplate>
-                        <TableButtons IsDisable="isDisable" EditClicked="() => OpenForm(formUri,category.Item!.Id)" DeleteClicked="() => Delete(category.Item!.Id)"
-                                      DetailsClicked="() => OpenDetails(detailsUri,category.Item!.Id)" />
+                        <div>
+                            <TableButtons IsDisable="isDisable" EditClicked="() => OpenForm(formUri,category.Item!.Id)" DeleteClicked="() => Delete(category.Item!.Id)"
+                                          DetailsClicked="() => OpenDetails(detailsUri,category.Item!.Id)" />
+                        </div>
                     </CellTemplate>
                 </TemplateColumn>
             </Columns>

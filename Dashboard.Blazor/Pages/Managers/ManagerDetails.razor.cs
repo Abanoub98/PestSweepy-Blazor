@@ -18,7 +18,7 @@ public partial class ManagerDetails
         {
             new(languageContainer.Keys["Home"], href: "/", icon: Icons.Material.Filled.Home),
             new(languageContainer.Keys["Managers"], href: "/Managers", icon: Icons.Material.Outlined.Diversity3),
-            new(manager.Name, href: null, disabled: true),
+            new($"{manager.FirstName} {manager.LastName}", href: null, disabled: true),
         });
     }
 }
