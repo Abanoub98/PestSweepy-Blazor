@@ -10,4 +10,6 @@ public static class EntityIcons
     public const string ContractsIcon = Icons.Material.Outlined.Handshake;
     public const string CurrencyIcon = Icons.Material.Outlined.AttachMoney;
     public const string QuotationsIcon = Icons.Material.Outlined.ViewList;
+    public const string OrderIcon = Icons.Material.Filled.BreakfastDining;
+    public const string ComplaintIcon = Icons.Material.Filled.Newspaper;
 }

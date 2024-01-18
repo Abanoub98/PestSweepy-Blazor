@@ -5,7 +5,6 @@ public partial class ReviewDetails
     [Parameter][EditorRequired] public int Id { get; set; }
 
     private ReviewDto? review;
-    private readonly string formUri = "Reviews/Form";
 
     protected override async Task OnParametersSetAsync()
     {

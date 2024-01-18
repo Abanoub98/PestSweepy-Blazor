@@ -1,0 +1,93 @@
+﻿@page "/Complaints"
+@attribute [Authorize(Roles = Roles.AdminRole)]
+@inherits BasePage
+
+<PageTitle>
+    @languageContainer.Keys["Complaints"]
+</PageTitle>
+<MudBreadcrumbs Items="breadcrumbItems" />
+<BrowserViewportObserver TableHeightChanged="TableHeightChanged" />
+
+<MudCard Elevation="25">
+    <MudCardContent>
+        <MudDataGrid T="ComplaintDto" Dense="true" Elevation="0" FixedHeader="true" Height="@($"{tableHight}px")"
+                     Loading="@(isLoading)" LoadingProgressColor="Color.Info" Filterable="true"
+                     Items="complaints" Hover="true" SortMode="SortMode.Single" QuickFilter="@FilterFunc">
+
+            <ToolBarContent>
+                <div class="d-flex justify-content-between flex-column align-items-center flex-md-row w-100">
+                    <div class="w-md-25 w-100">
+                        <div class="d-flex align-items-center">
+                            <MudAvatar Rounded="true" Color="Color.Info">
+                                <MudIcon Icon="@EntityIcons.ComplaintIcon" />
+                            </MudAvatar>
+                            <MudText Class="mx-3" Typo="Typo.h5">
+                                @languageContainer.Keys["Complaints"]
+                            </MudText>
+                            <MudIconButton OnClick="DeleteAll" Disabled="@(selectedIds.Count() < 2 ? true : false)" Icon="@Icons.Material.Filled.DeleteForever" Color="Color.Error"></MudIconButton>
+                        </div>
+                    </div>
+                    <div class="w-md-50 w-100">
+                        <MudTextField @bind-Value="searchString" Adornment="Adornment.Start" Class="mt-0 mb-5" Immediate="true"
+                                      Placeholder=@($"{languageContainer.Keys["Search For"]} Name, Order Index")
+                                      AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" />
+                    </div>
+                </div>
+            </ToolBarContent>
+
+            <NoRecordsContent>
+                <NoDataToDisply />
+            </NoRecordsContent>
+
+            <Columns>
+                <SelectColumn T="ComplaintDto" ShowInFooter="false" />
+
+                <TemplateColumn Context="complaint" CellClass="text-center" HeaderClass="text-center" Sortable="false" Filterable="false">
+                    <CellTemplate>
+                        <MudAvatar Color="Color.Info" Class="cursor-all-scroll" @onclick="() => ShowImagePreview(imageUrl + complaint.Item!.Image)" Rounded="true" Size="Size.Large">
+                            <MudImage Src="@(imageUrl + complaint.Item!.Image)" />
+                        </MudAvatar>
+                    </CellTemplate>
+                </TemplateColumn>
+
+                <PropertyColumn Property="x => x.CreatedAt" Title="@languageContainer.Keys["Created At"]" />
+                <PropertyColumn Property="x => x.ComplaintType.Name" Title="@languageContainer.Keys["Complaint Type"]" />
+                <PropertyColumn Property="x => x.Client.FirstName" Title="@languageContainer.Keys["Client"]" />
+                <PropertyColumn Property="x => x.IsResolved" Hidden />
+                 <TemplateColumn Context="complaint" Title="@languageContainer.Keys["Status"]" CellClass="text-center" HeaderClass="text-center" Sortable="false" Filterable="false">
+                     <HeaderTemplate>
+                         <MudText Class="w-100">
+                             @languageContainer.Keys["Status"]
+                        </MudText>
+                    </HeaderTemplate>
+                    <CellTemplate>
+                        <MudChip Variant="Variant.Text" Size="Size.Small"
+                                 Color="@(complaint.Item.IsResolved ? Color.Success : Color.Warning)">
+
+                            @(complaint.Item.IsResolved ? "Resolved" : "Need Action")
+                        </MudChip>
+                    </CellTemplate>
+                </TemplateColumn>
+                <TemplateColumn Title="@languageContainer.Keys["Actions"]" CellClass="text-center" Context="complaint" HeaderClass="text-center" Sortable="false" Filterable="false">
+                    <HeaderTemplate>
+                        <MudText Class="w-100">
+                            @languageContainer.Keys["Actions"]
+                        </MudText>
+                    </HeaderTemplate>
+                    <CellTemplate>
+                        <TableButtons IsDisable="isDisable" IsEditHide="true"
+                                      DeleteClicked="() => Delete(complaint.Item!.Id)" DetailsClicked="() => OpenDetails(detailsUri,complaint.Item!.Id)" />
+                        <a @onclick="() => ToggleStatus(complaint.Item)" class="btn btn-sm btn-light-@(complaint.Item!.IsResolved ? "danger" : "success")">
+                            <i class="fa-solid fa-@(complaint.Item!.IsResolved ? "ban" : "check")"></i>
+                        </a>
+                    </CellTemplate>
+                </TemplateColumn>
+            </Columns>
+
+            <PagerContent>
+                <MudDataGridPager T="ComplaintDto" />
+            </PagerContent>
+        </MudDataGrid>
+    </MudCardContent>
+</MudCard>
+

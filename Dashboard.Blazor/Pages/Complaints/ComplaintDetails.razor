@@ -1,0 +1,65 @@
+﻿@page "/Complaints/Details/{Id:int}"
+@attribute [Authorize(Roles = Roles.AdminRole)]
+@inherits BasePage
+
+<PageTitle>@languageContainer.Keys["Complaint Details"]</PageTitle>
+    <MudBreadcrumbs Items="breadcrumbItems" />
+    @if (complaint is null)
+{
+    <FormLoadingSpinner IsBigForm="true" />
+}
+else
+{
+    <div class="card shadow-sm">
+        <div class="card-header">
+            <div class="fw-bold card-title">
+                @languageContainer.Keys["Complaint Details"]
+            </div>
+            <div class="card-toolbar">
+                <a href="/Complaints" class="btn bt-sm btn-primary">
+                    <MudIcon Icon="@Icons.Material.Filled.ArrowBack" />
+                    @languageContainer.Keys["Back To"] @languageContainer.Keys["Complaints"]
+                </a>
+            </div>
+        </div>
+        <div class="card-body">
+            <!--begin::Details content-->
+            <div class="py-3 fs-6">
+                <div class="row">
+                    <div class="col-8">
+                        <!--begin::Details item-->
+                        <div class="fw-bold mb-1">@languageContainer.Keys["Client"]:</div>
+                        <a href="/Clients/Details/@complaint.Client.Id" class="text-gray-600 text-hover-primary">@complaint.Client.FirstName @complaint.Client.LastName</a>
+                        <!--begin::Details item-->
+                        <!--begin::Details item-->
+                        <div class="fw-bold mt-5 mb-1">@languageContainer.Keys["Complaint Type"]:</div>
+                        <a class="text-gray-600 text-hover-primary">@complaint.ComplaintType.Name</a>
+                        <!--begin::Details item-->
+                        <!--begin::Details item-->
+                        <div class="fw-bold mt-5 mb-1">@languageContainer.Keys["Date"]:</div>
+                        <div class="text-gray-600">@complaint.CreatedAt</div>
+                        <!--begin::Details item-->
+                        <!--begin::Details item-->
+                        <div class="fw-bold mt-5 mb-1">@languageContainer.Keys["Status"]:</div>
+                        <MudChip Variant="Variant.Text" Size="Size.Small"
+                                 Color="@(complaint.IsResolved ? Color.Success : Color.Warning)">
+
+                            @(complaint.IsResolved ? "Resolved" : "Need Action")
+                        </MudChip>
+                        <!--begin::Details item-->
+                    </div>
+                    <div class="col-4">
+                        <div @onclick="@(() => ShowImagePreview(imageUrl + complaint.Image))" class="col-4 text-center">
+                            <MudImage Class="rounded-lg border border-gray-300 mt-5" Width="300" Src=@(imageUrl + complaint.Image) />
+                        </div>
+                    </div>
+                </div>
+                <!--begin::Details item-->
+                <div class="fw-bold mt-5 mb-1">@languageContainer.Keys["Feedback"]:</div>
+                <div class="text-gray-600 p-3 rounded-lg border border-gray-300">@complaint.Subject</div>
+                <!--begin::Details item-->
+            </div>
+            <!--end::Details content-->
+        </div>
+    </div>
+}

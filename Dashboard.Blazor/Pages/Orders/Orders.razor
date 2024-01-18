@@ -1,0 +1,72 @@
+﻿@page "/Orders"
+@attribute [Authorize(Roles = Roles.AdminRole)]
+@inherits BasePage
+
+<BrowserViewportObserver TableHeightChanged="TableHeightChanged" />
+<PageTitle>
+    @languageContainer.Keys["Orders"]
+</PageTitle>
+<MudBreadcrumbs Items="breadcrumbItems"></MudBreadcrumbs>
+
+<MudCard Elevation="25">
+    <MudCardContent>
+        <MudDataGrid T="OrderDto" Dense="true" Elevation="0" FixedHeader="true" Height="@($"{tableHight}px")"
+                     Loading="@(isLoading)" LoadingProgressColor="Color.Info" Filterable="true"
+                     Items="orders" Hover="true" SortMode="SortMode.Single" QuickFilter="@FilterFunc">
+
+            <ToolBarContent>
+                <div class="d-flex justify-content-between flex-column align-items-center flex-md-row w-100">
+                    <div class="w-md-25 w-100">
+                        <div class="d-flex align-items-center">
+                            <MudAvatar Rounded="true" Color="Color.Info">
+                                <MudIcon Icon="@EntityIcons.OrderIcon" />
+                            </MudAvatar>
+                            <MudText Class="mx-3" Typo="Typo.h5">
+                                @languageContainer.Keys["Orders"]
+                            </MudText>
+                        </div>
+                    </div>
+                    <div class="w-md-50 w-100">
+                        <MudTextField @bind-Value="searchString" Adornment="Adornment.Start" Class="mt-0 mb-5" Immediate="true"
+                                      Placeholder=@($"{languageContainer.Keys["Search For"]} {languageContainer.Keys["Client"]}, {languageContainer.Keys["Service"]}, {languageContainer.Keys["Date"]}")
+                                      AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" />
+                    </div>
+                </div>
+            </ToolBarContent>
+
+            <NoRecordsContent>
+                <NoDataToDisply />
+            </NoRecordsContent>
+
+            <Columns>
+
+                <PropertyColumn Property="x => x.Date" Title="@languageContainer.Keys["Date"]" />
+                <PropertyColumn Property="x => x.Client.FirstName" Title="@languageContainer.Keys["Client"]" />
+                <PropertyColumn Property="x => x.Service.NameEn" Title="@languageContainer.Keys["Service"]" />
+                <PropertyColumn Property="x => x.PaymentMethod" Title="@languageContainer.Keys["Payment Method"]" />
+                <PropertyColumn Property="x => x.TotalAmount" Title="@languageContainer.Keys["Total Amount"]" />
+
+                <TemplateColumn Title="@languageContainer.Keys["Actions"]" CellClass="text-center" Context="order" HeaderClass="text-center" Sortable="false" Filterable="false">
+                    <HeaderTemplate>
+                        <MudText Class="w-100">
+                            @languageContainer.Keys["Actions"]
+                        </MudText>
+                    </HeaderTemplate>
+                    <CellTemplate>
+                        <div>
+                            <TableButtons IsDisable="isDisable" IsEditHide="true" DetailsClicked="() => OpenDetails(detailsUri, order.Item!.Id)" />
+                            <a @onclick="() => ShowOrderActions(order.Item)" class="btn btn-sm btn-light-success me-1">
+                                <i class="fa-solid fa-gear"></i>
+                            </a>
+                        </div>
+                    </CellTemplate>
+                </TemplateColumn>
+            </Columns>
+
+            <PagerContent>
+                <MudDataGridPager T="OrderDto" />
+            </PagerContent>
+        </MudDataGrid>
+    </MudCardContent>
+</MudCard>
+

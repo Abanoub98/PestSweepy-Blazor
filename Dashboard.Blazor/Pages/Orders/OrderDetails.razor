@@ -1,5 +1,114 @@
-﻿<h3>OrderDetails</h3>
+﻿@page "/Orders/Details/{Id:int}"
+@attribute [Authorize(Roles = Roles.AdminRole)]
+@inherits BasePage
 
-@code {
+<PageTitle>
+    @languageContainer.Keys["Order Details"]
+</PageTitle>
+<MudBreadcrumbs Items="breadcrumbItems" />
 
+@if (order is null)
+{
+    <FormLoadingSpinner IsBigForm="true" />
+}
+else
+{
+    <div class="card shadow-sm">
+        <div class="card-header">
+            <div class="fw-bold card-title">
+                @($"{order.Id} {languageContainer.Keys["Details"]}")
+            </div>
+            <div class="card-toolbar">
+                <a href="/Orders" class="btn btn-sm btn-primary me-3">
+                    <MudIcon Icon="@Icons.Material.Filled.ArrowBack" />
+                    @languageContainer.Keys["Back To"] @languageContainer.Keys["Orders"]
+                </a>
+                <a @onclick="() => OpenForm(formUri,order.Id)" class="btn btn-sm  btn-success">
+                    <MudIcon Icon="@Icons.Material.Filled.Edit" />
+                    @languageContainer.Keys["Edit"]
+                </a>
+            </div>
+        </div>
+        <div class="card-body">
+            <!--begin::Details content-->
+            <div class="py-3 fs-6">
+                <div class="row">
+
+                    <div class="col-4 text-center">
+                        <MudTimeline TimelineAlign="TimelineAlign.Start" TimelinePosition="TimelinePosition.Start" TimelineOrientation="TimelineOrientation.Vertical">
+                            <MudTimelineItem Color="@Color.Info" Size="@Size.Medium" Variant="@Variant.Filled" Elevation="0">
+                                <ItemDot>
+                                    <MudIcon Size="@Size.Medium" Icon="@Icons.Material.Filled.ShoppingCartCheckout" />
+                                </ItemDot>
+                                <ItemContent>
+                                    <MudText Align="Align.Start" Typo="Typo.body1">
+                                        Order Placed
+                                    </MudText>
+                                    <MudText Typo="Typo.body2" Align="Align.Start" Class="mud-text-secondary">
+                                        @DateTime.Now
+                                    </MudText>
+                                </ItemContent>
+                            </MudTimelineItem>
+                            @if (true)
+                            {
+                                <MudTimelineItem Color="@Color.Tertiary" Size="@Size.Large" Variant="@Variant.Filled" Elevation="0">
+                                    <ItemDot>
+                                        <MudIcon Size="@Size.Large" Icon="@Icons.Material.Filled.CheckCircle" />
+                                    </ItemDot>
+                                    <ItemContent>
+                                        <MudText Align="Align.Start" Color="Color.Tertiary" Typo="Typo.h6">
+                                            Order Accepted
+                                        </MudText>
+                                        <MudText Align="Align.Start" Typo="Typo.body1" Class="mud-text-secondary">
+                                            @DateTime.Now
+                                        </MudText>
+                                    </ItemContent>
+                                </MudTimelineItem>
+                                <MudTimelineItem Color="@Color.Default" Size="@Size.Small" Variant="@Variant.Filled" Elevation="0">
+                                    <ItemDot>
+                                        <MudIcon Size="@Size.Small" Icon="@Icons.Material.Filled.Cached" />
+                                    </ItemDot>
+                                    <ItemContent>
+                                        <MudText Align="Align.Start" Typo="Typo.body1" Color="Color.Default">
+                                            Order under execution
+                                        </MudText>
+                                    </ItemContent>
+                                </MudTimelineItem>
+                                <MudTimelineItem Color="@Color.Default" Size="@Size.Small" Variant="@Variant.Filled" Elevation="0">
+                                    <ItemDot>
+                                        <MudIcon Size="@Size.Small" Icon="@Icons.Material.Filled.DoneAll" />
+                                    </ItemDot>
+                                    <ItemContent>
+                                        <MudText Align="Align.Start" Typo="Typo.body1" Color="Color.Default">
+                                            Order Done
+                                        </MudText>
+                                    </ItemContent>
+                                </MudTimelineItem>
+                            }
+                            else
+                            {
+                                <MudTimelineItem Color="@Color.Error" Size="@Size.Large" Variant="@Variant.Filled" Elevation="0">
+                                    <ItemDot>
+                                        <MudIcon Size="@Size.Large" Icon="@Icons.Material.Filled.Cancel" />
+                                    </ItemDot>
+                                    <ItemContent>
+                                        <MudText Align="Align.Start" Typo="Typo.h6">
+                                            Order Canceled
+                                        </MudText>
+                                        <MudText Align="Align.Start" Typo="Typo.body2" Class="mud-text-secondary">
+                                            @DateTime.Now
+                                        </MudText>
+                                    </ItemContent>
+
+                                </MudTimelineItem>
+                            }
+                        </MudTimeline>
+                    </div>
+                </div>
+                <div class="my-10 px-10">
+                </div>
+            </div>
+            <!--end::Details content-->
+        </div>
+    </div>
 }
