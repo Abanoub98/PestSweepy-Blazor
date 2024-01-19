@@ -10,9 +10,9 @@
 
 <MudCard Elevation="25">
     <MudCardContent>
-        <MudDataGrid T="ComplaintDto" Dense="true" Elevation="0" FixedHeader="true" Height="@($"{tableHight}px")"
-                     Loading="@(isLoading)" LoadingProgressColor="Color.Info" Filterable="true"
-                     Items="complaints" Hover="true" SortMode="SortMode.Single" QuickFilter="@FilterFunc">
+        <MudDataGrid T="ComplaintDto" Dense="true" Elevation="0" FixedHeader="true" Height="@($"{tableHight}px")" SelectedItemsChanged="SelectedItemsChanged"
+                     Loading="@(isLoading)" LoadingProgressColor="Color.Info" Filterable="true" MultiSelection="true" 
+                     Items="complaints" Hover="true" SortMode="SortMode.Single" QuickFilter="@FilterFunc" >
 
             <ToolBarContent>
                 <div class="d-flex justify-content-between flex-column align-items-center flex-md-row w-100">
@@ -29,7 +29,7 @@
                     </div>
                     <div class="w-md-50 w-100">
                         <MudTextField @bind-Value="searchString" Adornment="Adornment.Start" Class="mt-0 mb-5" Immediate="true"
-                                      Placeholder=@($"{languageContainer.Keys["Search For"]} Name, Order Index")
+                                      Placeholder=@($"{languageContainer.Keys["Search For"]} {languageContainer.Keys["Created At"]}, {languageContainer.Keys["Complaint Type"]}, {languageContainer.Keys["Client"]}, {languageContainer.Keys["Status"]}")
                                       AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" />
                     </div>
                 </div>
@@ -50,9 +50,9 @@
                     </CellTemplate>
                 </TemplateColumn>
 
-                <PropertyColumn Property="x => x.CreatedAt" Title="@languageContainer.Keys["Created At"]" />
+                <PropertyColumn Property="x => x.CreatedAt.ToShortDateString()" Title="@languageContainer.Keys["Created At"]" />
                 <PropertyColumn Property="x => x.ComplaintType.Name" Title="@languageContainer.Keys["Complaint Type"]" />
-                <PropertyColumn Property="x => x.Client.FirstName" Title="@languageContainer.Keys["Client"]" />
+                <PropertyColumn Property="x => string.Join(' ', x.Client.FirstName, x.Client.LastName)" Title="@languageContainer.Keys["Client"]" />
                 <PropertyColumn Property="x => x.IsResolved" Hidden />
                  <TemplateColumn Context="complaint" Title="@languageContainer.Keys["Status"]" CellClass="text-center" HeaderClass="text-center" Sortable="false" Filterable="false">
                      <HeaderTemplate>

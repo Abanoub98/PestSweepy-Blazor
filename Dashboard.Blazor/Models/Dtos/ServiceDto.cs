@@ -38,6 +38,8 @@ public class ServiceOption
 
     public bool Disabled { get; set; }
 
+    public ServiceDto Service { get; set; } = new();
+
     public List<ServiceOptionPrice> Prices { get; set; } = new();
 }
 

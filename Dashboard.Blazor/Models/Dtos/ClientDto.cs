@@ -27,4 +27,6 @@ public class ClientDto : BaseUser
     public LookupDto? Country { get; set; }
     public int? CountryId { get; set; }
     public IEnumerable<LookupDto>? Countries { get; set; }
+
+    public bool IsContractClient { get; set; }
 }

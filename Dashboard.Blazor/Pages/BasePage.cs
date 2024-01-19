@@ -205,7 +205,7 @@ public class BasePage : ComponentBase
         NavigationManager.NavigateTo($"{uri}/{id}");
     }
 
-    protected async Task<bool> ShowConfirmation(string? confirmationMessage = null)
+    protected async Task<bool> ShowConfirmation(string? confirmationMessage = null, bool isWarning = false)
     {
         DialogOptions dialogOptions = new()
         {
@@ -218,10 +218,11 @@ public class BasePage : ComponentBase
 
         };
 
-        DialogParameters<ConfirmationDialog> formParameters = new();
+        DialogParameters<ConfirmationDialog> formParameters = new() { { x => x.IsWarning, isWarning } };
 
         if (confirmationMessage is not null)
             formParameters.Add(x => x.ConfirmationMessage, confirmationMessage);
+
 
         var dialog = await DialogService.ShowAsync<ConfirmationDialog>(languageContainer.Keys["Are you sure?"], formParameters, dialogOptions);
         var result = await dialog.Result;

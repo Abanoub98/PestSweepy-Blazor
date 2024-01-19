@@ -59,11 +59,11 @@ public partial class Complaints
     {
         StartProcessing();
 
-        var isSuccess = await ShowConfirmation($"Are You Sure That You Will {(complaint.IsResolved ? "decline" : "Resolve")} This Complaint");
+        var isSuccess = await ShowConfirmation($"Are You Sure That You Will {(complaint.IsResolved ? "decline" : "Resolve")} This Complaint", true);
 
         if (isSuccess)
         {
-            var result = await UpdateAsync($"Complaints/{complaint.Id}", complaint);
+            var result = await UpdateAsync($"Complaints/UpdateComplaintState/{complaint.Id}", complaint);
 
             if (result.isSuccess)
                 complaint.IsResolved = !complaint.IsResolved;

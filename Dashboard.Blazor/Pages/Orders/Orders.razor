@@ -40,10 +40,10 @@
 
             <Columns>
 
-                <PropertyColumn Property="x => x.Date" Title="@languageContainer.Keys["Date"]" />
-                <PropertyColumn Property="x => x.Client.FirstName" Title="@languageContainer.Keys["Client"]" />
-                <PropertyColumn Property="x => x.Service.NameEn" Title="@languageContainer.Keys["Service"]" />
-                <PropertyColumn Property="x => x.PaymentMethod" Title="@languageContainer.Keys["Payment Method"]" />
+                <PropertyColumn Property="@(x => x.CreatedAt.ToString("dd/MM/yyyy hh:mm tt"))" Title="@languageContainer.Keys["Date"]" />
+                <PropertyColumn Property="x => string.Join(' ', x.Client.FirstName, x.Client.LastName)" Title="@languageContainer.Keys["Client"]" />
+                <PropertyColumn Property="@(x => string.Join(" - ", x.ServiceOption.Service.NameEn, x.ServiceOption.Service.NameAr))" Title="@languageContainer.Keys["Service"]" />
+                <PropertyColumn Property="x => x.PaymentMethod.Name" Title="@languageContainer.Keys["Payment Method"]" />
                 <PropertyColumn Property="x => x.TotalAmount" Title="@languageContainer.Keys["Total Amount"]" />
 
                 <TemplateColumn Title="@languageContainer.Keys["Actions"]" CellClass="text-center" Context="order" HeaderClass="text-center" Sortable="false" Filterable="false">
@@ -54,7 +54,7 @@
                     </HeaderTemplate>
                     <CellTemplate>
                         <div>
-                            <TableButtons IsDisable="isDisable" IsEditHide="true" DetailsClicked="() => OpenDetails(detailsUri, order.Item!.Id)" />
+                            <TableButtons IsDeleteHide="true" IsDisable="isDisable" IsEditHide="true" DetailsClicked="() => OpenDetails(detailsUri, order.Item!.Id)" />
                             <a @onclick="() => ShowOrderActions(order.Item)" class="btn btn-sm btn-light-success me-1">
                                 <i class="fa-solid fa-gear"></i>
                             </a>

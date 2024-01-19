@@ -26,7 +26,7 @@ public partial class Orders
         DialogOptions dialogOptions = new()
         {
             CloseOnEscapeKey = true,
-            MaxWidth = MaxWidth.Medium,
+            MaxWidth = MaxWidth.Small,
             FullWidth = true,
             Position = DialogPosition.TopCenter,
             CloseButton = true

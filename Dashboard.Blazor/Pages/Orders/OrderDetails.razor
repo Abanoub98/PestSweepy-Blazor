@@ -16,99 +16,389 @@ else
     <div class="card shadow-sm">
         <div class="card-header">
             <div class="fw-bold card-title">
-                @($"{order.Id} {languageContainer.Keys["Details"]}")
+                @($"#{@order.OrderNumber} {languageContainer.Keys["Details"]}")
             </div>
             <div class="card-toolbar">
-                <a href="/Orders" class="btn btn-sm btn-primary me-3">
+                <a href="/Orders" class="btn bt-sm btn-primary">
                     <MudIcon Icon="@Icons.Material.Filled.ArrowBack" />
                     @languageContainer.Keys["Back To"] @languageContainer.Keys["Orders"]
-                </a>
-                <a @onclick="() => OpenForm(formUri,order.Id)" class="btn btn-sm  btn-success">
-                    <MudIcon Icon="@Icons.Material.Filled.Edit" />
-                    @languageContainer.Keys["Edit"]
                 </a>
             </div>
         </div>
         <div class="card-body">
-            <!--begin::Details content-->
-            <div class="py-3 fs-6">
+            <div class="d-flex flex-column flex-xl-row gap-7 gap-lg-10 mb-5">
+                <!--begin::Order details-->
+                <div class="card card-flush py-4 flex-row-fluid border-gray-300">
+                    <!--begin::Card header-->
+                    <div class="card-header">
+                        <div class="card-title">
+                            <h2>Order Details</h2>
+                        </div>
+                    </div>
+                    <!--end::Card header-->
+                    <!--begin::Card body-->
+                    <div class="card-body pt-0">
+                        <div class="table-responsive">
+                            <!--begin::Table-->
+                            <table class="table align-middle table-row-bordered mb-0 fs-6 gy-5 min-w-300px">
+                                <tbody class="fw-semibold text-gray-600">
+                                    <tr>
+                                        <td class="text-muted">
+                                            <div class="d-flex align-items-center">
+                                                <i class="ki-duotone ki-calendar fs-2 me-2"><span class="path1"></span><span class="path2"></span></i>
+                                                @languageContainer.Keys["Created At"]
+                                            </div>
+                                        </td>
+                                        <td class="fw-bold text-end">@order.CreatedAt</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-muted">
+                                            <div class="d-flex align-items-center">
+                                                <i class="ki-duotone ki-wallet fs-2 me-2"><span class="path1"></span><span class="path2"></span><span class="path3"></span><span class="path4"></span></i>
+                                                @languageContainer.Keys["Payment Method"]
+                                            </div>
+                                        </td>
+                                        <td class="fw-bold text-end">
+                                            @order.PaymentMethod.Name
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-muted">
+                                            <div class="d-flex align-items-center">
+                                                <i class="ki-duotone ki-wallet fs-2 me-2"><span class="path1"></span><span class="path2"></span><span class="path3"></span><span class="path4"></span></i>
+                                                @languageContainer.Keys["Order State"]
+                                            </div>
+                                        </td>
+                                        <td class="fw-bold text-end">
+                                            @order.OrderState.Name
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <!--end::Table-->
+                        </div>
+                    </div>
+                    <!--end::Card body-->
+                </div>
+                <!--end::Order details-->
+                <!--begin::Customer details-->
+                <div class="card card-flush py-4 flex-row-fluid border-gray-300">
+                    <!--begin::Card header-->
+                    <div class="card-header">
+                        <div class="card-title">
+                            <h2>Customer Details</h2>
+                        </div>
+                    </div>
+                    <!--end::Card header-->
+                    <!--begin::Card body-->
+                    <div class="card-body pt-0">
+                        <div class="table-responsive">
+                            <!--begin::Table-->
+                            <table class="table align-middle table-row-bordered mb-0 fs-6 gy-5 min-w-300px">
+                                <tbody class="fw-semibold text-gray-600">
+                                    <tr>
+                                        <td class="text-muted">
+                                            <div class="d-flex align-items-center">
+                                                <i class="ki-duotone ki-profile-circle fs-2 me-2"><span class="path1"></span><span class="path2"></span><span class="path3"></span></i>
+                                                @languageContainer.Keys["Customer"]
+                                            </div>
+                                        </td>
+
+                                        <td class="fw-bold text-end">
+                                            <div class="d-flex align-items-center justify-content-end">
+                                                <!--begin:: Avatar -->
+                                                <div class="symbol symbol-circle symbol-25px overflow-hidden me-3">
+                                                    <div @onclick="@(() => ShowImagePreview(imageUrl + order.ServiceOption.Service.Image))">
+                                                        <div class="symbol-label">
+                                                            <img src="@(imageUrl + order.Client.Image)" alt="Dan Wilson" class="w-100">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!--end::Avatar-->
+                                                <!--begin::Name-->
+                                                <a href="/@(order.Client.IsContractClient ? "ContractClient" : "IndividualClient")/Details/@order.Client.Id" class="text-gray-600 text-hover-primary">
+                                                    @order.Client.FirstName @order.Client.LastName
+                                                </a>
+                                                <!--end::Name-->
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-muted">
+                                            <div class="d-flex align-items-center">
+                                                <i class="ki-duotone ki-sms fs-2 me-2"><span class="path1"></span><span class="path2"></span></i>
+                                                @languageContainer.Keys["Email"]
+                                            </div>
+                                        </td>
+                                        <td class="fw-bold text-end">
+                                            @order.Client.ContactEmail
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-muted">
+                                            <div class="d-flex align-items-center">
+                                                <i class="ki-duotone ki-phone fs-2 me-2"><span class="path1"></span><span class="path2"></span></i>
+                                                @languageContainer.Keys["Phone"]
+                                            </div>
+                                        </td>
+                                        <td class="fw-bold text-end">@order.Client.ContactPhone</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-muted">
+                                            <div class="d-flex align-items-center">
+                                                <i class="ki-duotone ki-phone fs-2 me-2"><span class="path1"></span><span class="path2"></span></i>
+                                                @languageContainer.Keys["Client Type"]
+                                            </div>
+                                        </td>
+                                        <td class="fw-bold text-end">@(order.Client.IsContractClient ? "Contract Client" : "Individual Client") </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <!--end::Table-->
+                        </div>
+                    </div>
+                    <!--end::Card body-->
+                </div>
+                <!--end::Customer details-->
+            </div>
+            <div class="d-flex flex-column flex-xl-row gap-7 gap-lg-10 mb-5">
+                <!--begin::Order details-->
+                <div class="card card-flush py-4 flex-row-fluid border-gray-300">
+                    <!--begin::Card header-->
+                    <div class="card-header">
+                        <div class="card-title">
+                            <h2>Address Details</h2>
+                        </div>
+                    </div>
+                    <!--end::Card header-->
+                    <!--begin::Card body-->
+                    <div class="card-body pt-0">
+                        <div class="table-responsive">
+                            <!--begin::Table-->
+                            <table class="table align-middle table-row-bordered mb-0 fs-6 gy-5 min-w-300px">
+                                <tbody class="fw-semibold text-gray-600">
+                                    <tr>
+                                        <td class="text-muted">
+                                            <div class="d-flex align-items-center">
+                                                <i class="ki-duotone ki-calendar fs-2 me-2"><span class="path1"></span><span class="path2"></span></i>
+                                                @languageContainer.Keys["Reservation Date"]
+                                            </div>
+                                        </td>
+                                        <td class="fw-bold text-end">@order.ReservationDate</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-muted">
+                                            <div class="d-flex align-items-center">
+                                                <i class="ki-duotone ki-wallet fs-2 me-2"><span class="path1"></span><span class="path2"></span><span class="path3"></span><span class="path4"></span></i>
+                                                @languageContainer.Keys["Building Number"]
+                                            </div>
+                                        </td>
+                                        <td class="fw-bold text-end">
+                                            @order.BuildingNumber
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-muted">
+                                            <div class="d-flex align-items-center">
+                                                <i class="ki-duotone ki-truck fs-2 me-2"><span class="path1"></span><span class="path2"></span><span class="path3"></span><span class="path4"></span><span class="path5"></span></i>
+                                                @languageContainer.Keys["Apartment Number"]
+                                            </div>
+                                        </td>
+                                        <td class="fw-bold text-end">@order.ApartmentNumber</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-muted">
+                                            <div class="d-flex align-items-center">
+                                                <i class="ki-duotone ki-truck fs-2 me-2"><span class="path1"></span><span class="path2"></span><span class="path3"></span><span class="path4"></span><span class="path5"></span></i>
+                                                @languageContainer.Keys["Address"]
+                                            </div>
+                                        </td>
+                                        <td class="fw-bold text-end">@order.Address</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-muted">
+                                            <div class="d-flex align-items-center">
+                                                <i class="ki-duotone ki-truck fs-2 me-2"><span class="path1"></span><span class="path2"></span><span class="path3"></span><span class="path4"></span><span class="path5"></span></i>
+                                                @languageContainer.Keys["Address Link"]
+                                            </div>
+                                        </td>
+                                        <td class="fw-bold text-end">
+                                            <a href="@order.AddressUrl" target="_blank" class="text-primary">@order.AddressUrl</a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <!--end::Table-->
+                        </div>
+                    </div>
+                    <!--end::Card body-->
+                </div>
+                <!--end::Order details-->
+                <div class="card card-flush py-4 flex-row-fluid  border-gray-300">
+                    <!--begin::Card header-->
+                    <div class="card-header">
+                        <div class="card-title">
+                            <h2>Price Details</h2>
+                        </div>
+                    </div>
+                    <!--end::Card header-->
+                    <!--begin::Card body-->
+                    <div class="card-body pt-0">
+                        <!--begin::Table-->
+                        <table class="table align-middle table-row-bordered mb-0 fs-6 gy-5 min-w-300px">
+                            <tbody class="fw-semibold text-gray-600">
+                                <tr>
+                                    <td class="fw-bold text-end">
+                                        <div class="d-flex gap-5 align-items-center">
+                                            <!--begin::Thumbnail-->
+                                            <div @onclick="@(() => ShowImagePreview(imageUrl + order.ServiceOption.Service.Image))" class="symbol symbol-50px">
+                                                <span class="symbol-label" style="background-image:url(@(imageUrl + order.ServiceOption.Service.Image));"></span>
+                                            </div>
+                                            <!--end::Thumbnail-->
+                                            <!--begin::Title-->
+                                            <div>
+                                                <a href="/Service/Details/@order.ServiceOption.Service.Id" class="fw-bold text-gray-600 text-hover-primary">@order.ServiceOption.Service.NameEn - @order.ServiceOption.Service.NameAr</a>
+                                                <div class="fs-7 text-muted text-start">@order.ServiceOption.Name</div>
+                                            </div>
+                                            <!--end::Title-->
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <!--end::Table-->
+                        <div class="table-responsive">
+                            <!--begin::Table-->
+                            <table class="table align-middle table-row-dashed fs-6 gy-5 mb-0">
+                                <thead>
+                                    <tr class="text-start text-gray-500 fw-bold fs-7 text-uppercase gs-0">
+                                        <th class="min-w-70px text-end">Qty</th>
+                                        <th class="min-w-100px text-end">Price (@order.ServiceOption.Prices.FirstOrDefault()?.Currency?.Symbol)</th>
+                                        <th class="min-w-100px text-end">Total (@order.ServiceOption.Prices.FirstOrDefault()?.Currency?.Symbol)</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="fw-semibold text-gray-600">
+                                    <tr>
+                                        <td class="text-end">
+                                            @order.Quantity
+                                        </td>
+                                        <td class="text-end">
+                                            @order.ServiceOption.Prices.FirstOrDefault()?.Amount
+                                        </td>
+                                        <td class="text-end">
+                                            @($"{CalculateTotal(order.Quantity, order.ServiceOption.Prices.FirstOrDefault()?.Amount)}")
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2" class="text-end">
+                                            VAT (@order.VAT%)
+                                        </td>
+                                        <td class="text-end">
+                                            @($"{CalculateVatAmount(order.VAT, order.Quantity, order.ServiceOption.Prices.FirstOrDefault()?.Amount)}")
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2" class="fs-3 text-gray-900 text-end">
+                                            Grand Total
+                                        </td>
+                                        <td class="text-gray-900 fs-3 fw-bolder text-end">
+                                            @order.TotalAmount
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <!--end::Table-->
+                        </div>
+                    </div>
+                    <!--end::Card body-->
+                </div>
+            </div>
+            <div class="my-3 fs-6">
                 <div class="row">
-
-                    <div class="col-4 text-center">
-                        <MudTimeline TimelineAlign="TimelineAlign.Start" TimelinePosition="TimelinePosition.Start" TimelineOrientation="TimelineOrientation.Vertical">
-                            <MudTimelineItem Color="@Color.Info" Size="@Size.Medium" Variant="@Variant.Filled" Elevation="0">
-                                <ItemDot>
-                                    <MudIcon Size="@Size.Medium" Icon="@Icons.Material.Filled.ShoppingCartCheckout" />
-                                </ItemDot>
-                                <ItemContent>
-                                    <MudText Align="Align.Start" Typo="Typo.body1">
-                                        Order Placed
-                                    </MudText>
-                                    <MudText Typo="Typo.body2" Align="Align.Start" Class="mud-text-secondary">
-                                        @DateTime.Now
-                                    </MudText>
-                                </ItemContent>
-                            </MudTimelineItem>
-                            @if (true)
-                            {
-                                <MudTimelineItem Color="@Color.Tertiary" Size="@Size.Large" Variant="@Variant.Filled" Elevation="0">
-                                    <ItemDot>
-                                        <MudIcon Size="@Size.Large" Icon="@Icons.Material.Filled.CheckCircle" />
-                                    </ItemDot>
-                                    <ItemContent>
-                                        <MudText Align="Align.Start" Color="Color.Tertiary" Typo="Typo.h6">
-                                            Order Accepted
-                                        </MudText>
-                                        <MudText Align="Align.Start" Typo="Typo.body1" Class="mud-text-secondary">
-                                            @DateTime.Now
-                                        </MudText>
-                                    </ItemContent>
-                                </MudTimelineItem>
-                                <MudTimelineItem Color="@Color.Default" Size="@Size.Small" Variant="@Variant.Filled" Elevation="0">
-                                    <ItemDot>
-                                        <MudIcon Size="@Size.Small" Icon="@Icons.Material.Filled.Cached" />
-                                    </ItemDot>
-                                    <ItemContent>
-                                        <MudText Align="Align.Start" Typo="Typo.body1" Color="Color.Default">
-                                            Order under execution
-                                        </MudText>
-                                    </ItemContent>
-                                </MudTimelineItem>
-                                <MudTimelineItem Color="@Color.Default" Size="@Size.Small" Variant="@Variant.Filled" Elevation="0">
-                                    <ItemDot>
-                                        <MudIcon Size="@Size.Small" Icon="@Icons.Material.Filled.DoneAll" />
-                                    </ItemDot>
-                                    <ItemContent>
-                                        <MudText Align="Align.Start" Typo="Typo.body1" Color="Color.Default">
-                                            Order Done
-                                        </MudText>
-                                    </ItemContent>
-                                </MudTimelineItem>
-                            }
-                            else
-                            {
-                                <MudTimelineItem Color="@Color.Error" Size="@Size.Large" Variant="@Variant.Filled" Elevation="0">
-                                    <ItemDot>
-                                        <MudIcon Size="@Size.Large" Icon="@Icons.Material.Filled.Cancel" />
-                                    </ItemDot>
-                                    <ItemContent>
-                                        <MudText Align="Align.Start" Typo="Typo.h6">
-                                            Order Canceled
-                                        </MudText>
-                                        <MudText Align="Align.Start" Typo="Typo.body2" Class="mud-text-secondary">
-                                            @DateTime.Now
-                                        </MudText>
-                                    </ItemContent>
-
-                                </MudTimelineItem>
-                            }
-                        </MudTimeline>
+                    <div class="col-12 col-md-8">
+                        <!--begin::Details item-->
+                        <div class="fw-bold mt-5 mb-1">@languageContainer.Keys["Notes"]:</div>
+                        <div class="text-gray-800 p-3 rounded-lg border border-gray-400 h-75">@order.Notes</div>
+                        <!--begin::Details item-->
+                    </div>
+                    <div class="col-12 col-md-4 text-center mt-md-0 mt-10">
+                        <div>
+                            <QRCode Value="@order.Id.ToString()" PixelsPerModule="6" Alt="QRCode image" EccLevel="EccLevel.H" Icon="@Base64Images.Logo" />
+                        </div>
                     </div>
                 </div>
-                <div class="my-10 px-10">
-                </div>
+
             </div>
             <!--end::Details content-->
         </div>
     </div>
 }
+
+@* <MudTimeline TimelineAlign="TimelineAlign.Start" TimelinePosition="TimelinePosition.Start" TimelineOrientation="TimelineOrientation.Vertical">
+    <MudTimelineItem Color="@Color.Info" Size="@Size.Medium" Variant="@Variant.Filled" Elevation="0">
+        <ItemDot>
+            <MudIcon Size="@Size.Medium" Icon="@Icons.Material.Filled.ShoppingCartCheckout" />
+        </ItemDot>
+        <ItemContent>
+            <MudText Align="Align.Start" Typo="Typo.body1">
+                Order Placed
+            </MudText>
+            <MudText Typo="Typo.body2" Align="Align.Start" Class="mud-text-secondary">
+                @DateTime.Now
+            </MudText>
+        </ItemContent>
+    </MudTimelineItem>
+    @if (true)
+    {
+        <MudTimelineItem Color="@Color.Tertiary" Size="@Size.Large" Variant="@Variant.Filled" Elevation="0">
+            <ItemDot>
+                <MudIcon Size="@Size.Large" Icon="@Icons.Material.Filled.CheckCircle" />
+            </ItemDot>
+            <ItemContent>
+                <MudText Align="Align.Start" Color="Color.Tertiary" Typo="Typo.h6">
+                    Order Accepted
+                </MudText>
+                <MudText Align="Align.Start" Typo="Typo.body1" Class="mud-text-secondary">
+                    @DateTime.Now
+                </MudText>
+            </ItemContent>
+        </MudTimelineItem>
+        <MudTimelineItem Color="@Color.Default" Size="@Size.Small" Variant="@Variant.Filled" Elevation="0">
+            <ItemDot>
+                <MudIcon Size="@Size.Small" Icon="@Icons.Material.Filled.Cached" />
+            </ItemDot>
+            <ItemContent>
+                <MudText Align="Align.Start" Typo="Typo.body1" Color="Color.Default">
+                    Order under execution
+                </MudText>
+            </ItemContent>
+        </MudTimelineItem>
+        <MudTimelineItem Color="@Color.Default" Size="@Size.Small" Variant="@Variant.Filled" Elevation="0">
+            <ItemDot>
+                <MudIcon Size="@Size.Small" Icon="@Icons.Material.Filled.DoneAll" />
+            </ItemDot>
+            <ItemContent>
+                <MudText Align="Align.Start" Typo="Typo.body1" Color="Color.Default">
+                    Order Done
+                </MudText>
+            </ItemContent>
+        </MudTimelineItem>
+    }
+    else
+    {
+        <MudTimelineItem Color="@Color.Error" Size="@Size.Large" Variant="@Variant.Filled" Elevation="0">
+            <ItemDot>
+                <MudIcon Size="@Size.Large" Icon="@Icons.Material.Filled.Cancel" />
+            </ItemDot>
+            <ItemContent>
+                <MudText Align="Align.Start" Typo="Typo.h6">
+                    Order Canceled
+                </MudText>
+                <MudText Align="Align.Start" Typo="Typo.body2" Class="mud-text-secondary">
+                    @DateTime.Now
+                </MudText>
+            </ItemContent>
+
+        </MudTimelineItem>
+    }
+</MudTimeline> *@
