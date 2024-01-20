@@ -4,7 +4,8 @@ public class AccountProfile
 {
     public string Id { get; set; } = null!;
     public int EntityId { get; set; }
-    public string? EntityName { get; set; }
+    public string? EntityFirstName { get; set; }
+    public string? EntityLastName { get; set; }
     public string? EntityImage { get; set; }
     public string? Email { get; set; }
     public string? PhoneNumber { get; set; }

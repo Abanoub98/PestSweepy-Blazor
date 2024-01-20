@@ -21,30 +21,26 @@ public partial class Orders
         StopProcessing();
     }
 
-    private async Task ShowOrderActions(OrderDto order)
-    {
-        DialogOptions dialogOptions = new()
-        {
-            CloseOnEscapeKey = true,
-            MaxWidth = MaxWidth.Small,
-            FullWidth = true,
-            Position = DialogPosition.TopCenter,
-            CloseButton = true
-        };
-
-        DialogParameters<OrderActions> Parameters = new()
-        {
-            { x => x.Order, order }
-        };
-
-        await DialogService.ShowAsync<OrderActions>("Order Actions", Parameters, dialogOptions);
-    }
-
     private bool FilterFunc(OrderDto element)
     {
         if (string.IsNullOrWhiteSpace(searchString))
             return true;
 
         return false;
+    }
+
+
+    private async Task AcceptOrder(OrderDto order)
+    {
+        StartProcessing();
+
+        var result = await UpdateAsync($"Orders/AcceptOrder/{order.Id}", order);
+
+        if (result.isSuccess)
+        {
+            order.OrderAccepted = true;
+        }
+
+        StopProcessing();
     }
 }

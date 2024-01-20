@@ -29,11 +29,14 @@ else
                     <div class="col-8">
                         <!--begin::Details item-->
                         <div class="fw-bold mb-1">@languageContainer.Keys["Client"]:</div>
-                        <a href="/Clients/Details/@complaint.Client.Id" class="text-gray-600 text-hover-primary">@complaint.Client.FirstName @complaint.Client.LastName</a>
+                        <a href="/@(complaint.Client.IsContractClient ? "ContractClient" : "IndividualClient")/Details/@complaint.Client.Id" class="text-gray-600 text-hover-primary">@complaint.Client.FirstName @complaint.Client.LastName</a>
+                        <!--begin::Details item-->
+                        <div class="fw-bold mt-5 mb-1">@languageContainer.Keys["Client Type"]:</div>
+                        <a class="text-gray-600 text-hover-primary">@(complaint.Client.IsContractClient ? "Contract Client" : "Individual Client")</a>
                         <!--begin::Details item-->
                         <!--begin::Details item-->
                         <div class="fw-bold mt-5 mb-1">@languageContainer.Keys["Complaint Type"]:</div>
-                        <a class="text-gray-600 text-hover-primary">@complaint.ComplaintType.Name</a>
+                        <div class="text-gray-600">@complaint.ComplaintType.Name</div>
                         <!--begin::Details item-->
                         <!--begin::Details item-->
                         <div class="fw-bold mt-5 mb-1">@languageContainer.Keys["Date"]:</div>

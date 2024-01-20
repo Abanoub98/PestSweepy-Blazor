@@ -4,8 +4,8 @@ public partial class Clients
 {
     private List<ClientDto> clients = new();
 
-    private readonly string formUri = "Clients/Form";
-    private readonly string detailsUri = "Clients/Details";
+    private readonly string formUri = "IndividualClients/Form";
+    private readonly string detailsUri = "IndividualClients/Details";
 
     protected override async Task OnInitializedAsync()
     {
@@ -14,7 +14,7 @@ public partial class Clients
         breadcrumbItems.AddRange(new List<BreadcrumbItem>
         {
             new(languageContainer.Keys["Home"], href: "/", icon: Icons.Material.Filled.Home),
-            new(languageContainer.Keys["Clients"], href: null, disabled: true, icon: Icons.Material.Outlined.Diversity1),
+            new(languageContainer.Keys["Individual Clients"], href: null, disabled: true, icon: Icons.Material.Outlined.Diversity1),
         });
 
         clients = await GetAllAsync<ClientDto>("Clients?OrderBy=id&Asc=false");

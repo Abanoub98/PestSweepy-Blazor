@@ -10,11 +10,11 @@ public class OrderDto
 
     public DateTime ReservationDate { get; set; }
 
+    public bool OrderAccepted { get; set; }
+
     public ServiceOption ServiceOption { get; set; } = new();
 
     public ClientDto Client { get; set; } = new();
-
-    public ProviderDto? Provider { get; set; }
 
     public PaymentDto? Payment { get; set; }
 
@@ -41,4 +41,8 @@ public class OrderDto
     public double Latitude { get; set; }
 
     public string AddressUrl { get; set; } = null!;
+
+    public ProviderDto? Provider { get; set; }
+    public int? ProviderId { get; set; }
+    public IEnumerable<ProviderDto>? Providers { get; set; }
 }

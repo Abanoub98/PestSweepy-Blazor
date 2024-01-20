@@ -1,9 +1,9 @@
-﻿@page "/Clients/Details/{Id:int}"
+﻿@page "/IndividualClients/Details/{Id:int}"
 @attribute [Authorize(Roles = Roles.AdminRole)]
 @inherits BasePage
 
 <PageTitle>
-    @($"{languageContainer.Keys["Client"]} {languageContainer.Keys["Details"]}")
+    @($"{languageContainer.Keys["Individual Clients"]} {languageContainer.Keys["Details"]}")
 </PageTitle>
 <MudBreadcrumbs Items="breadcrumbItems"></MudBreadcrumbs>
 
@@ -106,9 +106,9 @@ else
                 <!--begin:::Tab item-->
                 <li class="nav-item">
                     <!--begin::Action menu-->
-                    <a href="/Clients" class="btn btn-primary">
+                    <a href="/IndividualClients" class="btn btn-primary">
                         <MudIcon Icon="@Icons.Material.Filled.ArrowBack" />
-                        @($"{@languageContainer.Keys["Back To"]} {@languageContainer.Keys["Clients"]}")
+                        @($"{@languageContainer.Keys["Back To"]} {@languageContainer.Keys["Individual Clients"]}")
                     </a>
                     <!--end::Menu-->
                 </li>

@@ -5,7 +5,7 @@ public partial class ClientsDetails
     [Parameter][EditorRequired] public int Id { get; set; }
 
     private ClientDto? client;
-    private readonly string formUri = "Clients/Form";
+    private readonly string formUri = "IndividualClients/Form";
 
     protected override async Task OnParametersSetAsync()
     {
@@ -17,7 +17,7 @@ public partial class ClientsDetails
         breadcrumbItems.AddRange(new List<BreadcrumbItem>
         {
             new(languageContainer.Keys["Home"], href: "/", icon: Icons.Material.Filled.Home),
-            new(languageContainer.Keys["Clients"], href: "/Clients", icon: EntityIcons.ClientsIcon),
+            new(languageContainer.Keys["Individual Clients"], href: "/IndividualClients", icon: EntityIcons.ClientsIcon),
             new($"{client.FirstName} {client.LastName}", href: null, disabled: true),
         });
     }

@@ -29,7 +29,7 @@
                                 }
                                 else
                                 {
-                                    @accountProfile.EntityName
+                                    @($"{accountProfile.EntityFirstName} {accountProfile.EntityLastName}")
                                 }
                             </a>
                             <span class="badge badge-light-success fw-bold fs-8 py-1 px-2">
@@ -196,7 +196,7 @@
         <!--begin::Row-->
         <div class="row mb-7">
             <!--begin::Label-->
-            <label class="col-lg-4 fw-semibold text-muted">@languageContainer.Keys["Full Name"]</label>
+            <label class="col-lg-4 fw-semibold text-muted">@languageContainer.Keys["First Name"]</label>
             <!--end::Label-->
             <!--begin::Col-->
             <div class="col-lg-8">
@@ -207,7 +207,28 @@
                     }
                     else
                     {
-                        @accountProfile.EntityName
+                        @accountProfile.EntityFirstName
+                    }
+                </span>
+            </div>
+            <!--end::Col-->
+        </div>
+        <!--end::Row-->
+        <!--begin::Row-->
+        <div class="row mb-7">
+            <!--begin::Label-->
+            <label class="col-lg-4 fw-semibold text-muted">@languageContainer.Keys["Last Name"]</label>
+            <!--end::Label-->
+            <!--begin::Col-->
+            <div class="col-lg-8">
+                <span class="fw-bold fs-6 text-gray-800">
+                    @if (accountProfile is null)
+                    {
+                        <MudSkeleton Width="150px" Height="20px;" />
+                    }
+                    else
+                    {
+                        @accountProfile.EntityLastName
                     }
                 </span>
             </div>

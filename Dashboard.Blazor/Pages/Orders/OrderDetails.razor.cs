@@ -40,4 +40,42 @@ public partial class OrderDetails
 
         return vatAmount.ToString("F2");
     }
+
+    private async Task ShowOrderActions(OrderDto order)
+    {
+        DialogOptions dialogOptions = new()
+        {
+            CloseOnEscapeKey = true,
+            MaxWidth = MaxWidth.Small,
+            FullWidth = true,
+            Position = DialogPosition.TopCenter,
+            CloseButton = true
+        };
+
+        DialogParameters<OrderActions> Parameters = new()
+        {
+            { x => x.Order, order }
+        };
+
+        await DialogService.ShowAsync<OrderActions>("Order Actions", Parameters, dialogOptions);
+    }
+
+    private async Task ShowOrderTracking(OrderDto order)
+    {
+        DialogOptions dialogOptions = new()
+        {
+            CloseOnEscapeKey = true,
+            MaxWidth = MaxWidth.Small,
+            FullWidth = true,
+            Position = DialogPosition.TopCenter,
+            NoHeader = true,
+        };
+
+        DialogParameters<OrderTracking> Parameters = new()
+        {
+            { x => x.Id, order.Id }
+        };
+
+        await DialogService.ShowAsync<OrderTracking>("Order Tracking", Parameters, dialogOptions);
+    }
 }

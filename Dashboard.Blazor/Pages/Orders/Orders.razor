@@ -39,12 +39,11 @@
             </NoRecordsContent>
 
             <Columns>
-
-                <PropertyColumn Property="@(x => x.CreatedAt.ToString("dd/MM/yyyy hh:mm tt"))" Title="@languageContainer.Keys["Date"]" />
+                <PropertyColumn Property="x => x.OrderNumber" Title="@languageContainer.Keys["Order Number"]" />
                 <PropertyColumn Property="x => string.Join(' ', x.Client.FirstName, x.Client.LastName)" Title="@languageContainer.Keys["Client"]" />
                 <PropertyColumn Property="@(x => string.Join(" - ", x.ServiceOption.Service.NameEn, x.ServiceOption.Service.NameAr))" Title="@languageContainer.Keys["Service"]" />
-                <PropertyColumn Property="x => x.PaymentMethod.Name" Title="@languageContainer.Keys["Payment Method"]" />
-                <PropertyColumn Property="x => x.TotalAmount" Title="@languageContainer.Keys["Total Amount"]" />
+                <PropertyColumn Property="x => x.OrderState.Name" Title="@languageContainer.Keys["Order State"]" />
+                <PropertyColumn Property="@(x => x.ReservationDate.ToShortDateString())" Title="@languageContainer.Keys["Reservation Date"]" />
 
                 <TemplateColumn Title="@languageContainer.Keys["Actions"]" CellClass="text-center" Context="order" HeaderClass="text-center" Sortable="false" Filterable="false">
                     <HeaderTemplate>
@@ -55,8 +54,8 @@
                     <CellTemplate>
                         <div>
                             <TableButtons IsDeleteHide="true" IsDisable="isDisable" IsEditHide="true" DetailsClicked="() => OpenDetails(detailsUri, order.Item!.Id)" />
-                            <a @onclick="() => ShowOrderActions(order.Item)" class="btn btn-sm btn-light-success me-1">
-                                <i class="fa-solid fa-gear"></i>
+                            <a @onclick="() => AcceptOrder(order.Item)" class="btn btn-sm btn-light-success me-1 @(order.Item.OrderAccepted ? "disabled" : string.Empty )">
+                                <i class="fa-solid fa-check p-0"></i>
                             </a>
                         </div>
                     </CellTemplate>

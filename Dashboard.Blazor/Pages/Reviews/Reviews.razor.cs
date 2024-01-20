@@ -16,32 +16,7 @@ public partial class Reviews
             new(languageContainer.Keys["Reviews"], href: null, disabled: true, icon: EntityIcons.ReviewIcon),
         });
 
-        //reviews = await GetAllAsync<ReviewDto>("Reviews?OrderBy=id&Asc=false");
-
-        reviews = new()
-        {
-            new ReviewDto()
-            {
-                Id = 1,
-                Date = DateTime.Now,
-                Feedback = "Awful experience, everything stuck, cooked evenly. The only problem is that it's not really a good service. I put paper in one corner of the cabinet and put a piece of paper in the other corner.",
-                Title = "Very Bad Service",
-                Rate = 2,
-                ShowInHomePage = false,
-                Client = await GetByIdAsync<ClientDto>("Clients/52")
-            },
-
-            new ReviewDto()
-            {
-                Id = 2,
-                Date = DateTime.Now.AddDays(-5),
-                Feedback = "Love this! Well made, sturdy, and very comfortable. I love it!Very pretty, Just as expected! Looks great and has the design to make it a nice place for the baby to",
-                Title = "Good Service",
-                Rate = 4.5,
-                ShowInHomePage = true,
-                Client =  await GetByIdAsync<ClientDto>("Clients/52")
-            }
-        };
+        reviews = await GetAllAsync<ReviewDto>("Reviews?OrderBy=id&Asc=false");
 
         StopProcessing();
     }
@@ -50,10 +25,30 @@ public partial class Reviews
     {
         StartProcessing();
 
-        var isSuccess = /*await DeleteAsync<ReviewDto>($"Reviews/{id}")*/ true;
+        var isSuccess = await DeleteAsync<ReviewDto>($"Reviews/{id}");
+
         if (isSuccess)
         {
             reviews.Remove(reviews.FirstOrDefault(x => x.Id == id)!);
+
+            if (selectedIds.Contains(id))
+                selectedIds.Remove(id);
+        }
+
+        StopProcessing();
+    }
+    private void SelectedItemsChanged(HashSet<ReviewDto> items) => selectedIds = items.Select(i => i.Id).ToList();
+
+    private async Task DeleteAll()
+    {
+        StartProcessing();
+
+        var isSuccess = await DeleteAllAsync<ReviewDto>($"Reviews/DeleteMultiple", selectedIds);
+
+        if (isSuccess)
+        {
+            reviews.RemoveAll(x => selectedIds.Contains(x.Id));
+            selectedIds = new();
         }
 
         StopProcessing();
@@ -63,12 +58,17 @@ public partial class Reviews
     {
         StartProcessing();
 
-        /*await DeleteAsync<ReviewDto>($"Reviews/{id}")*/
-
-        var isSuccess = await ShowConfirmation($"Are You Sure That You Will {(review.ShowInHomePage ? "Hide" : "Hide")} This Review");
+        var isSuccess = await ShowConfirmation(confirmationMessage: $"Are You Sure That You Will {(review.ShowInApp ? "Hide" : "Hide")} This Review", isWarning: true);
 
         if (isSuccess)
-            review.ShowInHomePage = !review.ShowInHomePage;
+        {
+            var result = await UpdateAsync($"Reviews/ShowReviewInApp/{review.Id}", review);
+
+            if (result.isSuccess)
+            {
+                review.ShowInApp = !review.ShowInApp;
+            }
+        }
 
         StopProcessing();
     }

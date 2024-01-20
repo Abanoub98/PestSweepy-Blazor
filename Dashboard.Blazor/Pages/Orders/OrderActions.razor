@@ -1,7 +1,55 @@
 ﻿@attribute [Authorize]
+@inherits BasePage
 
 <MudDialog>
     <DialogContent>
-
+        @if (Order is null)
+        {
+            <FormLoadingSpinner />
+        }
+        else
+        {
+            <!--begin::Password-->
+            <div class="d-flex flex-wrap justify-content-between align-items-center mb-5">
+                <!--begin::Label-->
+                <div>
+                    <div class="fs-6 fw-bold mb-1">@languageContainer.Keys["Assign Provider"]:</div>
+                </div>
+                <!--end::Label-->
+                <!--begin::Action-->
+                <div class="ms-auto d-flex align-items-center">
+                    <div>
+                        <MudAutocomplete T="ProviderDto" SearchFunc="@GetProviders" Adornment="Adornment.Start" AnchorOrigin="Origin.BottomCenter" Label="@languageContainer.Keys[("Provider")]"
+                                         Variant="Variant.Outlined" ShowProgressIndicator="true" ResetValueOnEmptyText="true" CoerceText="true" AdornmentIcon="@Icons.Material.Filled.Flag"
+                                         ProgressIndicatorColor="Color.Info" Clearable @bind-Value="Order.Provider" For="@(() => Order.Provider)" AdornmentColor="Color.Info" MaxItems="null" HelperTextOnFocus="true"
+                                          ToStringFunc="@(e=> e == null ? null : $"{e.FirstName} {e.LastName}")" Placeholder="@languageContainer.Keys["Select Provider"]">
+                             <NoItemsTemplate>
+                                 <MudText Align="Align.Center" Class="px-4 py-4">
+                                     @languageContainer.Keys[("No items found")]
+                                </MudText>
+                            </NoItemsTemplate>
+                        </MudAutocomplete>
+                    </div>
+                    <div class="ms-3">
+                        <button @onclick="() => AssignProvider(Order.Id, Order.Provider)" class="btn btn-light-success @(Order.Provider is null? "disabled" : string.Empty )">
+                            @if (isLoading)
+                            {
+                                <span class="indicator-label">
+                                    @languageContainer.Keys["Please Wait"]... <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
+                                </span>
+                            }
+                            else
+                            {
+                                <span class="indicator-label">
+                                    @languageContainer.Keys["Confirm"]
+                                </span>
+                            }
+                        </button>
+                    </div>
+                </div>
+                <!--end::Action-->
+            </div>
+            <!--end::Password-->
+        }
     </DialogContent>
 </MudDialog>

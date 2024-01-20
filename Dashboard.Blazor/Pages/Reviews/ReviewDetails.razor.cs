@@ -8,18 +8,7 @@ public partial class ReviewDetails
 
     protected override async Task OnParametersSetAsync()
     {
-        //review = await GetByIdAsync<ReviewDto>($"Reviews/{Id}");
-
-        review = new ReviewDto()
-        {
-            Id = 1,
-            Date = DateTime.Now,
-            Feedback = "Awful experience, everything stuck, cooked evenly. The only problem is that it's not really a good service. I put paper in one corner of the cabinet and put a piece of paper in the other corner.",
-            Title = "Very Bad Service",
-            Rate = 2.8,
-            ShowInHomePage = false,
-            Client = await GetByIdAsync<ClientDto>("Clients/52")
-        };
+        review = await GetByIdAsync<ReviewDto>($"Reviews/{Id}");
 
         if (review is null)
             return;

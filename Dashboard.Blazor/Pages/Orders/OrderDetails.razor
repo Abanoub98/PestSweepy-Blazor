@@ -19,9 +19,15 @@ else
                 @($"#{@order.OrderNumber} {languageContainer.Keys["Details"]}")
             </div>
             <div class="card-toolbar">
-                <a href="/Orders" class="btn bt-sm btn-primary">
+                <a href="/Orders" class="btn btn-primary">
                     <MudIcon Icon="@Icons.Material.Filled.ArrowBack" />
                     @languageContainer.Keys["Back To"] @languageContainer.Keys["Orders"]
+                </a>
+                <a @onclick="() => ShowOrderActions(order)" class="btn btn-light-primary ms-3 @(order.OrderAccepted ? string.Empty : "disabled")">
+                    <i class="fa-solid fa-user p-0"></i>
+                </a>
+                <a @onclick="() => ShowOrderTracking(order)" class="btn btn-light-primary ms-3">
+                    <i class="fa-solid fa-route p-0"></i>
                 </a>
             </div>
         </div>
@@ -32,7 +38,7 @@ else
                     <!--begin::Card header-->
                     <div class="card-header">
                         <div class="card-title">
-                            <h2>Order Details</h2>
+                            <h2>@($"{languageContainer.Keys["Order"]} {languageContainer.Keys["Information"]}")</h2>
                         </div>
                     </div>
                     <!--end::Card header-->
@@ -59,7 +65,9 @@ else
                                             </div>
                                         </td>
                                         <td class="fw-bold text-end">
-                                            @order.PaymentMethod.Name
+                                            <MudChip Variant="Variant.Text" Color="Color.Success">
+                                                @order.PaymentMethod.Name
+                                            </MudChip>
                                         </td>
                                     </tr>
                                     <tr>
@@ -70,7 +78,24 @@ else
                                             </div>
                                         </td>
                                         <td class="fw-bold text-end">
-                                            @order.OrderState.Name
+                                            <MudChip Variant="Variant.Text" Color="Color.Primary">
+                                                @order.OrderState.Name
+                                            </MudChip>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-muted">
+                                            <div class="d-flex align-items-center">
+                                                <i class="ki-duotone ki-wallet fs-2 me-2"><span class="path1"></span><span class="path2"></span><span class="path3"></span><span class="path4"></span></i>
+                                                @languageContainer.Keys["Provide"]
+                                            </div>
+                                        </td>
+                                        <td class="fw-bold text-end">
+                                            <!--begin::Name-->
+                                            <a href="/Providers/Details/@order.Client.Id" class="text-gray-600 text-hover-primary">
+                                                @order.Provider?.FirstName @order.Provider?.LastName
+                                            </a>
+                                            <!--end::Name-->
                                         </td>
                                     </tr>
                                 </tbody>
@@ -86,7 +111,7 @@ else
                     <!--begin::Card header-->
                     <div class="card-header">
                         <div class="card-title">
-                            <h2>Customer Details</h2>
+                            <h2>@languageContainer.Keys["Customer Details"]</h2>
                         </div>
                     </div>
                     <!--end::Card header-->
@@ -116,7 +141,7 @@ else
                                                 </div>
                                                 <!--end::Avatar-->
                                                 <!--begin::Name-->
-                                                <a href="/@(order.Client.IsContractClient ? "ContractClient" : "IndividualClient")/Details/@order.Client.Id" class="text-gray-600 text-hover-primary">
+                                                <a href="/@(order.Client.IsContractClient ? "ContractClients" : "IndividualClients")/Details/@order.Client.Id" class="text-gray-600 text-hover-primary">
                                                     @order.Client.FirstName @order.Client.LastName
                                                 </a>
                                                 <!--end::Name-->
@@ -150,7 +175,11 @@ else
                                                 @languageContainer.Keys["Client Type"]
                                             </div>
                                         </td>
-                                        <td class="fw-bold text-end">@(order.Client.IsContractClient ? "Contract Client" : "Individual Client") </td>
+                                        <td class="fw-bold text-end">
+                                            <MudChip Variant="Variant.Text" Color="Color.Info">
+                                                @(order.Client.IsContractClient ? "Contract Client" : "Individual Client")
+                                            </MudChip>
+                                        </td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -167,7 +196,7 @@ else
                     <!--begin::Card header-->
                     <div class="card-header">
                         <div class="card-title">
-                            <h2>Address Details</h2>
+                            <h2>@languageContainer.Keys["Address Details"]</h2>
                         </div>
                     </div>
                     <!--end::Card header-->
@@ -238,7 +267,7 @@ else
                     <!--begin::Card header-->
                     <div class="card-header">
                         <div class="card-title">
-                            <h2>Price Details</h2>
+                            <h2>@languageContainer.Keys["Price Details"]</h2>
                         </div>
                     </div>
                     <!--end::Card header-->
@@ -272,9 +301,9 @@ else
                             <table class="table align-middle table-row-dashed fs-6 gy-5 mb-0">
                                 <thead>
                                     <tr class="text-start text-gray-500 fw-bold fs-7 text-uppercase gs-0">
-                                        <th class="min-w-70px text-end">Qty</th>
-                                        <th class="min-w-100px text-end">Price (@order.ServiceOption.Prices.FirstOrDefault()?.Currency?.Symbol)</th>
-                                        <th class="min-w-100px text-end">Total (@order.ServiceOption.Prices.FirstOrDefault()?.Currency?.Symbol)</th>
+                                        <th class="min-w-70px text-end">@languageContainer.Keys["Qty"]</th>
+                                        <th class="min-w-100px text-end">@languageContainer.Keys["Price"] (@order.ServiceOption.Prices.FirstOrDefault()?.Currency?.Symbol)</th>
+                                        <th class="min-w-100px text-end">@languageContainer.Keys["Total"] (@order.ServiceOption.Prices.FirstOrDefault()?.Currency?.Symbol)</th>
                                     </tr>
                                 </thead>
                                 <tbody class="fw-semibold text-gray-600">
@@ -299,7 +328,7 @@ else
                                     </tr>
                                     <tr>
                                         <td colspan="2" class="fs-3 text-gray-900 text-end">
-                                            Grand Total
+                                            @languageContainer.Keys["Grand Total"]
                                         </td>
                                         <td class="text-gray-900 fs-3 fw-bolder text-end">
                                             @order.TotalAmount
@@ -333,72 +362,3 @@ else
         </div>
     </div>
 }
-
-@* <MudTimeline TimelineAlign="TimelineAlign.Start" TimelinePosition="TimelinePosition.Start" TimelineOrientation="TimelineOrientation.Vertical">
-    <MudTimelineItem Color="@Color.Info" Size="@Size.Medium" Variant="@Variant.Filled" Elevation="0">
-        <ItemDot>
-            <MudIcon Size="@Size.Medium" Icon="@Icons.Material.Filled.ShoppingCartCheckout" />
-        </ItemDot>
-        <ItemContent>
-            <MudText Align="Align.Start" Typo="Typo.body1">
-                Order Placed
-            </MudText>
-            <MudText Typo="Typo.body2" Align="Align.Start" Class="mud-text-secondary">
-                @DateTime.Now
-            </MudText>
-        </ItemContent>
-    </MudTimelineItem>
-    @if (true)
-    {
-        <MudTimelineItem Color="@Color.Tertiary" Size="@Size.Large" Variant="@Variant.Filled" Elevation="0">
-            <ItemDot>
-                <MudIcon Size="@Size.Large" Icon="@Icons.Material.Filled.CheckCircle" />
-            </ItemDot>
-            <ItemContent>
-                <MudText Align="Align.Start" Color="Color.Tertiary" Typo="Typo.h6">
-                    Order Accepted
-                </MudText>
-                <MudText Align="Align.Start" Typo="Typo.body1" Class="mud-text-secondary">
-                    @DateTime.Now
-                </MudText>
-            </ItemContent>
-        </MudTimelineItem>
-        <MudTimelineItem Color="@Color.Default" Size="@Size.Small" Variant="@Variant.Filled" Elevation="0">
-            <ItemDot>
-                <MudIcon Size="@Size.Small" Icon="@Icons.Material.Filled.Cached" />
-            </ItemDot>
-            <ItemContent>
-                <MudText Align="Align.Start" Typo="Typo.body1" Color="Color.Default">
-                    Order under execution
-                </MudText>
-            </ItemContent>
-        </MudTimelineItem>
-        <MudTimelineItem Color="@Color.Default" Size="@Size.Small" Variant="@Variant.Filled" Elevation="0">
-            <ItemDot>
-                <MudIcon Size="@Size.Small" Icon="@Icons.Material.Filled.DoneAll" />
-            </ItemDot>
-            <ItemContent>
-                <MudText Align="Align.Start" Typo="Typo.body1" Color="Color.Default">
-                    Order Done
-                </MudText>
-            </ItemContent>
-        </MudTimelineItem>
-    }
-    else
-    {
-        <MudTimelineItem Color="@Color.Error" Size="@Size.Large" Variant="@Variant.Filled" Elevation="0">
-            <ItemDot>
-                <MudIcon Size="@Size.Large" Icon="@Icons.Material.Filled.Cancel" />
-            </ItemDot>
-            <ItemContent>
-                <MudText Align="Align.Start" Typo="Typo.h6">
-                    Order Canceled
-                </MudText>
-                <MudText Align="Align.Start" Typo="Typo.body2" Class="mud-text-secondary">
-                    @DateTime.Now
-                </MudText>
-            </ItemContent>
-
-        </MudTimelineItem>
-    }
-</MudTimeline> *@

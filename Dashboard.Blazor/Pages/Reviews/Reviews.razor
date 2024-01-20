@@ -2,15 +2,17 @@
 @attribute [Authorize(Roles = Roles.AdminRole)]
 @inherits BasePage
 
-<PageTitle>@languageContainer.Keys["Reviews"]</PageTitle>
+<PageTitle>
+    @languageContainer.Keys["Reviews"]
+</PageTitle>
 <MudBreadcrumbs Items="breadcrumbItems" />
 <BrowserViewportObserver TableHeightChanged="TableHeightChanged" />
 
 <MudCard Elevation="25">
     <MudCardContent>
-        <MudDataGrid T="ReviewDto" Dense="true" Elevation="0" FixedHeader="true" Height="@($"{tableHight}px")"
-                        Loading="@(isLoading)" LoadingProgressColor="Color.Info" Filterable="true"
-                        Items="reviews" Hover="true" SortMode="SortMode.Single" QuickFilter="@FilterFunc">
+        <MudDataGrid T="ReviewDto" Dense="true" Elevation="0" FixedHeader="true" Height="@($"{tableHight}px")" SelectedItemsChanged="SelectedItemsChanged"
+                     Loading="@(isLoading)" LoadingProgressColor="Color.Info" Filterable="true" MultiSelection="true"
+                     Items="reviews" Hover="true" SortMode="SortMode.Single" QuickFilter="@FilterFunc">
 
             <ToolBarContent>
                 <div class="d-flex justify-content-between flex-column align-items-center flex-md-row w-100">
@@ -19,13 +21,16 @@
                             <MudAvatar Rounded="true" Color="Color.Info">
                                 <MudIcon Icon="@EntityIcons.ReviewIcon" />
                             </MudAvatar>
-                            <MudText Class="mx-3" Typo="Typo.h5">@languageContainer.Keys["Reviews"]</MudText>
+                            <MudText Class="mx-3" Typo="Typo.h5">
+                                @languageContainer.Keys["Reviews"]
+                            </MudText>
+                            <MudIconButton OnClick="DeleteAll" Disabled="@(selectedIds.Count() < 2 ? true : false)" Icon="@Icons.Material.Filled.DeleteForever" Color="Color.Error"></MudIconButton>
                         </div>
                     </div>
                     <div class="w-md-50 w-100">
                         <MudTextField @bind-Value="searchString" Adornment="Adornment.Start" Class="mt-0 mb-5" Immediate="true"
-                                        Placeholder=@($"{languageContainer.Keys["Search For"]} Name, Order Index")
-                                        AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" />
+                                      Placeholder=@($"{languageContainer.Keys["Search For"]} Name, Order Index")
+                                      AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" />
                     </div>
                 </div>
             </ToolBarContent>
@@ -35,63 +40,40 @@
             </NoRecordsContent>
 
             <Columns>
-                <TemplateColumn Context="review">
-                    <HeaderTemplate>
-                        <MudText>Client</MudText>
-                    </HeaderTemplate>
-                    <CellTemplate>
-                        <MudLink Href=@($"/Clients/Details/{review.Item.Client.Id}")>@review.Item.Client.FirstName</MudLink>
-                    </CellTemplate>
-                </TemplateColumn>
+                <SelectColumn T="ReviewDto" ShowInFooter="false" />
 
-                <TemplateColumn Context="review">
-                    <HeaderTemplate>
-                        <MudText>Order</MudText>
-                    </HeaderTemplate>
-                    <CellTemplate>
-                        <MudLink Href=@($"/Clients/Details/{review.Item.Client.Id}")>#2156465</MudLink>
-                    </CellTemplate>
-                </TemplateColumn>
+                <PropertyColumn Property="x => string.Join(' ', x.Client.FirstName, x.Client.LastName)" Title="@languageContainer.Keys["Client"]" />
+                <PropertyColumn Property="x => x.Order.OrderNumber" Title="@languageContainer.Keys["Order"]" />
+                <PropertyColumn Property="@(x => x.CreatedAt.ToString("dd MMM,yyyy hh:mm tt"))" Title="@languageContainer.Keys["Date"]" />
 
-                <TemplateColumn Context="review">
+                <TemplateColumn Title="@languageContainer.Keys["Rate"]" Context="review" HeaderClass="text-center" CellClass="text-center" Sortable="false" Filterable="false">
                     <HeaderTemplate>
-                        <MudText Class="w-100">Date</MudText>
-                    </HeaderTemplate>
-                    <CellTemplate>
-                        <MudText>@review.Item.Date.ToString("dd MMM,yyyy hh:mm tt")</MudText>
-                    </CellTemplate>
-                </TemplateColumn>
+                        <MudText Class="w-100">
+                            @languageContainer.Keys["Rate"]
 
-                <TemplateColumn Context="review">
-                    <HeaderTemplate>
-                        <MudText Class="w-100">Title</MudText>
-                    </HeaderTemplate>
-                    <CellTemplate>
-                        <MudText>@review.Item.Title</MudText>
-                    </CellTemplate>
-                </TemplateColumn>
-
-                <TemplateColumn Context="review" HeaderClass="text-center" CellClass="text-center">
-                    <HeaderTemplate>
-                        <MudText Class="w-100">Rate</MudText>
+                        </MudText>
                     </HeaderTemplate>
                     <CellTemplate>
                         <MudTooltip Text="@(review.Item.Rate.ToString())" Arrow="true">
-                            <MudRating SelectedValue="@((int)review.Item.Rate)" />
+                            <MudRating ReadOnly="true" SelectedValue="@((int)review.Item.Rate)" />
                         </MudTooltip>
                     </CellTemplate>
                 </TemplateColumn>
 
-                <TemplateColumn CellClass="text-center" Context="review" HeaderClass="text-center" Sortable="false" Filterable="false">
+                <TemplateColumn Title="@languageContainer.Keys["Actions"]" CellClass="text-center" Context="review" HeaderClass="text-center" Sortable="false" Filterable="false">
                     <HeaderTemplate>
-                        <MudText Class="w-100">Actions</MudText>
+                        <MudText Class="w-100">
+                            @languageContainer.Keys["Actions"]
+                        </MudText>
                     </HeaderTemplate>
                     <CellTemplate>
-                        <TableButtons IsDisable="isDisable" IsEditHide="true"
-                            DeleteClicked="() => Delete(review.Item!.Id)" DetailsClicked="() => OpenDetails(detailsUri,review.Item!.Id)" />
-                            <a @onclick="() => ToggleStatus(review.Item)" class="btn btn-sm btn-light-@(review.Item!.ShowInHomePage? "success" : "danger")">
-                                <i class="fa-solid fa-eye@(review.Item!.ShowInHomePage? string.Empty : "-slash")"></i>
+                        <div>
+                            <TableButtons IsDisable="isDisable" IsEditHide="true"
+                                          DeleteClicked="() => Delete(review.Item!.Id)" DetailsClicked="() => OpenDetails(detailsUri,review.Item!.Id)" />
+                            <a @onclick="() => ToggleStatus(review.Item)" class="btn btn-sm btn-light-@(review.Item!.ShowInApp? "success" : "danger")">
+                                <i class="fa-solid fa-eye@(review.Item!.ShowInApp? string.Empty : "-slash")"></i>
                             </a>
+                        </div>
                     </CellTemplate>
                 </TemplateColumn>
             </Columns>

@@ -1,0 +1,104 @@
+﻿@inherits BasePage
+
+<MudDialog>
+    <DialogContent>
+        @if (statuses is null || lastStatus is null)
+        {
+            <div class="row my-10 h-100">
+                <div class="col-md-6 col-12">
+                    <MudImage Src="/images/Tracking.png" Fluid="true" Class="rounded-lg" />
+                    <MudImage Src="/images/LogoWord.png" Fluid="true" Class="rounded-lg" />
+                </div>
+                <div class="col-md-6 col-12">
+                    <MudTimeline TimelineAlign="TimelineAlign.Default" TimelinePosition="TimelinePosition.Left" TimelineOrientation="TimelineOrientation.Vertical">
+                        <MudTimelineItem Color="@Color.Default" Size="@Size.Small" Variant="@Variant.Filled" Elevation="0">
+                            <ItemContent>
+                                <MudSkeleton Animation="Animation.Wave" Width="50%" />
+                                <MudSkeleton Animation="Animation.Wave" Width="50%" />
+                            </ItemContent>
+                        </MudTimelineItem>
+                        <MudTimelineItem Color="@Color.Default" Size="@Size.Small" Variant="@Variant.Filled" Elevation="0">
+                            <ItemContent>
+                                <MudSkeleton Animation="Animation.Wave" Width="50%" />
+                                <MudSkeleton Animation="Animation.Wave" Width="50%" />
+                            </ItemContent>
+                        </MudTimelineItem>
+                        <MudTimelineItem Color="@Color.Default" Size="@Size.Small" Variant="@Variant.Filled" Elevation="0">
+                            <ItemContent>
+                                <MudSkeleton Animation="Animation.Wave" Width="50%" />
+                                <MudSkeleton Animation="Animation.Wave" Width="50%" />
+                            </ItemContent>
+                        </MudTimelineItem>
+                        <MudTimelineItem Color="@Color.Default" Size="@Size.Small" Variant="@Variant.Filled" Elevation="0">
+                            <ItemContent>
+                                <MudSkeleton Animation="Animation.Wave" Width="50%" />
+                                <MudSkeleton Animation="Animation.Wave" Width="50%" />
+                            </ItemContent>
+                        </MudTimelineItem>
+                        <MudTimelineItem Color="@Color.Default" Size="@Size.Small" Variant="@Variant.Filled" Elevation="0">
+                            <ItemContent>
+                                <MudSkeleton Animation="Animation.Wave" Width="50%" />
+                                <MudSkeleton Animation="Animation.Wave" Width="50%" />
+                            </ItemContent>
+                        </MudTimelineItem>
+                    </MudTimeline>
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="row my-10 h-100">
+                <div class="col-md-6 col-12">
+                    <MudImage Src="/images/Tracking.png" Fluid="true" Class="rounded-lg" />
+                    <MudImage Src="/images/LogoWord.png" Fluid="true" Class="rounded-lg" />
+                </div>
+                <div class="col-md-6 col-12">
+                    <MudTimeline TimelineAlign="TimelineAlign.Default" TimelinePosition="TimelinePosition.Left" TimelineOrientation="TimelineOrientation.Vertical">
+                        @foreach (var state in statuses)
+                        {
+                            <MudTimelineItem Color="@(state.Id  == lastStatus.Id  ? Color.Tertiary : Color.Info)" Size="@(state.Id == lastStatus.Id ? Size.Large : Size.Medium)" Variant="@Variant.Filled" Elevation="0">
+                                <ItemDot>
+                                    <MudIcon Size="@(state.Id == lastStatus.Id  ? Size.Large : Size.Medium)" Icon="@Icons.Material.Filled.ShoppingCartCheckout" />
+                                </ItemDot>
+                                <ItemContent>
+                                    <MudText Align="Align.Start" Typo="Typo.body1">
+                                        @state.OrderState.Name
+                                    </MudText>
+                                    <MudText Typo="Typo.body2" Align="Align.Start" Class="mud-text-secondary">
+                                        @state.CreatedAt
+                                    </MudText>
+                                </ItemContent>
+                            </MudTimelineItem>
+                        }
+                        @for (int i = 0; i < remainStatuses; i++)
+                        {
+                            <MudTimelineItem Color="@Color.Default" Size="@Size.Small" Variant="@Variant.Filled" Elevation="0">
+                            </MudTimelineItem>
+                        }
+                    </MudTimeline>
+                </div>
+            </div>
+        }
+    </DialogContent>
+</MudDialog>
+
+@code {
+    [Parameter][EditorRequired] public int Id { get; set; }
+
+    private List<OrderDto>? statuses;
+
+    private OrderDto? lastStatus = new();
+    private int remainStatuses;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        statuses = await GetAllAsync<OrderDto>($"Orders/OrderTracking?orderId={Id}");
+
+        if (statuses is null)
+            return;
+
+        lastStatus = statuses.LastOrDefault();
+
+        remainStatuses = 5 - statuses.Count;
+    }
+}

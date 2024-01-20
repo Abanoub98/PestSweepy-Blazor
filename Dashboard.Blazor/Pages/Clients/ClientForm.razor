@@ -1,10 +1,10 @@
-﻿@page "/Clients/Form/{Id:int}"
-@page "/Clients/Form"
+﻿@page "/IndividualClients/Form/{Id:int}"
+@page "/IndividualClients/Form"
 @attribute [Authorize(Roles = Roles.AdminRole)]
 @inherits BasePage
 
 <PageTitle>
-    @($"{languageContainer.Keys[(Id == 0 ? "Add" : "Edit")]} {languageContainer.Keys[("Client")]}")
+    @($"{languageContainer.Keys[(Id == 0 ? "Add" : "Edit")]} {languageContainer.Keys[("Individual Client")]}")
 </PageTitle>
 <MudBreadcrumbs Items="breadcrumbItems"></MudBreadcrumbs>
 
@@ -25,12 +25,12 @@ else
                 </CardHeaderAvatar>
                 <CardHeaderContent>
                     <MudText Style="display: flex;align-items: center;" Typo="Typo.h5">
-                        @(Id == 0 ? $"{languageContainer.Keys[("Add")]} {languageContainer.Keys[("Category")]}" : $"{languageContainer.Keys[("Edit")]} {clientForm.FirstName} {clientForm.LastName}")
+                        @(Id == 0 ? $"{languageContainer.Keys[("Add")]} {languageContainer.Keys[("Individual Client")]}" : $"{languageContainer.Keys[("Edit")]} {clientForm.FirstName} {clientForm.LastName}")
                     </MudText>
                 </CardHeaderContent>
                 <CardHeaderActions>
-                    <MudButton DisableElevation="true" Href="/Clients" Style="margin:10px" Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.ArrowBack" Color="Color.Info">
-                        @($"{languageContainer.Keys[("Back to")]} {languageContainer.Keys[("Clients")]}")
+                    <MudButton DisableElevation="true" Href="/IndividualClients" Style="margin:10px" Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.ArrowBack" Color="Color.Info">
+                        @($"{languageContainer.Keys[("Back to")]} {languageContainer.Keys[("Individual Client")]}")
                     </MudButton>
                 </CardHeaderActions>
             </MudCardHeader>
@@ -47,7 +47,7 @@ else
                 </div>
                 <div class="d-flex flex-wrap flex-md-nowrap">
                     <div class="p-3 w-100">
-                        <MudSelect HelperText="@languageContainer.Keys[("Required")]" Variant="Variant.Outlined" @bind-Value="clientForm.Gender" For="@(() => clientForm.Gender)" Adornment="Adornment.Start" Clearable
+                        <MudSelect HelperText="@languageContainer.Keys[("Required")]" Variant="Variant.Outlined" @bind-Value="clientForm.Gender" For="@(() => clientForm.Gender)" Adornment="Adornment.Start" Clearable Label="@languageContainer.Keys[("Gender")]"
                                     Placeholder="@Placeholders.GenderDropDown" AdornmentIcon="@Icons.Material.Filled.Group" AdornmentColor="Color.Info" AnchorOrigin="Origin.BottomCenter" T="string" HelperTextOnFocus="true">
                              <MudSelectItem Value="@("Male")">
                                  @languageContainer.Keys[("Male")]
@@ -59,7 +59,7 @@ else
                     </div>
                     <div class="p-3 w-100">
                         <MudAutocomplete T="LookupDto" SearchFunc="@GetNationalities" Adornment="Adornment.Start" AnchorOrigin="Origin.BottomCenter" Label="@languageContainer.Keys[("Nationality")]"
-                                         Variant="Variant.Outlined" ShowProgressIndicator="true" ResetValueOnEmptyText="true" CoerceText="true" AdornmentIcon="@Icons.Material.Filled.Flag"
+                                         Variant="Variant.Outlined" ShowProgressIndicator="true" ResetValueOnEmptyText="true" CoerceText="true" AdornmentIcon="@Icons.Material.Filled.Flag" 
                                          ProgressIndicatorColor="Color.Info" Clearable @bind-Value="clientForm.Nationality" For="@(() => clientForm.Nationality)" AdornmentColor="Color.Info" MaxItems="null" HelperTextOnFocus="true"
                                           ToStringFunc="@(e=> e == null ? null : $"{e.Name}")" HelperText="@languageContainer.Keys[("Required")]" Placeholder="@languageContainer.Keys[(Placeholders.NationalityDropDown)]">
                              <NoItemsTemplate>
