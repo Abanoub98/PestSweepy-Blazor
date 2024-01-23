@@ -1,5 +1,5 @@
 ﻿@page "/Reviews"
-@attribute [Authorize(Roles = Roles.AdminRole)]
+@attribute [Authorize(Roles = $"{Roles.AdminRole},{Roles.ManagerRole},{Roles.SupervisorRole}")]
 @inherits BasePage
 
 <PageTitle>
@@ -70,9 +70,11 @@
                         <div>
                             <TableButtons IsDisable="isDisable" IsEditHide="true"
                                           DeleteClicked="() => Delete(review.Item!.Id)" DetailsClicked="() => OpenDetails(detailsUri,review.Item!.Id)" />
-                            <a @onclick="() => ToggleStatus(review.Item)" class="btn btn-sm btn-light-@(review.Item!.ShowInApp? "success" : "danger")">
-                                <i class="fa-solid fa-eye@(review.Item!.ShowInApp? string.Empty : "-slash")"></i>
-                            </a>
+                            <AuthorizeView  Roles="@Roles.AdminRole">
+                                <a @onclick="() => ToggleStatus(review.Item)" class="btn btn-sm btn-light-@(review.Item!.ShowInApp? "success" : "danger")">
+                                    <i class="fa-solid fa-eye@(review.Item!.ShowInApp? string.Empty : "-slash")"></i>
+                                </a>
+                            </AuthorizeView>
                         </div>
                     </CellTemplate>
                 </TemplateColumn>

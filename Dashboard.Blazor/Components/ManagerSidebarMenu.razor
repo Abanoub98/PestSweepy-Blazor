@@ -3,8 +3,60 @@
 <div id="#kt_app_sidebar_menu" data-kt-menu="true" data-kt-menu-expand="false" class="flex-column-fluid menu menu-sub-indention menu-column menu-rounded menu-active-bg mb-7">
     <Navlink IsDarkMood="@IsDarkMood" Href="/" MenuTitle="Dashboard" Icon="@Icons.Material.Outlined.SpaceDashboard" NavLinkMatch="@NavLinkMatch.All" />
     <Navlink IsDarkMood="@IsDarkMood" Href="/ReferenceData" MenuTitle="Reference Data" Icon="@Icons.Material.Outlined.ManageSearch" />
+    <!--begin:Menu item-->
+    <div data-kt-menu-trigger="click" class="menu-item here menu-accordion">
+        <!--begin:Menu link-->
+        <span class="menu-link">
+            <span class="menu-icon">
+                <MudIcon Color="@(IsDarkMood? Color.Info : Color.Dark)" Size="Size.Large" Icon="@Icons.Material.Outlined.Security" Title="SecurityLogs" />
+            </span>
+            <span class="menu-title">@languageContainer.Keys["Security Logs"]</span>
+            <span class="menu-arrow"></span>
+        </span>
+        <!--end:Menu link-->
+        <!--begin:Menu sub-->
+        <div class="menu-sub menu-sub-accordion">
+            <!--begin:Menu item-->
+            <Navlink IsDarkMood="@IsDarkMood" Href="/Audits" MenuTitle="Audits" Icon="@Icons.Material.Outlined.History" Size="@Size.Medium" />
+            <!--end:Menu item-->
+            <!--begin:Menu item-->
+            <Navlink IsDarkMood="@IsDarkMood" Href="/LoginLogs" MenuTitle="Login Logs" Icon="@Icons.Material.Outlined.SafetyCheck" Size="@Size.Medium" />
+            <!--end:Menu item-->
+        </div>
+        <!--end:Menu sub-->
+    </div>
+    <!--end:Menu item-->
+    <!--begin:Menu item-->
+    <div data-kt-menu-trigger="click" class="menu-item here menu-accordion">
+        <!--begin:Menu link-->
+        <span class="menu-link">
+            <span class="menu-icon">
+                <MudIcon Color="@(IsDarkMood? Color.Info : Color.Dark)" Size="Size.Large" Icon="@Icons.Material.Outlined.Groups" Title="Clients" />
+            </span>
+            <span class="menu-title">@languageContainer.Keys["Clients"]</span>
+            <span class="menu-arrow"></span>
+        </span>
+        <!--end:Menu link-->
+        <!--begin:Menu sub-->
+        <div class="menu-sub menu-sub-accordion">
+            <!--begin:Menu item-->
+            <Navlink IsDarkMood="@IsDarkMood" Href="/IndividualClients" MenuTitle="Individual Clients" Icon="@Icons.Material.Outlined.Diversity1" Size="@Size.Medium" />
+            <!--end:Menu item-->
+            <!--begin:Menu item-->
+            <Navlink IsDarkMood="@IsDarkMood" Href="/ContractClients" MenuTitle="Contract Clients" Icon="@Icons.Material.Outlined.Diversity1" Size="@Size.Medium" />
+            <!--end:Menu item-->
+        </div>
+        <!--end:Menu sub-->
+    </div>
+    <!--end:Menu item-->
     <Navlink IsDarkMood="@IsDarkMood" Href="/Supervisors" MenuTitle="Supervisors" Icon="@Icons.Material.Outlined.SupervisorAccount" />
     <Navlink IsDarkMood="@IsDarkMood" Href="/Providers" MenuTitle="Providers" Icon="@Icons.Material.Outlined.Engineering" />
+    <Navlink IsDarkMood="@IsDarkMood" Href="/Orders" MenuTitle="Orders" Icon="@EntityIcons.OrderIcon" />
+    <Navlink IsDarkMood="@IsDarkMood" Href="/Quotations" MenuTitle="Quotations" Icon="@EntityIcons.QuotationsIcon" />
+    <Navlink IsDarkMood="@IsDarkMood" Href="/Contracts" MenuTitle="Contracts" Icon="@EntityIcons.ContractsIcon" />
+    <Navlink IsDarkMood="@IsDarkMood" Href="/Coupons" MenuTitle="Coupons" Icon="@EntityIcons.CouponIcon" />
+    <Navlink IsDarkMood="@IsDarkMood" Href="/Complaints" MenuTitle="Complaints" Icon="@EntityIcons.ComplaintIcon" />
+    <Navlink IsDarkMood="@IsDarkMood" Href="/Reviews" MenuTitle="Reviews" Icon="@EntityIcons.ReviewIcon" />
 </div>
 
 @code {

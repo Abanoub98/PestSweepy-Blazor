@@ -1,6 +1,6 @@
 ﻿@page "/Quotations/Form/{Id:int}"
 @page "/Quotations/Form"
-@attribute [Authorize(Roles = Roles.AdminRole)]
+@attribute [Authorize(Roles = $"{Roles.AdminRole},{Roles.ManagerRole}")]
 @inherits BasePage
 
 <PageTitle>@(languageContainer.Keys[(Id == 0 ? "Add" : "Edit")] + " " + languageContainer.Keys["Price Quotation"])</PageTitle>

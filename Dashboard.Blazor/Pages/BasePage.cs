@@ -7,9 +7,10 @@ public class BasePage : ComponentBase
     [Inject] protected NavigationManager NavigationManager { get; set; } = default!;
     [Inject] protected IDialogService DialogService { get; set; } = default!;
     [Inject] protected AuthenticationStateProvider AuthenticationStateProvider { get; set; } = default!;
+    [Inject] ILocalStorageService LocalStorage { get; set; } = default!;
     [Inject] private IApiService ApiService { get; set; } = default!;
     [Inject] private ISnackbar Snackbar { get; set; } = default!;
-    [Inject] private ILanguageContainerService languageContainer { get; set; } = default!;
+    [Inject] private ILanguageContainerService LanguageContainer { get; set; } = default!;
 
     //Variables
     protected List<BreadcrumbItem> breadcrumbItems = new();
@@ -35,7 +36,7 @@ public class BasePage : ComponentBase
         var response = await ApiService.GetAllAsync<T>(endPoint);
 
         if (!response.IsSuccess)
-            HandelNavigation(response.StatusCode!);
+            await HandelNavigation(response.RequestStatusCode!);
 
         return response.ObjectsList!;
     }
@@ -58,7 +59,7 @@ public class BasePage : ComponentBase
         var response = await ApiService.GetByIdAsync<T>(endPoint);
 
         if (!response.IsSuccess)
-            HandelNavigation(response.StatusCode!);
+            await HandelNavigation(response.RequestStatusCode!);
 
         return response.Object!;
     }
@@ -224,7 +225,7 @@ public class BasePage : ComponentBase
             formParameters.Add(x => x.ConfirmationMessage, confirmationMessage);
 
 
-        var dialog = await DialogService.ShowAsync<ConfirmationDialog>(languageContainer.Keys["Are you sure?"], formParameters, dialogOptions);
+        var dialog = await DialogService.ShowAsync<ConfirmationDialog>(LanguageContainer.Keys["Are you sure?"], formParameters, dialogOptions);
         var result = await dialog.Result;
 
         if (result.Canceled)
@@ -249,7 +250,7 @@ public class BasePage : ComponentBase
             { x => x.ImageUrl, imageUrl }
         };
 
-        await DialogService.ShowAsync<ImagePreview>(languageContainer.Keys["Image Preview"], formParameters, dialogOptions);
+        await DialogService.ShowAsync<ImagePreview>(LanguageContainer.Keys["Image Preview"], formParameters, dialogOptions);
     }
 
     protected string HandelDuration(int? durationInMin)
@@ -258,11 +259,11 @@ public class BasePage : ComponentBase
             return string.Empty;
 
         if (durationInMin <= 60)
-            return $"{durationInMin} {languageContainer.Keys["Minutes"]}";
+            return $"{durationInMin} {LanguageContainer.Keys["Minutes"]}";
 
         int hours = (int)durationInMin / 60;
         int remainingMinutes = (int)durationInMin % 60;
-        return $"{hours} {languageContainer.Keys["Hours and"]} {remainingMinutes} {languageContainer.Keys["Minutes"]}";
+        return $"{hours} {LanguageContainer.Keys["Hours and"]} {remainingMinutes} {LanguageContainer.Keys["Minutes"]}";
     }
 
     protected async Task<IEnumerable<Claim>> GetClaimsPrincipalData()
@@ -280,9 +281,17 @@ public class BasePage : ComponentBase
     protected void TableHeightChanged(int newTableHight) => tableHight = newTableHight;
 
     //TODO : Handel All Status Codes
-    private void HandelNavigation(string statusCode)
+    private async Task HandelNavigation(string statusCode)
     {
-        NavigationManager.NavigateTo("/ServerError");
+        if (statusCode == "401")
+        {
+            await LocalStorage.RemoveItemAsync("token");
+            await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        }
+        else
+        {
+            NavigationManager.NavigateTo("/ServerError");
+        }
     }
 
     private MultipartFormDataContent HandelImage(IBrowserFile image)
@@ -304,13 +313,13 @@ public class BasePage : ComponentBase
     {
         if (error is null)
         {
-            Snackbar.Add(languageContainer.Keys[message], Severity.Error);
+            Snackbar.Add(LanguageContainer.Keys[message], Severity.Error);
             return;
         }
 
-        Snackbar.Add(languageContainer.Keys[message], Severity.Error, config =>
+        Snackbar.Add(LanguageContainer.Keys[message], Severity.Error, config =>
         {
-            config.Action = languageContainer.Keys["More Info"];
+            config.Action = LanguageContainer.Keys["More Info"];
             config.ActionColor = Color.Surface;
             config.ActionVariant = Variant.Filled;
             config.Onclick = snackbar =>
@@ -337,11 +346,11 @@ public class BasePage : ComponentBase
             { x => x.Error, error }
         };
 
-        DialogService.Show<ErrorDetailsDialog>(languageContainer.Keys["Error Details"], formParameters, dialogOptions);
+        DialogService.Show<ErrorDetailsDialog>(LanguageContainer.Keys["Error Details"], formParameters, dialogOptions);
     }
 
     protected void ShowSuccess(string message)
     {
-        Snackbar.Add(languageContainer.Keys[message], Severity.Success);
+        Snackbar.Add(LanguageContainer.Keys[message], Severity.Success);
     }
 }

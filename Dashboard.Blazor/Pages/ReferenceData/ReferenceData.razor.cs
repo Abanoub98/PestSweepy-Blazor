@@ -1,4 +1,6 @@
-﻿namespace Dashboard.Blazor.Pages.ReferenceData;
+﻿using System.Text.RegularExpressions;
+
+namespace Dashboard.Blazor.Pages.ReferenceData;
 
 public partial class ReferenceData
 {
@@ -7,7 +9,7 @@ public partial class ReferenceData
     private string? SelectedTable;
     private List<LookupDto>? LookupList = new();
 
-    private readonly string formUri = "Services/Form";
+    private bool hideTableActions;
 
     protected override void OnInitialized()
     {
@@ -28,9 +30,36 @@ public partial class ReferenceData
         LookupList = string.IsNullOrWhiteSpace(selectedTable) ?
             new() : await GetAllLookupsAsync("ReferenceData?tableName=" + selectedTable);
 
+        switch (selectedTable)
+        {
+            case "Countries":
+                hideTableActions = true;
+                break;
+            case "OrderStates":
+                hideTableActions = true;
+                break;
+            case "PaymentMethods":
+                hideTableActions = true;
+                break;
+            default:
+                hideTableActions = false;
+                break;
+        }
+
         SelectedTable = selectedTable;
 
         StopProcessing();
+    }
+
+    private string ConvertPascalCaseToNormalText(string input)
+    {
+        // Use regular expression to insert a space before each capital letter
+        string result = Regex.Replace(input, "([a-z])([A-Z])", "$1 $2");
+
+        // Capitalize the first letter
+        result = char.ToUpper(result[0]) + result.Substring(1);
+
+        return result;
     }
 
     private async Task ShowForm(int id = 0)

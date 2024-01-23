@@ -1,6 +1,6 @@
 ﻿@page "/ContractClients/Form/{Id:int}"
 @page "/ContractClients/Form"
-@attribute [Authorize(Roles = Roles.AdminRole)]
+@attribute [Authorize(Roles = $"{Roles.AdminRole},{Roles.ManagerRole}")]
 @inherits BasePage
 
 <PageTitle>@languageContainer.Keys[(Id == 0 ? "Add" : "Edit") + " Contract Clients"]</PageTitle>

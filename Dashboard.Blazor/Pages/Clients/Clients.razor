@@ -1,5 +1,5 @@
 ﻿@page "/IndividualClients"
-@attribute [Authorize(Roles = Roles.AdminRole)]
+@attribute [Authorize(Roles = $"{Roles.AdminRole},{Roles.ManagerRole}")]
 @inherits BasePage
 
 <BrowserViewportObserver TableHeightChanged="TableHeightChanged" />

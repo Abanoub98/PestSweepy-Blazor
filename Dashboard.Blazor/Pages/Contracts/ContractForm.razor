@@ -39,7 +39,7 @@ else
                                       AdornmentColor="Color.Info" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.AccountBox" Placeholder="@languageContainer.Keys["Contract Title"]" Label="@languageContainer.Keys["Contract Title"]" />
                     </div>
                     <div class="p-3 w-100">
-                        <MudAutocomplete T="LookupDto" SearchFunc="@GetContractClients" @bind-Value="contractForm.ContractClient" For="@(() => contractForm.ContractClient)" ToStringFunc="@(e=> e == null ? null : $"{e.Name}")"
+                        <MudAutocomplete T="LookupDto" SearchFunc="@GetContractClients" @bind-Value="contractForm.ContractClient" For="@(() => contractForm.ContractClient)" ToStringFunc="@(e=> e == null ? null : $"{e.FirstName} {e.LastName}")"
                                          Variant="Variant.Outlined" ShowProgressIndicator="true" ResetValueOnEmptyText="true" CoerceText="true" ProgressIndicatorColor="Color.Info" Clearable
                                           AdornmentColor="Color.Info" Adornment="Adornment.Start" AdornmentIcon="@EntityIcons.QuotationsIcon" AnchorOrigin="Origin.BottomCenter" MaxItems="null" HelperTextOnFocus="true"
                                           Placeholder="@languageContainer.Keys["Select Contract Client"]" Label="@languageContainer.Keys["Contract Client"]" HelperText="@languageContainer.Keys["Required"]">

@@ -173,18 +173,18 @@ public class ApiService : IApiService
 
     private static async Task<ApiResponse<T>> GetErrorAsync<T>(HttpResponseMessage responseMessage, Exception? exception = null) where T : class
     {
-        string error = await responseMessage.Content.ReadAsStringAsync() ?? string.Empty;
+        ApiResponse<T> error = await responseMessage.Content.ReadFromJsonAsync<ApiResponse<T>>() ?? new();
 
         if (exception is not null)
         {
-            error = $"{error}, {exception.Message}";
+            error.Message = $"{error.Message}, {string.Join(',', error.Errors)}, {exception.Message}";
         }
 
         return new ApiResponse<T>
         {
             IsSuccess = false,
-            StatusCode = responseMessage.StatusCode.ToString(),
-            Error = error
+            RequestStatusCode = responseMessage.StatusCode.ToString(),
+            Error = $"{error.Message}, {string.Join(", ", error.Errors)}"
         };
     }
 }

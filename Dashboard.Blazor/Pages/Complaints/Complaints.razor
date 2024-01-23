@@ -1,5 +1,5 @@
 ﻿@page "/Complaints"
-@attribute [Authorize(Roles = Roles.AdminRole)]
+@attribute [Authorize(Roles = $"{Roles.AdminRole},{Roles.ManagerRole},{Roles.SupervisorRole}")]
 @inherits BasePage
 
 <PageTitle>
@@ -77,9 +77,12 @@
                     <CellTemplate>
                         <TableButtons IsDisable="isDisable" IsEditHide="true"
                                       DeleteClicked="() => Delete(complaint.Item!.Id)" DetailsClicked="() => OpenDetails(detailsUri,complaint.Item!.Id)" />
-                        <a @onclick="() => ToggleStatus(complaint.Item)" class="btn btn-sm btn-light-@(complaint.Item!.IsResolved ? "danger" : "success")">
-                            <i class="fa-solid fa-@(complaint.Item!.IsResolved ? "ban" : "check")"></i>
-                        </a>
+                        <AuthorizeView Roles="@Roles.AdminRole">
+                            <a @onclick="() => ToggleStatus(complaint.Item)" class="btn btn-sm btn-light-@(complaint.Item!.IsResolved ? "danger" : "success")">
+                                <i class="fa-solid fa-@(complaint.Item!.IsResolved ? "ban" : "check")"></i>
+                            </a>
+                        </AuthorizeView>
+
                     </CellTemplate>
                 </TemplateColumn>
             </Columns>

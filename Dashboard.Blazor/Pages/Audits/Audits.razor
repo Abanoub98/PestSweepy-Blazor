@@ -1,8 +1,10 @@
 ﻿@page "/Audits"
-@attribute [Authorize(Roles = Roles.AdminRole)]
+@attribute [Authorize(Roles = $"{Roles.AdminRole},{Roles.ManagerRole}")]
 @inherits BasePage
 
-<PageTitle>@languageContainer.Keys["Audits"]</PageTitle>
+<PageTitle>
+    @languageContainer.Keys["Audits"]
+</PageTitle>
 <MudBreadcrumbs Items="breadcrumbItems"></MudBreadcrumbs>
 <BrowserViewportObserver TableHeightChanged="TableHeightChanged" />
 
@@ -19,7 +21,9 @@
                             <MudAvatar Rounded="true" Color="Color.Info">
                                 <MudIcon Icon="@Icons.Material.Filled.History" />
                             </MudAvatar>
-                            <MudText Class="mx-3" Typo="Typo.h5">@languageContainer.Keys["Audits"]</MudText>
+                            <MudText Class="mx-3" Typo="Typo.h5">
+                                @languageContainer.Keys["Audits"]
+                            </MudText>
                         </div>
                     </div>
                     <div class="w-md-50 w-100">
