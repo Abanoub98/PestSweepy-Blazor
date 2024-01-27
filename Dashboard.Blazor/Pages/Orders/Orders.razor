@@ -54,7 +54,7 @@
                     <CellTemplate>
                         <div>
                             <TableButtons IsDeleteHide="true" IsDisable="isDisable" IsEditHide="true" DetailsClicked="() => OpenDetails(detailsUri, order.Item!.Id)" />
-                            <a @onclick="() => AcceptOrder(order.Item)" class="btn btn-sm btn-light-success me-1 @(order.Item.OrderAccepted ? "disabled" : string.Empty )">
+                            <a @onclick="() => AcceptOrder(order.Item)" class="btn btn-sm btn-light-success me-1 @(order.Item.OrderAccepted ? "d-none" : string.Empty )">
                                 <i class="fa-solid fa-check p-0"></i>
                             </a>
                         </div>

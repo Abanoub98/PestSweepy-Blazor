@@ -3,7 +3,9 @@
 @attribute [Authorize(Roles = Roles.AdminRole)]
 @inherits BasePage
 
-<PageTitle>@languageContainer.Keys[(Id == 0 ? "Add" : "Edit") + " Manager"]</PageTitle>
+<PageTitle>
+    @($"{languageContainer.Keys[(Id == 0 ? "Add" : "Edit")]} {languageContainer.Keys[("Manager")]}")
+</PageTitle>
 <MudBreadcrumbs Items="breadcrumbItems"></MudBreadcrumbs>
 
 @if (managerForm is null)
@@ -12,99 +14,78 @@
 }
 else
 {
-    <MudCard Elevation="25">
-        <EditForm Model="@managerForm" OnValidSubmit="OnValidSubmit">
-            <DataAnnotationsValidator />
-            <MudCardHeader Style="padding:20px">
-                <CardHeaderAvatar>
-                    <MudAvatar Rounded="true" Color="Color.Info">
-                        <MudIcon Icon="@Icons.Material.Filled.Diversity3" />
-                    </MudAvatar>
-                </CardHeaderAvatar>
-                <CardHeaderContent>
-                    <MudText Style="display: flex;align-items: center;" Typo="Typo.h5">
-                        @(Id == 0 ? "Add Manager" : $"Edit {managerForm.FirstName} {managerForm.LastName}")
-                    </MudText>
-                </CardHeaderContent>
-                <CardHeaderActions>
-                    <MudButton DisableElevation="true" Href="/Managers" Style="margin:10px" Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.ArrowBack" Color="Color.Info">
-                        Back to Managers
-                    </MudButton>
-                </CardHeaderActions>
-            </MudCardHeader>
-            <MudCardContent Class="px-5 py-3">
-                 <div class="d-flex flex-wrap flex-md-nowrap">
-                     <div class="p-3 w-100">
-                         <MudTextField HelperText="@languageContainer.Keys[("Required")]" Variant="Variant.Outlined" @bind-Value="managerForm.FirstName" For="@(() => managerForm.FirstName)" HelperTextOnFocus="true"
-                                      AdornmentColor="Color.Info" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.AccountBox" Placeholder="@languageContainer.Keys[("First Name")]" Label="@languageContainer.Keys[("First Name")]" />
-                     </div>
-                     <div class="p-3 w-100">
-                         <MudTextField HelperText="@languageContainer.Keys[("Required")]" Variant="Variant.Outlined" @bind-Value="managerForm.LastName" For="@(() => managerForm.LastName)" HelperTextOnFocus="true"
-                                      AdornmentColor="Color.Info" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.AccountBox" Placeholder="@languageContainer.Keys[("Last Name")]" Label="@languageContainer.Keys[("Last Name")]" />
-                     </div>
+    <BaseFrom EntityBackUrl="/Managers" EditTitle="@($"{managerForm.FirstName} {managerForm.LastName}")" EntityName="Manager"
+              IsAddFrom="@(Id == 0 ? true : false)" OnValidSubmit="OnValidSubmit" Model="managerForm" Icon="@Icons.Material.Filled.Diversity3">
+        <FormContent>
+            <div class="d-flex flex-wrap flex-md-nowrap">
+                <div class="p-3 w-100">
+                    <MudTextField HelperText="@languageContainer.Keys[("Required")]" Variant="Variant.Outlined" @bind-Value="managerForm.FirstName" For="@(() => managerForm.FirstName)" HelperTextOnFocus="true"
+                                  AdornmentColor="Color.Info" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.AccountBox" Placeholder="@languageContainer.Keys[("First Name")]" Label="@languageContainer.Keys[("First Name")]" />
+                </div>
+                <div class="p-3 w-100">
+                    <MudTextField HelperText="@languageContainer.Keys[("Required")]" Variant="Variant.Outlined" @bind-Value="managerForm.LastName" For="@(() => managerForm.LastName)" HelperTextOnFocus="true"
+                                  AdornmentColor="Color.Info" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.AccountBox" Placeholder="@languageContainer.Keys[("Last Name")]" Label="@languageContainer.Keys[("Last Name")]" />
+                </div>
+            </div>
+            <div class="d-flex flex-wrap flex-md-nowrap">
+                <div class="p-3 w-100">
+                    <MudSelect HelperText="@languageContainer.Keys[("Required")]" Variant="Variant.Outlined" @bind-Value="managerForm.Gender" For="@(() => managerForm.Gender)" Adornment="Adornment.Start" Clearable Label="@languageContainer.Keys[("Gender")]"
+                                Placeholder="@Placeholders.GenderDropDown" AdornmentIcon="@Icons.Material.Filled.Group" AdornmentColor="Color.Info" AnchorOrigin="Origin.BottomCenter" T="string" HelperTextOnFocus="true">
+                         <MudSelectItem Value="@("Male")">Male</MudSelectItem>
+                         <MudSelectItem Value="@("Female")">Female</MudSelectItem>
+                     </MudSelect>
                  </div>
-                 <div class="d-flex flex-wrap flex-md-nowrap">
-                     <div class="p-3 w-100">
-                         <MudSelect HelperText="@languageContainer.Keys[("Required")]" Variant="Variant.Outlined" @bind-Value="managerForm.Gender" For="@(() => managerForm.Gender)" Adornment="Adornment.Start" Clearable Label="@languageContainer.Keys[("Gender")]"
-                                    Placeholder="@Placeholders.GenderDropDown" AdornmentIcon="@Icons.Material.Filled.Group" AdornmentColor="Color.Info" AnchorOrigin="Origin.BottomCenter" T="string" HelperTextOnFocus="true">
-                             <MudSelectItem Value="@("Male")">Male</MudSelectItem>
-                             <MudSelectItem Value="@("Female")">Female</MudSelectItem>
-                         </MudSelect>
-                     </div>
-                     <div class="p-3 w-100">
-                         <MudAutocomplete T="LookupDto" SearchFunc="@GetNationalities" Adornment="Adornment.Start" AnchorOrigin="Origin.BottomCenter"
-                                          Variant="Variant.Outlined" ShowProgressIndicator="true" ResetValueOnEmptyText="true" CoerceText="true" AdornmentIcon="@Icons.Material.Filled.Flag"
-                                          ProgressIndicatorColor="Color.Info" Clearable @bind-Value="managerForm.Nationality" For="@(() => managerForm.Nationality)" AdornmentColor="Color.Info" Label="@languageContainer.Keys[("Nationality")]"
-                                          ToStringFunc="@(e=> e == null ? null : $"{e.Name}")" HelperText="@languageContainer.Keys[("Required")]" Placeholder="@Placeholders.NationalityDropDown" MaxItems="null" HelperTextOnFocus="true">
-                             <NoItemsTemplate>
-                                 <MudText Align="Align.Center" Class="px-4 py-4">
-                                     No items found
-                                 </MudText>
-                             </NoItemsTemplate>
-                         </MudAutocomplete>
-                     </div>
-                     <div class="p-3 w-100">
-                         <MudTextField HelperText="@languageContainer.Keys[("Required")]" Variant="Variant.Outlined" @bind-Value="managerForm.NationalId" For="@(() => managerForm.NationalId)" HelperTextOnFocus="true"
-                                       AdornmentColor="Color.Info" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.AccountBox" Placeholder="@Placeholders.Name" />
+                 <div class="p-3 w-100">
+                     <MudAutocomplete T="LookupDto" SearchFunc="@GetNationalities" Adornment="Adornment.Start" AnchorOrigin="Origin.BottomCenter"
+                                      Variant="Variant.Outlined" ShowProgressIndicator="true" ResetValueOnEmptyText="true" CoerceText="true" AdornmentIcon="@Icons.Material.Filled.Flag"
+                                      ProgressIndicatorColor="Color.Info" Clearable @bind-Value="managerForm.Nationality" For="@(() => managerForm.Nationality)" AdornmentColor="Color.Info" Label="@languageContainer.Keys[("Nationality")]"
+                                      ToStringFunc="@(e=> e == null ? null : $"{e.Name}")" HelperText="@languageContainer.Keys[("Required")]" Placeholder="@Placeholders.NationalityDropDown" MaxItems="null" HelperTextOnFocus="true">
+                         <NoItemsTemplate>
+                             <MudText Align="Align.Center" Class="px-4 py-4">
+                                 No items found
+                             </MudText>
+                         </NoItemsTemplate>
+                     </MudAutocomplete>
+                 </div>
+                 <div class="p-3 w-100">
+                     <MudTextField HelperText="@languageContainer.Keys[("Required")]" Variant="Variant.Outlined" @bind-Value="managerForm.NationalId" For="@(() => managerForm.NationalId)" HelperTextOnFocus="true"
+                                   AdornmentColor="Color.Info" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.AccountBox" Placeholder="@Placeholders.Name" Label="@languageContainer.Keys[("National Id")]" />
 
-                     </div>
                  </div>
-                @if (Id == 0)
-                {
-                    <div class="flex-wrap d-flex flex-md-nowrap">
-                        <div class="p-3 w-100">
-                            <MudNumericField HideSpinButtons="true" HelperText="@languageContainer.Keys[("Required")]" Variant="Variant.Outlined" AdornmentColor="Color.Info" Adornment="Adornment.Start" HelperTextOnFocus="true" Required="true"
-                                     @bind-Value="managerForm.PhoneNumber" For="@(() => managerForm.PhoneNumber)" AdornmentIcon="@Icons.Material.Filled.Phone" Placeholder="@Placeholders.PhoneNumber" RequiredError="Phone Number is Required" />
-                        </div>
-                        <div class="p-3 w-100">
-                            <MudTextField HelperText="@languageContainer.Keys[("Required")]" Variant="Variant.Outlined" InputType="InputType.Email" AdornmentColor="Color.Info" Adornment="Adornment.Start" HelperTextOnFocus="true"
-                                  @bind-Value="managerForm.Email" For="@(() => managerForm.Email)" AdornmentIcon="@Icons.Material.Filled.Email" Placeholder="@Placeholders.Email" Required="true" RequiredError="Email is Required" />
-                        </div>
-                        <div class="p-3 w-100">
-                            <MudTextField HelperText="@languageContainer.Keys[("Required")]" Variant="Variant.Outlined" InputType="PasswordInput" AdornmentColor="Color.Info"
-                                  @bind-Value="managerForm.Password" For="@(() => managerForm.Password)" Placeholder="**************" HelperTextOnFocus="true" RequiredError="Password is Required"
-                                  Adornment="Adornment.Start" AdornmentIcon="@PasswordInputIcon" OnAdornmentClick="ChangePasswordStatus" AdornmentAriaLabel="@Placeholders.Password" Required="true" />
-                        </div>
-                    </div>
-                }
+             </div>
+             @if (Id == 0)
+            {
                 <div class="flex-wrap d-flex flex-md-nowrap">
                     <div class="p-3 w-100">
-                        <MudTextField HelperText="@languageContainer.Keys[("Required")]" Variant="Variant.Outlined" AdornmentColor="Color.Info" Adornment="Adornment.Start" HelperTextOnFocus="true" Required="true"
-                                      @bind-Value="managerForm.ContactPhone" For="@(() => managerForm.ContactPhone)" AdornmentIcon="@Icons.Material.Filled.Phone" Placeholder="@Placeholders.PhoneNumber" RequiredError="Phone Number is Required" />
+                        <MudNumericField HideSpinButtons="true" HelperText="@languageContainer.Keys[("Required")]" Variant="Variant.Outlined" AdornmentColor="Color.Info" Adornment="Adornment.Start" HelperTextOnFocus="true" Required="true"
+                                         @bind-Value="managerForm.PhoneNumber" For="@(() => managerForm.PhoneNumber)" AdornmentIcon="@Icons.Material.Filled.Phone" Placeholder="@Placeholders.PhoneNumber" RequiredError="Phone Number is Required" />
                     </div>
                     <div class="p-3 w-100">
                         <MudTextField HelperText="@languageContainer.Keys[("Required")]" Variant="Variant.Outlined" InputType="InputType.Email" AdornmentColor="Color.Info" Adornment="Adornment.Start" HelperTextOnFocus="true"
-                                      @bind-Value="managerForm.ContactEmail" For="@(() => managerForm.ContactEmail)" AdornmentIcon="@Icons.Material.Filled.Email" Placeholder="@Placeholders.Email" Required="true" RequiredError="Email is Required" />
+                                      @bind-Value="managerForm.Email" For="@(() => managerForm.Email)" AdornmentIcon="@Icons.Material.Filled.Email" Placeholder="@Placeholders.Email" Required="true" RequiredError="Email is Required" />
+                    </div>
+                    <div class="p-3 w-100">
+                        <MudTextField HelperText="@languageContainer.Keys[("Required")]" Variant="Variant.Outlined" InputType="PasswordInput" AdornmentColor="Color.Info"
+                                      @bind-Value="managerForm.Password" For="@(() => managerForm.Password)" Placeholder="**************" HelperTextOnFocus="true" RequiredError="Password is Required"
+                                      Adornment="Adornment.Start" AdornmentIcon="@PasswordInputIcon" OnAdornmentClick="ChangePasswordStatus" AdornmentAriaLabel="@Placeholders.Password" Required="true" />
                     </div>
                 </div>
-                <div class="flex-wrap gap-5 gap-md-0 d-flex flex-md-nowrap align-items-end p-3">
-                    <ImageUpload ImageSelected="CaptureUploadedImage" UploadedImageCleared="ClearUploadedImage" CurrentImage="@(Id == 0 ? null :imageUrl + managerForm.Image)" />
-                    <MudSpacer />
-                    <FormButtons IsLoading="@isLoading" />
+            }
+            <div class="flex-wrap d-flex flex-md-nowrap">
+                <div class="p-3 w-100">
+                    <MudTextField HelperText="@languageContainer.Keys[("Required")]" Variant="Variant.Outlined" AdornmentColor="Color.Info" Adornment="Adornment.Start" HelperTextOnFocus="true" Required="true"
+                                  @bind-Value="managerForm.ContactPhone" For="@(() => managerForm.ContactPhone)" AdornmentIcon="@Icons.Material.Filled.Phone" Placeholder="@Placeholders.PhoneNumber" RequiredError="Phone Number is Required" />
                 </div>
-            </MudCardContent>
-            <MudCardActions>
-            </MudCardActions>
-        </EditForm>
-    </MudCard>
+                <div class="p-3 w-100">
+                    <MudTextField HelperText="@languageContainer.Keys[("Required")]" Variant="Variant.Outlined" InputType="InputType.Email" AdornmentColor="Color.Info" Adornment="Adornment.Start" HelperTextOnFocus="true"
+                                  @bind-Value="managerForm.ContactEmail" For="@(() => managerForm.ContactEmail)" AdornmentIcon="@Icons.Material.Filled.Email" Placeholder="@Placeholders.Email" Required="true" RequiredError="Email is Required" />
+                </div>
+            </div>
+            <div class="flex-wrap gap-5 gap-md-0 d-flex flex-md-nowrap align-items-end p-3">
+                <ImageUpload ImageSelected="CaptureUploadedImage" UploadedImageCleared="ClearUploadedImage" CurrentImage="@(Id == 0 ? null :imageUrl + managerForm.Image)" />
+                <MudSpacer />
+                <FormButtons IsLoading="@isLoading" />
+            </div>
+        </FormContent>
+    </BaseFrom>
 }

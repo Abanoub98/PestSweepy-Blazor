@@ -1,0 +1,42 @@
+﻿<MudCard Elevation="25">
+    <EditForm Model="@Model" OnValidSubmit="OnValidSubmit">
+        <DataAnnotationsValidator />
+        <MudCardHeader Style="padding:20px">
+            <CardHeaderAvatar>
+                <MudAvatar Rounded="true" Color="Color.Info">
+                    <MudIcon Icon="@Icon" />
+                </MudAvatar>
+            </CardHeaderAvatar>
+            <CardHeaderContent>
+                <MudText Style="display: flex;align-items: center;" Typo="Typo.h5">
+                    @(IsAddFrom ? $"{languageContainer.Keys[("Add")]} {languageContainer.Keys[EntityName]}" : $"{languageContainer.Keys[("Edit")]} {EditTitle}")
+                </MudText>
+            </CardHeaderContent>
+            <CardHeaderActions>
+                <MudButton DisableElevation="true" Href="@EntityBackUrl" Style="margin:10px" Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.ArrowBack" Color="Color.Info">
+                    @($"{languageContainer.Keys[("Back to")]} {languageContainer.Keys[EntityName]}")
+                </MudButton>
+            </CardHeaderActions>
+        </MudCardHeader>
+        <MudCardContent Class="px-5 py-3">
+            @FormContent
+        </MudCardContent>
+        <MudCardActions>
+        </MudCardActions>
+    </EditForm>
+</MudCard>
+
+@code {
+    [Parameter][EditorRequired] public object Model { set; get; } = null!;
+
+    [Parameter][EditorRequired] public bool IsAddFrom { set; get; } = true;
+
+    [Parameter][EditorRequired] public string Icon { set; get; } = null!;
+    [Parameter][EditorRequired] public string EntityName { set; get; } = null!;
+    [Parameter][EditorRequired] public string EntityBackUrl { set; get; } = null!;
+    [Parameter][EditorRequired] public string EditTitle { set; get; } = null!;
+
+    [Parameter][EditorRequired] public EventCallback<EditContext> OnValidSubmit { set; get; }
+
+    [Parameter][EditorRequired] public RenderFragment FormContent { set; get; } = null!;
+}

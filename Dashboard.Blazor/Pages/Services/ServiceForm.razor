@@ -3,137 +3,118 @@
 @attribute [Authorize(Roles = Roles.AdminRole)]
 @inherits BasePage
 
-<PageTitle>@languageContainer.Keys[(Id == 0 ? "Add" : "Edit") + " Service"]</PageTitle>
-    <MudBreadcrumbs Items="breadcrumbItems"></MudBreadcrumbs>
+<PageTitle>
+    @($"{languageContainer.Keys[(Id == 0 ? "Add" : "Edit")]} {languageContainer.Keys[("Service")]}")
+</PageTitle>
+<MudBreadcrumbs Items="breadcrumbItems"></MudBreadcrumbs>
 
-    @if (serviceForm is null)
+@if (serviceForm is null)
 {
     <FormLoadingSpinner IsBigForm="true" />
 }
 else
 {
-    <MudCard Elevation="25">
-        <EditForm Model="@serviceForm" OnValidSubmit="OnValidSubmit">
-            <DataAnnotationsValidator />
-            <MudCardHeader Style="padding:20px">
-                <CardHeaderAvatar>
-                    <MudAvatar Rounded="true" Color="Color.Info">
-                        <MudIcon Icon="@Icons.Material.Filled.Handyman" />
-                    </MudAvatar>
-                </CardHeaderAvatar>
-                <CardHeaderContent>
-                    <MudText Style="display: flex;align-items: center;" Typo="Typo.h5">
-                        @(Id == 0 ? "Add Service" : $"Edit {serviceForm.NameEn} - {serviceForm.NameAr}")
-                    </MudText>
-                </CardHeaderContent>
-                <CardHeaderActions>
-                    <MudButton DisableElevation="true" Href="/Services" Style="margin:10px" Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.ArrowBack" Color="Color.Info">
-                        Back to Services
-                    </MudButton>
-                </CardHeaderActions>
-            </MudCardHeader>
-            <MudCardContent Class="px-5 py-3">
-                <div class="d-flex flex-wrap flex-md-nowrap">
-                    <div class="p-3  w-100">
-                        <MudTextField HelperText="@languageContainer.Keys[("Required")]" Variant="Variant.Outlined" @bind-Value="serviceForm.NameEn" For="@(() => serviceForm.NameEn)" HelperTextOnFocus="true" Label="@languageContainer.Keys[("Name English")]"
-                                      AdornmentColor="Color.Info" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.AccountBox" Placeholder="@languageContainer.Keys[(Placeholders.Name)]" />
-                    </div>
-                    <div class="p-3  w-100">
-                        <MudTextField HelperText="@languageContainer.Keys[("Required")]" Variant="Variant.Outlined" @bind-Value="serviceForm.NameAr" For="@(() => serviceForm.NameAr)" HelperTextOnFocus="true" Label="@languageContainer.Keys[("Name Arabic")]"
-                                      AdornmentColor="Color.Info" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.AccountBox" Placeholder="@languageContainer.Keys[(Placeholders.Name)]" />
-                    </div>
-                    <div class="p-3 w-100">
-                        <MudNumericField HideSpinButtons="true" @bind-Value="serviceForm.OrderIndex" For="@(() => serviceForm.OrderIndex)" Placeholder="@Placeholders.OrderIndex"
-                                         Variant="Variant.Outlined" AdornmentColor="Color.Info" Adornment="Adornment.End" AdornmentText="#" HelperTextOnFocus="true" />
-                    </div>
-                    <div class="p-3 w-100">
-                        <MudNumericField HideSpinButtons="true" HelperText="@languageContainer.Keys[("Required")]" @bind-Value="serviceForm.DurationInMinutes" For="@(() => serviceForm.DurationInMinutes)"
-                                         Variant="Variant.Outlined" AdornmentColor="Color.Info" Adornment="Adornment.End" AdornmentText="Min" HelperTextOnFocus="true" Placeholder="@Placeholders.DurationInMinutes" />
-                    </div>
-                    <div class="p-3 w-100">
-                        <MudAutocomplete T="LookupDto" SearchFunc="@GetCategories" Adornment="Adornment.Start" AnchorOrigin="Origin.BottomCenter"
-                                         Variant="Variant.Outlined" ShowProgressIndicator="true" ResetValueOnEmptyText="true" CoerceText="true" AdornmentIcon="@Icons.Material.Filled.Category"
-                                         ProgressIndicatorColor="Color.Info" Clearable @bind-Value="serviceForm.Category" For="@(() => serviceForm.Category)" AdornmentColor="Color.Info"
-                                          ToStringFunc="@(e=> e == null ? null : $"{e.NameEn} - {e.NameAr}")" HelperText="@languageContainer.Keys[("Required")]" Placeholder="@Placeholders.CategoryDropDown" MaxItems="null" HelperTextOnFocus="true">
-                             <NoItemsTemplate>
-                                 <MudText Align="Align.Center" Class="px-4 py-4">
-                                     No items found
-                                 </MudText>
-                             </NoItemsTemplate>
-                         </MudAutocomplete>
-                     </div>
+    <BaseFrom EntityBackUrl="/Services" EditTitle="@($"{serviceForm.NameEn} - {serviceForm.NameAr}")" EntityName="Service"
+              IsAddFrom="@(Id == 0 ? true : false)" OnValidSubmit="OnValidSubmit" Model="serviceForm" Icon="@Icons.Material.Filled.Handyman">
+        <FormContent>
+            <div class="d-flex flex-wrap flex-md-nowrap">
+                <div class="p-3  w-100">
+                    <MudTextField HelperText="@languageContainer.Keys[("Required")]" Variant="Variant.Outlined" @bind-Value="serviceForm.NameEn" For="@(() => serviceForm.NameEn)" HelperTextOnFocus="true" Label="@languageContainer.Keys[("Name English")]"
+                                  AdornmentColor="Color.Info" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.AccountBox" Placeholder="@languageContainer.Keys[(Placeholders.Name)]" />
+                </div>
+                <div class="p-3  w-100">
+                    <MudTextField HelperText="@languageContainer.Keys[("Required")]" Variant="Variant.Outlined" @bind-Value="serviceForm.NameAr" For="@(() => serviceForm.NameAr)" HelperTextOnFocus="true" Label="@languageContainer.Keys[("Name Arabic")]"
+                                  AdornmentColor="Color.Info" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.AccountBox" Placeholder="@languageContainer.Keys[(Placeholders.Name)]" />
+                </div>
+                <div class="p-3 w-100">
+                    <MudNumericField HideSpinButtons="true" @bind-Value="serviceForm.OrderIndex" For="@(() => serviceForm.OrderIndex)" Placeholder="@Placeholders.OrderIndex"
+                                     Variant="Variant.Outlined" AdornmentColor="Color.Info" Adornment="Adornment.End" AdornmentText="#" HelperTextOnFocus="true" />
+                </div>
+                <div class="p-3 w-100">
+                    <MudNumericField HideSpinButtons="true" HelperText="@languageContainer.Keys[("Required")]" @bind-Value="serviceForm.DurationInMinutes" For="@(() => serviceForm.DurationInMinutes)"
+                                     Variant="Variant.Outlined" AdornmentColor="Color.Info" Adornment="Adornment.End" AdornmentText="Min" HelperTextOnFocus="true" Placeholder="@Placeholders.DurationInMinutes" />
+                </div>
+                <div class="p-3 w-100">
+                    <MudAutocomplete T="LookupDto" SearchFunc="@GetCategories" Adornment="Adornment.Start" AnchorOrigin="Origin.BottomCenter"
+                                     Variant="Variant.Outlined" ShowProgressIndicator="true" ResetValueOnEmptyText="true" CoerceText="true" AdornmentIcon="@Icons.Material.Filled.Category"
+                                     ProgressIndicatorColor="Color.Info" Clearable @bind-Value="serviceForm.Category" For="@(() => serviceForm.Category)" AdornmentColor="Color.Info"
+                                      ToStringFunc="@(e=> e == null ? null : $"{e.NameEn} - {e.NameAr}")" HelperText="@languageContainer.Keys[("Required")]" Placeholder="@Placeholders.CategoryDropDown" MaxItems="null" HelperTextOnFocus="true">
+                         <NoItemsTemplate>
+                             <MudText Align="Align.Center" Class="px-4 py-4">
+                                 No items found
+                             </MudText>
+                         </NoItemsTemplate>
+                     </MudAutocomplete>
                  </div>
-                 <MudCard Class="p-3 mb-3 border" Elevation="0">
-                     <MudCardHeader>
-                         <CardHeaderContent>
-                             <MudText Typo="Typo.h5">
-                                 @languageContainer.Keys["Service Options"]:
+             </div>
+             <MudCard Class="p-3 mb-3 border" Elevation="0">
+                 <MudCardHeader>
+                     <CardHeaderContent>
+                         <MudText Typo="Typo.h5">
+                             @languageContainer.Keys["Service Options"]:
+                        </MudText>
+                    </CardHeaderContent>
+                </MudCardHeader>
+                <MudCardContent>
+                    @{
+                        optionNumber = 0;
+                    }
+                    @foreach (var serviceOption in serviceForm.ServiceOptions)
+                    {
+                        <div class="d-flex align-items-center">
+                            <MudCheckBox Class="me-1" @bind-Checked="serviceOption.Disabled" Color="Color.Error" UnCheckedColor="Color.Success" CheckedIcon="@Icons.Material.Filled.VisibilityOff" UncheckedIcon="@Icons.Material.Filled.Visibility"></MudCheckBox>
+                            <MudText Typo="Typo.h6">
+                                @languageContainer.Keys["Option"] @(++optionNumber):
                             </MudText>
-                        </CardHeaderContent>
-                    </MudCardHeader>
-                    <MudCardContent>
-                        @{
-                            optionNumber = 0;
-                        }
-                        @foreach (var serviceOption in serviceForm.ServiceOptions)
-                        {
-                            <div class="d-flex align-items-center">
-                                <MudCheckBox Class="me-1" @bind-Checked="serviceOption.Disabled" Color="Color.Error" UnCheckedColor="Color.Success" CheckedIcon="@Icons.Material.Filled.VisibilityOff" UncheckedIcon="@Icons.Material.Filled.Visibility"></MudCheckBox>
-                                <MudText Typo="Typo.h6">
-                                    @languageContainer.Keys["Option"] @(++optionNumber):
-                                </MudText>
-                                @if (serviceForm.ServiceOptions.Count > 1)
-                                {
-                                    <MudIconButton OnClick="() => DeleteOption(serviceOption)" Class="me-3" Icon="@Icons.Material.Filled.Delete" Color="Color.Error"></MudIconButton>
-                                }
-                                <MudSpacer />
-                            </div>
-                            <div class="mt-2">
-                                <div class="d-flex flex-wrap flex-md-nowrap">
-                                    <div class="p-3  w-100">
-                                        <MudTextField HelperText="@languageContainer.Keys[("Required")]" Variant="Variant.Outlined" @bind-Value="serviceOption.Name" For="@(() => serviceOption.Name)" HelperTextOnFocus="true" Label="@languageContainer.Keys[("Name")]"
-                                                      AdornmentColor="Color.Info" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.AccountBox" Placeholder="@languageContainer.Keys[(Placeholders.Name)]" />
-                                    </div>
-                                    <div class="p-3 w-100">
-                                        <MudNumericField HideSpinButtons="true" @bind-Value="serviceOption.OrderIndex" For="@(() => serviceOption.OrderIndex)" Placeholder="@Placeholders.OrderIndex"
-                                                         Variant="Variant.Outlined" AdornmentColor="Color.Info" Adornment="Adornment.End" AdornmentText="#" HelperTextOnFocus="true" />
-                                    </div>
-                                </div>
-
-                                <div class="d-flex flex-wrap flex-md-nowrap">
-                                    @foreach (var price in serviceOption.Prices)
-                                    {
-                                        <div class="p-3 w-100">
-                                            <MudNumericField HideSpinButtons="true" HelperText="@languageContainer.Keys["Required"]" @bind-Value="price.Amount" For="@(() => price.Amount)" Label="@($"{languageContainer.Keys["Amount"]} - {languageContainer.Keys[price.Currency!.Name]}")"
-                                                             Variant="Variant.Outlined" AdornmentColor="Color.Info" Adornment="Adornment.End" AdornmentText="@(price.Currency?.Symbol)" HelperTextOnFocus="true" Placeholder="@languageContainer.Keys[price.Currency!.Code]" />
-                                        </div>
-                                    }
-                                </div>
-                            </div>
                             @if (serviceForm.ServiceOptions.Count > 1)
                             {
-                                <MudDivider Light=true DividerType="DividerType.Middle" Class="mb-3" />
+                                <MudIconButton OnClick="() => DeleteOption(serviceOption)" Class="me-3" Icon="@Icons.Material.Filled.Delete" Color="Color.Error"></MudIconButton>
                             }
+                            <MudSpacer />
+                        </div>
+                        <div class="mt-2">
+                            <div class="d-flex flex-wrap flex-md-nowrap">
+                                <div class="p-3  w-100">
+                                    <MudTextField HelperText="@languageContainer.Keys[("Required")]" Variant="Variant.Outlined" @bind-Value="serviceOption.Name" For="@(() => serviceOption.Name)" HelperTextOnFocus="true" Label="@languageContainer.Keys[("Name")]"
+                                                  AdornmentColor="Color.Info" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.AccountBox" Placeholder="@languageContainer.Keys[(Placeholders.Name)]" />
+                                </div>
+                                <div class="p-3 w-100">
+                                    <MudNumericField HideSpinButtons="true" @bind-Value="serviceOption.OrderIndex" For="@(() => serviceOption.OrderIndex)" Placeholder="@Placeholders.OrderIndex"
+                                                     Variant="Variant.Outlined" AdornmentColor="Color.Info" Adornment="Adornment.End" AdornmentText="#" HelperTextOnFocus="true" />
+                                </div>
+                            </div>
+
+                            <div class="d-flex flex-wrap flex-md-nowrap">
+                                @foreach (var price in serviceOption.Prices)
+                                {
+                                    <div class="p-3 w-100">
+                                        <MudNumericField HideSpinButtons="true" HelperText="@languageContainer.Keys["Required"]" @bind-Value="price.Amount" For="@(() => price.Amount)" Label="@($"{languageContainer.Keys["Amount"]} - {languageContainer.Keys[price.Currency!.Name]}")"
+                                                         Variant="Variant.Outlined" AdornmentColor="Color.Info" Adornment="Adornment.End" AdornmentText="@(price.Currency?.Symbol)" HelperTextOnFocus="true" Placeholder="@languageContainer.Keys[price.Currency!.Code]" />
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                        @if (serviceForm.ServiceOptions.Count > 1)
+                        {
+                            <MudDivider Light=true DividerType="DividerType.Middle" Class="mb-3" />
                         }
-                    </MudCardContent>
-                    <MudCardActions>
-                        <MudButton DisableElevation="true" OnClick="() => AddOption()" EndIcon="@Icons.Material.Filled.Add" Variant="Variant.Filled" Color="Color.Success">
-                            @languageContainer.Keys["Add Option"]
-                        </MudButton>
-                    </MudCardActions>
-                </MudCard>
-                <div class="p-3 w-100">
-                    <MudTextField HelperText="@languageContainer.Keys[("Required")]" Variant="Variant.Outlined" @bind-Value="serviceForm.Description" For="@(() => serviceForm.Description)"
-                                  HelperTextOnFocus="true" Placeholder="@Placeholders.Description" Lines="10" />
-                </div>
-                <div class="flex-wrap gap-5 gap-md-0 d-flex flex-md-nowrap align-items-end p-3">
-                    <ImageUpload ImageSelected="CaptureUploadedImage" UploadedImageCleared="ClearUploadedImage" CurrentImage="@(Id == 0 ? null :imageUrl + serviceForm.Image)" />
-                    <MudSpacer />
-                    <FormButtons IsLoading="@isLoading" />
-                </div>
-            </MudCardContent>
-            <MudCardActions>
-            </MudCardActions>
-        </EditForm>
-    </MudCard>
+                    }
+                </MudCardContent>
+                <MudCardActions>
+                    <MudButton DisableElevation="true" OnClick="() => AddOption()" EndIcon="@Icons.Material.Filled.Add" Variant="Variant.Filled" Color="Color.Success">
+                        @languageContainer.Keys["Add Option"]
+                    </MudButton>
+                </MudCardActions>
+            </MudCard>
+            <div class="p-3 w-100">
+                <MudTextField HelperText="@languageContainer.Keys[("Required")]" Variant="Variant.Outlined" @bind-Value="serviceForm.Description" For="@(() => serviceForm.Description)"
+                              HelperTextOnFocus="true" Placeholder="@Placeholders.Description" Lines="10" />
+            </div>
+            <div class="flex-wrap gap-5 gap-md-0 d-flex flex-md-nowrap align-items-end p-3">
+                <ImageUpload ImageSelected="CaptureUploadedImage" UploadedImageCleared="ClearUploadedImage" CurrentImage="@(Id == 0 ? null :imageUrl + serviceForm.Image)" />
+                <MudSpacer />
+                <FormButtons IsLoading="@isLoading" />
+            </div>
+        </FormContent>
+    </BaseFrom>
 }

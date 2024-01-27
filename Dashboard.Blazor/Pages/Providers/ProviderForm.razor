@@ -3,7 +3,9 @@
 @attribute [Authorize(Roles = $"{Roles.AdminRole},{Roles.ManagerRole},{Roles.SupervisorRole}")]
 @inherits BasePage
 
-<PageTitle>@languageContainer.Keys[(Id == 0 ? "Add" : "Edit") + " Provider"]</PageTitle>
+<PageTitle>
+    @($"{languageContainer.Keys[(Id == 0 ? "Add" : "Edit")]} {languageContainer.Keys[("Provider")]}")
+</PageTitle>
 <MudBreadcrumbs Items="breadcrumbItems"></MudBreadcrumbs>
 
 @if (providerForm is null)
@@ -23,12 +25,12 @@ else
                 </CardHeaderAvatar>
                 <CardHeaderContent>
                     <MudText Style="display: flex;align-items: center;" Typo="Typo.h5">
-                        @(Id == 0 ? "Add Provider" : $"Edit {providerForm.FirstName} {providerForm.LastName}")
+                        @(Id == 0 ? $"{languageContainer.Keys[("Add")]} {languageContainer.Keys[("Provider")]}" : $"{languageContainer.Keys[("Edit")]} {providerForm.FirstName} {providerForm.LastName}")
                     </MudText>
                 </CardHeaderContent>
                 <CardHeaderActions>
                     <MudButton DisableElevation="true" Href="/Providers" Style="margin:10px" Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.ArrowBack" Color="Color.Info">
-                        Back to Providers
+                        @($"{languageContainer.Keys[("Back to")]} {languageContainer.Keys[("Providers")]}")
                     </MudButton>
                 </CardHeaderActions>
             </MudCardHeader>
@@ -86,23 +88,23 @@ else
                     <div class="flex-wrap d-flex flex-md-nowrap">
                         <div class="p-3 w-100">
                             <MudNumericField HideSpinButtons="true" HelperText="@languageContainer.Keys[("Required")]" Variant="Variant.Outlined" AdornmentColor="Color.Info" Adornment="Adornment.Start" HelperTextOnFocus="true" Required="true"
-                                     @bind-Value="providerForm.PhoneNumber" For="@(() => providerForm.PhoneNumber)" AdornmentIcon="@Icons.Material.Filled.Phone" Placeholder="@Placeholders.PhoneNumber" RequiredError="Phone Number is Required" />
+                                             @bind-Value="providerForm.PhoneNumber" For="@(() => providerForm.PhoneNumber)" AdornmentIcon="@Icons.Material.Filled.Phone" Placeholder="@Placeholders.PhoneNumber" RequiredError="Phone Number is Required" />
                         </div>
                         <div class="p-3 w-100">
                             <MudTextField HelperText="@languageContainer.Keys[("Required")]" Variant="Variant.Outlined" InputType="InputType.Email" AdornmentColor="Color.Info" Adornment="Adornment.Start" HelperTextOnFocus="true"
-                                  @bind-Value="providerForm.Email" For="@(() => providerForm.Email)" AdornmentIcon="@Icons.Material.Filled.Email" Placeholder="@Placeholders.Email" Required="true" RequiredError="Email is Required" />
+                                          @bind-Value="providerForm.Email" For="@(() => providerForm.Email)" AdornmentIcon="@Icons.Material.Filled.Email" Placeholder="@Placeholders.Email" Required="true" RequiredError="Email is Required" />
                         </div>
                         <div class="p-3 w-100">
                             <MudTextField HelperText="@languageContainer.Keys[("Required")]" Variant="Variant.Outlined" InputType="PasswordInput" AdornmentColor="Color.Info"
-                                  @bind-Value="providerForm.Password" For="@(() => providerForm.Password)" Placeholder="**************" HelperTextOnFocus="true" RequiredError="Password is Required"
-                                  Adornment="Adornment.Start" AdornmentIcon="@PasswordInputIcon" OnAdornmentClick="ChangePasswordStatus" AdornmentAriaLabel="@Placeholders.Password" Required="true" />
+                                          @bind-Value="providerForm.Password" For="@(() => providerForm.Password)" Placeholder="**************" HelperTextOnFocus="true" RequiredError="Password is Required"
+                                          Adornment="Adornment.Start" AdornmentIcon="@PasswordInputIcon" OnAdornmentClick="ChangePasswordStatus" AdornmentAriaLabel="@Placeholders.Password" Required="true" />
                         </div>
                     </div>
                 }
                 <div class="flex-wrap d-flex flex-md-nowrap">
                     <div class="p-3 w-100">
                         <MudTextField HelperText="@languageContainer.Keys[("Required")]" Variant="Variant.Outlined" AdornmentColor="Color.Info" Adornment="Adornment.Start" HelperTextOnFocus="true" Required="true"
-                                         @bind-Value="providerForm.ContactPhone" For="@(() => providerForm.ContactPhone)" AdornmentIcon="@Icons.Material.Filled.Phone" Placeholder="@Placeholders.PhoneNumber" RequiredError="Phone Number is Required" />
+                                      @bind-Value="providerForm.ContactPhone" For="@(() => providerForm.ContactPhone)" AdornmentIcon="@Icons.Material.Filled.Phone" Placeholder="@Placeholders.PhoneNumber" RequiredError="Phone Number is Required" />
                     </div>
                     <div class="p-3 w-100">
                         <MudTextField HelperText="@languageContainer.Keys[("Required")]" Variant="Variant.Outlined" InputType="InputType.Email" AdornmentColor="Color.Info" Adornment="Adornment.Start" HelperTextOnFocus="true"

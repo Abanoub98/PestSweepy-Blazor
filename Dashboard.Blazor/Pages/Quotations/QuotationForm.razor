@@ -3,7 +3,9 @@
 @attribute [Authorize(Roles = $"{Roles.AdminRole},{Roles.ManagerRole}")]
 @inherits BasePage
 
-<PageTitle>@(languageContainer.Keys[(Id == 0 ? "Add" : "Edit")] + " " + languageContainer.Keys["Price Quotation"])</PageTitle>
+<PageTitle>
+    @(languageContainer.Keys[(Id == 0 ? "Add" : "Edit")] + " " + languageContainer.Keys["Price Quotation"])
+</PageTitle>
 <MudBreadcrumbs Items="breadcrumbItems"></MudBreadcrumbs>
 
 @if (quotationForm is null)
@@ -12,117 +14,102 @@
 }
 else
 {
-    <MudCard Elevation="25">
-        <EditForm Model="@quotationForm" OnValidSubmit="OnValidSubmit">
-            <DataAnnotationsValidator />
-            <MudCardHeader Style="padding:20px">
-                <CardHeaderAvatar>
-                    <MudAvatar Rounded="true" Color="Color.Info">
-                        <MudIcon Icon="@EntityIcons.QuotationsIcon" />
-                    </MudAvatar>
-                </CardHeaderAvatar>
-                <CardHeaderContent>
-                    <MudText Style="display: flex;align-items: center;" Typo="Typo.h5">
-                        @(Id == 0 ? $"{languageContainer.Keys["Add"]} {languageContainer.Keys["Price Quotation"]}" : $"{languageContainer.Keys["Edit"]} {quotationForm.SerialNumber}")
-                    </MudText>
-                </CardHeaderContent>
-                <CardHeaderActions>
-                    <MudButton DisableElevation="true" Href="/Quotations" Style="margin:10px" Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.ArrowBack" Color="Color.Info">
-                        @languageContainer.Keys["Back To"] @languageContainer.Keys["Price Quotations"]
-                    </MudButton>
-                </CardHeaderActions>
-            </MudCardHeader>
-            <MudCardContent Class="px-5 py-3">
-                <MudCheckBox @bind-Checked="@IsExistClient" Label="@(languageContainer.Keys["Client Registered In The System ?"])" Color="Color.Info"></MudCheckBox>
-                <div class="d-flex flex-wrap flex-md-nowrap">
-                    <div class="p-3 w-100 w-md-25">
-                        @if (IsExistClient)
-                        {
-                            <MudAutocomplete T="LookupDto" SearchFunc="@GetClients" Adornment="Adornment.Start" AnchorOrigin="Origin.BottomCenter" Label="@languageContainer.Keys["Client"]"
-                                             Variant="Variant.Outlined" ShowProgressIndicator="true" ResetValueOnEmptyText="true" CoerceText="true" AdornmentIcon="@Icons.Material.Filled.Diversity1"
-                                             ProgressIndicatorColor="Color.Info" Clearable @bind-Value="quotationForm.Client" For="@(() => quotationForm.Client)" AdornmentColor="Color.Info"
-                                              ToStringFunc="@(e=> e == null ? null : $"{e.FirstName} {e.LastName}")" HelperText="@languageContainer.Keys["Required"]" Placeholder="@languageContainer.Keys["Select Client"]" MaxItems="null" HelperTextOnFocus="true">
-                                 <NoItemsTemplate>
-                                     <MudText Align="Align.Center" Class="px-4 py-4">
-                                         @languageContainer.Keys["No items found"]
-                                    </MudText>
-                                </NoItemsTemplate>
-                            </MudAutocomplete>
-                        }
-                        else
-                        {
-                            <MudTextField HelperText="@languageContainer.Keys["Required"]" Variant="Variant.Outlined" @bind-Value="quotationForm.ClientName" For="@(() => quotationForm.ClientName)" HelperTextOnFocus="true"
-                                          AdornmentColor="Color.Info" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.AccountBox" Placeholder="@languageContainer.Keys[Placeholders.Name]" Label="@languageContainer.Keys["Client"]" />
-                        }
-                    </div>
-                    <div class="p-3 w-100 w-md-25">
-                        <MudDatePicker AdornmentColor="Color.Info" Variant="Variant.Outlined" @bind-Date="quotationForm.CreatedAt" For="@(() => quotationForm.CreatedAt)" Placeholder="@languageContainer.Keys["Select Date"]" Label="@languageContainer.Keys["Date"]" />
-                    </div>
-                    <div class="p-3 w-100 w-md-25">
-                        <MudTextField HelperText="@languageContainer.Keys["Required"]" Variant="Variant.Outlined" AdornmentColor="Color.Info" Adornment="Adornment.Start" HelperTextOnFocus="true"
-                                      @bind-Value="quotationForm.ClientEmail" For="@(() => quotationForm.ClientEmail)" AdornmentIcon="@Icons.Material.Filled.Email" Placeholder="@Placeholders.Email" Label="@languageContainer.Keys["Email"]" />
-                    </div>
-                    <div class="p-3 w-100 w-md-25">
-                        <MudTextField HelperText="@languageContainer.Keys["Required"]" Variant="Variant.Outlined" @bind-Value="quotationForm.Ceo" For="@(() => quotationForm.Ceo)" HelperTextOnFocus="true"
-                                      AdornmentColor="Color.Info" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.AccountBox" Placeholder="@languageContainer.Keys[Placeholders.Name]" Label="@languageContainer.Keys["CEO"]" />
-                    </div>
+    <BaseFrom EntityBackUrl="/Quotations" EditTitle="@quotationForm.SerialNumber" EntityName="Quotation"
+              IsAddFrom="@(Id == 0 ? true : false)" OnValidSubmit="OnValidSubmit" Model="quotationForm" Icon="@EntityIcons.QuotationsIcon">
+        <FormContent>
+            <MudCheckBox @bind-Checked="@IsExistClient" Label="@(languageContainer.Keys["Client Registered In The System ?"])" Color="Color.Info"></MudCheckBox>
+            <div class="d-flex flex-wrap flex-md-nowrap">
+                <div class="p-3 w-100 w-md-25">
+                    @if (IsExistClient)
+                    {
+                        <MudAutocomplete T="LookupDto" SearchFunc="@GetClients" Adornment="Adornment.Start" AnchorOrigin="Origin.BottomCenter" Label="@languageContainer.Keys["Client"]"
+                                         Variant="Variant.Outlined" ShowProgressIndicator="true" ResetValueOnEmptyText="true" CoerceText="true" AdornmentIcon="@Icons.Material.Filled.Diversity1"
+                                         ProgressIndicatorColor="Color.Info" Clearable @bind-Value="quotationForm.Client" For="@(() => quotationForm.Client)" AdornmentColor="Color.Info"
+                                          ToStringFunc="@(e=> e == null ? null : $"{e.FirstName} {e.LastName}")" HelperText="@languageContainer.Keys["Required"]" Placeholder="@languageContainer.Keys["Select Client"]" MaxItems="null" HelperTextOnFocus="true">
+                             <NoItemsTemplate>
+                                 <MudText Align="Align.Center" Class="px-4 py-4">
+                                     @languageContainer.Keys["No items found"]
+                                </MudText>
+                            </NoItemsTemplate>
+                        </MudAutocomplete>
+                    }
+                    else
+                    {
+                        <MudTextField HelperText="@languageContainer.Keys["Required"]" Variant="Variant.Outlined" @bind-Value="quotationForm.ClientName" For="@(() => quotationForm.ClientName)" HelperTextOnFocus="true"
+                                      AdornmentColor="Color.Info" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.AccountBox" Placeholder="@languageContainer.Keys[Placeholders.Name]" Label="@languageContainer.Keys["Client"]" />
+                    }
                 </div>
-                <MudCard Class="p-3 mb-3 border" Elevation="0">
-                    <MudCardHeader>
-                        <CardHeaderContent>
-                            <MudText Typo="Typo.h5">
-                                @languageContainer.Keys["Price Quotation Services"]:
+                <div class="p-3 w-100 w-md-25">
+                    <MudDatePicker AdornmentColor="Color.Info" Variant="Variant.Outlined" @bind-Date="quotationForm.CreatedAt" For="@(() => quotationForm.CreatedAt)" Placeholder="@languageContainer.Keys["Select Date"]" Label="@languageContainer.Keys["Date"]" />
+                </div>
+                <div class="p-3 w-100 w-md-25">
+                    <MudTextField HelperText="@languageContainer.Keys["Required"]" Variant="Variant.Outlined" AdornmentColor="Color.Info" Adornment="Adornment.Start" HelperTextOnFocus="true"
+                                  @bind-Value="quotationForm.ClientEmail" For="@(() => quotationForm.ClientEmail)" AdornmentIcon="@Icons.Material.Filled.Email" Placeholder="@Placeholders.Email" Label="@languageContainer.Keys["Email"]" />
+                </div>
+                <div class="p-3 w-100 w-md-25">
+                    <MudTextField HelperText="@languageContainer.Keys["Required"]" Variant="Variant.Outlined" @bind-Value="quotationForm.Ceo" For="@(() => quotationForm.Ceo)" HelperTextOnFocus="true"
+                                  AdornmentColor="Color.Info" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.AccountBox" Placeholder="@languageContainer.Keys[Placeholders.Name]" Label="@languageContainer.Keys["CEO"]" />
+                </div>
+            </div>
+            <MudCard Class="p-3 mb-3 border" Elevation="0">
+                <MudCardHeader>
+                    <CardHeaderContent>
+                        <MudText Typo="Typo.h5">
+                            @languageContainer.Keys["Price Quotation Services"]:
+                        </MudText>
+                    </CardHeaderContent>
+                    <CardHeaderActions>
+                        <MudAutocomplete T="CurrencyDto" SearchFunc="@GetCurrencies" Adornment="Adornment.Start" AnchorOrigin="Origin.BottomCenter" Label="@languageContainer.Keys["Currency"]"
+                                         Variant="Variant.Outlined" ShowProgressIndicator="true" ResetValueOnEmptyText="true" CoerceText="true" AdornmentIcon="@EntityIcons.CurrencyIcon"
+                                         ProgressIndicatorColor="Color.Info" Clearable @bind-Value="quotationForm.PriceCurrency" For="@(() => quotationForm.PriceCurrency)" AdornmentColor="Color.Info"
+                                          ToStringFunc="@(e=> e == null ? null : $"{e.Name}")" HelperText="@languageContainer.Keys["Required"]" Placeholder="@languageContainer.Keys["Select Currency"]" MaxItems="null" HelperTextOnFocus="true">
+                             <NoItemsTemplate>
+                                 <MudText Align="Align.Center" Class="px-4 py-4">
+                                     @languageContainer.Keys["No items found"]
+                                </MudText>
+                            </NoItemsTemplate>
+                        </MudAutocomplete>
+                    </CardHeaderActions>
+                </MudCardHeader>
+                <MudCardContent>
+                    @{
+                        ServiceNumber = 0;
+                    }
+                    @foreach (var quotationService in quotationForm.QuotationBodies)
+                    {
+                        <div class="d-flex align-items-center">
+                            <MudText Typo="Typo.h6">
+                                @languageContainer.Keys["Service"] @(++ServiceNumber):
                             </MudText>
-                        </CardHeaderContent>
-                        <CardHeaderActions>
-                            <MudAutocomplete T="CurrencyDto" SearchFunc="@GetCurrencies" Adornment="Adornment.Start" AnchorOrigin="Origin.BottomCenter" Label="@languageContainer.Keys["Currency"]"
-                                             Variant="Variant.Outlined" ShowProgressIndicator="true" ResetValueOnEmptyText="true" CoerceText="true" AdornmentIcon="@EntityIcons.CurrencyIcon"
-                                             ProgressIndicatorColor="Color.Info" Clearable @bind-Value="quotationForm.PriceCurrency" For="@(() => quotationForm.PriceCurrency)" AdornmentColor="Color.Info"
-                                              ToStringFunc="@(e=> e == null ? null : $"{e.Name}")" HelperText="@languageContainer.Keys["Required"]" Placeholder="@languageContainer.Keys["Select Currency"]" MaxItems="null" HelperTextOnFocus="true">
-                                <NoItemsTemplate>
-                                    <MudText Align="Align.Center" Class="px-4 py-4">
-                                         @languageContainer.Keys["No items found"]
-                                    </MudText>
-                                </NoItemsTemplate>
-                            </MudAutocomplete>
-                        </CardHeaderActions>
-                    </MudCardHeader>
-                    <MudCardContent>
-                        @{
-                            ServiceNumber = 0;
-                        }
-                        @foreach (var quotationService in quotationForm.QuotationBodies)
-                        {
-                            <div class="d-flex align-items-center">
-                                <MudText Typo="Typo.h6">@languageContainer.Keys["Service"] @(++ServiceNumber):</MudText>
-                                @if (quotationForm.QuotationBodies.Count > 1)
-                                {
-                                    <MudIconButton OnClick="() => DeleteService(quotationService)" Icon="@Icons.Material.Filled.Delete" Color="Color.Error"></MudIconButton>
-                                }
-                            </div>
-                            <div class="mt-2">
-                                <QuotationService Service="quotationService" Currency="quotationForm.PriceCurrency" TotalValueChanged="TotalValueChanged" />
-                            </div>
-                            <MudDivider Light=true DividerType="DividerType.Middle" Class="mb-3" />
-                        }
-                    </MudCardContent>
-                    <MudCardActions>
-                        <MudButton DisableElevation="true" OnClick="@AddService" EndIcon="@Icons.Material.Filled.Add" Variant="Variant.Filled" Color="Color.Success">@languageContainer.Keys["Add Service"]</MudButton>
-                        </MudCardActions>
-                    </MudCard>
-                    <div class="p-3 w-100">
-                        <MudTextField HelperText="@languageContainer.Keys[("Required")]" Variant="Variant.Outlined" @bind-Value="quotationForm.Notes" For="@(() => quotationForm.Notes)"
-                                      HelperTextOnFocus="true" Placeholder="@languageContainer.Keys["Notes"]" Lines="10" Label="@languageContainer.Keys["Notes"]" />
-                    </div>
-                    <div class="flex-wrap gap-5 gap-md-0 d-flex flex-md-nowrap align-items-end p-3">
-                        <MudText Typo="Typo.h6">@languageContainer.Keys["Quotation Total Price"] = <span class="text-primary fw-bold">@(quotationForm.TotalPrice)</span> @languageContainer.Keys[quotationForm.PriceCurrency?.Symbol]</MudText>
-                        <MudSpacer />
-                        <FormButtons IsLoading="@isLoading" />
-                    </div>
+                            @if (quotationForm.QuotationBodies.Count > 1)
+                            {
+                                <MudIconButton OnClick="() => DeleteService(quotationService)" Icon="@Icons.Material.Filled.Delete" Color="Color.Error"></MudIconButton>
+                            }
+                        </div>
+                        <div class="mt-2">
+                            <QuotationService Service="quotationService" Currency="quotationForm.PriceCurrency" TotalValueChanged="TotalValueChanged" />
+                        </div>
+                        <MudDivider Light=true DividerType="DividerType.Middle" Class="mb-3" />
+                    }
                 </MudCardContent>
                 <MudCardActions>
+                    <MudButton DisableElevation="true" OnClick="@AddService" EndIcon="@Icons.Material.Filled.Add" Variant="Variant.Filled" Color="Color.Success">
+                        @languageContainer.Keys["Add Service"]
+                    </MudButton>
                 </MudCardActions>
-            </EditForm>
-        </MudCard>
+            </MudCard>
+            <div class="p-3 w-100">
+                <MudTextField HelperText="@languageContainer.Keys[("Required")]" Variant="Variant.Outlined" @bind-Value="quotationForm.Notes" For="@(() => quotationForm.Notes)"
+                              HelperTextOnFocus="true" Placeholder="@languageContainer.Keys["Notes"]" Lines="10" Label="@languageContainer.Keys["Notes"]" />
+            </div>
+            <div class="flex-wrap gap-5 gap-md-0 d-flex flex-md-nowrap align-items-end p-3">
+                <MudText Typo="Typo.h6">
+                    @languageContainer.Keys["Quotation Total Price"] = <span class="text-primary fw-bold">@(quotationForm.TotalPrice)</span> @languageContainer.Keys[quotationForm.PriceCurrency?.Symbol]
+                </MudText>
+                <MudSpacer />
+                <FormButtons IsLoading="@isLoading" />
+            </div>
+        </FormContent>
+    </BaseFrom>
 }
 

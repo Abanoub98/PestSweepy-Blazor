@@ -4,7 +4,7 @@
 
 <PageTitle>@languageContainer.Keys["Home"]</PageTitle>
 
-@if (isLoading)
+    @if (isLoading)
 {
     <FormLoadingSpinner IsBigForm="true" />
 }
@@ -18,53 +18,53 @@ else
                         <MudCardHeader>
                             <CardHeaderContent>
                                 <MudText Typo="Typo.h5">@languageContainer.Keys["Current User"]</MudText>
-                            </CardHeaderContent>
-                        </MudCardHeader>
-                        <MudCardContent>
-                            <div class="row">
-                                <div class="col-md-6 col-12">
-                                    <div class="d-flex flex-wrap">
-                                        <div class="p-3 w-100">
-                                            <MudText Class="fw-bold" Typo="Typo.body1">@languageContainer.Keys["Email"]</MudText>
-                                            <MudText>@claims.FirstOrDefault(x => x.Type == ClaimTypes.Email)?.Value</MudText>
-                                        </div>
-                                        <div class="p-3 w-100">
-                                            <MudText Class="fw-bold" Typo="Typo.body1">@languageContainer.Keys["Login Date"]</MudText>
-                                            <MudText>@(claims.FirstOrDefault(x => x.Type == "LoginDate")?.Value)</MudText>
-                                        </div>
-                                        <div class="p-3 w-50">
+                                </CardHeaderContent>
+                            </MudCardHeader>
+                            <MudCardContent>
+                                <div class="row">
+                                    <div class="col-md-6 col-12">
+                                        <div class="d-flex flex-wrap">
+                                            <div class="p-3 w-100">
+                                                <MudText Class="fw-bold" Typo="Typo.body1">@languageContainer.Keys["Email"]</MudText>
+                                                <MudText>@claims.FirstOrDefault(x => x.Type == ClaimTypes.Email)?.Value</MudText>
+                                            </div>
+                                            <div class="p-3 w-100">
+                                                <MudText Class="fw-bold" Typo="Typo.body1">@languageContainer.Keys["Login Date"]</MudText>
+                                                <MudText>@(claims.FirstOrDefault(x => x.Type == "LoginDate")?.Value)</MudText>
+                                            </div>
+                                            <div class="p-3 w-50">
                                                 <MudText Class="fw-bold" Typo="Typo.body1">@languageContainer.Keys["Role"]</MudText>
-                                            <MudText>@claims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value</MudText>
-                                        </div>
-                                        <div class="p-3 w-50">
-                                            <MudText Class="fw-bold" Typo="Typo.body1">@languageContainer.Keys["IP Address"]</MudText>
-                                            <MudText>@(claims.FirstOrDefault(x => x.Type == "IpAddress")?.Value)</MudText>
+                                                <MudText>@claims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value</MudText>
+                                            </div>
+                                            <div class="p-3 w-50">
+                                                <MudText Class="fw-bold" Typo="Typo.body1">@languageContainer.Keys["IP Address"]</MudText>
+                                                <MudText>@(claims.FirstOrDefault(x => x.Type == "IpAddress")?.Value)</MudText>
+                                            </div>
                                         </div>
                                     </div>
+                                    <div class="col-md-6 col-12 mt-5 mt-md-5 text-center">
+                                        <MudImage Src="/images/home-office.png" Fluid="true" Class="rounded-lg" />
+                                    </div>
                                 </div>
-                                <div class="col-md-6 col-12 mt-5 mt-md-5 text-center">
-                                    <MudImage Src="/images/home-office.png" Fluid="true" Class="rounded-lg" />
+                            </MudCardContent>
+                        </MudCard>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-5 col-12 mb-md-0 mb-3">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body">
+                        <MudCard Class="bg-transparent" Elevation="0">
+                            <MudCardContent>
+                                <div class="d-flex justify-content-center align-items-center">
+                                    <MudImage Src="/images/Logo.png" Width="230" Class="rounded-lg ma-4" />
                                 </div>
-                            </div>
-                        </MudCardContent>
-                    </MudCard>
+                            </MudCardContent>
+                        </MudCard>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="col-md-5 col-12 mb-md-0 mb-3">
-            <div class="card h-100 shadow-sm">
-                <div class="card-body">
-                    <MudCard Class="bg-transparent" Elevation="0">
-                        <MudCardContent>
-                            <div class="d-flex justify-content-center align-items-center">
-                                <MudImage Src="/images/Logo.png" Width="230" Class="rounded-lg ma-4" />
-                            </div>
-                        </MudCardContent>
-                    </MudCard>
-                </div>
-            </div>
-        </div>
-    </div>
     <div class="row mb-3">
         <div class="col-6 col-md-3 mb-3 mb-md-0">
             <div class="card card-flush shadow-sm">
@@ -76,7 +76,7 @@ else
                         <div class="d-flex align-items-md-start flex-column align-items-center">
                             <MudIcon Size="Size.Large" Icon="@Icons.Material.Outlined.Handyman" Title="Services" />
                             <div class="fw-semibold text-gray-400 mt-5">
-                                <span class="text-gray-900 fw-bold fs-2 me-1">@Services.Count</span>
+                                <span class="text-gray-900 fw-bold fs-2 me-1">@dashboard.ServicesCount</span>
                                 @languageContainer.Keys["Services"]
                             </div>
                         </div>
@@ -100,7 +100,7 @@ else
                         <div class="d-flex align-items-md-start flex-column align-items-center">
                             <MudIcon Size="Size.Large" Icon="@Icons.Material.Outlined.Diversity1" Title="Clients" />
                             <div class="fw-semibold text-gray-400 mt-5">
-                                <span class="text-gray-900 fw-bold fs-2 me-1">@Clients.Count</span>
+                                <span class="text-gray-900 fw-bold fs-2 me-1">@dashboard.ClientsCount</span>
                                 @languageContainer.Keys["Clients"]
                             </div>
                         </div>
@@ -125,7 +125,7 @@ else
                         <div class="d-flex align-items-md-start flex-column align-items-center">
                             <MudIcon Size="Size.Large" Icon="@Icons.Material.Outlined.SupervisorAccount" Title="Supervisors" />
                             <div class="fw-semibold text-gray-400 mt-5">
-                                <span class="text-gray-900 fw-bold fs-2 me-1">@Supervisors.Count</span>
+                                <span class="text-gray-900 fw-bold fs-2 me-1">@dashboard.SupervisorsCount</span>
                                 @languageContainer.Keys["Supervisors"]
                             </div>
                         </div>
@@ -150,7 +150,7 @@ else
                         <div class="d-flex align-items-md-start flex-column align-items-center">
                             <MudIcon Size="Size.Large" Icon="@Icons.Material.Outlined.Diversity3" Title="Managers" />
                             <div class="fw-semibold text-gray-400 mt-5">
-                                <span class="text-gray-900 fw-bold fs-2 me-md-1">@Managers.Count</span>
+                                <span class="text-gray-900 fw-bold fs-2 me-md-1">@dashboard.ManagersCount</span>
                                 @languageContainer.Keys["Managers"]
                             </div>
                         </div>
@@ -165,6 +165,55 @@ else
             </div>
         </div>
     </div>
+    <div class="row mb-3">
+        <div class="col-12">
+            <div class="card card-flush shadow-sm">
+                <div class="card-header">
+                    <div class="card-title">
+                        <h2 class="card-title fw-bold">@languageContainer.Keys["Earnings"]</h2>
+                    </div>
+                    <div class="card-toolbar">
+                        <MudButton Class="fw-bold" Href="/Orders" Size="Size.Large" Variant="Variant.Text">
+                            <div class="d-flex align-items-center">
+                                <MudIcon Size="Size.Large" Class="me-1" Icon="@Icons.Material.Outlined.ArrowCircleRight" />
+                                @languageContainer.Keys["More Info"]
+                            </div>
+                        </MudButton>
+                    </div>
+                </div>
+                <div class="card-body pt-0">
+                    <div class="d-flex flex-column flex-warp  flex-md-row flex-md-nowrap justify-content-around align-items-center gap-7">
+                        @foreach (var earning in dashboard.Earnings)
+                        {
+                            <div class="card card-flush border-gray-300 w-100">
+                                <!--begin::Header-->
+                                <div class="card-body">
+                                    <!--begin::Title-->
+                                    <div class="d-flex flex-column">
+                                        <!--begin::Info-->
+                                        <div class="d-flex align-items-center">
+                                            <!--begin::Currency-->
+                                            <span class="fs-4 fw-semibold text-gray-500 me-1 align-self-start">@earning.CurrencySymbol</span>
+                                            <!--end::Currency-->
+                                            <!--begin::Amount-->
+                                            <span class="fs-2hx fw-bold text-gray-900 pe-2 lh-1 ls-n2 bg-body">@earning.Amount</span>
+                                            <!--end::Amount-->
+                                        </div>
+                                        <!--end::Info-->
+                                        <!--begin::Subtitle-->
+                                        <span class="text-gray-500 pt-1 fw-semibold fs-6">Earnings in @earning.CurrencyCode</span>
+                                        <!--end::Subtitle-->
+                                    </div>
+                                    <!--end::Title-->
+                                </div>
+                                <!--end::Header-->
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 }
 
 
@@ -172,11 +221,7 @@ else
 
     private IEnumerable<Claim> claims = Enumerable.Empty<Claim>();
 
-    private List<LookupDto>? Managers;
-    private List<LookupDto>? Supervisors;
-    private List<LookupDto>? Clients;
-    private List<LookupDto>? Services;
-
+    private DashboardDto dashboard = new();
 
     protected override async Task OnInitializedAsync()
     {
@@ -184,17 +229,7 @@ else
 
         claims = await GetClaimsPrincipalData();
 
-        var managersTask = GetAllLookupsAsync("Managers");
-        var supervisorsTask = GetAllLookupsAsync("Supervisors");
-        var clientsTask = GetAllLookupsAsync("Clients");
-        var servicesTask = GetAllLookupsAsync("Services");
-
-        await Task.WhenAll(managersTask, supervisorsTask, clientsTask, servicesTask);
-
-        Managers = await managersTask;
-        Supervisors = await supervisorsTask;
-        Clients = await clientsTask;
-        Services = await servicesTask;
+        dashboard = await GetByIdAsync<DashboardDto>("Dashboard/statistics");
 
         StopProcessing();
     }
