@@ -10,14 +10,14 @@
         else
         {
             <!--begin::Password-->
-            <div class="d-flex flex-wrap justify-content-between align-items-center mb-5">
+            <div class="d-flex flex-column">
                 <!--begin::Label-->
                 <div>
                     <div class="fs-6 fw-bold mb-1">@languageContainer.Keys["Assign Provider"]:</div>
                 </div>
                 <!--end::Label-->
                 <!--begin::Action-->
-                <div class="ms-auto d-flex align-items-center">
+                <div class="px-3 d-flex justify-content-between align-items-center">
                     <div>
                         <MudAutocomplete T="ProviderDto" SearchFunc="@GetProviders" Adornment="Adornment.Start" AnchorOrigin="Origin.BottomCenter" Label="@languageContainer.Keys[("Provider")]"
                                          Variant="Variant.Outlined" ShowProgressIndicator="true" ResetValueOnEmptyText="true" CoerceText="true" AdornmentIcon="@Icons.Material.Filled.Flag"
@@ -30,7 +30,7 @@
                             </NoItemsTemplate>
                         </MudAutocomplete>
                     </div>
-                    <div class="ms-3">
+                    <div>
                         <button @onclick="() => AssignProvider(Order.Id, Order.Provider)" class="btn btn-light-success @(Order.Provider is null? "disabled" : string.Empty )">
                             @if (isLoading)
                             {
@@ -50,6 +50,40 @@
                 <!--end::Action-->
             </div>
             <!--end::Password-->
+            <div class="separator separator-dashed my-6"></div>
+            <!--begin::Password-->
+            <div class="d-flex flex-column mb-5">
+                <!--begin::Label-->
+                <div>
+                    <div class="fs-6 fw-bold mb-1">@languageContainer.Keys["Reschedule Order"]:</div>
+                </div>
+                <!--end::Label-->
+                <!--begin::Action-->
+                <div class="px-3 d-flex justify-content-between align-items-center">
+                    <div>
+                        <MudDatePicker AdornmentColor="Color.Info" Variant="Variant.Outlined" @bind-Date="Order.ReservationDate" Placeholder="@languageContainer.Keys["Select Date"]" Label="@languageContainer.Keys["Reservation Date"]" />
+                    </div>
+                    <div>
+                        <button @onclick="() => RescheduleOrder(Order.Id, Order.ReservationDate)" class="btn btn-light-success">
+                            @if (isLoading)
+                            {
+                                <span class="indicator-label">
+                                    @languageContainer.Keys["Please Wait"]... <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
+                                </span>
+                            }
+                            else
+                            {
+                                <span class="indicator-label">
+                                    @languageContainer.Keys["Confirm"]
+                                </span>
+                            }
+                        </button>
+                    </div>
+                </div>
+                <!--end::Action-->
+            </div>
+            <!--end::Password-->
+
         }
     </DialogContent>
 </MudDialog>

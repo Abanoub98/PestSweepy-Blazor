@@ -43,7 +43,7 @@
                 <PropertyColumn Property="x => string.Join(' ', x.Client.FirstName, x.Client.LastName)" Title="@languageContainer.Keys["Client"]" />
                 <PropertyColumn Property="@(x => string.Join(" - ", x.ServiceOption.Service.NameEn, x.ServiceOption.Service.NameAr))" Title="@languageContainer.Keys["Service"]" />
                 <PropertyColumn Property="x => x.OrderState.Name" Title="@languageContainer.Keys["Order State"]" />
-                <PropertyColumn Property="@(x => x.ReservationDateLocal.ToShortDateString())" Title="@languageContainer.Keys["Reservation Date"]" />
+                <PropertyColumn Property="@(x => x.ReservationDateLocal)" Title="@languageContainer.Keys["Reservation Date"]" />
 
                 <TemplateColumn Title="@languageContainer.Keys["Actions"]" CellClass="text-center" Context="order" HeaderClass="text-center" Sortable="false" Filterable="false">
                     <HeaderTemplate>
@@ -56,6 +56,9 @@
                             <TableButtons IsDeleteHide="true" IsDisable="isDisable" IsEditHide="true" DetailsClicked="() => OpenDetails(detailsUri, order.Item!.Id)" />
                             <a @onclick="() => AcceptOrder(order.Item)" class="btn btn-sm btn-light-success me-1 @(order.Item.OrderAccepted ? "d-none" : string.Empty )">
                                 <i class="fa-solid fa-check p-0"></i>
+                            </a>
+                            <a @onclick="() => CancelOrder(order.Item)" class="btn btn-sm btn-light-danger me-1 @(!order.Item.OrderAccepted || order.Item.OrderState.Name == "Completed" ? "d-none" : string.Empty )">
+                                <i class="fa-solid fa-xmark p-0"></i>
                             </a>
                         </div>
                     </CellTemplate>

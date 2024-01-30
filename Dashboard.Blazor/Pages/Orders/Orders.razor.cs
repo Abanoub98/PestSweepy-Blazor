@@ -39,6 +39,23 @@ public partial class Orders
         if (result.isSuccess)
         {
             order.OrderAccepted = true;
+            order.OrderState = new() { Name = "Request Accepted" };
+        }
+
+        StopProcessing();
+    }
+
+    private async Task CancelOrder(OrderDto order)
+    {
+        StartProcessing();
+
+        var result = await UpdateAsync($"Orders/CancelService/{order.Id}", order);
+
+        if (result.isSuccess)
+        {
+            order.OrderAccepted = false;
+            order.OrderState = new() { Name = "Cancelled" };
+
         }
 
         StopProcessing();

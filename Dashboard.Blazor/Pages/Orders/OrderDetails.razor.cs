@@ -57,7 +57,13 @@ public partial class OrderDetails
             { x => x.Order, order }
         };
 
-        await DialogService.ShowAsync<OrderActions>("Order Actions", Parameters, dialogOptions);
+        var dialog = await DialogService.ShowAsync<OrderActions>("Order Actions", Parameters, dialogOptions);
+
+        var result = await dialog.Result;
+
+        if (!result.Canceled)
+            StateHasChanged();
+
     }
 
     private async Task ShowOrderTracking(OrderDto order)

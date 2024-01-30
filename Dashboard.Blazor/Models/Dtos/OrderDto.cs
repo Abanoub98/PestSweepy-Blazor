@@ -10,9 +10,22 @@ public class OrderDto
 
     public DateTime CreatedAtLocal { get => CreatedAt.ToLocalTime(); }
 
-    public DateTime ReservationDate { get; set; }
+    public DateTime? ReservationDate { get; set; }
 
-    public DateTime ReservationDateLocal { get => ReservationDate.ToLocalTime(); }
+    public DateTime? ReservationDateLocal
+    {
+        get
+        {
+            if (ReservationDate is null)
+                return DateTime.Now;
+
+            return ReservationDate?.ToLocalTime();
+        }
+        set
+        {
+            ReservationDate = value;
+        }
+    }
 
     public bool OrderAccepted { get; set; }
 
