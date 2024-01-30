@@ -8,7 +8,9 @@ public class LoginLogDto
 
     public string Role { get; set; } = null!;
 
-    public DateTime? LoginDate { get; set; }
+    public DateTime LoginDate { get; set; }
+
+    public DateTime LoginDateLocal { get => LoginDate.ToLocalTime(); }
 
     public string Ip { get; set; } = null!;
 

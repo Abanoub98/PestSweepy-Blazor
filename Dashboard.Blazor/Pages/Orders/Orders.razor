@@ -43,7 +43,7 @@
                 <PropertyColumn Property="x => string.Join(' ', x.Client.FirstName, x.Client.LastName)" Title="@languageContainer.Keys["Client"]" />
                 <PropertyColumn Property="@(x => string.Join(" - ", x.ServiceOption.Service.NameEn, x.ServiceOption.Service.NameAr))" Title="@languageContainer.Keys["Service"]" />
                 <PropertyColumn Property="x => x.OrderState.Name" Title="@languageContainer.Keys["Order State"]" />
-                <PropertyColumn Property="@(x => x.ReservationDate.ToShortDateString())" Title="@languageContainer.Keys["Reservation Date"]" />
+                <PropertyColumn Property="@(x => x.ReservationDateLocal.ToShortDateString())" Title="@languageContainer.Keys["Reservation Date"]" />
 
                 <TemplateColumn Title="@languageContainer.Keys["Actions"]" CellClass="text-center" Context="order" HeaderClass="text-center" Sortable="false" Filterable="false">
                     <HeaderTemplate>

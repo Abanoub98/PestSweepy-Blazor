@@ -38,7 +38,7 @@
             <Columns>
                 <PropertyColumn Property="x => x.SerialNumber" Title="@languageContainer.Keys["Serial Number"]" />
                     <PropertyColumn Property="x => (x.Client == null ? x.ClientName : x.Client.FirstName)" Title="@languageContainer.Keys["Client Name"]" />
-                <PropertyColumn Property="x => x.CreatedAt" Title="@languageContainer.Keys[" Date"]" />
+                    <PropertyColumn Property="x => x.CreatedAtLocal" Title="@languageContainer.Keys[" Date"]" />
                 <PropertyColumn Property="x => x.TotalPrice" Title="@languageContainer.Keys["Total Price"]" />
 
                 <TemplateColumn CellClass="text-center" Context="quotation" HeaderClass="text-center" Sortable="false" Filterable="false">

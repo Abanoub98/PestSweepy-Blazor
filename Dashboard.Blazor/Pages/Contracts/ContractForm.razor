@@ -14,7 +14,7 @@
 }
 else
 {
-    <BaseFrom EntityBackUrl="/Contracts" EditTitle="@($"{contractForm.ContractClient!.Name} Contract")" EntityName="Contract"
+    <BaseFrom EntityBackUrl="/Contracts" EditTitle="@($"{contractForm.ContractClient?.Name} Contract")" EntityName="Contract"
               IsAddFrom="@(Id == 0 ? true : false)" OnValidSubmit="OnValidSubmit" Model="contractForm" Icon="@EntityIcons.ContractsIcon">
         <FormContent>
             <div class="d-flex flex-wrap flex-md-nowrap">
@@ -47,7 +47,7 @@ else
                      </MudAutocomplete>
                  </div>
                  <div class="p-3 w-100">
-                     <MudDatePicker AdornmentColor="Color.Info" Variant="Variant.Outlined" @bind-Date="contractForm.EffectiveDate" For="@(() => contractForm.EffectiveDate)" Placeholder="@languageContainer.Keys["Select Date"]" Label="@languageContainer.Keys["Effective Date"]" />
+                     <MudDatePicker AdornmentColor="Color.Info" Variant="Variant.Outlined" @bind-Date="contractForm.EffectiveDateLocal" For="@(() => contractForm.EffectiveDateLocal)" Placeholder="@languageContainer.Keys["Select Date"]" Label="@languageContainer.Keys["Effective Date"]" />
                  </div>
 
              </div>

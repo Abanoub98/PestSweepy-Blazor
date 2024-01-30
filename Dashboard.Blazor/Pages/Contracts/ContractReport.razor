@@ -45,7 +45,7 @@
                                             </div>
                                         </div>
                                         <div class="h5">
-                                            <p>التاريخ: @contract.CreatedAt.ToShortDateString()</p>
+                                            <p>التاريخ: @contract.CreatedAtLocal.ToShortDateString()</p>
                                             <p>مدة العقد: @contract.ContractDuration?.Name</p>
                                         </div>
                                         <div class="h5">
@@ -145,7 +145,7 @@
                                             }
                                         </div>
                                         <div class="h5">
-                                            <p>ويعتبر هذا العقد ساريا إعتبارا من تاريخ: @contract.EffectiveDate!.Value.ToShortDateString()</p>
+                                            <p>ويعتبر هذا العقد ساريا إعتبارا من تاريخ: @contract.EffectiveDateLocal!.Value.ToShortDateString()</p>
                                         </div>
                                         <div class="h3 mt-5 fw-bold text-center">
                                             <p>ملاحظات</p>

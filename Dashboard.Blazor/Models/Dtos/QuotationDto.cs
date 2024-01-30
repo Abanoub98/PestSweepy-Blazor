@@ -10,6 +10,23 @@ public class QuotationDto
     public DateTime? CreatedAt { get; set; } = DateTime.Now;
 
     [Required]
+    [Label(name: "Date")]
+    public DateTime? CreatedAtLocal
+    {
+        get
+        {
+            if (CreatedAt is null)
+                return DateTime.Now;
+
+            return CreatedAt?.ToLocalTime();
+        }
+        set
+        {
+            CreatedAt = value?.ToUniversalTime();
+        }
+    }
+
+    [Required]
     [Label(name: "Notes")]
     public string Notes { get; set; } = null!;
 

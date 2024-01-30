@@ -29,7 +29,7 @@ public partial class LoginLogs
             return true;
         if (element.UserId.Contains(searchString, StringComparison.OrdinalIgnoreCase))
             return true;
-        if (element.LoginDate.ToString().Contains(searchString, StringComparison.OrdinalIgnoreCase))
+        if (element.LoginDateLocal.ToString().Contains(searchString, StringComparison.OrdinalIgnoreCase))
             return true;
         if (element.Ip.Contains(searchString, StringComparison.OrdinalIgnoreCase))
             return true;

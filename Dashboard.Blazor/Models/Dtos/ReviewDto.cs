@@ -6,6 +6,8 @@ public class ReviewDto
 
     public DateTime CreatedAt { get; set; }
 
+    public DateTime CreatedAtLocal { get => CreatedAt.ToLocalTime(); }
+
     public double Rate { get; set; }
 
     public string? Feedback { get; set; }

@@ -8,7 +8,11 @@ public class OrderDto
 
     public DateTime CreatedAt { get; set; }
 
+    public DateTime CreatedAtLocal { get => CreatedAt.ToLocalTime(); }
+
     public DateTime ReservationDate { get; set; }
+
+    public DateTime ReservationDateLocal { get => ReservationDate.ToLocalTime(); }
 
     public bool OrderAccepted { get; set; }
 

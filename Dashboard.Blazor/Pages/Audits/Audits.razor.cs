@@ -49,7 +49,7 @@ public partial class Audits
             return true;
         if (element.UserId.Contains(searchString, StringComparison.OrdinalIgnoreCase))
             return true;
-        if (element.DateTime.ToString().Contains(searchString, StringComparison.OrdinalIgnoreCase))
+        if (element.DateTimeLocal.ToString().Contains(searchString, StringComparison.OrdinalIgnoreCase))
             return true;
 
         return false;

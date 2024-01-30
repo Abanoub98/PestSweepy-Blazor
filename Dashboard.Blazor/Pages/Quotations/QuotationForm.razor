@@ -40,7 +40,7 @@ else
                     }
                 </div>
                 <div class="p-3 w-100 w-md-25">
-                    <MudDatePicker AdornmentColor="Color.Info" Variant="Variant.Outlined" @bind-Date="quotationForm.CreatedAt" For="@(() => quotationForm.CreatedAt)" Placeholder="@languageContainer.Keys["Select Date"]" Label="@languageContainer.Keys["Date"]" />
+                    <MudDatePicker AdornmentColor="Color.Info" Variant="Variant.Outlined" @bind-Date="quotationForm.CreatedAtLocal" For="@(() => quotationForm.CreatedAtLocal)" Placeholder="@languageContainer.Keys["Select Date"]" Label="@languageContainer.Keys["Date"]" />
                 </div>
                 <div class="p-3 w-100 w-md-25">
                     <MudTextField HelperText="@languageContainer.Keys["Required"]" Variant="Variant.Outlined" AdornmentColor="Color.Info" Adornment="Adornment.Start" HelperTextOnFocus="true"

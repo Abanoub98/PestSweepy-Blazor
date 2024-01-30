@@ -45,7 +45,7 @@ public partial class Quotations
     {
         if (string.IsNullOrWhiteSpace(searchString))
             return true;
-        if (element.CreatedAt.ToString().Contains(searchString, StringComparison.OrdinalIgnoreCase))
+        if (element.CreatedAtLocal.ToString().Contains(searchString, StringComparison.OrdinalIgnoreCase))
             return true;
         if (element.SerialNumber.Contains(searchString, StringComparison.OrdinalIgnoreCase))
             return true;

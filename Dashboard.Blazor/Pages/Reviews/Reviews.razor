@@ -44,7 +44,7 @@
 
                 <PropertyColumn Property="x => string.Join(' ', x.Client.FirstName, x.Client.LastName)" Title="@languageContainer.Keys["Client"]" />
                 <PropertyColumn Property="x => x.Order.OrderNumber" Title="@languageContainer.Keys["Order"]" />
-                <PropertyColumn Property="@(x => x.CreatedAt.ToString("dd MMM,yyyy hh:mm tt"))" Title="@languageContainer.Keys["Date"]" />
+                <PropertyColumn Property="@(x => x.CreatedAtLocal.ToString("dd MMM,yyyy hh:mm tt"))" Title="@languageContainer.Keys["Date"]" />
 
                 <TemplateColumn Title="@languageContainer.Keys["Rate"]" Context="review" HeaderClass="text-center" CellClass="text-center" Sortable="false" Filterable="false">
                     <HeaderTemplate>

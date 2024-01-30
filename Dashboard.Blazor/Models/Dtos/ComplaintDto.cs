@@ -4,6 +4,7 @@ public class ComplaintDto
 {
     public int Id { get; set; }
     public DateTime CreatedAt { get; set; }
+    public DateTime CreatedAtLocal { get => CreatedAt.ToLocalTime(); }
     public string Subject { get; set; } = null!;
     public bool IsResolved { get; set; }
     public ClientDto Client { get; set; } = new();

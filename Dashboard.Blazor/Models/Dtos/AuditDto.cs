@@ -12,6 +12,8 @@ public class AuditDto
 
     public DateTime DateTime { get; set; }
 
+    public DateTime DateTimeLocal { get => DateTime.ToLocalTime(); }
+
     public string? OldValues { get; set; }
 
     public string? NewValues { get; set; }

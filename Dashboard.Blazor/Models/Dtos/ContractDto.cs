@@ -7,10 +7,28 @@ public class ContractDto
 
     public int Id { set; get; }
 
-    public DateTime CreatedAt { get; set; } = DateTime.Now;
+    public DateTime CreatedAt { get; set; }
+
+    public DateTime CreatedAtLocal { get => CreatedAt.ToLocalTime(); }
 
     [Required]
-    public DateTime? EffectiveDate { get; set; } = DateTime.Now;
+    public DateTime? EffectiveDate { get; set; }
+
+    [Required]
+    public DateTime? EffectiveDateLocal
+    {
+        get
+        {
+            if (EffectiveDate is null)
+                return DateTime.Now;
+
+            return EffectiveDate?.ToLocalTime();
+        }
+        set
+        {
+            EffectiveDate = value?.ToUniversalTime();
+        }
+    }
 
     [Required]
     public string FirstParty { get; set; } = null!;

@@ -50,7 +50,7 @@
                     </CellTemplate>
                 </TemplateColumn>
 
-                <PropertyColumn Property="x => x.CreatedAt.ToShortDateString()" Title="@languageContainer.Keys["Created At"]" />
+                <PropertyColumn Property="x => x.CreatedAtLocal.ToShortDateString()" Title="@languageContainer.Keys["Created At"]" />
                 <PropertyColumn Property="x => x.ComplaintType.Name" Title="@languageContainer.Keys["Complaint Type"]" />
                 <PropertyColumn Property="x => string.Join(' ', x.Client.FirstName, x.Client.LastName)" Title="@languageContainer.Keys["Client"]" />
                 <PropertyColumn Property="x => x.IsResolved" Hidden />

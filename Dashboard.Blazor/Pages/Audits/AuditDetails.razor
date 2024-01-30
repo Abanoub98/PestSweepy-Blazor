@@ -13,7 +13,7 @@
                 <li class="list-group-item" style="background-color:transparent !important;">User Id: @Auditing.UserId</li>
                 <li class="list-group-item" style="background-color:transparent !important;">Type: @Auditing.Type</li>
                 <li class="list-group-item" style="background-color:transparent !important;">Table Name: @Auditing.TableName</li>
-                <li class="list-group-item" style="background-color:transparent !important;">Date: @Auditing.DateTime</li>
+                <li class="list-group-item" style="background-color:transparent !important;">Date: @Auditing.DateTimeLocal</li>
                 <li class="@(Auditing.Type == "Create"? "d-none" : string.Empty) list-group-item" style="background-color:transparent !important;">
                     Primary Key Value: @ExtractPrimaryKeyValue(Auditing.PrimaryKey)
                 </li>

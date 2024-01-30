@@ -12,6 +12,8 @@ public class ClientDto : BaseUser
 
     public DateTime? CreatedAt { get; set; }
 
+    public DateTime? CreatedAtLocal { get => CreatedAt?.ToLocalTime(); }
+
     public string Image { get; set; } = null!;
     public IBrowserFile? UploadedImage { get; set; }
 

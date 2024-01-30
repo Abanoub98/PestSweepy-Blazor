@@ -97,9 +97,9 @@ else
                         <div class="fw-bold text-muted">@languageContainer.Keys["Created At"]</div>
                         <div class="fw-bold fs-5">
                             <p>
-                                @if (payment.Created_at != DateTime.MinValue)
+                                @if (payment.Created_atLocal != DateTime.MinValue)
                                 {
-                                    @payment.Created_at
+                                    @payment.Created_atLocal
                                 }
                                 else
                                 {
@@ -114,9 +114,9 @@ else
                         <div class="fw-bold text-muted">@languageContainer.Keys["Updated At"]</div>
                         <div class="fw-bold fs-5">
                             <p>
-                                @if (payment.Updated_at != DateTime.MinValue)
+                                @if (payment.Updated_atLocal != DateTime.MinValue)
                                 {
-                                    @payment.Updated_at
+                                    @payment.Updated_atLocal
                                 }
                                 else
                                 {
@@ -131,9 +131,9 @@ else
                         <div class="fw-bold text-muted">@languageContainer.Keys["Voided At"]</div>
                         <div class="fw-bold fs-5">
                             <p>
-                                @if (payment.Voided_at is not null)
+                                @if (payment.Voided_atLocal is not null)
                                 {
-                                    @payment.Voided_at
+                                    @payment.Voided_atLocal
                                 }
                                 else
                                 {
@@ -256,9 +256,9 @@ else
                         <div class="fw-bold text-muted">@languageContainer.Keys["Captured At"]</div>
                         <div class="fw-bold fs-5">
                             <p>
-                                @if (payment.Captured_at is not null)
+                                @if (payment.Captured_atLocal is not null)
                                 {
-                                    @payment.Captured_at
+                                    @payment.Captured_atLocal
                                 }
                                 else
                                 {
@@ -309,9 +309,9 @@ else
                         <div class="fw-bold text-muted">@languageContainer.Keys["Refunded At"]</div>
                         <div class="fw-bold fs-5">
                             <p>
-                                @if (payment.Refunded_at is not null)
+                                @if (payment.Refunded_atLocal is not null)
                                 {
-                                    @payment.Refunded_at
+                                    @payment.Refunded_atLocal
                                 }
                                 else
                                 {
