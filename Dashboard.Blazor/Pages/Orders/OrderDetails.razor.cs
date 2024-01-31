@@ -57,7 +57,7 @@ public partial class OrderDetails
             { x => x.Order, order }
         };
 
-        var dialog = await DialogService.ShowAsync<OrderActions>("Order Actions", Parameters, dialogOptions);
+        var dialog = await DialogService.ShowAsync<OrderActions>(languageContainer.Keys["Order Actions"], Parameters, dialogOptions);
 
         var result = await dialog.Result;
 
@@ -82,6 +82,6 @@ public partial class OrderDetails
             { x => x.Id, order.Id }
         };
 
-        await DialogService.ShowAsync<OrderTracking>("Order Tracking", Parameters, dialogOptions);
+        await DialogService.ShowAsync<OrderTracking>(languageContainer.Keys["Order Tracking"], Parameters, dialogOptions);
     }
 }

@@ -55,7 +55,6 @@ public partial class Orders
         {
             order.OrderAccepted = false;
             order.OrderState = new() { Name = "Cancelled" };
-
         }
 
         StopProcessing();

@@ -21,17 +21,17 @@ else
             <div class="d-flex flex-wrap flex-md-nowrap">
                 <div class="p-3  w-100">
                     <MudTextField HelperText="@languageContainer.Keys[("Required")]" Variant="Variant.Outlined" @bind-Value="clientForm.FirstName" For="@(() => clientForm.FirstName)" HelperTextOnFocus="true"
-                                  AdornmentColor="Color.Info" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.AccountBox" Placeholder="@Placeholders.Name" />
+                                  AdornmentColor="Color.Info" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.AccountBox" Placeholder="@languageContainer.Keys[Placeholders.Name]" Label="@languageContainer.Keys["First Name"]" />
                 </div>
                 <div class="p-3  w-100">
                     <MudTextField HelperText="@languageContainer.Keys[("Required")]" Variant="Variant.Outlined" @bind-Value="clientForm.LastName" For="@(() => clientForm.LastName)" HelperTextOnFocus="true"
-                                  AdornmentColor="Color.Info" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.AccountBox" Placeholder="@Placeholders.Name" />
+                                  AdornmentColor="Color.Info" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.AccountBox" Placeholder="@languageContainer.Keys[Placeholders.Name]" Label="@languageContainer.Keys["Last Name"]" />
                 </div>
             </div>
             <div class="d-flex flex-wrap flex-md-nowrap">
                 <div class="p-3 w-100">
                     <MudSelect HelperText="@languageContainer.Keys[("Required")]" Variant="Variant.Outlined" @bind-Value="clientForm.Gender" For="@(() => clientForm.Gender)" Adornment="Adornment.Start" Clearable Label="@languageContainer.Keys[("Gender")]"
-                                Placeholder="@Placeholders.GenderDropDown" AdornmentIcon="@Icons.Material.Filled.Group" AdornmentColor="Color.Info" AnchorOrigin="Origin.BottomCenter" T="string" HelperTextOnFocus="true">
+                                Placeholder="@languageContainer.Keys[Placeholders.GenderDropDown]" AdornmentIcon="@Icons.Material.Filled.Group" AdornmentColor="Color.Info" AnchorOrigin="Origin.BottomCenter" T="string" HelperTextOnFocus="true">
                          <MudSelectItem Value="@("Male")">
                              @languageContainer.Keys[("Male")]
                         </MudSelectItem>

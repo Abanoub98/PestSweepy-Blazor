@@ -1,4 +1,4 @@
-﻿@inherits BasePage
+﻿ @inherits BasePage
 @attribute [Authorize(Roles = $"{Roles.AdminRole},{Roles.ManagerRole},{Roles.SupervisorRole}")]
 
 <MudDialog>
@@ -57,13 +57,13 @@
                     <MudTimeline TimelineAlign="TimelineAlign.Default" TimelinePosition="TimelinePosition.Left" TimelineOrientation="TimelineOrientation.Vertical">
                         @foreach (var state in statuses)
                         {
-                            <MudTimelineItem Color="@(state.Id  == lastStatus.Id  ? Color.Tertiary : Color.Info)" Size="@(state.Id == lastStatus.Id ? Size.Large : Size.Medium)" Variant="@Variant.Filled" Elevation="0">
+                            <MudTimelineItem Color="@(state.OrderState.Name == OrdersStates.Cancelled? Color.Error : state.Id == lastStatus.Id  ? Color.Tertiary : Color.Info)" Size="@(state.Id == lastStatus.Id ? Size.Large : Size.Medium)" Variant="@Variant.Filled" Elevation="0">
                                 <ItemDot>
-                                    <MudIcon Size="@(state.Id == lastStatus.Id  ? Size.Large : Size.Medium)" Icon="@Icons.Material.Filled.ShoppingCartCheckout" />
+                                    <MudIcon Size="@(state.Id == lastStatus.Id  ? Size.Large : Size.Medium)" Icon="@(GetStateIcon(state.OrderState.Name))" />
                                 </ItemDot>
                                 <ItemContent>
                                     <MudText Align="Align.Start" Typo="Typo.body1">
-                                        @state.OrderState.Name
+                                        @languageContainer.Keys[state.OrderState.Name]
                                     </MudText>
                                     <MudText Typo="Typo.body2" Align="Align.Start" Class="mud-text-secondary">
                                         @state.CreatedAtLocal
@@ -101,5 +101,28 @@
         lastStatus = statuses.LastOrDefault();
 
         remainStatuses = 5 - statuses.Count;
+    }
+
+    private string GetStateIcon(string stateName)
+    {
+        switch (stateName)
+        {
+            case OrdersStates.Cancelled:
+                return Icons.Material.Filled.Cancel;
+            case OrdersStates.RequestAccepted:
+                return Icons.Material.Filled.CheckCircle;
+            case OrdersStates.ServiceStarted:
+                return Icons.Material.Filled.AutoMode;
+            case OrdersStates.Completed:
+                return Icons.Material.Filled.DoneAll;
+            case OrdersStates.Rescheduled:
+                return Icons.Material.Filled.DateRange;
+            case OrdersStates.AssignedToProvider:
+                return Icons.Material.Filled.PersonAdd;
+            case OrdersStates.ServiceRequested:
+                return Icons.Material.Filled.ShoppingCartCheckout;
+            default:
+                return Icons.Material.Filled.ShoppingCartCheckout;
+        }
     }
 }

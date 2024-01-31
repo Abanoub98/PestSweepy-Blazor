@@ -3,7 +3,6 @@
 public partial class Audits
 {
     private List<AuditDto> audits = new();
-    private string searchString = string.Empty;
 
     protected override async Task OnInitializedAsync()
     {

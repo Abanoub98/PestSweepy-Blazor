@@ -28,7 +28,7 @@
                     </div>
                     <div class="w-md-50 w-100">
                         <MudTextField @bind-Value="searchString" Adornment="Adornment.Start" Class="mt-0 mb-5" Immediate="true"
-                                      Placeholder=@($"{languageContainer.Keys["Search For"]} User Id, Role, Ip Address, User Name, Login Date")
+                                      Placeholder=@($"{languageContainer.Keys["Search For"]} {languageContainer.Keys["User Id"]}, {languageContainer.Keys["Role"]}, {languageContainer.Keys["Ip Address"]}, {languageContainer.Keys["User Name"]}, {languageContainer.Keys["Login Date"]}")
                                       AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" />
                     </div>
                 </div>
@@ -37,11 +37,11 @@
                 <NoDataToDisply />
             </NoRecordsContent>
             <Columns>
-                <PropertyColumn Property="x => x.UserId" Title="User Id" />
-                <PropertyColumn Property="x => x.Role" Title="Role" />
-                <PropertyColumn Property="x => x.Ip" Title="Ip Address" />
-                <PropertyColumn Property="x => x.UserName" Title="User Name" />
-                <PropertyColumn Property="x => x.LoginDateLocal" Title="Login Date" />
+                <PropertyColumn Property="x => x.UserId" Title="@languageContainer.Keys["User Id"]" />
+                <PropertyColumn Property="x => x.Role" Title="@languageContainer.Keys["Role"]" />
+                <PropertyColumn Property="x => x.Ip" Title="@languageContainer.Keys["IP Address"]" />
+                <PropertyColumn Property="x => x.UserName" Title="@languageContainer.Keys["User Name"]" />
+                <PropertyColumn Property="x => x.LoginDateLocal" Title="@languageContainer.Keys["Login Date"]" />
             </Columns>
 
             <PagerContent>

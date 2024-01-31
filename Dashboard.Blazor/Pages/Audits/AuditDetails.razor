@@ -10,21 +10,21 @@
         else
         {
             <ul style="background-color:transparent !important;" class="list-group mb-3">
-                <li class="list-group-item" style="background-color:transparent !important;">User Id: @Auditing.UserId</li>
-                <li class="list-group-item" style="background-color:transparent !important;">Type: @Auditing.Type</li>
-                <li class="list-group-item" style="background-color:transparent !important;">Table Name: @Auditing.TableName</li>
-                <li class="list-group-item" style="background-color:transparent !important;">Date: @Auditing.DateTimeLocal</li>
+                <li class="list-group-item" style="background-color:transparent !important;">@languageContainer.Keys["User Id"]: @Auditing.UserId</li>
+                <li class="list-group-item" style="background-color:transparent !important;">@languageContainer.Keys["Type"]: @Auditing.Type</li>
+                <li class="list-group-item" style="background-color:transparent !important;">@languageContainer.Keys["Table Name"]: @Auditing.TableName</li>
+                <li class="list-group-item" style="background-color:transparent !important;">@languageContainer.Keys["Date"]: @Auditing.DateTimeLocal</li>
                 <li class="@(Auditing.Type == "Create"? "d-none" : string.Empty) list-group-item" style="background-color:transparent !important;">
-                    Primary Key Value: @ExtractPrimaryKeyValue(Auditing.PrimaryKey)
+                    @languageContainer.Keys["Primary Key Value"]: @ExtractPrimaryKeyValue(Auditing.PrimaryKey)
                 </li>
             </ul>
             <div class="table-responsive text-center ">
                 <table class="table table-bordered table-striped">
                     <thead class="thead-dark">
                         <tr>
-                            <th>Affected Columns</th>
-                            <th class="@(Auditing.Type == "Create"? "d-none" : string.Empty)">Old Value</th>
-                            <th class="@(Auditing.Type == "Delete"? "d-none" : string.Empty)">New Value</th>
+                            <th>@languageContainer.Keys["Affected Columns"]</th>
+                            <th class="@(Auditing.Type == "Create"? "d-none" : string.Empty)">@languageContainer.Keys["Old Value"]</th>
+                            <th class="@(Auditing.Type == "Delete"? "d-none" : string.Empty)">@languageContainer.Keys["New Value"]</th>
                         </tr>
                     </thead>
                     <tbody>

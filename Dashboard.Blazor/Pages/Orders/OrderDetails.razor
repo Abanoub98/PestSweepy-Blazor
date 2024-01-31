@@ -3,7 +3,7 @@
 @inherits BasePage
 
 <PageTitle>
-    @languageContainer.Keys["Order Details"]
+    @($"{languageContainer.Keys["Order"]} {languageContainer.Keys["Details"]}")
 </PageTitle>
 <MudBreadcrumbs Items="breadcrumbItems" />
 
@@ -18,15 +18,15 @@ else
             <div class="fw-bold card-title">
                 @($"#{@order.OrderNumber} {languageContainer.Keys["Details"]}")
             </div>
-            <div class="card-toolbar">
+            <div class="card-toolbar gap-3">
                 <a href="/Orders" class="btn btn-primary">
                     <MudIcon Icon="@Icons.Material.Filled.ArrowBack" />
                     @languageContainer.Keys["Back To"] @languageContainer.Keys["Orders"]
                 </a>
-                <a @onclick="() => ShowOrderActions(order)" class="btn btn-light-primary ms-3 @(order.OrderAccepted ? string.Empty : "disabled")">
-                    <i class="fa-solid fa-user p-0"></i>
+                <a @onclick="() => ShowOrderActions(order)" class="btn btn-light-primary @(order.OrderAccepted ? string.Empty : "disabled")">
+                    <i class="fa-solid fa-gear p-0"></i>
                 </a>
-                <a @onclick="() => ShowOrderTracking(order)" class="btn btn-light-primary ms-3">
+                <a @onclick="() => ShowOrderTracking(order)" class="btn btn-light-primary">
                     <i class="fa-solid fa-route p-0"></i>
                 </a>
             </div>
@@ -79,7 +79,7 @@ else
                                         </td>
                                         <td class="fw-bold text-end">
                                             <MudChip Variant="Variant.Text" Color="Color.Primary">
-                                                @order.OrderState.Name
+                                                @languageContainer.Keys[order.OrderState.Name]
                                             </MudChip>
                                         </td>
                                     </tr>
@@ -87,7 +87,7 @@ else
                                         <td class="text-muted">
                                             <div class="d-flex align-items-center">
                                                 <i class="ki-duotone ki-wallet fs-2 me-2"><span class="path1"></span><span class="path2"></span><span class="path3"></span><span class="path4"></span></i>
-                                                @languageContainer.Keys["Provide"]
+                                                @languageContainer.Keys["Provider"]
                                             </div>
                                         </td>
                                         <td class="fw-bold text-end">
@@ -177,7 +177,7 @@ else
                                         </td>
                                         <td class="fw-bold text-end">
                                             <MudChip Variant="Variant.Text" Color="Color.Info">
-                                                @(order.Client.IsContractClient ? "Contract Client" : "Individual Client")
+                                                @(order.Client.IsContractClient ? $"{languageContainer.Keys["Contract Client"]}" : $"{languageContainer.Keys["Individual Client"]}")
                                             </MudChip>
                                         </td>
                                     </tr>

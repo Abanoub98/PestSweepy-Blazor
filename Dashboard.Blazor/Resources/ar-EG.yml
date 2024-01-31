@@ -1,3 +1,20 @@
+
+Table Name: "اسم الجدول"
+Date Time: "تاريخ ووقت"
+Type: "النوع"
+User Id: "معرف المستخدم"
+New Value: "القيمة الجديدة"
+Old Value: "القيمة القديمة"
+Affected Columns: "الأعمدة المتأثرة"
+Individual Clients: "العملاء الأفراد"
+Individual Client: "عميل الأفراد"
+First Name: "الاسم الأول"
+Last Name: "الاسم الأخير"
+Country: "البلد"
+Primary Key Value: "قيمة المفتاح الأساسي"
+Phone Number: "رقم الهاتف"
+
+
 #TopNavigation
 Alerts: "التنبيهات"
 Notifications: "الإشعارات"
@@ -120,7 +137,7 @@ Details: "تفاصيل"
 Login Date: "تاريخ الدخول"
 IP Address: "عنوان بروتوكول الإنترنت"
 Current User: "المستخدم الحالي"
-
+User Name: "اسم المستخدم"
 #CompanyInfo
 Edit Company Info: "تعديل معلومات الشركة"
 Back to Company Info: "العودة إلى معلومات الشركة"
@@ -188,3 +205,68 @@ Serial Number: "الرقم التسلسلي"
 Client Name: "اسم العميل"
 Actions: "الإجراءات"
 M²: "²م"
+
+Facebook Url: "رابط فيسبوك"
+Twitter Url: "رابط تويتر"
+LinkedIn Url: "رابط لينكد إن"
+Instagram Url: "رابط إنستغرام"
+Telegram Url: "رابط تليجرام"
+Youtube Url: "رابط يوتيوب"
+Cancelled: "تم الإلغاء"
+Rescheduled: "تم إعادة الجدولة"
+Completed: "تم الانتهاء"
+Service Started: "بدأت الخدمة"
+Assigned to Provider: "تم تعيينه لمقدم الخدمة"
+Request Accepted: "تم قبول الطلب"
+Service Requested: "تم طلب الخدمة"
+
+
+
+Order Actions: "إجراءات الطلب"
+
+Order Tracking: "تتبع الطلب"
+
+Information: "معلومات"
+Order Number: "رقم الطلب"
+Order State: "حالة الطلب"
+Reservation Date: "تاريخ الحجز"
+
+Client Type: "نوع العميل"
+
+Contract Client: "عميل العقد"
+
+
+Address Details: "تفاصيل العنوان"
+
+Payment Method: "طريقة الدفع"
+
+Created At: "تم الإنشاء في"
+
+Confirm: "تأكيد"
+
+Provider: "المقدم"
+
+Customer Details: "تفاصيل العميل"
+
+Customer: "العميل"
+
+Assign Provider: "تعيين مقدم الخدمة"
+
+Reschedule Order: "إعادة جدولة الطلب"
+
+Building Number: "رقم المبنى"
+
+Apartment Number: "رقم الشقة"
+
+
+Address Link: "رابط العنوان"
+
+Price Details: "تفاصيل السعر"
+
+Qty: "الكمية"
+
+
+Total: "المجموع"
+
+Grand Total: "المجموع الكلي"
+

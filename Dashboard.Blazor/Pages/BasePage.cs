@@ -45,6 +45,8 @@ public class BasePage : ComponentBase
     {
         var response = await ApiService.GetAllAsync<LookupDto>(endPoint);
 
+        await CheckAuthentication(response.RequestStatusCode!);
+
         if (!response.IsSuccess)
         {
             ShowError(error: response.Error!);
@@ -68,6 +70,8 @@ public class BasePage : ComponentBase
     {
         var response = await ApiService.AddAsync<T>(endPoint, model);
 
+        await CheckAuthentication(response.RequestStatusCode!);
+
         if (!response.IsSuccess)
         {
             ShowError(error: response.Error!);
@@ -90,6 +94,8 @@ public class BasePage : ComponentBase
 
         var response = await ApiService.PostAsync<ResponseDto>($"Files/UploadFile?id={id}&entityName={entityName}&isPdf=false", content);
 
+        await CheckAuthentication(response.RequestStatusCode!);
+
         if (!response.IsSuccess)
         {
             ShowError(response.Error ?? response.Message ?? string.Empty);
@@ -102,6 +108,8 @@ public class BasePage : ComponentBase
     protected async Task<(bool isSuccess, T? obj)> PostAsync<T>(string endPoint, string successMessage = "Added Successfully", bool showSuccess = true) where T : class
     {
         var response = await ApiService.PostAsync<T>(endPoint);
+
+        await CheckAuthentication(response.RequestStatusCode!);
 
         if (!response.IsSuccess)
         {
@@ -118,6 +126,8 @@ public class BasePage : ComponentBase
     protected async Task<(bool isSuccess, T? obj)> UpdateAsync<T>(string endPoint, T model) where T : class
     {
         var response = await ApiService.UpdateAsync<T>(endPoint, model);
+
+        await CheckAuthentication(response.RequestStatusCode!);
 
         if (!response.IsSuccess)
         {
@@ -138,6 +148,8 @@ public class BasePage : ComponentBase
 
         var response = await ApiService.DeleteAsync<T>(endPoint);
 
+        await CheckAuthentication(response.RequestStatusCode!);
+
         if (!response.IsSuccess)
         {
             ShowError(error: response.Error!);
@@ -156,6 +168,8 @@ public class BasePage : ComponentBase
             return false;
 
         var response = await ApiService.DeleteAllAsync<T>(endPoint, deletedIds);
+
+        await CheckAuthentication(response.RequestStatusCode!);
 
         if (!response.IsSuccess)
         {
@@ -291,6 +305,15 @@ public class BasePage : ComponentBase
         else
         {
             NavigationManager.NavigateTo("/ServerError");
+        }
+    }
+
+    private async Task CheckAuthentication(string statusCode)
+    {
+        if (statusCode == "401")
+        {
+            await LocalStorage.RemoveItemAsync("token");
+            await AuthenticationStateProvider.GetAuthenticationStateAsync();
         }
     }
 
