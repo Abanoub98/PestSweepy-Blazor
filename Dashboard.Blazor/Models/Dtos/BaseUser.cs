@@ -11,11 +11,4 @@ public class BaseUser
 
     [Label(name: "Phone Number")]
     public string? PhoneNumber { get; set; }
-
-    [Label(name: "Contact Phone Number")]
-    public string? ContactPhone { get; set; }
-
-    [EmailAddress]
-    [Label(name: "Contact Email")]
-    public string? ContactEmail { get; set; }
 }

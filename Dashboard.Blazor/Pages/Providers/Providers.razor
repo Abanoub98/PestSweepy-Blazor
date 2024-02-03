@@ -58,10 +58,9 @@
                     </CellTemplate>
                 </TemplateColumn>
 
-                <PropertyColumn Property="x => x.FirstName" Title="@languageContainer.Keys["First Name"]" />
-                <PropertyColumn Property="x => x.LastName" Title="@languageContainer.Keys["Last Name"]" />
-                <PropertyColumn Property="x => x.ContactEmail" Title="@languageContainer.Keys["Contact Email"]" />
-                <PropertyColumn Property="x => x.ContactPhone" Title="@languageContainer.Keys["Contact Phone"]" />
+                <PropertyColumn Property="x => string.Join(' ', x.FirstName, x.LastName)" Title="@languageContainer.Keys["Full Name"]" />
+                <PropertyColumn Property="x => x.Email" Title="@languageContainer.Keys["Email"]" />
+                <PropertyColumn Property="x => x.PhoneNumber" Title="@languageContainer.Keys["Phone"]" />
 
                 <TemplateColumn Title="@languageContainer.Keys["Actions"]" CellClass="text-center" Context="provider" HeaderClass="text-center" Sortable="false" Filterable="false">
                     <HeaderTemplate>

@@ -78,16 +78,6 @@ else
                     </div>
                 </div>
             }
-            <div class="flex-wrap d-flex flex-md-nowrap">
-                <div class="p-3 w-100">
-                    <MudTextField HelperText="@languageContainer.Keys[("Required")]" Variant="Variant.Outlined" InputType="InputType.Email" AdornmentColor="Color.Info" Adornment="Adornment.Start" HelperTextOnFocus="true"
-                                  @bind-Value="contractClientForm.ContactEmail" For="@(() => contractClientForm.ContactEmail)" AdornmentIcon="@Icons.Material.Filled.Email" Placeholder="@Placeholders.Email" Required="true" RequiredError="Email is Required" />
-                </div>
-                <div class="p-3 w-100">
-                    <MudTextField HelperText="@languageContainer.Keys[("Required")]" Variant="Variant.Outlined" AdornmentColor="Color.Info" Adornment="Adornment.Start" HelperTextOnFocus="true"
-                                  @bind-Value="contractClientForm.ContactPhone" For="@(() => contractClientForm.ContactPhone)" AdornmentIcon="@Icons.Material.Filled.Phone" Placeholder="@Placeholders.PhoneNumber" RequiredError="Phone Number is Required" />
-                </div>
-            </div>
             <div class="flex-wrap gap-5 gap-md-0 d-flex flex-md-nowrap align-items-end p-3">
                 <ImageUpload ImageSelected="CaptureUploadedImage" UploadedImageCleared="ClearUploadedImage" CurrentImage="@(Id == 0 ? null : imageUrl + contractClientForm.Image)" />
                 <MudSpacer />
