@@ -58,7 +58,7 @@ public partial class Reviews
     {
         StartProcessing();
 
-        var isSuccess = await ShowConfirmation(confirmationMessage: $"Are You Sure That You Will {(review.ShowInApp ? "Hide" : "Hide")} This Review", isWarning: true);
+        var isSuccess = await ShowConfirmation(confirmationMessage: $"Are you sure that you will {(review.ShowInApp ? "hide" : "show")} this review", isWarning: true);
 
         if (isSuccess)
         {

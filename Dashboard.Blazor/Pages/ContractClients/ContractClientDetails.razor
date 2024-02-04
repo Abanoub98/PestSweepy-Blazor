@@ -3,7 +3,7 @@
 @inherits BasePage
 
 <PageTitle>
-    @languageContainer.Keys["Contract Client Details"]
+    @($"{languageContainer.Keys["Contract Client"]} {languageContainer.Keys["Details"]}")
 </PageTitle>
 <MudBreadcrumbs Items="breadcrumbItems"></MudBreadcrumbs>
 
@@ -51,7 +51,7 @@ else
             <div class="card shadow-sm">
                 <div class="card-header border-0 cursor-pointer">
                     <div class="card-title m-0">
-                        <h3 class="fw-bold m-0">Account Settings</h3>
+                        <h3 class="fw-bold m-0">@languageContainer.Keys["Account Settings"]</h3>
                     </div>
                 </div>
                 <!--begin::Card body-->
@@ -60,13 +60,13 @@ else
                     <div class="d-flex d-md-inline flex-wrap align-items-center">
                         <!--begin::Label-->
                         <div>
-                            <div class="fs-6 fw-bold mb-1">Email Address</div>
-                            <div class="fw-semibold text-gray-600">Test@EmailAddressAttribute.com</div>
+                            <div class="fs-6 fw-bold mb-1">@languageContainer.Keys["Email Address"]</div>
+                            <div class="fw-semibold text-gray-600">@contractClient.Email</div>
                         </div>
                         <!--end::Label-->
                         <!--begin::Action-->
                         <div class="ms-auto mt-md-3">
-                            <button class="btn btn-light-primary">Change Email</button>
+                            <button class="btn btn-light-primary">@languageContainer.Keys["Change Email"]</button>
                         </div>
                         <!--end::Action-->
                     </div>
@@ -78,13 +78,13 @@ else
                     <div class="d-flex d-md-inline flex-wrap align-items-center mb-10">
                         <!--begin::Label-->
                         <div>
-                            <div class="fs-6 fw-bold mb-1">Password</div>
+                            <div class="fs-6 fw-bold mb-1">@languageContainer.Keys["Password"]</div>
                             <div class="fw-semibold text-gray-600">************</div>
                         </div>
                         <!--end::Label-->
                         <!--begin::Action-->
                         <div class="ms-auto mt-md-3">
-                            <button class="btn btn-light-primary">Reset Password</button>
+                            <button class="btn btn-light-primary">@languageContainer.Keys["Reset Password"]</button>
                         </div>
                         <!--end::Action-->
                     </div>
@@ -100,17 +100,7 @@ else
             <ul class="nav nav-custom nav-tabs nav-line-tabs nav-line-tabs-2x border-0 fs-4 fw-semibold mb-8" role="tablist">
                 <!--begin:::Tab item-->
                 <li class="nav-item" role="presentation">
-                    <a class="nav-link text-active-primary pb-4 active" data-bs-toggle="tab" href="#kt_customer_view_overview_tab" aria-selected="true" role="tab">Overview</a>
-                </li>
-                <!--end:::Tab item-->
-                <!--begin:::Tab item-->
-                <li class="nav-item ms-auto">
-                    <!--begin::Action menu-->
-                    <a href="/ContractClients" class="btn btn-primary ps-7">
-                        <MudIcon Icon="@Icons.Material.Filled.ArrowBack" />
-                        Back To Contract Clients
-                    </a>
-                    <!--end::Menu-->
+                    <a class="nav-link text-active-primary pb-4 active" data-bs-toggle="tab" href="#kt_customer_view_overview_tab" aria-selected="true" role="tab">@languageContainer.Keys["Overview"]</a>
                 </li>
                 <!--end:::Tab item-->
             </ul>
@@ -123,11 +113,11 @@ else
                         <div class="card-body">
                             <div class="d-flex flex-stack fs-4 py-3">
                                 <div class="fw-bold">
-                                    Details
+                                    @languageContainer.Keys["Details"]
                                 </div>
                                 <span>
                                     <a @onclick="() => OpenForm(formUri,contractClient.Id)" class="btn btn-sm btn-light-primary">
-                                        Edit
+                                        @languageContainer.Keys["Edit"]
                                     </a>
                                 </span>
                             </div>
@@ -136,19 +126,19 @@ else
                             <!--begin::Details content-->
                             <div class="py-3 fs-6">
                                 <!--begin::Details item-->
-                                <div class="fw-bold mt-5">Nationality</div>
+                                <div class="fw-bold mt-5">@languageContainer.Keys["Nationality"]</div>
                                 <div class="text-gray-600">@contractClient.Nationality?.Name</div>
                                 <!--begin::Details item-->
                                 <!--begin::Details item-->
-                                <div class="fw-bold mt-5">Gender</div>
+                                <div class="fw-bold mt-5">@languageContainer.Keys["Gender"]</div>
                                 <div class="text-gray-600">@contractClient.Gender</div>
                                 <!--begin::Details item-->
                                 <!--begin::Details item-->
-                                <div class="fw-bold mt-5">Contact Email</div>
+                                <div class="fw-bold mt-5">@languageContainer.Keys["Email"]</div>
                                 <div class="text-gray-600">@contractClient.Email</div>
                                 <!--begin::Details item-->
                                 <!--begin::Details item-->
-                                <div class="fw-bold mt-5">Contact Phone</div>
+                                <div class="fw-bold mt-5">@languageContainer.Keys["Phone"]</div>
                                 <div class="text-gray-600">@contractClient.PhoneNumber</div>
                                 <!--begin::Details item-->
                             </div>

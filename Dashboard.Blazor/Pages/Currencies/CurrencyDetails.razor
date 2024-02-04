@@ -1,8 +1,10 @@
 ﻿@page "/Currencies/Details/{Id:int}"
-@attribute [Authorize(Roles = Roles.AdminRole)]
+@* @attribute [Authorize(Roles = Roles.AdminRole)]
 @inherits BasePage
 
-<PageTitle>@languageContainer.Keys["Currency Details"]</PageTitle>
+<PageTitle>
+    @($"{languageContainer.Keys["Currency"]} {languageContainer.Keys["Details"]}")
+</PageTitle>
 <MudBreadcrumbs Items="breadcrumbItems"></MudBreadcrumbs>
 
 @if (currency is null)
@@ -27,7 +29,9 @@ else
                     <MudChip Variant="Variant.Text" Size="Size.Small" Icon="@Icons.Material.Outlined.Sort" Color="Color.Info">#@currency.OrderIndex</MudChip>
                 }
                 <MudChip Variant="Variant.Text" Size="Size.Small" Color="Color.Info" Icon="fa-solid fa-coins">@currency.Code</MudChip>
-                <MudChip Variant="Variant.Text" Size="Size.Small" Color="Color.Info" Icon="fa-solid fa-section">@currency.Symbol</MudChip>
+                    <MudChip Variant="Variant.Text" Size="Size.Small" Color="Color.Info" Icon="fa-solid fa-section">
+                        @currency.Symbol
+                </MudChip>
             </CardHeaderContent>
             <CardHeaderActions>
                 <div style="margin:10px">
@@ -43,4 +47,4 @@ else
 
         </MudTabPanel>
     </MudTabs>
-}
+} *@

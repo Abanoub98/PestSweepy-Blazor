@@ -71,7 +71,7 @@
         }
 
         <MudNumericField Class="p-3 w-100" HideSpinButtons="true" HelperText="@languageContainer.Keys["Required"]" @bind-Value="quotationService.NoOfVisits" For="@(() => quotationService.NoOfVisits)" Immediate="true" TextChanged="CalculateTotalPrice"
-                         Variant="Variant.Outlined" HelperTextOnFocus="true" ReadOnly="IsReadOnly" Disabled="IsReadOnly" Label="@languageContainer.Keys["Number of visits"]" />
+                         Variant="Variant.Outlined" HelperTextOnFocus="true" ReadOnly="IsReadOnly" Disabled="IsReadOnly" Label="@languageContainer.Keys["Number of Visits"]" />
 
         <MudNumericField Class="p-3 w-100" HideSpinButtons="true" HelperText="@languageContainer.Keys["Required"]" @bind-Value="quotationService.DiscountRate" For="@(() => quotationService.DiscountRate)" Immediate="true" TextChanged="CalculateTotalPrice"
                          Variant="Variant.Outlined" AdornmentColor="Color.Info" Adornment="Adornment.End" AdornmentText="%" HelperTextOnFocus="true" ReadOnly="IsReadOnly" Disabled="IsReadOnly" Label="@languageContainer.Keys["Discount Rate"]" />

@@ -64,7 +64,7 @@
                         <MudChip Variant="Variant.Text" Size="Size.Small"
                                  Color="@(complaint.Item.IsResolved ? Color.Success : Color.Warning)">
 
-                            @(complaint.Item.IsResolved ? "Resolved" : "Need Action")
+                            @(complaint.Item.IsResolved ? languageContainer.Keys["Resolved"] : @languageContainer.Keys["Need Action"])
                         </MudChip>
                     </CellTemplate>
                 </TemplateColumn>

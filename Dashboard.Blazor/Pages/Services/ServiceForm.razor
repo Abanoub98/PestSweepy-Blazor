@@ -27,18 +27,18 @@ else
                                   AdornmentColor="Color.Info" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.AccountBox" Placeholder="@languageContainer.Keys[(Placeholders.Name)]" />
                 </div>
                 <div class="p-3 w-100">
-                    <MudNumericField HideSpinButtons="true" @bind-Value="serviceForm.OrderIndex" For="@(() => serviceForm.OrderIndex)" Placeholder="@Placeholders.OrderIndex"
-                                     Variant="Variant.Outlined" AdornmentColor="Color.Info" Adornment="Adornment.End" AdornmentText="#" HelperTextOnFocus="true" />
+                    <MudNumericField HideSpinButtons="true" @bind-Value="serviceForm.OrderIndex" For="@(() => serviceForm.OrderIndex)" Placeholder="@languageContainer.Keys[(Placeholders.OrderIndex)]"
+                                     Variant="Variant.Outlined" AdornmentColor="Color.Info" Adornment="Adornment.End" AdornmentText="#" HelperTextOnFocus="true" Label="@languageContainer.Keys[("Order Index")]" />
                 </div>
                 <div class="p-3 w-100">
-                    <MudNumericField HideSpinButtons="true" HelperText="@languageContainer.Keys[("Required")]" @bind-Value="serviceForm.DurationInMinutes" For="@(() => serviceForm.DurationInMinutes)"
-                                     Variant="Variant.Outlined" AdornmentColor="Color.Info" Adornment="Adornment.End" AdornmentText="Min" HelperTextOnFocus="true" Placeholder="@Placeholders.DurationInMinutes" />
+                    <MudNumericField HideSpinButtons="true" HelperText="@languageContainer.Keys[("Required")]" @bind-Value="serviceForm.DurationInMinutes" For="@(() => serviceForm.DurationInMinutes)" Label="@languageContainer.Keys[("Duration In Minutes")]"
+                                     Variant="Variant.Outlined" AdornmentColor="Color.Info" Adornment="Adornment.End" AdornmentText="Min" HelperTextOnFocus="true" Placeholder="@languageContainer.Keys[Placeholders.DurationInMinutes]" />
                 </div>
                 <div class="p-3 w-100">
                     <MudAutocomplete T="LookupDto" SearchFunc="@GetCategories" Adornment="Adornment.Start" AnchorOrigin="Origin.BottomCenter"
                                      Variant="Variant.Outlined" ShowProgressIndicator="true" ResetValueOnEmptyText="true" CoerceText="true" AdornmentIcon="@Icons.Material.Filled.Category"
-                                     ProgressIndicatorColor="Color.Info" Clearable @bind-Value="serviceForm.Category" For="@(() => serviceForm.Category)" AdornmentColor="Color.Info"
-                                      ToStringFunc="@(e=> e == null ? null : $"{e.NameEn} - {e.NameAr}")" HelperText="@languageContainer.Keys[("Required")]" Placeholder="@Placeholders.CategoryDropDown" MaxItems="null" HelperTextOnFocus="true">
+                                     ProgressIndicatorColor="Color.Info" Clearable @bind-Value="serviceForm.Category" For="@(() => serviceForm.Category)" AdornmentColor="Color.Info" Label="@languageContainer.Keys[("Category")]"
+                                      ToStringFunc="@(e=> e == null ? null : $"{e.NameEn} - {e.NameAr}")" HelperText="@languageContainer.Keys[("Required")]" Placeholder="@languageContainer.Keys[Placeholders.DurationInMinutes]" MaxItems="null" HelperTextOnFocus="true">
                          <NoItemsTemplate>
                              <MudText Align="Align.Center" Class="px-4 py-4">
                                  No items found
@@ -79,8 +79,8 @@ else
                                                   AdornmentColor="Color.Info" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.AccountBox" Placeholder="@languageContainer.Keys[(Placeholders.Name)]" />
                                 </div>
                                 <div class="p-3 w-100">
-                                    <MudNumericField HideSpinButtons="true" @bind-Value="serviceOption.OrderIndex" For="@(() => serviceOption.OrderIndex)" Placeholder="@Placeholders.OrderIndex"
-                                                     Variant="Variant.Outlined" AdornmentColor="Color.Info" Adornment="Adornment.End" AdornmentText="#" HelperTextOnFocus="true" />
+                                    <MudNumericField HideSpinButtons="true" @bind-Value="serviceOption.OrderIndex" For="@(() => serviceOption.OrderIndex)" Placeholder="@languageContainer.Keys[(Placeholders.OrderIndex)]"
+                                                     Variant="Variant.Outlined" AdornmentColor="Color.Info" Adornment="Adornment.End" AdornmentText="#" HelperTextOnFocus="true" Label="@languageContainer.Keys[("Order Index")]" />
                                 </div>
                             </div>
 
@@ -89,7 +89,7 @@ else
                                 {
                                     <div class="p-3 w-100">
                                         <MudNumericField HideSpinButtons="true" HelperText="@languageContainer.Keys["Required"]" @bind-Value="price.Amount" For="@(() => price.Amount)" Label="@($"{languageContainer.Keys["Amount"]} - {languageContainer.Keys[price.Currency!.Name]}")"
-                                                         Variant="Variant.Outlined" AdornmentColor="Color.Info" Adornment="Adornment.End" AdornmentText="@(price.Currency?.Symbol)" HelperTextOnFocus="true" Placeholder="@languageContainer.Keys[price.Currency!.Code]" />
+                                                         Variant="Variant.Outlined" AdornmentColor="Color.Info" Adornment="Adornment.End" AdornmentText="@(languageContainer.Keys[price.Currency?.Symbol])" HelperTextOnFocus="true" Placeholder="@languageContainer.Keys[price.Currency!.Code]" />
                                     </div>
                                 }
                             </div>
@@ -108,7 +108,7 @@ else
             </MudCard>
             <div class="p-3 w-100">
                 <MudTextField HelperText="@languageContainer.Keys[("Required")]" Variant="Variant.Outlined" @bind-Value="serviceForm.Description" For="@(() => serviceForm.Description)"
-                              HelperTextOnFocus="true" Placeholder="@Placeholders.Description" Lines="10" />
+                              HelperTextOnFocus="true" Placeholder="@languageContainer.Keys[Placeholders.Description]" Lines="10" Label="@languageContainer.Keys[("Description")]" />
             </div>
             <div class="flex-wrap gap-5 gap-md-0 d-flex flex-md-nowrap align-items-end p-3">
                 <ImageUpload ImageSelected="CaptureUploadedImage" UploadedImageCleared="ClearUploadedImage" CurrentImage="@(Id == 0 ? null :imageUrl + serviceForm.Image)" />

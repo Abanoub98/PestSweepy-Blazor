@@ -61,7 +61,7 @@ else
                         <!--begin::Label-->
                         <div>
                             <div class="fs-6 fw-bold mb-1">@languageContainer.Keys["Email Address"]</div>
-                            <div class="fw-semibold text-gray-600">Test@EmailAddressAttribute.com</div>
+                            <div class="fw-semibold text-gray-600">@client.Email</div>
                         </div>
                         <!--end::Label-->
                         <!--begin::Action-->
@@ -97,20 +97,10 @@ else
         <!--begin::Content-->
         <div class="flex-lg-row-fluid ms-lg-15">
             <!--begin:::Tabs-->
-            <ul class="nav nav-custom nav-tabs nav-line-tabs nav-line-tabs-2x border-0 fs-4 fw-semibold mb-8 d-flex justify-content-between" role="tablist">
+            <ul class="nav nav-custom nav-tabs nav-line-tabs nav-line-tabs-2x border-0 fs-4 fw-semibold mb-8" role="tablist">
                 <!--begin:::Tab item-->
                 <li class="nav-item" role="presentation">
                     <a class="nav-link text-active-primary pb-4 active" data-bs-toggle="tab" href="#kt_customer_view_overview_tab" aria-selected="true" role="tab">@languageContainer.Keys["Overview"]</a>
-                </li>
-                <!--end:::Tab item-->
-                <!--begin:::Tab item-->
-                <li class="nav-item">
-                    <!--begin::Action menu-->
-                    <a href="/IndividualClients" class="btn btn-primary">
-                        <MudIcon Icon="@Icons.Material.Filled.ArrowBack" />
-                        @($"{@languageContainer.Keys["Back To"]} {@languageContainer.Keys["Individual Clients"]}")
-                    </a>
-                    <!--end::Menu-->
                 </li>
                 <!--end:::Tab item-->
             </ul>

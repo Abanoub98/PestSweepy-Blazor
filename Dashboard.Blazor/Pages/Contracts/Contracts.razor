@@ -2,64 +2,70 @@
 @attribute [Authorize(Roles = $"{Roles.AdminRole},{Roles.ManagerRole}")]
 @inherits BasePage
 
-<PageTitle>@languageContainer.Keys["Contracts"]</PageTitle>
+<PageTitle>
+    @languageContainer.Keys["Contracts"]
+</PageTitle>
 <MudBreadcrumbs Items="breadcrumbItems"></MudBreadcrumbs>
 <BrowserViewportObserver TableHeightChanged="TableHeightChanged" />
 
 <MudCard Elevation="25">
-        <MudCardContent>
-            <MudDataGrid T="ContractDto" Dense="true" Elevation="0" FixedHeader="true" Height="@($"{tableHight}px")"
-                         Loading="@(isLoading)" LoadingProgressColor="Color.Info" Filterable="true"
-                         Items="contracts" Hover="true" SortMode="SortMode.Single" QuickFilter="@FilterFunc">
+    <MudCardContent>
+        <MudDataGrid T="ContractDto" Dense="true" Elevation="0" FixedHeader="true" Height="@($"{tableHight}px")"
+                     Loading="@(isLoading)" LoadingProgressColor="Color.Info" Filterable="true"
+                     Items="contracts" Hover="true" SortMode="SortMode.Single" QuickFilter="@FilterFunc">
 
-                <ToolBarContent>
-                    <div class="d-flex justify-content-between flex-column align-items-center flex-md-row w-100">
-                        <div class="w-md-25 w-100">
-                            <div class="d-flex align-items-center">
-                                <MudAvatar Rounded="true" Color="Color.Info">
-                                    <MudIcon Icon="@EntityIcons.ContractsIcon" />
-                                </MudAvatar>
-                                <MudText Class="mx-3" Typo="Typo.h5">@languageContainer.Keys["Contracts"]</MudText>
-                                <MudIconButton OnClick="() => OpenForm(formUri)" Icon="@Icons.Material.Filled.Add" Color="Color.Success"></MudIconButton>
-                            </div>
-                        </div>
-                        <div class="w-md-50 w-100">
-                            <MudTextField @bind-Value="searchString" Adornment="Adornment.Start" Class="mt-0 mb-5" Immediate="true"
-                                          Placeholder=@($"{languageContainer.Keys["Search For"]} {languageContainer.Keys["Serial Number"]}, {languageContainer.Keys["Client Name"]}, {languageContainer.Keys["Date"]}")
-                                          AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" />
+            <ToolBarContent>
+                <div class="d-flex justify-content-between flex-column align-items-center flex-md-row w-100">
+                    <div class="w-md-25 w-100">
+                        <div class="d-flex align-items-center">
+                            <MudAvatar Rounded="true" Color="Color.Info">
+                                <MudIcon Icon="@EntityIcons.ContractsIcon" />
+                            </MudAvatar>
+                            <MudText Class="mx-3" Typo="Typo.h5">
+                                @languageContainer.Keys["Contracts"]
+                            </MudText>
+                            <MudIconButton OnClick="() => OpenForm(formUri)" Icon="@Icons.Material.Filled.Add" Color="Color.Success"></MudIconButton>
                         </div>
                     </div>
-                </ToolBarContent>
+                    <div class="w-md-50 w-100">
+                        <MudTextField @bind-Value="searchString" Adornment="Adornment.Start" Class="mt-0 mb-5" Immediate="true"
+                                      Placeholder=@($"{languageContainer.Keys["Search For"]} {languageContainer.Keys["Title"]}, {languageContainer.Keys["Client Name"]}, {languageContainer.Keys["Date"]}")
+                                      AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" />
+                    </div>
+                </div>
+            </ToolBarContent>
 
-                <NoRecordsContent>
-                    <NoDataToDisply />
-                </NoRecordsContent>
-                  
-                <Columns>
-                    <PropertyColumn Property="x => x.Title" Title="@languageContainer.Keys["Title"]" />
-                    <PropertyColumn Property="x => x.ContractClient.FirstName" Title="@languageContainer.Keys["Contract Client"]" />
-                    <PropertyColumn Property="x => x.CreatedAtLocal" Title="@languageContainer.Keys["Created Date"]" />
-                    <PropertyColumn Property="x => x.EffectiveDateLocal" Title="@languageContainer.Keys["Effective Date"]" />
+            <NoRecordsContent>
+                <NoDataToDisply />
+            </NoRecordsContent>
 
-                    <TemplateColumn CellClass="text-center" Context="contract" HeaderClass="text-center" Sortable="false" Filterable="false">
-                        <HeaderTemplate>
-                            <MudText Class="w-100">@languageContainer.Keys["Actions"]</MudText>
-                        </HeaderTemplate>
-                        <CellTemplate>
-                            <div>
-                                <TableButtons IsDisable="isDisable" EditClicked="() => OpenForm(formUri,contract.Item!.Id)"
-                                              IsDeleteHide="true" DetailsClicked="() => OpenDetails(detailsUri,contract.Item!.Id)" />
-                                <a @onclick="() => ShowContract(contract.Item!.Id)" title="@languageContainer.Keys["Show Report"]" class="btn btn-sm btn-light-success me-1">
-                                    <i class="fa-solid fa-file-pdf"></i>
-                                </a>
-                            </div>
-                        </CellTemplate>
-                    </TemplateColumn>
-                </Columns>
+            <Columns>
+                <PropertyColumn Property="x => x.Title" Title="@languageContainer.Keys["Title"]" />
+                <PropertyColumn Property="x => x.ContractClient.FirstName" Title="@languageContainer.Keys["Contract Client"]" />
+                <PropertyColumn Property="x => x.CreatedAtLocal" Title="@languageContainer.Keys["Created Date"]" />
+                <PropertyColumn Property="x => x.EffectiveDateLocal" Title="@languageContainer.Keys["Effective Date"]" />
 
-                <PagerContent>
-                    <MudDataGridPager T="ContractDto" />
-                </PagerContent>
-            </MudDataGrid>
-        </MudCardContent>
-    </MudCard>
+                <TemplateColumn Title="@languageContainer.Keys["Actions"]" CellClass="text-center" Context="contract" HeaderClass="text-center" Sortable="false" Filterable="false">
+                    <HeaderTemplate>
+                        <MudText Class="w-100">
+                            @languageContainer.Keys["Actions"]
+                        </MudText>
+                    </HeaderTemplate>
+                    <CellTemplate>
+                        <div>
+                            <TableButtons IsDisable="isDisable" EditClicked="() => OpenForm(formUri,contract.Item!.Id)"
+                                          IsDeleteHide="true" DetailsClicked="() => OpenDetails(detailsUri,contract.Item!.Id)" />
+                            <a @onclick="() => ShowContract(contract.Item!.Id)" title="@languageContainer.Keys["Show Report"]" class="btn btn-sm btn-light-success me-1">
+                                <i class="fa-solid fa-file-pdf p-0"></i>
+                            </a>
+                        </div>
+                    </CellTemplate>
+                </TemplateColumn>
+            </Columns>
+
+            <PagerContent>
+                <MudDataGridPager T="ContractDto" />
+            </PagerContent>
+        </MudDataGrid>
+    </MudCardContent>
+</MudCard>

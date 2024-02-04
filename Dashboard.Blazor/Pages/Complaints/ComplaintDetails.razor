@@ -2,9 +2,11 @@
 @attribute [Authorize(Roles = $"{Roles.AdminRole},{Roles.ManagerRole},{Roles.SupervisorRole}")]
 @inherits BasePage
 
-<PageTitle>@languageContainer.Keys["Complaint Details"]</PageTitle>
-    <MudBreadcrumbs Items="breadcrumbItems" />
-    @if (complaint is null)
+<PageTitle>
+    @($"{languageContainer.Keys["Complaint"]} {languageContainer.Keys["Details"]}")
+</PageTitle>
+<MudBreadcrumbs Items="breadcrumbItems" />
+@if (complaint is null)
 {
     <FormLoadingSpinner IsBigForm="true" />
 }
@@ -13,7 +15,7 @@ else
     <div class="card shadow-sm">
         <div class="card-header">
             <div class="fw-bold card-title">
-                @languageContainer.Keys["Complaint Details"]
+                @($"{languageContainer.Keys["Complaint"]} {languageContainer.Keys["Details"]}")
             </div>
             <div class="card-toolbar">
                 <a href="/Complaints" class="btn bt-sm btn-primary">
@@ -32,7 +34,7 @@ else
                         <a href="/@(complaint.Client.IsContractClient ? "ContractClient" : "IndividualClient")/Details/@complaint.Client.Id" class="text-gray-600 text-hover-primary">@complaint.Client.FirstName @complaint.Client.LastName</a>
                         <!--begin::Details item-->
                         <div class="fw-bold mt-5 mb-1">@languageContainer.Keys["Client Type"]:</div>
-                        <a class="text-gray-600 text-hover-primary">@(complaint.Client.IsContractClient ? "Contract Client" : "Individual Client")</a>
+                        <div class="text-gray-600">@(complaint.Client.IsContractClient ? "Contract Client" : "Individual Client")</div>
                         <!--begin::Details item-->
                         <!--begin::Details item-->
                         <div class="fw-bold mt-5 mb-1">@languageContainer.Keys["Complaint Type"]:</div>
@@ -47,7 +49,7 @@ else
                         <MudChip Variant="Variant.Text" Size="Size.Small"
                                  Color="@(complaint.IsResolved ? Color.Success : Color.Warning)">
 
-                            @(complaint.IsResolved ? "Resolved" : "Need Action")
+                            @(complaint.IsResolved ? languageContainer.Keys["Resolved"] : @languageContainer.Keys["Need Action"])
                         </MudChip>
                         <!--begin::Details item-->
                     </div>

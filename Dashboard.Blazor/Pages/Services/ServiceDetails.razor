@@ -3,7 +3,7 @@
 @inherits BasePage
 
 <PageTitle>
-    @languageContainer.Keys["Service Details"]
+    @($"{languageContainer.Keys["Service"]} {languageContainer.Keys["Details"]}")
 </PageTitle>
 <MudBreadcrumbs Items="breadcrumbItems" />
 @if (service is null)
@@ -87,7 +87,7 @@ else
                                             <!--begin::Due-->
                                             <div class="border border-gray-300 border-dashed rounded min-w-125px py-3 px-4 me-7 mb-3">
                                                 <div class="fs-6 text-gray-800 fw-bold">@price.Amount @languageContainer.Keys[price.Currency?.Code]</div>
-                                                <div class="fw-semibold text-gray-500">@price.Currency?.Name</div>
+                                                <div class="fw-semibold text-gray-500">@languageContainer.Keys[price.Currency?.Name]</div>
                                             </div>
                                             <!--end::Due-->
                                         }

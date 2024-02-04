@@ -175,7 +175,7 @@ Price Quotation Services: "خدمات عرض السعر"
 Required: "مطلوب"
 Service: "الخدمة"
 Quotation Total Price: "إجمالي عرض السعر"
-SAR: "ريال سعودي"
+SAR: "ر.س"
 Add Service: "إضافة خدمة"
 Select Date: "اختيار التاريخ"
 Email is Required: "البريد الإلكتروني مطلوب"
@@ -219,54 +219,117 @@ Service Started: "بدأت الخدمة"
 Assigned to Provider: "تم تعيينه لمقدم الخدمة"
 Request Accepted: "تم قبول الطلب"
 Service Requested: "تم طلب الخدمة"
-
-
-
 Order Actions: "إجراءات الطلب"
-
 Order Tracking: "تتبع الطلب"
-
 Information: "معلومات"
 Order Number: "رقم الطلب"
 Order State: "حالة الطلب"
 Reservation Date: "تاريخ الحجز"
-
 Client Type: "نوع العميل"
-
 Contract Client: "عميل العقد"
-
-
 Address Details: "تفاصيل العنوان"
-
 Payment Method: "طريقة الدفع"
-
 Created At: "تم الإنشاء في"
-
 Confirm: "تأكيد"
-
-Provider: "المقدم"
-
+Provider: "مقدم الخدمة"
 Customer Details: "تفاصيل العميل"
-
 Customer: "العميل"
-
 Assign Provider: "تعيين مقدم الخدمة"
-
 Reschedule Order: "إعادة جدولة الطلب"
-
 Building Number: "رقم المبنى"
-
 Apartment Number: "رقم الشقة"
-
-
 Address Link: "رابط العنوان"
-
 Price Details: "تفاصيل السعر"
-
 Qty: "الكمية"
-
-
 Total: "المجموع"
-
 Grand Total: "المجموع الكلي"
+National Id: "الرقم الوطني"
+Manager: "المدير"
+Select Country: "اختر البلد"
+Supervisor: "المشرف"
+Note that this action cannot be undone!: "يرجى ملاحظة أنه لا يمكن التراجع عن هذا الإجراء!"
+Are you sure you want to confirm deleting action?: "هل أنت متأكد أنك تريد تأكيد إجراء الحذف؟"
+Providers: "مقدمين الخدمة"
+Are you sure that you will decline this complaint: "هل أنت متأكد أنك تلغي حل هذا الشكوى؟"
+Are you sure that you will resolve this complaint: "هل أنت متأكد أنك ستقوم بحل هذه الشكوى؟"
+Are you sure that you will show this review: "هل أنت متأكد أنك ستعرض هذا التقييم؟"
+Are you sure that you will hide this review: "هل أنت متأكد أنك ستخفي هذا التقييم؟"
+Complaint: "شكوى"
+Review: "تقييم"
+Resolved: "تم الحل"
+Status: "الحالة"
+Need Action: "تحتاج إلى إجراء"
+Complaint Type: "نوع الشكوى"
+Complaints: "شكاوى"
+Name English: "الاسم بالإنجليزية"
+Name Arabic: "الاسم بالعربية"
+Duration In Minutes: "المدة بالدقائق"
+AED: "د.أ"
+USD: "دولار"
+EGP: "ج.م"
+Egyptian Pound: "الجنيه المصري"
+UAE Dirham: "الدرهم الإماراتي"
+US Dollar: "الدولار الأمريكي"
+Saudi Riyal: "ريال سعودي"
+Add Option: "إضافة خيار"
+Symbol: "الرمز"
+Code: "الكود"
+Amount: "المبلغ"
+Option: "الخيار"
+Service Options: "خيارات الخدمة"
+Contracts: "العقود"
+Created Date: "تاريخ الإنشاء"
+Effective Date: "تاريخ التنفيذ"
+First Party: "الطرف الأول"
+Contract: "العقد"
+Second Party: "الطرف الثاني"
+First Party CEO: "ممثل للطرف الأول"
+Second Party CEO: "ممثل للطرف الثاني"
+Intro: "المقدمة"
+Terms: "الشروط"
+Contract Conclusion: "ملخص العقد"
+First Party Commercial Registration No.: "رقم السجل التجاري للطرف الأول"
+Second Party Commercial Registration No.: "رقم السجل التجاري للطرف الثاني"
+First Party Executive Officer Job: "وظيفة ممثل الطرف الأول"
+Quotation: "عرض السعر"
+Quotations: "عروض الأسعار"
+Contract Duration: "مدة العقد"
+Select Contract Duration: "اختر مدة العقد"
 
+Select Contract Client: "اختر عميل العقد"
+First Party Email: "بريد الكتروني للطرف الأول"
+
+First Party Executive Officer: "ممثل الطرف الأول"
+
+Contract Title: "عنوان العقد"
+
+Second Party Executive Officer: "ممثل الطرف الثاني"
+
+Second Party Email: "بريد الكتروني للطرف الثاني"
+
+Second Party Executive Officer Job: "وظيفة ممثل الطرف الثاني"
+
+Term Title: "عنوان البند"
+
+Contract Terms: "شروط العقد"
+Currency: "العملة"
+
+Select Currency: "اختر العملة"
+
+Number of Visits: "عدد الزيارات"
+
+Select Type: "اختر النوع"
+
+Select Unit: "اختر الوحدة"
+
+Select Term: "اختر بند"
+
+Select Quotation: "اختر عرض سعر"
+CEO: "ممثل العميل"
+Add Quotation?: "إضافة عرض سعر؟"
+Term: "البند"
+Add Term: "إضافة بند"
+Contract Intro: "مقدمة العقد"
+Contract Notes: "ملاحظات العقد"
+Earnings: "الأرباح"
+Earnings in: "أرباح بعملة"

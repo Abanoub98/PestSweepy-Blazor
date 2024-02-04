@@ -3,7 +3,7 @@
 @inherits BasePage
 
 <PageTitle>
-    @languageContainer.Keys["Contract Details"]
+    @($"{languageContainer.Keys["Contract"]} {languageContainer.Keys["Details"]}")
 </PageTitle>
 <MudBreadcrumbs Items="breadcrumbItems" />
 
@@ -16,7 +16,7 @@ else
     <div class="card shadow-sm">
         <div class="card-header">
             <div class="fw-bold card-title">
-                @languageContainer.Keys["Coupon Details"]
+                @($"{languageContainer.Keys["Contract"]} {languageContainer.Keys["Details"]}")
             </div>
             <div class="card-toolbar">
                 <a href="/Contracts" class="btn btn-sm btn-primary me-3">
@@ -37,7 +37,7 @@ else
                         <div class="row">
                             <div class="col-4">
                                 <!--begin::Details item-->
-                                <div class="fw-bold mt-5 mb-1">@languageContainer.Keys["Contract Client"]:</div>
+                                <div class="fw-bold mb-1">@languageContainer.Keys["Contract Client"]:</div>
                                 <a href="/ContractClients/Form/@contract.ContractClient?.Id" class="text-gray-600 text-hover-primary">@($"{contract.ContractClient?.FirstName} {contract.ContractClient?.LastName}")</a>
                                 <!--begin::Details item-->
                                 <div class="fw-bold mt-5 mb-1">@languageContainer.Keys["Created Date"]:</div>

@@ -37,7 +37,7 @@
                     </div>
                     <div class="w-md-50 w-100">
                         <MudTextField @bind-Value="searchString" Adornment="Adornment.Start" Class="mt-0 mb-5" Immediate="true"
-                                      Placeholder=@($"{languageContainer.Keys["Search For"]} Name, Order Index")
+                                      Placeholder=@($"{languageContainer.Keys["Search For"]} {languageContainer.Keys["Name"]}, {languageContainer.Keys["Contact Email"]}, {languageContainer.Keys["Contact Phone"]}")
                                       AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" />
                     </div>
                 </div>

@@ -29,7 +29,7 @@
                     </div>
                     <div class="w-md-50 w-100">
                         <MudTextField @bind-Value="searchString" Adornment="Adornment.Start" Class="mt-0 mb-5" Immediate="true"
-                                      Placeholder=@($"{languageContainer.Keys["Search For"]} Name, Order Index")
+                                      Placeholder=@($"{languageContainer.Keys["Search For"]} {languageContainer.Keys["Client"]}, {languageContainer.Keys["Order"]}, {languageContainer.Keys["Date"]}")
                                       AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" />
                     </div>
                 </div>
@@ -71,8 +71,8 @@
                             <TableButtons IsDisable="isDisable" IsEditHide="true"
                                           DeleteClicked="() => Delete(review.Item!.Id)" DetailsClicked="() => OpenDetails(detailsUri,review.Item!.Id)" />
                             <AuthorizeView  Roles="@Roles.AdminRole">
-                                <a @onclick="() => ToggleStatus(review.Item)" class="btn btn-sm btn-light-@(review.Item!.ShowInApp? "success" : "danger")">
-                                    <i class="fa-solid fa-eye@(review.Item!.ShowInApp? string.Empty : "-slash")"></i>
+                                <a @onclick="() => ToggleStatus(review.Item)" class="btn btn-sm btn-light-@(!review.Item!.ShowInApp? "success" : "danger")">
+                                    <i class="fa-solid fa-eye@(!review.Item!.ShowInApp? string.Empty : "-slash") p-0"></i>
                                 </a>
                             </AuthorizeView>
                         </div>

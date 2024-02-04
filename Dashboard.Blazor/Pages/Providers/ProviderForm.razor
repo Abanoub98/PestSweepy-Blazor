@@ -53,32 +53,36 @@ else
                 <div class="d-flex flex-wrap flex-md-nowrap">
                     <div class="p-3 w-100">
                         <MudSelect HelperText="@languageContainer.Keys[("Required")]" Variant="Variant.Outlined" @bind-Value="providerForm.Gender" For="@(() => providerForm.Gender)" Adornment="Adornment.Start" Clearable Label="@languageContainer.Keys[("Gender")]"
-                                    Placeholder="@Placeholders.GenderDropDown" AdornmentIcon="@Icons.Material.Filled.Group" AdornmentColor="Color.Info" AnchorOrigin="Origin.BottomCenter" T="string" HelperTextOnFocus="true">
-                             <MudSelectItem Value="@("Male")">Male</MudSelectItem>
-                             <MudSelectItem Value="@("Female")">Female</MudSelectItem>
-                         </MudSelect>
-                     </div>
-                     <div class="p-3 w-100">
-                         <MudAutocomplete T="LookupDto" SearchFunc="@GetNationalities" Adornment="Adornment.Start" AnchorOrigin="Origin.BottomCenter"
-                                          Variant="Variant.Outlined" ShowProgressIndicator="true" ResetValueOnEmptyText="true" CoerceText="true" AdornmentIcon="@Icons.Material.Filled.Flag"
-                                          ProgressIndicatorColor="Color.Info" Clearable @bind-Value="providerForm.Nationality" For="@(() => providerForm.Nationality)" AdornmentColor="Color.Info" Label="@languageContainer.Keys[("Nationality")]"
-                                          ToStringFunc="@(e=> e == null ? null : $"{e.Name}")" HelperText="@languageContainer.Keys[("Required")]" Placeholder="@Placeholders.NationalityDropDown" MaxItems="null" HelperTextOnFocus="true">
+                                    Placeholder="@languageContainer.Keys[Placeholders.GenderDropDown]" AdornmentIcon="@Icons.Material.Filled.Group" AdornmentColor="Color.Info" AnchorOrigin="Origin.BottomCenter" T="string" HelperTextOnFocus="true">
+                             <MudSelectItem Value="@("Male")">
+                                 @languageContainer.Keys[("Male")]
+                            </MudSelectItem>
+                            <MudSelectItem Value="@("Female")">
+                                @languageContainer.Keys[("Female")]
+                            </MudSelectItem>
+                        </MudSelect>
+                    </div>
+                    <div class="p-3 w-100">
+                        <MudAutocomplete T="LookupDto" SearchFunc="@GetNationalities" Adornment="Adornment.Start" AnchorOrigin="Origin.BottomCenter" Label="@languageContainer.Keys[("Nationality")]"
+                                         Variant="Variant.Outlined" ShowProgressIndicator="true" ResetValueOnEmptyText="true" CoerceText="true" AdornmentIcon="@Icons.Material.Filled.Flag"
+                                         ProgressIndicatorColor="Color.Info" Clearable @bind-Value="providerForm.Nationality" For="@(() => providerForm.Nationality)" AdornmentColor="Color.Info" MaxItems="null" HelperTextOnFocus="true"
+                                          ToStringFunc="@(e=> e == null ? null : $"{e.Name}")" HelperText="@languageContainer.Keys[("Required")]" Placeholder="@languageContainer.Keys[(Placeholders.NationalityDropDown)]">
                              <NoItemsTemplate>
                                  <MudText Align="Align.Center" Class="px-4 py-4">
-                                     No items found
-                                 </MudText>
-                             </NoItemsTemplate>
-                         </MudAutocomplete>
-                     </div>
+                                     @languageContainer.Keys[("No items found")]
+                                </MudText>
+                            </NoItemsTemplate>
+                        </MudAutocomplete>
+                    </div>
                      <div class="p-3 w-100">
                          <MudAutocomplete T="LookupDto" SearchFunc="@GetSupervisors" Adornment="Adornment.Start" AnchorOrigin="Origin.BottomCenter"
                                           Variant="Variant.Outlined" ShowProgressIndicator="true" ResetValueOnEmptyText="true" CoerceText="true" AdornmentIcon="@Icons.Material.Filled.Diversity3"
                                           ProgressIndicatorColor="Color.Info" Clearable @bind-Value="providerForm.Supervisor" For="@(() => providerForm.Supervisor)" AdornmentColor="Color.Info" Label="@languageContainer.Keys[("Supervisor")]"
-                                          ToStringFunc="@(e=> e == null ? null : $"{e.FirstName} {e.LastName}")" HelperText="@languageContainer.Keys[("Required")]" Placeholder="@Placeholders.ManagerDropDown" MaxItems="null" HelperTextOnFocus="true">
+                                          ToStringFunc="@(e=> e == null ? null : $"{e.FirstName} {e.LastName}")" HelperText="@languageContainer.Keys[("Required")]" Placeholder="@languageContainer.Keys[Placeholders.SupervisorDropDown]" MaxItems="null" HelperTextOnFocus="true">
                              <NoItemsTemplate>
                                  <MudText Align="Align.Center" Class="px-4 py-4">
-                                     No items found
-                                 </MudText>
+                                     @languageContainer.Keys[("No items found")]
+                                </MudText>
                              </NoItemsTemplate>
                          </MudAutocomplete>
                      </div>
@@ -87,17 +91,17 @@ else
                 {
                     <div class="flex-wrap d-flex flex-md-nowrap">
                         <div class="p-3 w-100">
-                            <MudNumericField HideSpinButtons="true" HelperText="@languageContainer.Keys[("Required")]" Variant="Variant.Outlined" AdornmentColor="Color.Info" Adornment="Adornment.Start" HelperTextOnFocus="true" Required="true"
-                                             @bind-Value="providerForm.PhoneNumber" For="@(() => providerForm.PhoneNumber)" AdornmentIcon="@Icons.Material.Filled.Phone" Placeholder="@Placeholders.PhoneNumber" RequiredError="Phone Number is Required" />
+                            <MudNumericField HideSpinButtons="true" HelperText="@languageContainer.Keys[("Required")]" Variant="Variant.Outlined" AdornmentColor="Color.Info" Adornment="Adornment.Start" HelperTextOnFocus="true" Required="true" Label="@languageContainer.Keys[("Phone Number")]"
+                                             @bind-Value="providerForm.PhoneNumber" For="@(() => providerForm.PhoneNumber)" AdornmentIcon="@Icons.Material.Filled.Phone" Placeholder="@languageContainer.Keys[Placeholders.PhoneNumber]" RequiredError="@languageContainer.Keys[("Phone Number is Required")]" />
                         </div>
                         <div class="p-3 w-100">
-                            <MudTextField HelperText="@languageContainer.Keys[("Required")]" Variant="Variant.Outlined" InputType="InputType.Email" AdornmentColor="Color.Info" Adornment="Adornment.Start" HelperTextOnFocus="true"
-                                          @bind-Value="providerForm.Email" For="@(() => providerForm.Email)" AdornmentIcon="@Icons.Material.Filled.Email" Placeholder="@Placeholders.Email" Required="true" RequiredError="Email is Required" />
+                            <MudTextField HelperText="@languageContainer.Keys[("Required")]" Variant="Variant.Outlined" InputType="InputType.Email" AdornmentColor="Color.Info" Adornment="Adornment.Start" HelperTextOnFocus="true" Label="@languageContainer.Keys[("Email")]"
+                                          @bind-Value="providerForm.Email" For="@(() => providerForm.Email)" AdornmentIcon="@Icons.Material.Filled.Email" Placeholder="@languageContainer.Keys[Placeholders.Email]" Required="true" RequiredError="@languageContainer.Keys[("Email is Required")]" />
                         </div>
                         <div class="p-3 w-100">
-                            <MudTextField HelperText="@languageContainer.Keys[("Required")]" Variant="Variant.Outlined" InputType="PasswordInput" AdornmentColor="Color.Info"
+                            <MudTextField HelperText="@languageContainer.Keys[("Required")]" Variant="Variant.Outlined" InputType="PasswordInput" AdornmentColor="Color.Info" Label="@languageContainer.Keys[("Password")]"
                                           @bind-Value="providerForm.Password" For="@(() => providerForm.Password)" Placeholder="**************" HelperTextOnFocus="true" RequiredError="Password is Required"
-                                          Adornment="Adornment.Start" AdornmentIcon="@PasswordInputIcon" OnAdornmentClick="ChangePasswordStatus" AdornmentAriaLabel="@Placeholders.Password" Required="true" />
+                                          Adornment="Adornment.Start" AdornmentIcon="@PasswordInputIcon" OnAdornmentClick="ChangePasswordStatus" AdornmentAriaLabel="@languageContainer.Keys[Placeholders.Password]" Required="true" />
                         </div>
                     </div>
                 }
