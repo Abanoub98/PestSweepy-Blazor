@@ -2,9 +2,11 @@
 @inherits BasePage
 @attribute [Authorize]
 
-<PageTitle>@languageContainer.Keys["Home"]</PageTitle>
+<PageTitle>
+    @languageContainer.Keys["Home"]
+</PageTitle>
 
-    @if (isLoading)
+@if (isLoading)
 {
     <FormLoadingSpinner IsBigForm="true" />
 }
@@ -17,54 +19,72 @@ else
                     <MudCard Class="bg-transparent" Elevation="0">
                         <MudCardHeader>
                             <CardHeaderContent>
-                                <MudText Typo="Typo.h5">@languageContainer.Keys["Current User"]</MudText>
-                                </CardHeaderContent>
-                            </MudCardHeader>
-                            <MudCardContent>
-                                <div class="row">
-                                    <div class="col-md-6 col-12">
-                                        <div class="d-flex flex-wrap">
-                                            <div class="p-3 w-100">
-                                                <MudText Class="fw-bold" Typo="Typo.body1">@languageContainer.Keys["Email"]</MudText>
-                                                <MudText>@claims.FirstOrDefault(x => x.Type == ClaimTypes.Email)?.Value</MudText>
-                                            </div>
-                                            <div class="p-3 w-100">
-                                                <MudText Class="fw-bold" Typo="Typo.body1">@languageContainer.Keys["Login Date"]</MudText>
-                                                <MudText>@(claims.FirstOrDefault(x => x.Type == "LoginDate")?.Value)</MudText>
-                                            </div>
-                                            <div class="p-3 w-50">
-                                                <MudText Class="fw-bold" Typo="Typo.body1">@languageContainer.Keys["Role"]</MudText>
-                                                <MudText>@claims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value</MudText>
-                                            </div>
-                                            <div class="p-3 w-50">
-                                                <MudText Class="fw-bold" Typo="Typo.body1">@languageContainer.Keys["IP Address"]</MudText>
-                                                <MudText>@(claims.FirstOrDefault(x => x.Type == "IpAddress")?.Value)</MudText>
-                                            </div>
+                                <MudText Typo="Typo.h5">
+                                    @languageContainer.Keys["Current User"]
+                                </MudText>
+                            </CardHeaderContent>
+                        </MudCardHeader>
+                        <MudCardContent>
+                            <div class="row">
+                                <div class="col-md-6 col-12">
+                                    <div class="d-flex flex-wrap">
+                                        <div class="p-3 w-100">
+                                            <MudText Class="fw-bold" Typo="Typo.body1">
+                                                @languageContainer.Keys["Email"]
+                                            </MudText>
+                                            <MudText>
+                                                @claims.FirstOrDefault(x => x.Type == ClaimTypes.Email)?.Value
+                                            </MudText>
+                                        </div>
+                                        <div class="p-3 w-100">
+                                            <MudText Class="fw-bold" Typo="Typo.body1">
+                                                @languageContainer.Keys["Login Date"]
+                                            </MudText>
+                                            <MudText>
+                                                @(claims.FirstOrDefault(x => x.Type == "LoginDate")?.Value)
+                                            </MudText>
+                                        </div>
+                                        <div class="p-3 w-50">
+                                            <MudText Class="fw-bold" Typo="Typo.body1">
+                                                @languageContainer.Keys["Role"]
+                                            </MudText>
+                                            <MudText>
+                                                @claims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value
+                                            </MudText>
+                                        </div>
+                                        <div class="p-3 w-50">
+                                            <MudText Class="fw-bold" Typo="Typo.body1">
+                                                @languageContainer.Keys["IP Address"]
+                                            </MudText>
+                                            <MudText>
+                                                @(claims.FirstOrDefault(x => x.Type == "IpAddress")?.Value)
+                                            </MudText>
                                         </div>
                                     </div>
-                                    <div class="col-md-6 col-12 mt-5 mt-md-5 text-center">
-                                        <MudImage Src="/images/home-office.png" Fluid="true" Class="rounded-lg" />
-                                    </div>
                                 </div>
-                            </MudCardContent>
-                        </MudCard>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-5 col-12 mb-md-0 mb-3">
-                <div class="card h-100 shadow-sm">
-                    <div class="card-body">
-                        <MudCard Class="bg-transparent" Elevation="0">
-                            <MudCardContent>
-                                <div class="d-flex justify-content-center align-items-center">
-                                    <MudImage Src="/images/Logo.png" Width="230" Class="rounded-lg ma-4" />
+                                <div class="col-md-6 col-12 mt-5 mt-md-5 text-center">
+                                    <MudImage Src="/images/home-office.png" Fluid="true" Class="rounded-lg" />
                                 </div>
-                            </MudCardContent>
-                        </MudCard>
-                    </div>
+                            </div>
+                        </MudCardContent>
+                    </MudCard>
                 </div>
             </div>
         </div>
+        <div class="col-md-5 col-12 mb-md-0 mb-3">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body">
+                    <MudCard Class="bg-transparent" Elevation="0">
+                        <MudCardContent>
+                            <div class="d-flex justify-content-center align-items-center">
+                                <MudImage Src="/images/Logo.png" Width="230" Class="rounded-lg ma-4" />
+                            </div>
+                        </MudCardContent>
+                    </MudCard>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="row mb-3">
         <div class="col-6 col-md-3 mb-3 mb-md-0">
             <div class="card card-flush shadow-sm">

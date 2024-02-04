@@ -4,12 +4,14 @@
 
 <BrowserViewportObserver TableHeightChanged="TableHeightChanged" />
 
-<PageTitle>@languageContainer.Keys["Payments"]</PageTitle>
+<PageTitle>
+    @languageContainer.Keys["Payments"]
+</PageTitle>
 <MudBreadcrumbs Items="breadcrumbItems"></MudBreadcrumbs>
 
 <MudCard Elevation=" 25">
     <MudCardContent>
-            <MudDataGrid T="PaymentBaseDto" Dense="true" Elevation="0" FixedHeader="true" Height="@($"{tableHight}px")"
+        <MudDataGrid T="PaymentBaseDto" Dense="true" Elevation="0" FixedHeader="true" Height="@($"{tableHight}px")"
                      Loading="@(isLoading)" LoadingProgressColor="Color.Info" Filterable="true"
                      Items="payments" Hover="true" SortMode="SortMode.Single" QuickFilter="@FilterFunc">
 
@@ -20,13 +22,16 @@
                             <MudAvatar Rounded="true" Color="Color.Info">
                                 <MudIcon Icon="@Icons.Material.Filled.Payment" />
                             </MudAvatar>
-                            <MudText Class="mx-3" Typo="Typo.h5">@languageContainer.Keys["Payments"]</MudText>
+                            <MudText Class="mx-3" Typo="Typo.h5">
+                                @languageContainer.Keys["Payments"]
+                            </MudText>
+                            <MudIconButton OnClick="OnInitializedAsync" Icon="@Icons.Material.Filled.Refresh" Color="Color.Info"></MudIconButton>
                         </div>
                     </div>
                     <div class="w-md-50 w-100">
                         <MudTextField @bind-Value="searchString" Adornment="Adornment.Start" Class="mt-0 mb-5" Immediate="true"
-                                        Placeholder=@($"{languageContainer.Keys["Search For"]} User Id, Type, Table Name, Date")
-                                        AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" />
+                                      Placeholder=@($"{languageContainer.Keys["Search For"]} User Id, Type, Table Name, Date")
+                                      AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" />
                     </div>
                 </div>
             </ToolBarContent>
@@ -46,7 +51,7 @@
                     </HeaderTemplate>
                     <CellTemplate>
                         <MudChip Variant="Variant.Text" Size="Size.Small"
-                                Color="@(payment.Item?.Status == "paid" ? Color.Success :
+                                 Color="@(payment.Item?.Status == "paid" ? Color.Success :
                                 payment.Item?.Status == "initiated" ? Color.Info :
                                 payment.Item?.Status == "refunded" ?  Color.Warning : Color.Error)">
 

@@ -10,11 +10,11 @@ public partial class Orders
     {
         StartProcessing();
 
-        breadcrumbItems.AddRange(new List<BreadcrumbItem>
+        breadcrumbItems = new List<BreadcrumbItem>
         {
             new(languageContainer.Keys["Home"], href: "/", icon: Icons.Material.Filled.Home),
             new(languageContainer.Keys["Orders"], href: null, disabled: true, icon: EntityIcons.OrderIcon),
-        });
+        };
 
         orders = await GetAllAsync<OrderDto>("Orders?OrderBy=id&Asc=false");
 

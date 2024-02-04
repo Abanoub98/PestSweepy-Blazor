@@ -8,11 +8,11 @@ public partial class LoginLogs
     {
         StartProcessing();
 
-        breadcrumbItems.AddRange(new List<BreadcrumbItem>
+        breadcrumbItems = new List<BreadcrumbItem>
         {
             new(languageContainer.Keys["Home"], href: "/", icon: Icons.Material.Filled.Home),
             new(languageContainer.Keys["Login Logs"], href: null, disabled: true, icon: Icons.Material.Outlined.Security),
-        });
+        };
 
         loginLogs = await GetAllAsync<LoginLogDto>("SecuirtyLogs/LoginLogs?OrderBy=id&Asc=false");
 

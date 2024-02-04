@@ -28,7 +28,11 @@
                             <MudText Class="mx-3" Typo="Typo.h5">
                                 @languageContainer.Keys["Services"]
                             </MudText>
-                            <MudIconButton OnClick="() => OpenForm(formUri)" Icon="@Icons.Material.Filled.Add" Color="Color.Success"></MudIconButton>
+                            @if (CategoryId is null)
+                            {
+                                <MudIconButton OnClick="() => OpenForm(formUri)" Icon="@Icons.Material.Filled.Add" Color="Color.Success"></MudIconButton>
+                                <MudIconButton OnClick="OnInitializedAsync" Icon="@Icons.Material.Filled.Refresh" Color="Color.Info"></MudIconButton>
+                            }
                             <MudIconButton OnClick="DeleteAll" Disabled="@(selectedIds.Count() < 2 ? true : false)" Icon="@Icons.Material.Filled.DeleteForever" Color="Color.Error"></MudIconButton>
                         </div>
                     </div>

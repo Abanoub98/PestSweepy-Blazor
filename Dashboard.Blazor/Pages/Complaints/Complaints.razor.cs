@@ -10,11 +10,11 @@ public partial class Complaints
     {
         StartProcessing();
 
-        breadcrumbItems.AddRange(new List<BreadcrumbItem>
+        breadcrumbItems = new List<BreadcrumbItem>
         {
             new(languageContainer.Keys["Home"], href: "/", icon: Icons.Material.Filled.Home),
             new(languageContainer.Keys["Complaints"], href: null, disabled: true, icon: EntityIcons.ComplaintIcon),
-        });
+        };
 
         complaints = await GetAllAsync<ComplaintDto>("Complaints?OrderBy=id&Asc=false");
 

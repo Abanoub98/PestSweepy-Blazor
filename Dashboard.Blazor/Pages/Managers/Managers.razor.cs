@@ -11,11 +11,11 @@ public partial class Managers
     {
         StartProcessing();
 
-        breadcrumbItems.AddRange(new List<BreadcrumbItem>
+        breadcrumbItems = new List<BreadcrumbItem>
         {
             new(languageContainer.Keys["Home"], href: "/", icon: Icons.Material.Filled.Home),
             new(languageContainer.Keys["Managers"], href: null, disabled: true, icon: Icons.Material.Outlined.Diversity3),
-        });
+        };
 
         managers = await GetAllAsync<ManagerDto>("Managers?OrderBy=id&Asc=false");
 

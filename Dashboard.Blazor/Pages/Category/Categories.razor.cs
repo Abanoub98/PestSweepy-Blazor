@@ -11,11 +11,11 @@ public partial class Categories
     {
         StartProcessing();
 
-        breadcrumbItems.AddRange(new List<BreadcrumbItem>
+        breadcrumbItems = new List<BreadcrumbItem>
         {
             new(languageContainer.Keys["Home"], href: "/", icon: Icons.Material.Filled.Home),
             new(languageContainer.Keys["Categories"], href: null, disabled: true, icon: EntityIcons.CategoriesIcon),
-        });
+        };
 
         categories = await GetAllAsync<CategoryDto>("Categories?OrderBy=id&Asc=false");
 

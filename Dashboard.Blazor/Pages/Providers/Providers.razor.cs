@@ -13,11 +13,11 @@ public partial class Providers
     {
         StartProcessing();
 
-        breadcrumbItems.AddRange(new List<BreadcrumbItem>
+        breadcrumbItems = new List<BreadcrumbItem>
         {
             new(languageContainer.Keys["Home"], href: "/", icon: Icons.Material.Filled.Home),
             new(languageContainer.Keys["Providers"], href: null, disabled: true, icon: Icons.Material.Outlined.Engineering),
-        });
+        };
 
         providers = SupervisorId is not null ?
             await GetAllAsync<ProviderDto>($"Providers?OrderBy=id&Asc=false&FilterQuery={Uri.EscapeDataString($"SupervisorId={SupervisorId}")}") :

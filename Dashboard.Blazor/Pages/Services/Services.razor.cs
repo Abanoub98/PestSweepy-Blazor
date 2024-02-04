@@ -13,11 +13,11 @@ public partial class Services
     {
         StartProcessing();
 
-        breadcrumbItems.AddRange(new List<BreadcrumbItem>
+        breadcrumbItems = new List<BreadcrumbItem>
         {
             new(languageContainer.Keys["Home"], href: "/", icon: Icons.Material.Filled.Home),
             new(languageContainer.Keys["Services"], href: null, disabled: true, icon: Icons.Material.Outlined.Handyman),
-        });
+        };
 
         services = CategoryId is not null ?
             await GetAllAsync<ServiceDto>($"Services?OrderBy=id&Asc=false&FilterQuery={Uri.EscapeDataString($"CategoryId={CategoryId}")}") :

@@ -10,11 +10,11 @@ public partial class Reviews
     {
         StartProcessing();
 
-        breadcrumbItems.AddRange(new List<BreadcrumbItem>
+        breadcrumbItems = new List<BreadcrumbItem>
         {
             new(languageContainer.Keys["Home"], href: "/", icon: Icons.Material.Filled.Home),
             new(languageContainer.Keys["Reviews"], href: null, disabled: true, icon: EntityIcons.ReviewIcon),
-        });
+        };
 
         reviews = await GetAllAsync<ReviewDto>("Reviews?OrderBy=id&Asc=false");
 

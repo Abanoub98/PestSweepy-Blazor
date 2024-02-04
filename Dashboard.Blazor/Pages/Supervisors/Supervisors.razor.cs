@@ -13,11 +13,11 @@ public partial class Supervisors
     {
         StartProcessing();
 
-        breadcrumbItems.AddRange(new List<BreadcrumbItem>
+        breadcrumbItems = new List<BreadcrumbItem>
         {
             new(languageContainer.Keys["Home"], href: "/", icon: Icons.Material.Filled.Home),
             new(languageContainer.Keys["Supervisors"], href: null, disabled: true, icon: Icons.Material.Outlined.SupervisorAccount),
-        });
+        };
 
         supervisors = ManagerId is not null ?
             await GetAllAsync<SupervisorDto>($"Supervisors?OrderBy=id&Asc=false&FilterQuery={Uri.EscapeDataString($"ManagerId={ManagerId}")}") :

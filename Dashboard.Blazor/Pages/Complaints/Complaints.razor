@@ -25,6 +25,7 @@
                                 @languageContainer.Keys["Complaints"]
                             </MudText>
                             <MudIconButton OnClick="DeleteAll" Disabled="@(selectedIds.Count() < 2 ? true : false)" Icon="@Icons.Material.Filled.DeleteForever" Color="Color.Error"></MudIconButton>
+                            <MudIconButton OnClick="OnInitializedAsync" Icon="@Icons.Material.Filled.Refresh" Color="Color.Info"></MudIconButton>
                         </div>
                     </div>
                     <div class="w-md-50 w-100">

@@ -11,11 +11,11 @@ public partial class Clients
     {
         StartProcessing();
 
-        breadcrumbItems.AddRange(new List<BreadcrumbItem>
+        breadcrumbItems = new List<BreadcrumbItem>
         {
             new(languageContainer.Keys["Home"], href: "/", icon: Icons.Material.Filled.Home),
             new(languageContainer.Keys["Individual Clients"], href: null, disabled: true, icon: Icons.Material.Outlined.Diversity1),
-        });
+        };
 
         clients = await GetAllAsync<ClientDto>("Clients?OrderBy=id&Asc=false");
 

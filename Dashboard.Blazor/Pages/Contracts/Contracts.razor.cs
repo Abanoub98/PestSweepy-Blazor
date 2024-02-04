@@ -11,11 +11,11 @@ public partial class Contracts
     {
         StartProcessing();
 
-        breadcrumbItems.AddRange(new List<BreadcrumbItem>
+        breadcrumbItems = new List<BreadcrumbItem>
         {
             new(languageContainer.Keys["Home"], href: "/", icon: Icons.Material.Filled.Home),
             new(languageContainer.Keys["Contracts"], href: null, disabled: true, icon: EntityIcons.ContractsIcon),
-        });
+        };
 
         contracts = await GetAllAsync<ContractDto>("Contracts?OrderBy=id&Asc=false");
 

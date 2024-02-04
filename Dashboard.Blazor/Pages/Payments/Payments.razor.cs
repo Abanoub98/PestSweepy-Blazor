@@ -3,7 +3,6 @@
 public partial class Payments
 {
     private List<PaymentBaseDto> payments = new();
-    private string searchString = string.Empty;
 
     protected override async Task OnInitializedAsync()
     {

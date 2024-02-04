@@ -12,11 +12,11 @@ public partial class Quotations
     {
         StartProcessing();
 
-        breadcrumbItems.AddRange(new List<BreadcrumbItem>
+        breadcrumbItems = new List<BreadcrumbItem>
         {
             new(languageContainer.Keys["Home"], href: "/", icon: Icons.Material.Filled.Home),
             new(languageContainer.Keys["Price Quotations"], href: null, disabled: true, icon: EntityIcons.QuotationsIcon),
-        });
+        };
 
         quotations = await GetAllAsync<QuotationDto>("Quotations?OrderBy=id&Asc=false");
 
