@@ -349,6 +349,7 @@ public class BasePage : ComponentBase
     {
         if (statusCode == "401")
         {
+            Console.WriteLine("token");
             await LocalStorage.RemoveItemAsync("token");
             await AuthenticationStateProvider.GetAuthenticationStateAsync();
         }

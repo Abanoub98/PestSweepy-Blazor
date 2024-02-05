@@ -183,7 +183,7 @@ public class ApiService : IApiService
         return new ApiResponse<T>
         {
             IsSuccess = false,
-            RequestStatusCode = responseMessage.StatusCode.ToString(),
+            RequestStatusCode = ((int)responseMessage.StatusCode).ToString(),
             Error = $"{error.Message}, {string.Join(", ", error.Errors)}"
         };
     }
