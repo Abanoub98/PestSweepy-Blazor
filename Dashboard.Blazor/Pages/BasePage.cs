@@ -41,6 +41,43 @@ public class BasePage : ComponentBase
         return response.ObjectsList!;
     }
 
+    protected async Task<(bool isSuccess, ResponseDto? obj)> UploadFile(string entityName, int id, IBrowserFile file)
+    {
+        if (file.Size > maxFileSize)
+        {
+            ShowError("File size must be less than 2Mb");
+            return (false, new());
+        }
+
+        using MultipartFormDataContent content = HandelFile(file);
+
+        var response = await ApiService.PostAsync<ResponseDto>($"Files/UploadFile?id={id}&entityName={entityName}&isPdf=true", content);
+
+        if (!response.IsSuccess)
+        {
+            ShowError(response.Error ?? response.Message ?? string.Empty);
+            return (false, response.Object);
+        }
+
+        ShowSuccess("Uploaded Successfully");
+        return (true, response.Object!);
+    }
+
+    private MultipartFormDataContent HandelFile(IBrowserFile file)
+    {
+        var content = new MultipartFormDataContent();
+        var fileContent = new StreamContent(file.OpenReadStream(maxFileSize));
+        fileContent.Headers.ContentType = new MediaTypeHeaderValue(file.ContentType);
+
+        content.Add
+        (
+        content: fileContent,
+        name: "\"files\"",
+        fileName: file.Name
+        );
+        return content;
+    }
+
     protected async Task<List<LookupDto>> GetAllLookupsAsync(string endPoint)
     {
         var response = await ApiService.GetAllAsync<LookupDto>(endPoint);

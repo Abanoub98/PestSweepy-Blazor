@@ -16,5 +16,5 @@ public class ReviewDto
 
     public ClientDto Client { get; set; } = new();
 
-    public OrderDto Order { get; set; } = new();
+    public int OrderId { get; set; }
 }

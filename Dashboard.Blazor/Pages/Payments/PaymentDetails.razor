@@ -35,14 +35,14 @@ else
             <CardHeaderActions>
                 <div style="margin:10px">
                     <MudButton DisableElevation="true" Href="/Payments" Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.ArrowBack" Color="Color.Info">
-                        Back to Payments
+                        @($"{languageContainer.Keys["Back to"]} {languageContainer.Keys["Payments"]}")
                     </MudButton>
                 </div>
             </CardHeaderActions>
         </MudCardHeader>
     </MudCard>
     <MudTabs SliderColor="Color.Info" Class="mt-5" Elevation="25" Rounded="true" ApplyEffectsToContainer=true Border=true PanelClass="p-6">
-        <MudTabPanel Icon="@Icons.Material.Filled.Info" Text="General">
+        <MudTabPanel Icon="@Icons.Material.Filled.Info" Text="@languageContainer.Keys["General"]">
             <div class="d-flex flex-column gap-5 mt-7">
                 <div class="row">
                     <!--begin::Company name-->
@@ -412,7 +412,7 @@ else
                 </div>
             </div>
         </MudTabPanel>
-        <MudTabPanel Icon="@Icons.Material.Filled.Info" Text="Source Details">
+        <MudTabPanel Icon="@Icons.Material.Filled.Info" Text="@languageContainer.Keys["Source Details"]">
             <div class="d-flex flex-column gap-5 mt-7">
                 <div class="row">
                     <!--begin::Company name-->

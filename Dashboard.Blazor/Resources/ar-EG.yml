@@ -1,4 +1,6 @@
-
+Upload PDF File: "تحميل ملف PDF"
+Upload: "تحميل"
+No Selected PDF File: "لم يتم تحديد ملف PDF"
 Table Name: "اسم الجدول"
 Date Time: "تاريخ ووقت"
 Type: "النوع"
@@ -13,7 +15,8 @@ Last Name: "الاسم الأخير"
 Country: "البلد"
 Primary Key Value: "قيمة المفتاح الأساسي"
 Phone Number: "رقم الهاتف"
-
+Contract Report: "تقرير العقد"
+Quotation Report: "تقرير عرض السعر"
 
 #TopNavigation
 Alerts: "التنبيهات"
@@ -333,3 +336,55 @@ Contract Intro: "مقدمة العقد"
 Contract Notes: "ملاحظات العقد"
 Earnings: "الأرباح"
 Earnings in: "أرباح بعملة"
+Fee: "الرسوم"
+
+No Data: "لا توجد بيانات"
+
+Voided At: "تم الإلغاء في"
+
+Amount Format: "تنسيق المبلغ"
+
+Updated At: "تم التحديث في"
+
+Payment Id: "معرف الدفع"
+
+Fee Format: "تنسيق الرسوم"
+
+Meta Data: "البيانات الفوقية"
+
+Captured At: "تم التقاطه في"
+
+Captured Format: "تنسيق التقاط"
+
+Captured: "تم التقاطه"
+
+Refunded At: "تم استرداده في"
+
+Refunded Format: "تنسيق الاسترداد"
+
+Refunded: "تم استرداده"
+
+Invoice Id: "معرف الفاتورة"
+
+IP: "عنوان بروتوكول الإنترنت"
+
+Call back URL: "رابط الاستدعاء"
+
+Card Holder: "حامل البطاقة"
+
+Card Type: "نوع البطاقة"
+
+Card Number: "رقم البطاقة"
+
+Gateway Id: "معرف البوابة"
+
+Message: "الرسالة"
+
+Token: "الرمز"
+
+Source Details: "تفاصيل المصدر"
+
+General: "عام"
+Reference Number: "الرقم المرجعي"
+
+Transaction URL: "رابط العملية"

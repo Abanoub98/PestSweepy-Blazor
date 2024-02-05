@@ -44,14 +44,12 @@
                 <SelectColumn T="ReviewDto" ShowInFooter="false" />
 
                 <PropertyColumn Property="x => string.Join(' ', x.Client.FirstName, x.Client.LastName)" Title="@languageContainer.Keys["Client"]" />
-                <PropertyColumn Property="x => x.Order.OrderNumber" Title="@languageContainer.Keys["Order"]" />
                 <PropertyColumn Property="@(x => x.CreatedAtLocal.ToString("dd MMM,yyyy hh:mm tt"))" Title="@languageContainer.Keys["Date"]" />
 
                 <TemplateColumn Title="@languageContainer.Keys["Rate"]" Context="review" HeaderClass="text-center" CellClass="text-center" Sortable="false" Filterable="false">
                     <HeaderTemplate>
                         <MudText Class="w-100">
                             @languageContainer.Keys["Rate"]
-
                         </MudText>
                     </HeaderTemplate>
                     <CellTemplate>
@@ -71,6 +69,9 @@
                         <div>
                             <TableButtons IsDisable="isDisable" IsEditHide="true"
                                           DeleteClicked="() => Delete(review.Item!.Id)" DetailsClicked="() => OpenDetails(detailsUri,review.Item!.Id)" />
+                            <a href="/orders/details/@review.Item.OrderId" class="btn btn-sm btn-light-info">
+                                <i class="fa-solid fa-cart-arrow-down p-0"></i>
+                            </a>
                             <AuthorizeView  Roles="@Roles.AdminRole">
                                 <a @onclick="() => ToggleStatus(review.Item)" class="btn btn-sm btn-light-@(!review.Item!.ShowInApp? "success" : "danger")">
                                     <i class="fa-solid fa-eye@(!review.Item!.ShowInApp? string.Empty : "-slash") p-0"></i>

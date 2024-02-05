@@ -42,7 +42,7 @@
 
             <Columns>
                 <PropertyColumn Property="x => x.Title" Title="@languageContainer.Keys["Title"]" />
-                <PropertyColumn Property="x => x.ContractClient.FirstName" Title="@languageContainer.Keys["Contract Client"]" />
+                <PropertyColumn Property="x => string.Join(' ', x.ContractClient!.FirstName, x.ContractClient.LastName )" Title="@languageContainer.Keys["Contract Client"]" />
                 <PropertyColumn Property="x => x.CreatedAtLocal" Title="@languageContainer.Keys["Created Date"]" />
                 <PropertyColumn Property="x => x.EffectiveDateLocal" Title="@languageContainer.Keys["Effective Date"]" />
 
@@ -58,6 +58,9 @@
                                           IsDeleteHide="true" DetailsClicked="() => OpenDetails(detailsUri,contract.Item!.Id)" />
                             <a @onclick="() => ShowContract(contract.Item!.Id)" title="@languageContainer.Keys["Show Report"]" class="btn btn-sm btn-light-success me-1">
                                 <i class="fa-solid fa-file-pdf p-0"></i>
+                            </a>
+                            <a @onclick="() => ShowPdfUploadForm(contract.Item!.Id)" title="@languageContainer.Keys["Upload Report"]" class="btn btn-sm btn-light-info me-1">
+                                <i class="fa-solid fa-envelope-open-text p-0"></i>
                             </a>
                         </div>
                     </CellTemplate>

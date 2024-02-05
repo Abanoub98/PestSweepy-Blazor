@@ -39,8 +39,29 @@ public partial class Quotations
             { x => x.Id, id }
         };
 
-        await DialogService.ShowAsync<QuotationReport>("Quotation Report", Parameters, dialogOptions);
+        await DialogService.ShowAsync<QuotationReport>(languageContainer.Keys["Quotation Report"], Parameters, dialogOptions);
     }
+
+    private async Task ShowPdfUploadForm(int id)
+    {
+        DialogOptions dialogOptions = new()
+        {
+            CloseOnEscapeKey = true,
+            MaxWidth = MaxWidth.Small,
+            FullWidth = true,
+            Position = DialogPosition.TopCenter,
+            CloseButton = true
+        };
+
+        DialogParameters<FileUpload> Parameters = new()
+        {
+            { x => x.Id, id },
+            {x => x.EntityName, "Quotations" }
+        };
+
+        await DialogService.ShowAsync<FileUpload>($"{languageContainer.Keys["Upload"]} {languageContainer.Keys["Quotation Report"]}", Parameters, dialogOptions);
+    }
+
     private bool FilterFunc(QuotationDto element)
     {
         if (string.IsNullOrWhiteSpace(searchString))

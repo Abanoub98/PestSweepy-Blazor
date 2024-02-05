@@ -1,0 +1,94 @@
+﻿@inherits BasePage
+
+<MudDialog DisableSidePadding="true">
+    <DialogContent>
+        <div class="d-flex flex-column p-3">
+            <!--begin::Action-->
+            <div class="px-3 d-flex justify-content-between align-items-center">
+                <div>
+                    <MudFileUpload T="IBrowserFile" @bind-Files="UploadedPdf" Context="file" Accept=".pdf">
+                        <ButtonTemplate>
+                            <MudButton HtmlTag="label"
+                                       Variant="Variant.Filled"
+                                       Color="Color.Info" DisableElevation=true
+                                       StartIcon="@Icons.Material.Filled.GridOn"
+                                       Size="Size.Large"
+                                       for="@file">
+                                @languageContainer.Keys["Upload PDF File"]
+                            </MudButton>
+                        </ButtonTemplate>
+                        <SelectedTemplate>
+                            @if (file != null)
+                            {
+                                <div class="d-flex align-items-center mt-2">
+                                    <MudText Style=" white-space: nowrap;overflow: hidden;text-overflow: ellipsis;" Class="me-2 w-100px">
+                                        @($"{file.Name}")
+                                    </MudText>
+                                    <MudIconButton OnClick="Clear" Icon="@Icons.Material.Filled.Cancel" Color="Color.Error"></MudIconButton>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="d-flex align-items-center mt-2">
+                                    <MudText Class="me-2 ">@languageContainer.Keys["No Selected PDF File"]</MudText>
+                                        <MudIconButton Disabled=true Icon="@Icons.Material.Filled.GridOn" Color="Color.Info"></MudIconButton>
+                                    </div>
+                            }
+                        </SelectedTemplate>
+                    </MudFileUpload>
+                </div>
+                <div>
+                    <button @onclick="() => UploadPdfFile()" class="btn btn-light-success @(UploadedPdf is null? "disabled" : string.Empty)">
+                        @if (isLoading)
+                        {
+                            <span class="indicator-label">
+                                @languageContainer.Keys["Please Wait"]... <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
+                            </span>
+                        }
+                        else
+                        {
+                            <span class="indicator-label">
+                                @languageContainer.Keys["Upload"]
+                            </span>
+                        }
+                    </button>
+                </div>
+            </div>
+            <!--end::Action-->
+        </div>
+        <div class="d-flex justify-content-between px-3">
+        </div>
+
+    </DialogContent>
+</MudDialog>
+
+@code {
+    private IBrowserFile? UploadedPdf;
+    [Parameter][EditorRequired] public int Id { set; get; }
+    [Parameter][EditorRequired] public string EntityName { set; get; } = null!;
+    [CascadingParameter] MudDialogInstance MudDialog { get; set; } = default!;
+
+    private void Clear()
+    {
+        UploadedPdf = null;
+    }
+
+    private void Ok() => MudDialog.Close(DialogResult.Ok(true));
+
+    private async Task UploadPdfFile()
+    {
+        if (UploadedPdf is null)
+            return;
+
+        StartProcessing();
+
+        var result = await UploadFile(EntityName, Id, UploadedPdf);
+
+        StopProcessing();
+
+        if (result.isSuccess)
+            Ok();
+        else
+            UploadedPdf = null;
+    }
+}

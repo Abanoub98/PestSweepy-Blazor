@@ -10,6 +10,7 @@ public class PaymentBaseDto
     public string? Description { get; set; }
     public string? Type { get; set; }
     public string? Company { get; set; }
+    public int OrderId { get; set; }
 }
 
 public class PaymentDto

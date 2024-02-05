@@ -42,7 +42,7 @@
 
             <Columns>
                 <PropertyColumn Property="x => x.SerialNumber" Title="@languageContainer.Keys["Serial Number"]" />
-                <PropertyColumn Property="x => (x.Client == null ? x.ClientName : x.Client.FirstName)" Title="@languageContainer.Keys["Client Name"]" />
+                <PropertyColumn Property="x => (x.Client == null ? x.ClientName : string.Join(' ', x.Client.FirstName, x.Client.LastName ) )" Title="@languageContainer.Keys["Client Name"]" />
                 <PropertyColumn Property="x => x.CreatedAtLocal" Title="@languageContainer.Keys["Date"]" />
                 <PropertyColumn Property="x => x.TotalPrice" Title="@languageContainer.Keys["Total Price"]" />
 
@@ -57,6 +57,10 @@
                             <TableButtons IsDisable="isDisable" IsEditHide="true" IsDeleteHide="true" DetailsClicked="() => OpenDetails(detailsUri,quotation.Item!.Id)" />
                             <a @onclick="() => ShowQuotation(quotation.Item!.Id)" title="@languageContainer.Keys["Show Report"]" class="btn btn-sm btn-light-success me-1">
                                 <i class="fa-solid fa-file-pdf p-0"></i>
+                            </a>
+
+                            <a @onclick="() => ShowPdfUploadForm(quotation.Item!.Id)" title="@languageContainer.Keys["Upload Report"]" class="btn btn-sm btn-light-info me-1">
+                                <i class="fa-solid fa-envelope-open-text p-0"></i>
                             </a>
                         </div>
                     </CellTemplate>

@@ -30,7 +30,7 @@
                     </div>
                     <div class="w-md-50 w-100">
                         <MudTextField @bind-Value="searchString" Adornment="Adornment.Start" Class="mt-0 mb-5" Immediate="true"
-                                      Placeholder=@($"{languageContainer.Keys["Search For"]} User Id, Type, Table Name, Date")
+                                      Placeholder=@($"{languageContainer.Keys["Search For"]} {languageContainer.Keys["Id"]}, {languageContainer.Keys["Created At"]}, {languageContainer.Keys["Status"]}, {languageContainer.Keys["Type"]}, {languageContainer.Keys["Amount"]},")
                                       AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" />
                     </div>
                 </div>
@@ -41,13 +41,14 @@
             </NoRecordsContent>
 
             <Columns>
-                <PropertyColumn Property="x => x.Id" Title="Id" />
+                <PropertyColumn Property="x => x.Id" Title="@languageContainer.Keys["Id"]" />
+                <PropertyColumn Property="x => x.CreatedAt" Title="@languageContainer.Keys["Created At"]" />
 
-                <PropertyColumn Property="x => x.CreatedAt" Title="Created At" />
-
-                <TemplateColumn Context="payment" Title="Status">
+                <TemplateColumn Context="payment" Title="@languageContainer.Keys["Status"]" Sortable="false" Filterable="false" CellClass="text-center" HeaderClass="text-center">
                     <HeaderTemplate>
-                        <MudText>Status</MudText>
+                        <MudText Class="w-100">
+                            @languageContainer.Keys["Status"]
+                        </MudText>
                     </HeaderTemplate>
                     <CellTemplate>
                         <MudChip Variant="Variant.Text" Size="Size.Small"
@@ -60,9 +61,11 @@
                     </CellTemplate>
                 </TemplateColumn>
 
-                <TemplateColumn Context="payment" Title="Type">
+                <TemplateColumn Context="payment" Title="@languageContainer.Keys["Type"]" Sortable="false" Filterable="false" CellClass="text-center" HeaderClass="text-center">
                     <HeaderTemplate>
-                        <MudText>Type</MudText>
+                        <MudText Class="w-100">
+                            @languageContainer.Keys["Type"]
+                        </MudText>
                     </HeaderTemplate>
                     <CellTemplate>
                         @if (payment.Item?.Company == "visa")
@@ -98,23 +101,29 @@
                     </CellTemplate>
                 </TemplateColumn>
 
-                <PropertyColumn Property="x => x.AmountFormat" Title="Amount" Sortable="false" Filterable="false" />
-                <PropertyColumn Property="x => x.Description" Title="Description" Sortable="false" Filterable="false" />
+                <PropertyColumn Property="x => x.AmountFormat" Title="@languageContainer.Keys["Amount"]" />
 
-                <TemplateColumn CellStyle="width:250px" Title="Actions" CellClass="text-center" Context="payment" HeaderClass="text-center" Sortable="false" Filterable="false">
+                <TemplateColumn Title="@languageContainer.Keys["Actions"]" CellClass="text-center" Context="payment" HeaderClass="text-center" Sortable="false" Filterable="false">
                     <HeaderTemplate>
-                        <MudText Class="w-100">Actions</MudText>
+                        <MudText Class="w-100">
+                            @languageContainer.Keys["Actions"]
+                        </MudText>
                     </HeaderTemplate>
                     <CellTemplate>
-                        <a href=@($"/Payments/Details/{payment.Item.Id}") title="Show Details" class="btn btn-sm btn-light-info me-1 @(isDisable? "disabled" : string.Empty)">
-                            <i class="fa-solid fa-circle-info"></i>
-                        </a>
-                        <a @onclick="() => RefundPayment(payment.Item.Amount, payment.Item.Id, payment.Item.Status!)" title="Refund" class="btn btn-sm btn-light-warning me-1 @(isDisable? "disabled" : string.Empty)">
-                            <i class="fa-solid fa-rotate-left"></i>
-                        </a>
-                        <a @onclick="() => VoidPayment(payment.Item.Id, payment.Item.Status!)" title="Delete" class="btn btn-sm btn-light-danger me-1 @(isDisable? "disabled" : string.Empty)">
-                            <i class="fa-solid fa-circle-xmark"></i>
-                        </a>
+                        <div>
+                            <a href=@($"/Payments/Details/{payment.Item.Id}") title="Show Details" class="btn btn-sm btn-light-info me-1 @(isDisable? "disabled" : string.Empty)">
+                                <i class="fa-solid fa-circle-info"></i>
+                            </a>
+                            <a @onclick="() => RefundPayment(payment.Item.Amount, payment.Item.Id, payment.Item.Status!)" title="Refund" class="btn btn-sm btn-light-warning me-1 @(isDisable? "disabled" : string.Empty)">
+                                <i class="fa-solid fa-rotate-left"></i>
+                            </a>
+                            <a @onclick="() => VoidPayment(payment.Item.Id, payment.Item.Status!)" title="Delete" class="btn btn-sm btn-light-danger me-1 @(isDisable? "disabled" : string.Empty)">
+                                <i class="fa-solid fa-circle-xmark"></i>
+                            </a>
+                            <a href="/orders/details/@payment.Item.OrderId" class="btn btn-sm btn-light-info">
+                                <i class="fa-solid fa-cart-arrow-down p-0"></i>
+                            </a>
+                        </div>
                     </CellTemplate>
                 </TemplateColumn>
             </Columns>
