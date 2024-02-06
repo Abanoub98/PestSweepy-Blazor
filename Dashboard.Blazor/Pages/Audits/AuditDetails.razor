@@ -14,6 +14,8 @@
                 <li class="list-group-item" style="background-color:transparent !important;">@languageContainer.Keys["Type"]: @Auditing.Type</li>
                 <li class="list-group-item" style="background-color:transparent !important;">@languageContainer.Keys["Table Name"]: @Auditing.TableName</li>
                 <li class="list-group-item" style="background-color:transparent !important;">@languageContainer.Keys["Date"]: @Auditing.DateTimeLocal</li>
+                <li class="list-group-item" style="background-color:transparent !important;">@languageContainer.Keys["Name"]: @Auditing.Name</li>
+                <li class="list-group-item" style="background-color:transparent !important;">@languageContainer.Keys["Role"]: @Auditing.Role</li>
                 <li class="@(Auditing.Type == "Create"? "d-none" : string.Empty) list-group-item" style="background-color:transparent !important;">
                     @languageContainer.Keys["Primary Key Value"]: @ExtractPrimaryKeyValue(Auditing.PrimaryKey)
                 </li>

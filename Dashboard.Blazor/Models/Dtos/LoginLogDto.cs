@@ -15,4 +15,6 @@ public class LoginLogDto
     public string Ip { get; set; } = null!;
 
     public string UserName { get; set; } = null!;
+
+    public string Name { get; set; } = null!;
 }

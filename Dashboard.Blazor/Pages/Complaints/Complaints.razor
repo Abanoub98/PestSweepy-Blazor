@@ -80,7 +80,7 @@
                                       DeleteClicked="() => Delete(complaint.Item!.Id)" DetailsClicked="() => OpenDetails(detailsUri,complaint.Item!.Id)" />
                         <AuthorizeView Roles="@Roles.AdminRole">
                             <a @onclick="() => ToggleStatus(complaint.Item)" class="btn btn-sm btn-light-@(complaint.Item!.IsResolved ? "danger" : "success")">
-                                <i class="fa-solid fa-@(complaint.Item!.IsResolved ? "ban" : "check")"></i>
+                                <i class="fa-solid fa-@(complaint.Item!.IsResolved ? "ban" : "check") p-0"></i>
                             </a>
                         </AuthorizeView>
 
