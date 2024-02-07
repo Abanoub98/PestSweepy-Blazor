@@ -31,7 +31,7 @@ public class CouponDto
     public List<CouponService> CouponServices { get; set; } = new();
 
     [Required]
-    public CurrencyDto? Currency { get; set; }
+    public CurrencyDto Currency { get; set; } = new();
     public IEnumerable<CurrencyDto>? Currencies { get; set; }
     public int CurrencyId { get; set; }
 

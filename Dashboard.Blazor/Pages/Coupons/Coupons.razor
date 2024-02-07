@@ -31,7 +31,7 @@
                     </div>
                     <div class="w-md-50 w-100">
                         <MudTextField @bind-Value="searchString" Adornment="Adornment.Start" Class="mt-0 mb-5" Immediate="true"
-                                      Placeholder=@($"{languageContainer.Keys["Search For"]} {languageContainer.Keys["Title"]}")
+                                      Placeholder=@($"{languageContainer.Keys["Search For"]} {languageContainer.Keys["Coupon Code"]}")
                                       AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" />
                     </div>
                 </div>
@@ -53,8 +53,8 @@
                 </TemplateColumn>
 
                 <PropertyColumn Property="x => x.CouponCode" Title="@languageContainer.Keys["Coupon Code"]" />
-                <PropertyColumn Property="x => x.NumberOfUses" Title="@languageContainer.Keys["Number Of Uses"]" />
-                <PropertyColumn Property="@(x => string.Join(" to ", x.StartDate.ToShortDateString(), x.EndDate.ToShortDateString()))" Title="@languageContainer.Keys["Date Range"]" />
+                <PropertyColumn Property="x => x.NumberOfUses" Title="@languageContainer.Keys["Number of Uses"]" />
+                <PropertyColumn Property="@(x => string.Join($" {languageContainer.Keys["To"]} ", x.StartDate.ToShortDateString(), x.EndDate.ToShortDateString()))" Title="@languageContainer.Keys["Date Range"]" />
 
                 <TemplateColumn Context="coupon" Title="@languageContainer.Keys["Status"]" CellClass="text-center" HeaderClass="text-center" Sortable="false" Filterable="false">
                     <HeaderTemplate>

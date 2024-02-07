@@ -386,5 +386,26 @@ Source Details: "تفاصيل المصدر"
 
 General: "عام"
 Reference Number: "الرقم المرجعي"
+Coupon Code: "كود الكوبون"
 
+Coupon: "الكوبون"
+
+Coupons: "الكوبونات"
+
+Number of Uses: "عدد الاستخدامات"
+
+Discount Amount: "مبلغ الخصم"
+
+Max Uses: "الحد الأقصى للاستخدامات"
+
+Start & End Date: "تاريخ البدء والانتهاء"
+Date Range: "نطاق التاريخ"
+
+To: "إلى"
+Coupon Status: "حالة الكوبون"
+
+Active: "نشط"
+Are you sure that you will deactivate this coupon?: "هل أنت متأكد أنك ستقوم بإلغاء تنشيط هذا الكوبون؟"
+Are you sure that you will activate this coupon?: "هل أنت متأكد أنك ستقوم بتنشيط هذا الكوبون؟"
+Not Active: "غير نشط"
 Transaction URL: "رابط العملية"

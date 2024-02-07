@@ -56,17 +56,25 @@ public partial class Coupons
     {
         StartProcessing();
 
-        var isSuccess = await ShowConfirmation($"Are You Sure That You Will {(coupon.IsActive ? "deactivate" : "activate")} This Coupon");
+        var isSuccess = await ShowConfirmation($"Are you sure that you will {(coupon.IsActive ? "deactivate" : "activate")} this coupon?");
 
         if (isSuccess)
-            coupon.IsActive = !coupon.IsActive;
+        {
+            var result = await UpdateAsync($"Coupons/UpdateCouponState/{coupon.Id}", coupon);
 
+            if (result.isSuccess)
+            {
+                coupon.IsActive = !coupon.IsActive;
+            }
+        }
         StopProcessing();
     }
 
     private bool FilterFunc(CouponDto element)
     {
         if (string.IsNullOrWhiteSpace(searchString))
+            return true;
+        if (element.CouponCode.Contains(searchString, StringComparison.OrdinalIgnoreCase))
             return true;
 
         return false;

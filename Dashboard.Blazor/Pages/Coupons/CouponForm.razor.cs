@@ -19,7 +19,7 @@ public partial class CouponForm
         {
             couponForm.StartEndDateRange!.Start = couponForm.StartDate;
             couponForm.StartEndDateRange.End = couponForm.EndDate;
-
+            couponForm.Currency.Id = couponForm.CurrencyId;
             couponForm.SelectedServices = couponForm.CouponServices.Select(s => s.Service.Id);
         }
 

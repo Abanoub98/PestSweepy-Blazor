@@ -38,9 +38,8 @@ else
                             <div class="col-6">
                                 <!--begin::Details item-->
                                 <div class="fw-bold mb-1">@languageContainer.Keys["Coupon Code"]:</div>
-                                <div class="text-gray-600 d-flex align-items-center">
+                                <div class="text-gray-600">
                                     @coupon.CouponCode
-                                    <MudIcon Class="ms-2" Icon="@Icons.Material.Filled.RemoveRedEye" Color="Color.Success" />
                                 </div>
                                 <!--begin::Details item-->
                                 <div class="fw-bold mt-5 mb-1">@languageContainer.Keys["Coupon Status"]:</div>
@@ -53,11 +52,11 @@ else
                                 </div>
                                 <!--begin::Details item-->
                                 <div class="fw-bold mt-5 mb-1">@languageContainer.Keys["Start & End Date"]:</div>
-                                <div class="text-gray-600">@($"{coupon.StartDate} to {coupon.EndDate}")</div>
+                                <div class="text-gray-600">@($"{coupon.StartDate.ToShortDateString()} {languageContainer.Keys["To"]} {coupon.EndDate.ToShortDateString()}")</div>
                             </div>
                             <div class="col-6 ps-5">
                                 <!--begin::Details item-->
-                                <div class="fw-bold mb-1">@languageContainer.Keys["Number Of Uses"]: @coupon.NumberOfUses</div>
+                                <div class="fw-bold mb-1">@languageContainer.Keys["Number of Uses"]: @coupon.NumberOfUses</div>
                                 <!--begin::Details item-->
                                 <div class="fw-bold mt-5 mb-1">@languageContainer.Keys["Discount Amount"]: @coupon.DiscountAmount @languageContainer.Keys[coupon.Currency?.Symbol]</div>
                                 <!--begin::Details item-->
@@ -70,6 +69,27 @@ else
                         <MudImage Class="rounded-lg border border-gray-300" Width="300" Src=@(imageUrl + coupon.Image) />
                     </div>
                 </div>
+                <div class="fw-bold mt-5 mb-1">@languageContainer.Keys["Services"]:</div>
+                <div class="d-flex gap-7">
+                    @{
+                        foreach (var service in coupon.CouponServices.Select(s => s.Service))
+                        {
+                            <div class="card border-gray-400 border-hover-primary w-100">
+                                <!--begin:: Card body-->
+                                <div class="card-body p-9">
+                                    <!--begin::Name-->
+                                    <div class="fs-6 fw-bold text-gray-900 d-flex align-items-center">
+                                        @($"{service.NameEn} - {service.NameAr}")
+                                    </div>
+                                    <!--end::Name-->
+                                </div>
+                                <!--end:: Card body-->
+                            </div>
+                            <!--begin::Details item-->
+                        }
+                    }
+                </div>
+
             </div>
             <!--end::Details content-->
         </div>
