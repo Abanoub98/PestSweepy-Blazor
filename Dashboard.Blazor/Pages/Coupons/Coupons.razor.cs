@@ -11,32 +11,13 @@ public partial class Coupons
     {
         StartProcessing();
 
-        breadcrumbItems.AddRange(new List<BreadcrumbItem>
+        breadcrumbItems = new List<BreadcrumbItem>
         {
             new(languageContainer.Keys["Home"], href: "/", icon: Icons.Material.Filled.Home),
             new(languageContainer.Keys["Coupons"], href: null, disabled: true, icon: EntityIcons.CouponIcon),
-        });
-
-        //coupons = await GetAllAsync<CouponDto>("Coupons?OrderBy=id&Asc=false");
-
-        coupons = new()
-        {
-            new CouponDto()
-            {
-            Title = "Sweepy50",
-            Id = 3,
-            ShowInHomePage = true,
-            StartDate = DateTime.Now,
-            EndDate = DateTime.Now.AddDays(6),
-            NumOfUses = 10,
-            MaxDiscount = 50,
-            MaxUse = 1000,
-            Percentage = 20,
-            Description = "Facilisis dolor sit dolore nulla diam dolor labore dignissim diam zzril sea lorem feugait sea veniam sed sadipscing illum kasd",
-            NotificationMessage = "Sadipscing et feugait consectetuer esse suscipit erat dolor vero dolore"
-            },
-
         };
+
+        coupons = await GetAllAsync<CouponDto>("Coupons?OrderBy=id&Asc=false");
 
         StopProcessing();
     }
@@ -45,10 +26,27 @@ public partial class Coupons
     {
         StartProcessing();
 
-        var isSuccess = /*await DeleteAsync<CouponDto>($"Coupons/{id}")*/ true;
+        var isSuccess = await DeleteAsync<CouponDto>($"Coupons/{id}");
+
+        if (isSuccess)
+            coupons.Remove(coupons.FirstOrDefault(x => x.Id == id)!);
+
+
+        StopProcessing();
+    }
+
+    private void SelectedItemsChanged(HashSet<CouponDto> items) => selectedIds = items.Select(i => i.Id).ToList();
+
+    private async Task DeleteAll()
+    {
+        StartProcessing();
+
+        var isSuccess = await DeleteAllAsync<CouponDto>($"Coupons/DeleteMultiple", selectedIds);
+
         if (isSuccess)
         {
-            coupons.Remove(coupons.FirstOrDefault(x => x.Id == id)!);
+            coupons.RemoveAll(x => selectedIds.Contains(x.Id));
+            selectedIds = new();
         }
 
         StopProcessing();
@@ -58,12 +56,10 @@ public partial class Coupons
     {
         StartProcessing();
 
-        /*await DeleteAsync<CouponDto>($"Coupons/{id}")*/
-
-        var isSuccess = await ShowConfirmation($"Are You Sure That You Will {(coupon.ShowInHomePage ? "Hide" : "Show")} This Coupon");
+        var isSuccess = await ShowConfirmation($"Are You Sure That You Will {(coupon.IsActive ? "deactivate" : "activate")} This Coupon");
 
         if (isSuccess)
-            coupon.ShowInHomePage = !coupon.ShowInHomePage;
+            coupon.IsActive = !coupon.IsActive;
 
         StopProcessing();
     }

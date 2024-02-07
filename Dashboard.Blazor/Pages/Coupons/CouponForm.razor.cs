@@ -8,29 +8,26 @@ public partial class CouponForm
 
     protected override async Task OnParametersSetAsync()
     {
-        couponForm = (Id == 0) ? new() : new()
-        {
-            Title = "Sweepy50",
-            Id = 3,
-            ShowInHomePage = true,
-            StartDate = DateTime.Now,
-            EndDate = DateTime.Now.AddDays(6),
-            NumOfUses = 10,
-            MaxDiscount = 50,
-            MaxUse = 1000,
-            Percentage = 20,
-            Description = "Facilisis dolor sit dolore nulla diam dolor labore dignissim diam zzril sea lorem feugait sea veniam sed sadipscing illum kasd",
-            NotificationMessage = "Sadipscing et feugait consectetuer esse suscipit erat dolor vero dolore"
-        };
+        couponForm = (Id == 0) ? new() : await GetByIdAsync<CouponDto>($"Coupons/{Id}");
 
         if (couponForm is null)
             return;
+
+        couponForm.Services = await GetAllAsync<ServiceDto>("Services");
+
+        if (Id != 0)
+        {
+            couponForm.StartEndDateRange!.Start = couponForm.StartDate;
+            couponForm.StartEndDateRange.End = couponForm.EndDate;
+
+            couponForm.SelectedServices = couponForm.CouponServices.Select(s => s.Service.Id);
+        }
 
         breadcrumbItems.AddRange(new List<BreadcrumbItem>
         {
             new(languageContainer.Keys["Home"], href: "/", icon: Icons.Material.Filled.Home),
             new(languageContainer.Keys["Coupons"], href: "/Coupons", icon: EntityIcons.CouponIcon),
-            new(languageContainer.Keys[Id == 0 ? "Add Coupon" : $"Edit {couponForm.Title}"], href: null, disabled: true),
+            new(Id == 0 ? $"{languageContainer.Keys["Add"]} {languageContainer.Keys["Coupons"]}" : $"{languageContainer.Keys["Edit"]} {couponForm.CouponCode}", href: null, disabled: true),
         });
     }
 
@@ -38,18 +35,23 @@ public partial class CouponForm
     {
         StartProcessing();
 
+        couponForm!.StartDate = couponForm.StartEndDateRange!.Start!.Value;
+        couponForm!.EndDate = couponForm.StartEndDateRange!.End!.Value;
+        couponForm.CurrencyId = couponForm.Currency!.Id;
+        couponForm.CouponServices = couponForm.SelectedServices.Select(s => new CouponService() { ServiceId = s }).ToList();
+
         bool result;
         CouponDto? couponDtoResult;
 
         if (Id == 0)
-            (result, couponDtoResult) = await AddAsync("Coupons", couponForm!);
+            (result, couponDtoResult) = await AddAsync("Coupons", couponForm);
         else
-            (result, couponDtoResult) = await UpdateAsync($"Coupons/{Id}", couponForm!);
+            (result, couponDtoResult) = await UpdateAsync($"Coupons/{Id}", couponForm);
 
         if (result)
         {
             if (Id == 0)
-                couponForm!.Id = couponDtoResult!.Id;
+                couponForm.Id = couponDtoResult!.Id;
 
             if (couponForm.UploadedImage is not null)
                 await UploadImage("Coupons", couponForm.Id, couponForm.UploadedImage);
@@ -63,4 +65,21 @@ public partial class CouponForm
     private void CaptureUploadedImage(IBrowserFile image) => couponForm!.UploadedImage = image;
 
     private void ClearUploadedImage() => couponForm!.UploadedImage = null;
+
+    private async Task<IEnumerable<CurrencyDto>> GetCurrencies(string value)
+    {
+        if (couponForm!.Currencies is null)
+            couponForm.Currencies = await GetAllAsync<CurrencyDto>("Currencies");
+
+        // if text is null or empty, show complete list
+        if (string.IsNullOrEmpty(value))
+            return couponForm.Currencies;
+
+        return couponForm.Currencies.Where(x => x.Name.Contains(value, StringComparison.InvariantCultureIgnoreCase));
+    }
+
+    private string GetMultiSelectionText(List<string> selectedValues)
+    {
+        return $"{selectedValues.Count} service{(selectedValues.Count > 1 ? "s have" : " has")} been selected";
+    }
 }

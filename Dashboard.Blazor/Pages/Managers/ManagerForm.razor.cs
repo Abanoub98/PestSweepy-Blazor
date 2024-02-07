@@ -17,7 +17,7 @@ public partial class ManagerForm
         {
             new(languageContainer.Keys["Home"], href: "/", icon: Icons.Material.Filled.Home),
             new(languageContainer.Keys["Managers"], href: "/Managers", icon: Icons.Material.Outlined.Diversity3),
-            new(languageContainer.Keys[Id == 0 ? "Add Manager" : $"Edit {managerForm.FirstName} {managerForm.LastName}"], href: null, disabled: true),
+            new(Id == 0 ? $"{languageContainer.Keys["Add"]} {languageContainer.Keys["Manager"]}" : $"{languageContainer.Keys["Edit"]} {managerForm.FirstName} {managerForm.LastName}", href: null, disabled: true),
         });
     }
 

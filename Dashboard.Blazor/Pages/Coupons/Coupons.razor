@@ -10,8 +10,8 @@
 
 <MudCard Elevation="25">
     <MudCardContent>
-        <MudDataGrid T="CouponDto" Dense="true" Elevation="0" FixedHeader="true" Height="@($"{tableHight}px")"
-                     Loading="@(isLoading)" LoadingProgressColor="Color.Info" Filterable="true"
+        <MudDataGrid T="CouponDto" Dense="true" Elevation="0" FixedHeader="true" Height="@($"{tableHight}px")" MultiSelection="true"
+                     Loading="@(isLoading)" LoadingProgressColor="Color.Info" Filterable="true" SelectedItemsChanged="SelectedItemsChanged"
                      Items="coupons" Hover="true" SortMode="SortMode.Single" QuickFilter="@FilterFunc">
 
             <ToolBarContent>
@@ -21,59 +21,77 @@
                             <MudAvatar Rounded="true" Color="Color.Info">
                                 <MudIcon Icon="@EntityIcons.CouponIcon" />
                             </MudAvatar>
-                            <MudText Class="mx-3" Typo="Typo.h5">@languageContainer.Keys["Coupons"]</MudText>
-                                <MudIconButton OnClick="() => OpenForm(formUri)" Icon="@Icons.Material.Filled.Add" Color="Color.Success"></MudIconButton>
-                            </div>
-                        </div>
-                        <div class="w-md-50 w-100">
-                            <MudTextField @bind-Value="searchString" Adornment="Adornment.Start" Class="mt-0 mb-5" Immediate="true"
-                                          Placeholder=@($"{languageContainer.Keys["Search For"]} Name, Order Index")
-                                          AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" />
+                            <MudText Class="mx-3" Typo="Typo.h5">
+                                @languageContainer.Keys["Coupons"]
+                            </MudText>
+                            <MudIconButton OnClick="() => OpenForm(formUri)" Icon="@Icons.Material.Filled.Add" Color="Color.Success"></MudIconButton>
+                            <MudIconButton OnClick="DeleteAll" Disabled="@(selectedIds.Count() < 2 ? true : false)" Icon="@Icons.Material.Filled.DeleteForever" Color="Color.Error"></MudIconButton>
+                            <MudIconButton OnClick="OnInitializedAsync" Icon="@Icons.Material.Filled.Refresh" Color="Color.Info"></MudIconButton>
                         </div>
                     </div>
-                </ToolBarContent>
+                    <div class="w-md-50 w-100">
+                        <MudTextField @bind-Value="searchString" Adornment="Adornment.Start" Class="mt-0 mb-5" Immediate="true"
+                                      Placeholder=@($"{languageContainer.Keys["Search For"]} {languageContainer.Keys["Title"]}")
+                                      AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" />
+                    </div>
+                </div>
+            </ToolBarContent>
 
-                <NoRecordsContent>
-                    <NoDataToDisply />
-                </NoRecordsContent>
+            <NoRecordsContent>
+                <NoDataToDisply />
+            </NoRecordsContent>
 
-                <Columns>
-                    <TemplateColumn Context="coupon">
-                        <HeaderTemplate>
-                            <MudText>client</MudText>
-                        </HeaderTemplate>
-                        <CellTemplate>
-                            <div class="d-flex align-items-center">
-                                <MudAvatar Color="Color.Info" Class="cursor-all-scroll" @onclick="() => ShowImagePreview(imageUrl + coupon.Item!.Image)" Rounded="true" Size="Size.Large">
-                                    <MudImage Src="@(imageUrl + coupon.Item!.Image)" />
-                                </MudAvatar>
-                                <div class="mx-3">
-                                    <MudText>@coupon.Item!.Title</MudText>
-                                </div>
-                            </div>
-                        </CellTemplate>
-                    </TemplateColumn>
-                    <PropertyColumn Property="x => x.NumOfUses" Title="@languageContainer.Keys["Number Of Uses"]" />
-                    <PropertyColumn Property="x => x.StartDate" Title="@languageContainer.Keys["Start Date"]" />
-                    <PropertyColumn Property="x => x.EndDate" Title="@languageContainer.Keys["End Date"]" />
+            <Columns>
+                <SelectColumn T="CouponDto" ShowInFooter="false" />
 
-                    <TemplateColumn CellClass="text-center" Context="coupon" HeaderClass="text-center" Sortable="false" Filterable="false">
-                        <HeaderTemplate>
-                            <MudText Class="w-100">Actions</MudText>
-                        </HeaderTemplate>
-                        <CellTemplate>
+                <TemplateColumn Context="coupon" CellClass="text-center" HeaderClass="text-center" Sortable="false" Filterable="false">
+                    <CellTemplate>
+                        <MudAvatar Color="Color.Info" Class="cursor-all-scroll" @onclick="() => ShowImagePreview(imageUrl + coupon.Item!.Image)" Rounded="true" Size="Size.Large">
+                            <MudImage Src="@(imageUrl + coupon.Item!.Image)" />
+                        </MudAvatar>
+                    </CellTemplate>
+                </TemplateColumn>
+
+                <PropertyColumn Property="x => x.CouponCode" Title="@languageContainer.Keys["Coupon Code"]" />
+                <PropertyColumn Property="x => x.NumberOfUses" Title="@languageContainer.Keys["Number Of Uses"]" />
+                <PropertyColumn Property="@(x => string.Join(" to ", x.StartDate.ToShortDateString(), x.EndDate.ToShortDateString()))" Title="@languageContainer.Keys["Date Range"]" />
+
+                <TemplateColumn Context="coupon" Title="@languageContainer.Keys["Status"]" CellClass="text-center" HeaderClass="text-center" Sortable="false" Filterable="false">
+                    <HeaderTemplate>
+                        <MudText Class="w-100">
+                            @languageContainer.Keys["Status"]
+                        </MudText>
+                    </HeaderTemplate>
+                    <CellTemplate>
+                        <MudChip Variant="Variant.Text" Size="Size.Small"
+                                 Color="@(coupon.Item.IsActive ? Color.Success : Color.Warning)">
+
+                            @(coupon.Item.IsActive ? languageContainer.Keys["Active"] : @languageContainer.Keys["Not Active"])
+                        </MudChip>
+                    </CellTemplate>
+                </TemplateColumn>
+
+                <TemplateColumn Title="@languageContainer.Keys["Actions"]" CellClass="text-center" Context="coupon" HeaderClass="text-center" Sortable="false" Filterable="false">
+                    <HeaderTemplate>
+                        <MudText Class="w-100">
+                            @languageContainer.Keys["Actions"]
+                        </MudText>
+                    </HeaderTemplate>
+                    <CellTemplate>
+                        <div>
                             <TableButtons IsDisable="isDisable" EditClicked="() => OpenForm(formUri, coupon.Item!.Id)" DeleteClicked="() => Delete(coupon.Item!.Id)"
                                           DetailsClicked="() => OpenDetails(detailsUri, coupon.Item!.Id)" />
-                            <a @onclick="() => ToggleStatus(coupon.Item)" class="btn btn-sm btn-light-@(coupon.Item!.ShowInHomePage? "success" : "danger")">
-                                <i class="fa-solid fa-eye@(coupon.Item!.ShowInHomePage? string.Empty : "-slash")"></i>
+                            <a @onclick="() => ToggleStatus(coupon.Item)" class="btn btn-sm btn-light-@(!coupon.Item!.IsActive? "success" : "danger")">
+                                <i class="fa-solid fa-eye@(!coupon.Item!.IsActive? string.Empty : "-slash") p-0"></i>
                             </a>
-                        </CellTemplate>
-                    </TemplateColumn>
-                </Columns>
+                        </div>
+                    </CellTemplate>
+                </TemplateColumn>
+            </Columns>
 
-                <PagerContent>
-                    <MudDataGridPager T="CouponDto" />
-                </PagerContent>
-            </MudDataGrid>
-        </MudCardContent>
-    </MudCard>
+            <PagerContent>
+                <MudDataGridPager T="CouponDto" />
+            </PagerContent>
+        </MudDataGrid>
+    </MudCardContent>
+</MudCard>

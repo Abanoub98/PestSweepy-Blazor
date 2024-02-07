@@ -14,43 +14,54 @@
 }
 else
 {
-    <BaseFrom EntityBackUrl="/Coupons" EditTitle="@couponForm.Title" EntityName="Coupon"
+    <BaseFrom EntityBackUrl="/Coupons" EditTitle="@couponForm.CouponCode" EntityName="Coupon"
               IsAddFrom="@(Id == 0 ? true : false)" OnValidSubmit="OnValidSubmit" Model="couponForm" Icon="@EntityIcons.CouponIcon">
         <FormContent>
             <div class="d-flex flex-wrap flex-md-nowrap">
                 <div class="p-3  w-100">
-                    <MudTextField HelperText="@languageContainer.Keys[("Required")]" Variant="Variant.Outlined" @bind-Value="couponForm.Title" For="@(() => couponForm.Title)" HelperTextOnFocus="true" Label="@languageContainer.Keys["Title"]"
-                                  AdornmentColor="Color.Info" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.AccountBox" Placeholder="@Placeholders.Name" />
+                    <MudTextField HelperText="@languageContainer.Keys[("Required")]" Variant="Variant.Outlined" @bind-Value="couponForm.CouponCode" For="@(() => couponForm.CouponCode)" HelperTextOnFocus="true" Label="@languageContainer.Keys["Coupon Code"]"
+                                  AdornmentColor="Color.Info" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.AccountBox" Placeholder="@languageContainer.Keys["Coupon Code"]" />
                 </div>
                 <div class="p-3 w-100">
-                    <MudDateRangePicker AdornmentColor="Color.Info" Variant="Variant.Outlined" @bind-Value="couponForm.StartEndDateRange" Placeholder="@languageContainer.Keys["Select Date"]" Label="@languageContainer.Keys["Date"]" />
+                    <MudDateRangePicker AdornmentColor="Color.Info" Variant="Variant.Outlined" @bind-DateRange="couponForm.StartEndDateRange" Placeholder="@languageContainer.Keys["Select Date"]" Label="@languageContainer.Keys["Date"]" />
+                </div>
+                <div class="p-3 w-100">
+                    <MudSelect Label="@languageContainer.Keys[("Services")]" MultiSelection="true" @bind-SelectedValues="couponForm.SelectedServices" HelperText="@languageContainer.Keys[("Required")]"
+                               MultiSelectionTextFunc="@(new Func<List<string>, string>(GetMultiSelectionText))" HelperTextOnFocus="true" Variant="Variant.Outlined" Placeholder="@languageContainer.Keys["Select Services"]" SelectAll="true"
+                               AnchorOrigin="Origin.BottomCenter">
+                        @foreach (var service in couponForm.Services)
+                        {
+                            <MudSelectItem Value="@service.Id">@($"{service.NameAr} - {service.NameEn}")</MudSelectItem>
+                        }
+
+                    </MudSelect>
                 </div>
             </div>
             <div class="d-flex flex-wrap flex-md-nowrap">
                 <div class="p-3 w-100">
-                    <MudNumericField HideSpinButtons="true" HelperText="@languageContainer.Keys["Required"]" @bind-Value="couponForm.Percentage" For="@(() => couponForm.Percentage)" Label="@languageContainer.Keys["Discount Percentage"]"
-                                     Variant="Variant.Outlined" AdornmentColor="Color.Info" Adornment="Adornment.End" AdornmentText="@languageContainer.Keys["%"]" HelperTextOnFocus="true" />
+                    <MudAutocomplete T="CurrencyDto" SearchFunc="@GetCurrencies" Adornment="Adornment.Start" AnchorOrigin="Origin.BottomCenter" Label="@languageContainer.Keys["Currency"]"
+                                     Variant="Variant.Outlined" ShowProgressIndicator="true" ResetValueOnEmptyText="true" CoerceText="true" AdornmentIcon="@EntityIcons.CurrencyIcon"
+                                     ProgressIndicatorColor="Color.Info" Clearable @bind-Value="couponForm.Currency" For="@(() => couponForm.Currency)" AdornmentColor="Color.Info"
+                                      ToStringFunc="@(e=> e == null ? null : $"{e.Name}")" HelperText="@languageContainer.Keys["Required"]" Placeholder="@languageContainer.Keys["Select Currency"]" MaxItems="null" HelperTextOnFocus="true">
+                         <NoItemsTemplate>
+                             <MudText Align="Align.Center" Class="px-4 py-4">
+                                 @languageContainer.Keys["No items found"]
+                            </MudText>
+                        </NoItemsTemplate>
+                    </MudAutocomplete>
                 </div>
                 <div class="p-3 w-100">
-                    <MudNumericField HideSpinButtons="true" HelperText="@languageContainer.Keys["Required"]" @bind-Value="couponForm.MaxDiscount" For="@(() => couponForm.MaxDiscount)" Label="@languageContainer.Keys["Max Discount Amount"]"
-                                     Variant="Variant.Outlined" AdornmentColor="Color.Info" Adornment="Adornment.End" AdornmentText="@languageContainer.Keys["SAR"]" HelperTextOnFocus="true" />
+                    <MudNumericField HideSpinButtons="true" HelperText="@languageContainer.Keys["Required"]" @bind-Value="couponForm.DiscountAmount" For="@(() => couponForm.DiscountAmount)" Label="@languageContainer.Keys["Discount Amount"]"
+                                     Variant="Variant.Outlined" AdornmentColor="Color.Info" Adornment="Adornment.End" AdornmentText="@languageContainer.Keys[couponForm.Currency?.Symbol]" HelperTextOnFocus="true" />
                 </div>
                 <div class="p-3 w-100">
-                    <MudNumericField HideSpinButtons="true" HelperText="@languageContainer.Keys["Required"]" @bind-Value="couponForm.MaxUse" For="@(() => couponForm.MaxUse)" Label="@languageContainer.Keys["Max Discount Amount"]"
-                                     Variant="Variant.Outlined" AdornmentColor="Color.Info" Adornment="Adornment.Start" AdornmentIcon="@EntityIcons.CurrencyIcon" HelperTextOnFocus="true" />
+                    <MudNumericField HideSpinButtons="true" HelperText="@languageContainer.Keys["Required"]" @bind-Value="couponForm.MaxUses" For="@(() => couponForm.MaxUses)" Label="@languageContainer.Keys["Max Uses"]"
+                                     Variant="Variant.Outlined" HelperTextOnFocus="true" />
                 </div>
-            </div>
-            <div class="p-3 w-100">
-                <MudTextField HelperText="Not Required" Variant="Variant.Outlined" @bind-Value="couponForm.NotificationMessage" For="@(() => couponForm.NotificationMessage)"
-                              HelperTextOnFocus="true" Placeholder="@languageContainer.Keys["Notes"]" Lines="5" Label="@languageContainer.Keys["Notification Message"]" />
-            </div>
-            <div class="p-3 w-100">
-                <MudTextField HelperText="Not Required" Variant="Variant.Outlined" @bind-Value="couponForm.Description" For="@(() => couponForm.Description)"
-                              HelperTextOnFocus="true" Placeholder="@languageContainer.Keys["Notes"]" Lines="10" Label="@languageContainer.Keys["Description"]" />
             </div>
             <div class="flex-wrap gap-5 gap-md-0 d-flex flex-md-nowrap align-items-end px-3">
                 <div>
-                    <MudCheckBox Size="Size.Large" Class="mb-3" @bind-Value="couponForm.ShowInHomePage" For="@(() => couponForm.ShowInHomePage)" Label="Show In Home Page" Color="Color.Success"></MudCheckBox>
+                    <MudCheckBox Size="Size.Large" Class="mb-3" @bind-Value="couponForm.IsActive" For="@(() => couponForm.IsActive)" Label="@languageContainer.Keys["Active Coupon"]" Color="Color.Success"></MudCheckBox>
                     <ImageUpload ImageSelected="CaptureUploadedImage" UploadedImageCleared="ClearUploadedImage" CurrentImage="@(Id == 0 ? null : imageUrl + couponForm.Image)" />
                 </div>
                 <MudSpacer />

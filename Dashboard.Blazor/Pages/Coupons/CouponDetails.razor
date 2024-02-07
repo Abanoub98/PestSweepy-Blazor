@@ -3,7 +3,7 @@
 @inherits BasePage
 
 <PageTitle>
-    @languageContainer.Keys["Coupon Details"]
+    @($"{languageContainer.Keys["Coupon"]} {languageContainer.Keys["Details"]}")
 </PageTitle>
 <MudBreadcrumbs Items="breadcrumbItems" />
 
@@ -16,7 +16,7 @@ else
     <div class="card shadow-sm">
         <div class="card-header">
             <div class="fw-bold card-title">
-                @languageContainer.Keys["Coupon Details"]
+                @($"{languageContainer.Keys["Coupon"]} {languageContainer.Keys["Details"]}")
             </div>
             <div class="card-toolbar">
                 <a href="/Coupons" class="btn btn-sm btn-primary me-3">
@@ -37,29 +37,31 @@ else
                         <div class="row">
                             <div class="col-6">
                                 <!--begin::Details item-->
-                                <div class="fw-bold mb-1">@languageContainer.Keys["Name"]:</div>
+                                <div class="fw-bold mb-1">@languageContainer.Keys["Coupon Code"]:</div>
                                 <div class="text-gray-600 d-flex align-items-center">
-                                    @coupon.Title
+                                    @coupon.CouponCode
                                     <MudIcon Class="ms-2" Icon="@Icons.Material.Filled.RemoveRedEye" Color="Color.Success" />
                                 </div>
                                 <!--begin::Details item-->
-                                <div class="fw-bold mt-5 mb-1">@languageContainer.Keys["Number Of Uses"]:</div>
-                                <div class="text-gray-600">@coupon.NumOfUses</div>
+                                <div class="fw-bold mt-5 mb-1">@languageContainer.Keys["Coupon Status"]:</div>
+                                <div>
+                                    <MudChip Variant="Variant.Text" Size="Size.Small"
+                                             Color="@(coupon.IsActive ? Color.Success : Color.Warning)">
+
+                                        @(coupon.IsActive ? languageContainer.Keys["Active"] : languageContainer.Keys["Not Active"])
+                                    </MudChip>
+                                </div>
                                 <!--begin::Details item-->
                                 <div class="fw-bold mt-5 mb-1">@languageContainer.Keys["Start & End Date"]:</div>
-                                <div class="text-gray-600">@($"{coupon.StartDate} - {coupon.EndDate}")</div>
+                                <div class="text-gray-600">@($"{coupon.StartDate} to {coupon.EndDate}")</div>
                             </div>
                             <div class="col-6 ps-5">
                                 <!--begin::Details item-->
-                                <div class="fw-bold mb-1">@languageContainer.Keys["Percentage"]:</div>
-                                <div class="text-gray-600">@coupon.Percentage %</div>
+                                <div class="fw-bold mb-1">@languageContainer.Keys["Number Of Uses"]: @coupon.NumberOfUses</div>
                                 <!--begin::Details item-->
-                                <div class="fw-bold mt-5 mb-1">@languageContainer.Keys["Max Discount"]:</div>
-                                <div class="text-gray-600">@coupon.MaxDiscount SAR</div>
+                                <div class="fw-bold mt-5 mb-1">@languageContainer.Keys["Discount Amount"]: @coupon.DiscountAmount @languageContainer.Keys[coupon.Currency?.Symbol]</div>
                                 <!--begin::Details item-->
-                                <!--begin::Details item-->
-                                <div class="fw-bold mt-5 mb-1">@languageContainer.Keys["Max Use"]:</div>
-                                <div class="text-gray-600">@coupon.MaxUse</div>
+                                <div class="fw-bold mt-5 mb-1">@languageContainer.Keys["Max Uses"]: @coupon.MaxUses</div>
                                 <!--begin::Details item-->
                             </div>
                         </div>
@@ -68,14 +70,6 @@ else
                         <MudImage Class="rounded-lg border border-gray-300" Width="300" Src=@(imageUrl + coupon.Image) />
                     </div>
                 </div>
-                <!--begin::Details item-->
-                <div class="fw-bold mt-5 mb-1">@languageContainer.Keys["Description"]:</div>
-                <div class="text-gray-800 p-3 rounded-lg border border-gray-400">@coupon.Description</div>
-                <!--begin::Details item-->
-                <!--begin::Details item-->
-                <div class="fw-bold mt-5 mb-1">@languageContainer.Keys["Title"]:</div>
-                <div class="text-gray-800 p-3 rounded-lg border border-gray-400">@coupon.Title</div>
-                <!--begin::Details item-->
             </div>
             <!--end::Details content-->
         </div>
