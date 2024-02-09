@@ -11,4 +11,6 @@ public class BaseUser
 
     [Label(name: "Phone Number")]
     public string? PhoneNumber { get; set; }
+
+    public string UserId { get; set; } = null!;
 }

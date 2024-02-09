@@ -10,7 +10,7 @@ public class BasePage : ComponentBase
     [Inject] ILocalStorageService LocalStorage { get; set; } = default!;
     [Inject] private IApiService ApiService { get; set; } = default!;
     [Inject] private ISnackbar Snackbar { get; set; } = default!;
-    [Inject] private ILanguageContainerService LanguageContainer { get; set; } = default!;
+    [Inject] protected ILanguageContainerService LanguageContainer { get; set; } = default!;
 
     //Variables
     protected List<BreadcrumbItem> breadcrumbItems = new();
@@ -219,6 +219,25 @@ public class BasePage : ComponentBase
     }
 
     //End CRUD Functions
+
+    public async Task ShowChangePasswordAsync(string userId)
+    {
+        DialogOptions dialogOptions = new()
+        {
+            CloseOnEscapeKey = true,
+            MaxWidth = MaxWidth.Small,
+            FullWidth = true,
+            Position = DialogPosition.Center,
+            CloseButton = true
+        };
+
+        DialogParameters<ChangePasswordDialog> Parameters = new()
+        {
+            { x => x.UserId, userId }
+        };
+
+        await DialogService.ShowAsync<ChangePasswordDialog>(LanguageContainer.Keys["Change Password"], Parameters, dialogOptions);
+    }
 
     protected void ChangePasswordStatus()
     {

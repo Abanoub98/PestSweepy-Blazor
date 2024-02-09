@@ -21,4 +21,29 @@ public partial class ProviderDetails
             new($"{provider.FirstName} {provider.LastName}", href: null, disabled: true),
         });
     }
+    private void UpdateEmail(string newMail)
+    {
+        provider!.Email = newMail;
+    }
+
+    public async Task ShowChangeEmailAsync()
+    {
+        DialogOptions dialogOptions = new()
+        {
+            CloseOnEscapeKey = true,
+            MaxWidth = MaxWidth.Small,
+            FullWidth = true,
+            Position = DialogPosition.Center,
+            CloseButton = true
+        };
+
+        DialogParameters<ChangeEmailDialog> Parameters = new()
+        {
+            { x => x.UserId, provider!.UserId },
+            { x => x.Email, provider!.Email },
+            { x => x.EmailUpdated,EventCallback.Factory.Create<string>(this, UpdateEmail) },
+        };
+
+        await DialogService.ShowAsync<ChangeEmailDialog>(LanguageContainer.Keys["Change Email"], Parameters, dialogOptions);
+    }
 }

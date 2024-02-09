@@ -21,4 +21,30 @@ public partial class ContractClientDetails
             new($"{contractClient.FirstName} {contractClient.LastName}", href: null, disabled: true),
         });
     }
+
+    private void UpdateEmail(string newMail)
+    {
+        contractClient!.Email = newMail;
+    }
+
+    public async Task ShowChangeEmailAsync()
+    {
+        DialogOptions dialogOptions = new()
+        {
+            CloseOnEscapeKey = true,
+            MaxWidth = MaxWidth.Small,
+            FullWidth = true,
+            Position = DialogPosition.Center,
+            CloseButton = true
+        };
+
+        DialogParameters<ChangeEmailDialog> Parameters = new()
+        {
+            { x => x.UserId, contractClient!.UserId },
+            { x => x.Email, contractClient!.Email },
+            { x => x.EmailUpdated,EventCallback.Factory.Create<string>(this, UpdateEmail) },
+        };
+
+        await DialogService.ShowAsync<ChangeEmailDialog>(LanguageContainer.Keys["Change Email"], Parameters, dialogOptions);
+    }
 }

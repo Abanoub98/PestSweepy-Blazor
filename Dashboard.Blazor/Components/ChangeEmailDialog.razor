@@ -1,0 +1,58 @@
+﻿@inherits BasePage
+@attribute [Authorize]
+
+<MudDialog>
+    <DialogContent>
+        <EditForm Model="changeEmailForm" OnValidSubmit="OnValidSubmit">
+            <DataAnnotationsValidator />
+            <div>
+                <div class="mb-1">
+                    <div class="fv-row mb-0 fv-plugins-icon-container mb-3">
+                        <!--begin::Label-->
+                        <label class="form-label fs-6 fw-bold text-dark">@languageContainer.Keys["Email"]</label>
+                        <!--end::Label-->
+                        <!--begin::Input-->
+                        <InputText @bind-Value="changeEmailForm.NewEmail" class="form-control form-control-lg form-control-solid" type="text" />
+                        <!--end::Input-->
+                        <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"><ValidationMessage For="() => changeEmailForm.NewEmail" /></div>
+                    </div>
+                </div>
+
+                <FormButtons IsLoading="isLoading" />
+            </div>
+        </EditForm>
+    </DialogContent>
+    <DialogActions>
+    </DialogActions>
+</MudDialog>
+
+@code{
+    [CascadingParameter] MudDialogInstance MudDialog { get; set; } = default!;
+    [Parameter] public string UserId { get; set; } = null!;
+    [Parameter] public string Email { get; set; } = null!;
+    [Parameter] public EventCallback<string> EmailUpdated { get; set; }
+
+
+    private ChangeEmailDto changeEmailForm = new();
+
+    protected override void OnParametersSet()
+    {
+        changeEmailForm.UserId = UserId;
+        changeEmailForm.NewEmail = Email;
+    }
+
+    private async Task OnValidSubmit(EditContext context)
+    {
+        StartProcessing();
+
+        var result = await AddAsync($"Account/ChangeEmail", changeEmailForm);
+
+        if (result.isSuccess)
+        {
+            await EmailUpdated.InvokeAsync(changeEmailForm.NewEmail);
+            MudDialog.Close(DialogResult.Ok(true));
+        }
+
+        StopProcessing();
+    }
+}

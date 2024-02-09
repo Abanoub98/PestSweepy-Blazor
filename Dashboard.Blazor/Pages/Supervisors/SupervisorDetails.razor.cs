@@ -21,5 +21,31 @@ public partial class SupervisorDetails
             new($"{supervisor.FirstName} {supervisor.LastName}", href: null, disabled: true),
         });
     }
+
+    private void UpdateEmail(string newMail)
+    {
+        supervisor!.Email = newMail;
+    }
+
+    public async Task ShowChangeEmailAsync()
+    {
+        DialogOptions dialogOptions = new()
+        {
+            CloseOnEscapeKey = true,
+            MaxWidth = MaxWidth.Small,
+            FullWidth = true,
+            Position = DialogPosition.Center,
+            CloseButton = true
+        };
+
+        DialogParameters<ChangeEmailDialog> Parameters = new()
+        {
+            { x => x.UserId, supervisor!.UserId },
+            { x => x.Email, supervisor!.Email },
+            { x => x.EmailUpdated,EventCallback.Factory.Create<string>(this, UpdateEmail) },
+        };
+
+        await DialogService.ShowAsync<ChangeEmailDialog>(LanguageContainer.Keys["Change Email"], Parameters, dialogOptions);
+    }
 }
 

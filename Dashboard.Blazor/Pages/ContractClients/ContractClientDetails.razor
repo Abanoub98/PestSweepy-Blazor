@@ -66,7 +66,7 @@ else
                         <!--end::Label-->
                         <!--begin::Action-->
                         <div class="ms-auto mt-md-3">
-                            <button class="btn btn-light-primary">@languageContainer.Keys["Change Email"]</button>
+                            <button @onclick="() => ShowChangeEmailAsync()" class="btn btn-light-primary">@languageContainer.Keys["Change Email"]</button>
                         </div>
                         <!--end::Action-->
                     </div>
@@ -84,7 +84,7 @@ else
                         <!--end::Label-->
                         <!--begin::Action-->
                         <div class="ms-auto mt-md-3">
-                            <button class="btn btn-light-primary">@languageContainer.Keys["Reset Password"]</button>
+                            <button @onclick="() => ShowChangePasswordAsync(contractClient.UserId)" class="btn btn-light-primary">@languageContainer.Keys["Reset Password"]</button>
                         </div>
                         <!--end::Action-->
                     </div>
