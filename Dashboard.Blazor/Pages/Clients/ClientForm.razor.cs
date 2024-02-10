@@ -5,6 +5,7 @@ public partial class ClientForm
     [Parameter][EditorRequired] public int Id { get; set; }
 
     private ClientDto? clientForm;
+    private string countryCode = @"^((00|\+)?966)?\d{9}$";
 
     protected override async Task OnParametersSetAsync()
     {
@@ -27,6 +28,7 @@ public partial class ClientForm
 
         clientForm!.NationalityId = clientForm.Nationality!.Id;
         clientForm!.CountryId = clientForm.Country!.Id;
+        clientForm.PhoneNumber = countryCode + clientForm.PhoneNumber;
 
         var result = Id == 0 ?
             await AddAsync("Clients", clientForm!) :
@@ -44,6 +46,11 @@ public partial class ClientForm
         }
 
         StopProcessing();
+    }
+
+    private void ChangePhoneNumber(string codeNumber)
+    {
+        clientForm!.PhoneNumber = codeNumber;
     }
 
     private void CaptureUploadedImage(IBrowserFile image) => clientForm!.UploadedImage = image;

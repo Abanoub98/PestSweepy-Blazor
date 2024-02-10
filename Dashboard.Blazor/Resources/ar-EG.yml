@@ -209,6 +209,7 @@ Client Name: "اسم العميل"
 Actions: "الإجراءات"
 M²: "²م"
 
+Total Earnings: "إجمالي الأرباح"
 Facebook Url: "رابط فيسبوك"
 Twitter Url: "رابط تويتر"
 LinkedIn Url: "رابط لينكد إن"
@@ -320,9 +321,9 @@ Currency: "العملة"
 Select Currency: "اختر العملة"
 
 Number of Visits: "عدد الزيارات"
-
+Uploaded Successfully: "تم التحميل بنجاح"
 Select Type: "اختر النوع"
-
+Country Code: "رمز الدولة"
 Select Unit: "اختر الوحدة"
 
 Select Term: "اختر بند"
@@ -341,7 +342,7 @@ Fee: "الرسوم"
 No Data: "لا توجد بيانات"
 
 Voided At: "تم الإلغاء في"
-
+More: المزيد
 Amount Format: "تنسيق المبلغ"
 
 Updated At: "تم التحديث في"

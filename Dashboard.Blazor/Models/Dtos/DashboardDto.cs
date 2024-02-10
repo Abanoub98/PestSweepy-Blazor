@@ -7,6 +7,9 @@ public class DashboardDto
     public int ContractClientsCount { get; set; }
     public int SupervisorsCount { get; set; }
     public int ManagersCount { get; set; }
+    public int OrdersCount { get; set; }
+    public int ProvidersCount { get; set; }
+    public int ContractsCount { get; set; }
     public List<Earning> Earnings { get; set; } = new();
 }
 

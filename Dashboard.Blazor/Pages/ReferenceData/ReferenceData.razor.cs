@@ -41,6 +41,9 @@ public partial class ReferenceData
             case "PaymentMethods":
                 hideTableActions = true;
                 break;
+            case "Templates":
+                hideTableActions = true;
+                break;
             default:
                 hideTableActions = false;
                 break;
@@ -79,7 +82,7 @@ public partial class ReferenceData
             {x => x.TableName, SelectedTable}
         };
 
-        var dialog = await DialogService.ShowAsync<ReferenceDataForm>(id == 0 ? $"Add {SelectedTable}" : $"Edit {SelectedTable}", Parameters, dialogOptions);
+        var dialog = await DialogService.ShowAsync<ReferenceDataForm>(id == 0 ? $"{languageContainer.Keys["Add"]} {SelectedTable}" : $"{languageContainer.Keys["Edit"]} {SelectedTable}", Parameters, dialogOptions);
         var result = await dialog.Result;
 
         if (!result.Canceled)

@@ -236,7 +236,7 @@ public class BasePage : ComponentBase
             { x => x.UserId, userId }
         };
 
-        await DialogService.ShowAsync<ChangePasswordDialog>(LanguageContainer.Keys["Change Password"], Parameters, dialogOptions);
+        await DialogService.ShowAsync<ChangePasswordDialog>(LanguageContainer.Keys["Reset Password"], Parameters, dialogOptions);
     }
 
     protected void ChangePasswordStatus()

@@ -66,6 +66,9 @@
                         <div>
                             <TableButtons IsDisable="isDisable" EditClicked="() => OpenForm(formUri, contractClient.Item!.Id)" DeleteClicked="() => Delete(contractClient.Item!.Id)"
                                           DetailsClicked="() => OpenDetails(detailsUri, contractClient.Item!.Id)" />
+                            <a @onclick="() => ShowPdfUploadForm(contractClient.Item!.Id)" title="@languageContainer.Keys["Upload Report"]" class="btn btn-sm btn-light-info me-1">
+                                <i class="fa-solid fa-envelope-open-text p-0"></i>
+                            </a>
                         </div>
                     </CellTemplate>
                 </TemplateColumn>

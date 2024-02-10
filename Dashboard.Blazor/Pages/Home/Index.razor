@@ -1,4 +1,5 @@
 ﻿@page "/"
+@using System.Web
 @inherits BasePage
 @attribute [Authorize]
 
@@ -88,10 +89,7 @@ else
     <div class="row mb-3">
         <div class="col-6 col-md-3 mb-3 mb-md-0">
             <div class="card card-flush shadow-sm">
-                <div class="card-header">
-                    <h2 class="card-title fw-bold">@languageContainer.Keys["Services"]</h2>
-                </div>
-                <div class="card-body pt-0">
+                <div class="card-body">
                     <div class="d-flex flex-wrap justify-content-md-between flex-column flex-md-row justify-content-center">
                         <div class="d-flex align-items-md-start flex-column align-items-center">
                             <MudIcon Size="Size.Large" Icon="@Icons.Material.Outlined.Handyman" Title="Services" />
@@ -103,7 +101,7 @@ else
                         <MudButton Class="fw-bold" Href="/Services" Size="Size.Large" Variant="Variant.Text">
                             <div class="d-flex flex-column align-items-center">
                                 <MudIcon Size="Size.Large" Class="mb-1" Icon="@Icons.Material.Outlined.ArrowCircleRight" />
-                                @languageContainer.Keys["More Info"]
+                                @languageContainer.Keys["More"]
                             </div>
                         </MudButton>
                     </div>
@@ -112,10 +110,7 @@ else
         </div>
         <div class="col-6 col-md-3 mb-3 mb-md-0">
             <div class="card card-flush shadow-sm">
-                <div class="card-header">
-                    <h2 class="card-title fw-bold">@languageContainer.Keys["Clients"]</h2>
-                </div>
-                <div class="card-body pt-0">
+                <div class="card-body">
                     <div class="d-flex flex-wrap justify-content-md-between flex-column flex-md-row justify-content-center">
                         <div class="d-flex align-items-md-start flex-column align-items-center">
                             <MudIcon Size="Size.Large" Icon="@Icons.Material.Outlined.Diversity1" Title="Clients" />
@@ -127,7 +122,7 @@ else
                         <MudButton Class="fw-bold" Href="/Clients" Size="Size.Large" Variant="Variant.Text">
                             <div class="d-flex flex-column align-items-center">
                                 <MudIcon Size="Size.Large" Class="mb-1" Icon="@Icons.Material.Outlined.ArrowCircleRight" />
-                                @languageContainer.Keys["More Info"]
+                                @languageContainer.Keys["More"]
                             </div>
                         </MudButton>
                     </div>
@@ -137,10 +132,7 @@ else
         </div>
         <div class="col-6 col-md-3 mb-3 mb-md-0">
             <div class="card card-flush shadow-sm">
-                <div class="card-header">
-                    <h2 class="card-title fw-bold">@languageContainer.Keys["Supervisors"]</h2>
-                </div>
-                <div class="card-body pt-0">
+                <div class="card-body">
                     <div class="d-flex flex-wrap justify-content-md-between flex-column flex-md-row justify-content-center">
                         <div class="d-flex align-items-md-start flex-column align-items-center">
                             <MudIcon Size="Size.Large" Icon="@Icons.Material.Outlined.SupervisorAccount" Title="Supervisors" />
@@ -152,7 +144,7 @@ else
                         <MudButton Class="fw-bold" Href="/Supervisors" Size="Size.Large" Variant="Variant.Text">
                             <div class="d-flex flex-column align-items-center">
                                 <MudIcon Size="Size.Large" Class="mb-1" Icon="@Icons.Material.Outlined.ArrowCircleRight" />
-                                @languageContainer.Keys["More Info"]
+                                @languageContainer.Keys["More"]
                             </div>
                         </MudButton>
                     </div>
@@ -162,10 +154,7 @@ else
         </div>
         <div class="col-6 col-md-3 mb-3 mb-md-0">
             <div class="card card-flush shadow-sm">
-                <div class="card-header">
-                    <h2 class="card-title fw-bold">@languageContainer.Keys["Managers"]</h2>
-                </div>
-                <div class="card-body pt-0">
+                <div class="card-body">
                     <div class="d-flex flex-wrap justify-content-md-between flex-column flex-md-row justify-content-center">
                         <div class="d-flex align-items-md-start flex-column align-items-center">
                             <MudIcon Size="Size.Large" Icon="@Icons.Material.Outlined.Diversity3" Title="Managers" />
@@ -177,7 +166,95 @@ else
                         <MudButton Class="fw-bold" Href="/Managers" Size="Size.Large" Variant="Variant.Text">
                             <div class="d-flex flex-column align-items-center">
                                 <MudIcon Size="Size.Large" Class="mb-1" Icon="@Icons.Material.Outlined.ArrowCircleRight" />
-                                @languageContainer.Keys["More Info"]
+                                @languageContainer.Keys["More"]
+                            </div>
+                        </MudButton>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mb-3">
+        <div class="col-6 col-md-3 mb-3 mb-md-0">
+            <div class="card card-flush shadow-sm">
+                <div class="card-body">
+                    <div class="d-flex flex-wrap justify-content-md-between flex-column flex-md-row justify-content-center">
+                        <div class="d-flex align-items-md-start flex-column align-items-center">
+                            <MudIcon Size="Size.Large" Icon="@Icons.Material.Outlined.Diversity1" Title="Contract Clients" />
+                            <div class="fw-semibold text-gray-400 mt-5">
+                                <span class="text-gray-900 fw-bold fs-2 me-1">@dashboard.ContractClientsCount</span>
+                                @languageContainer.Keys["Contract Clients"]
+                            </div>
+                        </div>
+                        <MudButton Class="fw-bold" Href="/ContractClients" Size="Size.Large" Variant="Variant.Text">
+                            <div class="d-flex flex-column align-items-center">
+                                <MudIcon Size="Size.Large" Class="mb-1" Icon="@Icons.Material.Outlined.ArrowCircleRight" />
+                                @languageContainer.Keys["More"]
+                            </div>
+                        </MudButton>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 col-md-3 mb-3 mb-md-0">
+            <div class="card card-flush shadow-sm">
+                <div class="card-body">
+                    <div class="d-flex flex-wrap justify-content-md-between flex-column flex-md-row justify-content-center">
+                        <div class="d-flex align-items-md-start flex-column align-items-center">
+                            <MudIcon Size="Size.Large" Icon="@EntityIcons.ContractsIcon" Title="Contracts" />
+                            <div class="fw-semibold text-gray-400 mt-5">
+                                <span class="text-gray-900 fw-bold fs-2 me-1">@dashboard.ContractsCount</span>
+                                @languageContainer.Keys["Contracts"]
+                            </div>
+                        </div>
+                        <MudButton Class="fw-bold" Href="/Contracts" Size="Size.Large" Variant="Variant.Text">
+                            <div class="d-flex flex-column align-items-center">
+                                <MudIcon Size="Size.Large" Class="mb-1" Icon="@Icons.Material.Outlined.ArrowCircleRight" />
+                                @languageContainer.Keys["More"]
+                            </div>
+                        </MudButton>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="col-6 col-md-3 mb-3 mb-md-0">
+            <div class="card card-flush shadow-sm">
+                <div class="card-body">
+                    <div class="d-flex flex-wrap justify-content-md-between flex-column flex-md-row justify-content-center">
+                        <div class="d-flex align-items-md-start flex-column align-items-center">
+                            <MudIcon Size="Size.Large" Icon="@EntityIcons.OrderIcon" Title="Orders" />
+                            <div class="fw-semibold text-gray-400 mt-5">
+                                <span class="text-gray-900 fw-bold fs-2 me-1">@dashboard.OrdersCount</span>
+                                @languageContainer.Keys["Orders"]
+                            </div>
+                        </div>
+                        <MudButton Class="fw-bold" Href="/Orders" Size="Size.Large" Variant="Variant.Text">
+                            <div class="d-flex flex-column align-items-center">
+                                <MudIcon Size="Size.Large" Class="mb-1" Icon="@Icons.Material.Outlined.ArrowCircleRight" />
+                                @languageContainer.Keys["More"]
+                            </div>
+                        </MudButton>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="col-6 col-md-3 mb-3 mb-md-0">
+            <div class="card card-flush shadow-sm">
+                <div class="card-body">
+                    <div class="d-flex flex-wrap justify-content-md-between flex-column flex-md-row justify-content-center">
+                        <div class="d-flex align-items-md-start flex-column align-items-center">
+                            <MudIcon Size="Size.Large" Icon="@Icons.Material.Outlined.Engineering" Title="Providers" />
+                            <div class="fw-semibold text-gray-400 mt-5">
+                                <span class="text-gray-900 fw-bold fs-2 me-md-1">@dashboard.ProvidersCount</span>
+                                @languageContainer.Keys["Providers"]
+                            </div>
+                        </div>
+                        <MudButton Class="fw-bold" Href="/Providers" Size="Size.Large" Variant="Variant.Text">
+                            <div class="d-flex flex-column align-items-center">
+                                <MudIcon Size="Size.Large" Class="mb-1" Icon="@Icons.Material.Outlined.ArrowCircleRight" />
+                                @languageContainer.Keys["More"]
                             </div>
                         </MudButton>
                     </div>
@@ -192,6 +269,9 @@ else
                     <div class="card-title">
                         <h2 class="card-title fw-bold">@languageContainer.Keys["Total Earnings"]</h2>
                     </div>
+@*                     <div class="card-toolbar">
+                        <MudDateRangePicker Text="@(dateRangText is null? string.Empty : $"{dateRangText.Start?.ToString("d/M/yyyy")} -> {dateRangText.Start?.ToString("d/M/yyyy")}")" Margin="Margin.Dense" Variant="Variant.Outlined" Label="@languageContainer.Keys["Pick Period"]" DateRangeChanged="ChangeDateRange" Clearable="true" />
+                    </div> *@
                 </div>
                 <div class="card-body pt-0">
                     <div class="d-flex flex-column flex-warp  flex-md-row flex-md-nowrap justify-content-around align-items-center gap-7">
@@ -234,6 +314,7 @@ else
     private IEnumerable<Claim> claims = Enumerable.Empty<Claim>();
 
     private DashboardDto dashboard = new();
+    private DateRange? dateRangText;
 
     protected override async Task OnInitializedAsync()
     {
@@ -242,6 +323,19 @@ else
         claims = await GetClaimsPrincipalData();
 
         dashboard = await GetByIdAsync<DashboardDto>("Dashboard/statistics");
+
+        StopProcessing();
+    }
+
+    private async Task ChangeDateRange(DateRange dateRange)
+    {
+        StartProcessing();
+
+        dateRangText = dateRange;
+
+        var result = await GetByIdAsync<DashboardDto>($"Dashboard/statistics/earnings?startDate={dateRange.Start?.ToUniversalTime().ToString("d/M/yyyy")}&endDate={dateRange.End?.ToUniversalTime().ToString("d/M/yyyy")}");
+
+        dashboard.Earnings = result.Earnings;
 
         StopProcessing();
     }

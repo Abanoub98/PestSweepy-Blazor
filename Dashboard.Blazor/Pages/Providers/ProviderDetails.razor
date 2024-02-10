@@ -146,6 +146,12 @@ else
                                     <div class="fw-bold mt-5">@languageContainer.Keys["National Id"]</div>
                                     <div class="text-gray-600">@provider.NationalId</div>
                                     <!--begin::Details item-->
+                                    <!--begin::Details item-->
+                                    <div class="fw-bold mt-5">@languageContainer.Keys["Supervisor"]</div>
+                                    <a href="/Managers/details/@provider.Supervisor?.Id" class="text-gray-600 text-hover-primary">
+                                        @($"{provider.Supervisor?.FirstName} {provider.Supervisor?.LastName}")
+                                    </a>
+                                    <!--begin::Details item-->
                                 </div>
                                 <!--end::Details content-->
                                 <div>

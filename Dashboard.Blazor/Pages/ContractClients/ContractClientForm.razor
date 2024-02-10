@@ -68,8 +68,28 @@ else
             {
                 <div class="flex-wrap d-flex flex-md-nowrap">
                     <div class="p-3 w-100">
-                        <MudNumericField HideSpinButtons="true" HelperText="@languageContainer.Keys[("Required")]" Variant="Variant.Outlined" AdornmentColor="Color.Info" Adornment="Adornment.Start" HelperTextOnFocus="true" Required="true" Label="@languageContainer.Keys[("Phone Number")]"
-                                         @bind-Value="contractClientForm.PhoneNumber" For="@(() => contractClientForm.PhoneNumber)" AdornmentIcon="@Icons.Material.Filled.Phone" Placeholder="@languageContainer.Keys[(Placeholders.PhoneNumber)]" RequiredError="@languageContainer.Keys[("Phone Number is Required")]" />
+                        <div class="row">
+                            <div class="col-5">
+                                <MudSelect @bind-Value="countryCode" Label="@languageContainer.Keys[("Country Code")]">
+                                    <MudSelectItem Value="@(@"^((00|\+)?1)?\d{10}$")">
+                                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/US_flag_51_stars.svg/1235px-US_flag_51_stars.svg.png" height="14" class="mr-1" />(+1)
+                                    </MudSelectItem>
+                                    <MudSelectItem Value="@(@"^((00|\+)?20)?1\d{9}$")">
+                                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fe/Flag_of_Egypt.svg/800px-Flag_of_Egypt.svg.png" height="14" class="mr-1" />(+20)
+                                    </MudSelectItem>
+                                    <MudSelectItem Value="@(@"^((00|\+)?971)?\d{9}$")">
+                                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Flag_of_the_United_Arab_Emirates.svg/255px-Flag_of_the_United_Arab_Emirates.svg.png" height="14" class="mr-1" />(+971)
+                                    </MudSelectItem>
+                                    <MudSelectItem Value="@(@"^((00|\+)?966)?\d{9}$")">
+                                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0d/Flag_of_Saudi_Arabia.svg/2560px-Flag_of_Saudi_Arabia.svg.png" height="14" class="mr-1" />(+966)
+                                    </MudSelectItem>
+                                </MudSelect>
+                            </div>
+                            <div class="col-7">
+                                <MudTextField Pattern="@countryCode" HelperText="@languageContainer.Keys[("Required")]" Variant="Variant.Outlined" AdornmentColor="Color.Info" Adornment="Adornment.Start" HelperTextOnFocus="true" Required="true" Label="@languageContainer.Keys[("Phone Number")]"
+                                                 @bind-Value="contractClientForm.PhoneNumber" For="@(() => contractClientForm.PhoneNumber)" AdornmentIcon="@Icons.Material.Filled.Phone" Placeholder="@languageContainer.Keys[(Placeholders.PhoneNumber)]" RequiredError="@languageContainer.Keys[("Phone Number is Required")]" />
+                            </div>
+                        </div>
                     </div>
                     <div class="p-3 w-100">
                         <MudTextField HelperText="@languageContainer.Keys[("Required")]" Variant="Variant.Outlined" InputType="InputType.Email" AdornmentColor="Color.Info" Adornment="Adornment.Start" HelperTextOnFocus="true" Label="@languageContainer.Keys[("Email")]"

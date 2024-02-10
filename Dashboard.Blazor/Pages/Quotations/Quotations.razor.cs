@@ -56,7 +56,6 @@ public partial class Quotations
         DialogParameters<FileUpload> Parameters = new()
         {
             { x => x.Id, id },
-            {x => x.EntityName, "Quotations" }
         };
 
         await DialogService.ShowAsync<FileUpload>($"{languageContainer.Keys["Upload"]} {languageContainer.Keys["Quotation Report"]}", Parameters, dialogOptions);

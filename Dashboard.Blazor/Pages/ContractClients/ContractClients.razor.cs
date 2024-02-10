@@ -56,6 +56,26 @@ public partial class ContractClients
         StopProcessing();
     }
 
+
+    private async Task ShowPdfUploadForm(int id)
+    {
+        DialogOptions dialogOptions = new()
+        {
+            CloseOnEscapeKey = true,
+            MaxWidth = MaxWidth.Small,
+            FullWidth = true,
+            Position = DialogPosition.TopCenter,
+            CloseButton = true
+        };
+
+        DialogParameters<FileUpload> Parameters = new()
+        {
+            { x => x.Id, id }
+        };
+
+        await DialogService.ShowAsync<FileUpload>($"{languageContainer.Keys["Upload"]} {languageContainer.Keys["PDF"]}", Parameters, dialogOptions);
+    }
+
     private bool FilterFunc(ClientDto element)
     {
         if (string.IsNullOrWhiteSpace(searchString))

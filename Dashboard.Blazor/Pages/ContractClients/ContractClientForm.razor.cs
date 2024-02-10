@@ -5,6 +5,7 @@ public partial class ContractClientForm
     [Parameter][EditorRequired] public int Id { get; set; }
 
     private ClientDto? contractClientForm;
+    private string countryCode = @"^((00|\+)?966)?\d{9}$";
 
     protected override async Task OnParametersSetAsync()
     {
@@ -26,6 +27,7 @@ public partial class ContractClientForm
 
         contractClientForm!.NationalityId = contractClientForm.Nationality!.Id;
         contractClientForm!.CountryId = contractClientForm.Country!.Id;
+        contractClientForm.PhoneNumber = countryCode + contractClientForm.PhoneNumber;
 
         bool result;
         ClientDto? clientDtoResult;
@@ -47,6 +49,11 @@ public partial class ContractClientForm
         }
 
         StopProcessing();
+    }
+
+    private void ChangePhoneNumber(string codeNumber)
+    {
+        contractClientForm!.PhoneNumber = codeNumber;
     }
 
     private void CaptureUploadedImage(IBrowserFile image) => contractClientForm!.UploadedImage = image;

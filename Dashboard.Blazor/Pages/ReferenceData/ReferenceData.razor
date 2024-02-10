@@ -35,7 +35,7 @@
                      </div>
                      <div class="w-md-25 w-100">
                          <MudTextField @bind-Value="searchString" Adornment="Adornment.Start" Class="mt-0 mb-5" Immediate="true"
-                                       Placeholder=@($"{languageContainer.Keys["Search For"]} Name")
+                                       Placeholder=@($"{languageContainer.Keys["Search For"]} {@languageContainer.Keys["Name"]}")
                                        AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" />
                      </div>
                  </div>
@@ -44,22 +44,26 @@
                  <NoDataToDisply />
              </NoRecordsContent>
              <Columns>
-                 <PropertyColumn Property="x => x.Name" Title="Name" />
-                 <PropertyColumn Property="x => x.OrderIndex" Title="Order" />
+                 <PropertyColumn Property="x => x.Name" Title="@languageContainer.Keys["Name"]" />
+                 <PropertyColumn Property="x => x.OrderIndex" Title="@languageContainer.Keys["Order"]" />
 
-                 <TemplateColumn Title="Actions" CellClass="text-center" Context="Refdata" HeaderClass="text-center" Sortable="false" Filterable="false">
+                 <TemplateColumn Title="@languageContainer.Keys["Actions"]" CellClass="text-center" Context="Refdata" HeaderClass="text-center" Sortable="false" Filterable="false">
                      <HeaderTemplate>
-                         <MudText Class="w-100">Actions</MudText>
-                     </HeaderTemplate>
-                     <CellTemplate>
-                         <TableButtons IsEditHide="hideTableActions" IsDeleteHide="hideTableActions" IsDetailsHide="true" IsDisable="isDisable" EditClicked="() => ShowForm(Refdata.Item!.Id)" DeleteClicked="() => Delete(Refdata.Item!.Id)" />
-                     </CellTemplate>
-                 </TemplateColumn>
-             </Columns>
+                         <MudText Class="w-100">
+                             @languageContainer.Keys["Actions"]
+                        </MudText>
+                    </HeaderTemplate>
+                    <CellTemplate>
+                        <div>
+                            <TableButtons IsEditHide="hideTableActions" IsDeleteHide="hideTableActions" IsDetailsHide="true" IsDisable="isDisable" EditClicked="() => ShowForm(Refdata.Item!.Id)" DeleteClicked="() => Delete(Refdata.Item!.Id)" />
+                        </div>
+                    </CellTemplate>
+                </TemplateColumn>
+            </Columns>
 
-             <PagerContent>
-                 <MudDataGridPager T="LookupDto" />
-             </PagerContent>
-         </MudDataGrid>
-     </MudCardContent>
- </MudCard>
+            <PagerContent>
+                <MudDataGridPager T="LookupDto" />
+            </PagerContent>
+        </MudDataGrid>
+    </MudCardContent>
+</MudCard>

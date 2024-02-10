@@ -3,6 +3,12 @@
 <MudDialog DisableSidePadding="true">
     <DialogContent>
         <div class="d-flex flex-column p-3">
+            <div class="mb-3">
+                <MudRadioGroup @bind-Value="@EntityName">
+                    <MudRadio Value="@("Quotations")" Color="Color.Info" UnCheckedColor="Color.Default">@languageContainer.Keys["Quotation"]</MudRadio>
+                    <MudRadio Value="@("Contracts")" Color="Color.Info" UnCheckedColor="Color.Default">@languageContainer.Keys["Contract"]</MudRadio>
+                </MudRadioGroup>
+            </div>
             <!--begin::Action-->
             <div class="px-3 d-flex justify-content-between align-items-center">
                 <div>
@@ -56,8 +62,6 @@
             </div>
             <!--end::Action-->
         </div>
-        <div class="d-flex justify-content-between px-3">
-        </div>
 
     </DialogContent>
 </MudDialog>
@@ -65,8 +69,9 @@
 @code {
     private IBrowserFile? UploadedPdf;
     [Parameter][EditorRequired] public int Id { set; get; }
-    [Parameter][EditorRequired] public string EntityName { set; get; } = null!;
     [CascadingParameter] MudDialogInstance MudDialog { get; set; } = default!;
+
+    private string EntityName = "Quotations";
 
     private void Clear()
     {

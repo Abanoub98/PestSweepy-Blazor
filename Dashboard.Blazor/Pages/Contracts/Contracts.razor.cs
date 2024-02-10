@@ -66,8 +66,7 @@ public partial class Contracts
 
         DialogParameters<FileUpload> Parameters = new()
         {
-            { x => x.Id, id },
-            {x => x.EntityName, "Contracts" }
+            { x => x.Id, id }
         };
 
         await DialogService.ShowAsync<FileUpload>($"{languageContainer.Keys["Upload"]} {languageContainer.Keys["Contract Report"]}", Parameters, dialogOptions);
