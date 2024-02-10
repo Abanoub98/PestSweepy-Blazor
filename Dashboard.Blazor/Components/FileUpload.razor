@@ -2,7 +2,7 @@
 
 <MudDialog DisableSidePadding="true">
     <DialogContent>
-        <div class="d-flex flex-column p-3">
+        <div class="d-flex flex-column px-10">
             <div class="mb-3">
                 <MudRadioGroup @bind-Value="@EntityName">
                     <MudRadio Value="@("Quotations")" Color="Color.Info" UnCheckedColor="Color.Default">@languageContainer.Keys["Quotation"]</MudRadio>
@@ -10,7 +10,7 @@
                 </MudRadioGroup>
             </div>
             <!--begin::Action-->
-            <div class="px-3 d-flex justify-content-between align-items-center">
+            <div class="d-flex justify-content-between align-items-center">
                 <div>
                     <MudFileUpload T="IBrowserFile" @bind-Files="UploadedPdf" Context="file" Accept=".pdf">
                         <ButtonTemplate>
