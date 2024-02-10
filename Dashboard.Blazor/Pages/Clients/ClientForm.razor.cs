@@ -42,7 +42,7 @@ public partial class ClientForm
             if (clientForm.UploadedImage is not null)
                 await UploadImage("Clients", clientForm.Id, clientForm.UploadedImage);
 
-            NavigationManager.NavigateTo("/Clients");
+            NavigationManager.NavigateTo("/IndividualClients");
         }
 
         StopProcessing();
