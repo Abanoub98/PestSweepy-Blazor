@@ -1,0 +1,114 @@
+﻿@page "/Orders/Form"
+@page "/Orders/Form/{Id:int}"
+
+@attribute [Authorize(Roles = $"{Roles.AdminRole},{Roles.ManagerRole},{Roles.SupervisorRole}")]
+@inherits BasePage
+
+<PageTitle>
+    @($"{languageContainer.Keys["Add"]} {languageContainer.Keys[("Order")]}")
+</PageTitle>
+<MudBreadcrumbs Items="breadcrumbItems"></MudBreadcrumbs>
+
+@if (orderForm is null)
+{
+    <FormLoadingSpinner IsBigForm="true" />
+}
+else
+{
+    <MudCard Elevation="25">
+        <EditForm Model="@orderForm" OnValidSubmit="OnValidSubmit">
+            <DataAnnotationsValidator />
+            <MudCardHeader Style="padding:20px">
+                <CardHeaderAvatar>
+                    <MudAvatar Rounded="true" Color="Color.Info">
+                        <MudIcon Icon="@EntityIcons.OrderIcon" />
+                    </MudAvatar>
+                </CardHeaderAvatar>
+                <CardHeaderContent>
+                    <MudText Style="display: flex;align-items: center;" Typo="Typo.h5">
+                        @(Id == 0 ? $"{languageContainer.Keys[("Add")]} {languageContainer.Keys[("Order")]}" : $"{languageContainer.Keys[("Edit")]} {orderForm.OrderNumber}")
+                    </MudText>
+                </CardHeaderContent>
+                <CardHeaderActions>
+                    <MudButton DisableElevation="true" Href="/Orders" Style="margin:10px" Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.ArrowBack" Color="Color.Info">
+                        @($"{languageContainer.Keys[("Back to")]} {languageContainer.Keys[("Orders")]}")
+                    </MudButton>
+                </CardHeaderActions>
+            </MudCardHeader>
+            <MudCardContent Class="px-5 py-3">
+                <div class="d-flex flex-wrap flex-md-nowrap">
+                    <div class="p-3 w-100">
+                        <MudAutocomplete T="LookupDto" SearchFunc="@GetCategories" Adornment="Adornment.Start" AnchorOrigin="Origin.BottomCenter"
+                                         Variant="Variant.Outlined" ShowProgressIndicator="true" ResetValueOnEmptyText="true" CoerceText="true" AdornmentIcon="@Icons.Material.Filled.Category"
+                                         ProgressIndicatorColor="Color.Info" Clearable @bind-Value="orderForm.Category" For="@(() => orderForm.Category)" AdornmentColor="Color.Info" Label="@languageContainer.Keys["Category"]"
+                                         ToStringFunc="@(e=> e == null ? null : $"{e.NameAr} - {e.NameEn}")" HelperText="@languageContainer.Keys["Required"]" Placeholder="@languageContainer.Keys["Select Category"]" MaxItems="null" HelperTextOnFocus="true">
+                            <NoItemsTemplate>
+                                <MudText Align="Align.Center" Class="px-4 py-4">
+                                    @languageContainer.Keys["No items found"]
+                                </MudText>
+                            </NoItemsTemplate>
+                        </MudAutocomplete>
+                    </div>
+                    <div class="p-3 w-100">
+                        <MudAutocomplete T="ServiceDto" SearchFunc="@GetServices" Adornment="Adornment.Start" AnchorOrigin="Origin.BottomCenter"
+                                         Variant="Variant.Outlined" ShowProgressIndicator="true" ResetValueOnEmptyText="true" CoerceText="true" AdornmentIcon="@Icons.Material.Filled.Handyman"
+                                         ProgressIndicatorColor="Color.Info" Clearable @bind-Value="orderForm.Service" For="@(() => orderForm.Service)" AdornmentColor="Color.Info" Label="@languageContainer.Keys["Service"]"
+                                         ToStringFunc="@(e=> e == null ? null : $"{e.NameAr} - {e.NameEn}")" HelperText="@languageContainer.Keys["Required"]" Placeholder="@languageContainer.Keys["Select Service"]" MaxItems="null" HelperTextOnFocus="true">
+                            <NoItemsTemplate>
+                                <MudText Align="Align.Center" Class="px-4 py-4">
+                                    @languageContainer.Keys["No items found"]
+                                </MudText>
+                            </NoItemsTemplate>
+                        </MudAutocomplete>
+                    </div>
+                    <div class="p-3 w-100">
+                        <MudAutocomplete T="ServiceOption" SearchFunc="@GetServiceOptions" Adornment="Adornment.Start" AnchorOrigin="Origin.BottomCenter"
+                                         Variant="Variant.Outlined" ShowProgressIndicator="true" ResetValueOnEmptyText="true" CoerceText="true" AdornmentIcon="@Icons.Material.Filled.Handyman"
+                                         ProgressIndicatorColor="Color.Info" Clearable @bind-Value="orderForm.ServiceOption" For="@(() => orderForm.ServiceOption)" AdornmentColor="Color.Info" Label="@languageContainer.Keys["Service Option"]"
+                                         ToStringFunc="@(e=> e == null ? null : $"{e.Name}")" HelperText="@languageContainer.Keys["Required"]" Placeholder="@languageContainer.Keys["Select Service Option"]" MaxItems="null" HelperTextOnFocus="true">
+                            <NoItemsTemplate>
+                                <MudText Align="Align.Center" Class="px-4 py-4">
+                                    @languageContainer.Keys["No items found"]
+                                </MudText>
+                            </NoItemsTemplate>
+                        </MudAutocomplete>
+                    </div>
+                    <div class="p-3 w-100">
+                        <MudNumericField HideSpinButtons="true" HelperText="@languageContainer.Keys["Required"]" @bind-Value="orderForm.Quantity" For="@(() => orderForm.Quantity)" Immediate="true"
+                                         Variant="Variant.Outlined" AdornmentColor="Color.Info" Adornment="Adornment.End" AdornmentText="@languageContainer.Keys["Units"]" HelperTextOnFocus="true" Label="@languageContainer.Keys["Quantity"]" />
+                    </div>
+                </div>
+                <div class="d-flex flex-wrap flex-md-nowrap">
+                    <div class="p-3 w-100">
+                        <MudTextField HelperText="@languageContainer.Keys["Required"]" Variant="Variant.Outlined" AdornmentColor="Color.Info" Adornment="Adornment.Start" HelperTextOnFocus="true"
+                                      @bind-Value="orderForm.Address" For="@(() => orderForm.Address)" AdornmentIcon="@Icons.Material.Filled.AddLocationAlt" Placeholder="@languageContainer.Keys["Location"]" Label="@languageContainer.Keys["Address"]" />
+                    </div>
+                    <div class="w-100 d-flex flex-wrap flex-md-nowrap">
+                        <div class="p-3 w-100">
+                            <MudTextField HelperText="@languageContainer.Keys["Required"]" Variant="Variant.Outlined" AdornmentColor="Color.Info" Adornment="Adornment.Start" HelperTextOnFocus="true"
+                                          @bind-Value="orderForm.ApartmentNumber" For="@(() => orderForm.ApartmentNumber)" AdornmentIcon="@Icons.Material.Filled.AddLocation" Placeholder="@languageContainer.Keys["Apartment Number"]" Label="@languageContainer.Keys["Apartment Number"]" />
+                        </div>
+                        <div class="p-3 w-100">
+                            <MudTextField HelperText="@languageContainer.Keys["Required"]" Variant="Variant.Outlined" AdornmentColor="Color.Info" Adornment="Adornment.Start" HelperTextOnFocus="true"
+                                          @bind-Value="orderForm.BuildingNumber" For="@(() => orderForm.BuildingNumber)" AdornmentIcon="@Icons.Material.Filled.AddLocation" Placeholder="@languageContainer.Keys["Building Number"]" Label="@languageContainer.Keys["Building Number"]" />
+                        </div>
+                        <div class="p-3 w-100">
+                            <MudDatePicker AdornmentColor="Color.Info" Variant="Variant.Outlined" @bind-Date="orderForm.ReservationDateLocal" For="@(() => orderForm.ReservationDateLocal)" Placeholder="@languageContainer.Keys["Select Date"]" Label="@languageContainer.Keys["Reservation Date"]" />
+                        </div>
+                    </div>
+                </div>
+                <div class="d-flex flex-wrap flex-md-nowrap">
+                    <div class="p-3 w-100">
+                        <MudTextField HelperText="@languageContainer.Keys["Required"]" Variant="Variant.Outlined" @bind-Value="orderForm.Notes" For="@(() => orderForm.Notes)"
+                                      HelperTextOnFocus="true" Placeholder="@languageContainer.Keys["Order Notes"]" Lines="10" Label="@languageContainer.Keys["Order Notes"]" />
+                    </div>
+                </div>
+                <div class="flex-wrap gap-5 gap-md-0 d-flex flex-md-nowrap align-items-end p-3">
+                    <FormButtons IsLoading="@isLoading" />
+                </div>
+            </MudCardContent>
+            <MudCardActions>
+            </MudCardActions>
+        </EditForm>
+    </MudCard>
+}

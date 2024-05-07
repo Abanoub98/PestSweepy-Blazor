@@ -12,6 +12,7 @@ public class OrderDto
 
     public DateTime? ReservationDate { get; set; }
 
+    [Required]
     public DateTime? ReservationDateLocal
     {
         get
@@ -29,8 +30,6 @@ public class OrderDto
 
     public bool OrderAccepted { get; set; }
 
-    public ServiceOption ServiceOption { get; set; } = new();
-
     public ClientDto Client { get; set; } = new();
 
     public PaymentDto? Payment { get; set; }
@@ -39,22 +38,29 @@ public class OrderDto
 
     public LookupDto PaymentMethod { get; set; } = new();
 
+    [Required]
     public int Quantity { get; set; }
 
     public double TotalAmount { get; set; }
 
     public double VAT { get; set; }
 
+    [Required]
     public string Notes { get; set; } = null!;
 
+    [Required]
     public string Address { get; set; } = null!;
 
+    [Required]
     public string ApartmentNumber { get; set; } = null!;
 
+    [Required]
     public string BuildingNumber { get; set; } = null!;
 
+    [Required]
     public double Longitude { get; set; }
 
+    [Required]
     public double Latitude { get; set; }
 
     public string AddressUrl { get; set; } = null!;
@@ -62,4 +68,20 @@ public class OrderDto
     public ProviderDto? Provider { get; set; }
     public int? ProviderId { get; set; }
     public IEnumerable<ProviderDto>? Providers { get; set; }
+
+    [Required]
+    public ServiceOption? ServiceOption { get; set; }
+    public int ServiceOptionId { get; set; }
+    public IEnumerable<ServiceOption>? ServiceOptions { get; set; }
+
+    [Required]
+    [Label(name: "Service")]
+    public ServiceDto? Service { get; set; }
+    public int ServiceId { get; set; }
+    public IEnumerable<ServiceDto>? Services { get; set; }
+
+    [Required]
+    public LookupDto? Category { get; set; }
+    public int CategoryId { get; set; }
+    public IEnumerable<LookupDto>? Categories { get; set; }
 }

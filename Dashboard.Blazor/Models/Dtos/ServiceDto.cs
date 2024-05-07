@@ -31,6 +31,8 @@ public class ServiceDto
 
 public class ServiceOption
 {
+    public int Id { get; set; }
+
     [Required]
     public string Name { get; set; } = null!;
 
