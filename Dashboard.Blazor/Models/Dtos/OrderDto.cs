@@ -38,7 +38,8 @@ public class OrderDto
     public LookupDto PaymentMethod { get; set; } = new();
 
     [Required]
-    public int Quantity { get; set; }
+    [Range(1, 10000000)]
+    public int Quantity { get; set; } = 1;
 
     public double TotalAmount { get; set; }
 

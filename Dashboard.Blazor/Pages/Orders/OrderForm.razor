@@ -53,7 +53,7 @@ else
                         <MudAutocomplete T="ServiceDto" SearchFunc="@GetServices" Adornment="Adornment.Start" AnchorOrigin="Origin.BottomCenter"
                                          Variant="Variant.Outlined" ShowProgressIndicator="true" ResetValueOnEmptyText="true" CoerceText="true" AdornmentIcon="@Icons.Material.Filled.Handyman"
                                          ProgressIndicatorColor="Color.Info" Clearable @bind-Value="orderForm.Service" For="@(() => orderForm.Service)" AdornmentColor="Color.Info" Label="@languageContainer.Keys["Service"]"
-                                         ToStringFunc="@(e=> e == null ? null : $"{e.NameEn} - {e.NameAr}")" HelperText="@languageContainer.Keys["Required"]" Placeholder="@languageContainer.Keys["Select Service"]" MaxItems="null" HelperTextOnFocus="true">
+                                         ToStringFunc="@(e=> e == null ? null : $"{e.NameAr} - {e.NameEn}")" HelperText="@languageContainer.Keys["Required"]" Placeholder="@languageContainer.Keys["Select Service"]" MaxItems="null" HelperTextOnFocus="true">
                             <NoItemsTemplate>
                                 <MudText Align="Align.Center" Class="px-4 py-4">
                                     @languageContainer.Keys["No items found"]
