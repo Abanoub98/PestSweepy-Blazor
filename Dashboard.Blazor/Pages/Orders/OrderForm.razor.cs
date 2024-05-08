@@ -57,7 +57,7 @@ partial class OrderForm
     private async Task<IEnumerable<ClientDto>> GetClients(string value)
     {
         if (orderForm!.Clients is null)
-            orderForm.Clients = await GetAllAsync<ClientDto>("Clients");
+            orderForm.Clients = await GetAllAsync<ClientDto>("ContractClients");
 
         // if text is null or empty, show complete list
         if (string.IsNullOrEmpty(value))
