@@ -23,17 +23,17 @@ else
             <CardHeaderActions>
                 <div style="margin:10px">
                     <MudButton DisableElevation="true" OnClick="() => OpenForm(formUri,quotation.Id)" Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Edit" Color="Color.Info">
-                        Edit
+                        @languageContainer.Keys["Edit"]
                     </MudButton>
                     <MudButton DisableElevation="true" Href="/Quotations" Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.ArrowBack" Color="Color.Info">
-                        Back to Quotations
+                        @languageContainer.Keys["Back to"] @languageContainer.Keys["Quotations"]
                     </MudButton>
                 </div>
             </CardHeaderActions>
         </MudCardHeader>
     </MudCard>
     <MudTabs SliderColor="Color.Info" Class="mt-5" Elevation="25" Rounded="true" ApplyEffectsToContainer=true Border=true PanelClass="px-6 pb-6 pt-0">
-        <MudTabPanel Icon="@Icons.Material.Filled.Info" Text="More Info">
+        <MudTabPanel Icon="@Icons.Material.Filled.Info" Text="@languageContainer.Keys["More Info"]">
             <div class="d-flex justify-content-start my-5">
                 <div class="d-flex flex-column gap-1 me-10">
                     <div class="fw-bold text-muted">@languageContainer.Keys["Receiver Email"]</div>
@@ -51,7 +51,7 @@ else
             <MudCard Class="p-3 my-3 border" Elevation="0">
                 <MudCardHeader>
                     <CardHeaderContent>
-                        <MudText Typo="Typo.h5">Quotation Services:</MudText>
+                        <MudText Typo="Typo.h5">@languageContainer.Keys["Quotation Services"]:</MudText>
                     </CardHeaderContent>
                 </MudCardHeader>
                 <MudCardContent>
@@ -61,7 +61,7 @@ else
                     @foreach (var quotationService in quotation.QuotationBodies)
                     {
                         <div class="d-flex align-items-center">
-                            <MudText Typo="Typo.h6">Service @(++ServiceNumber):</MudText>
+                            <MudText Typo="Typo.h6">@languageContainer.Keys["Service"] @(++ServiceNumber):</MudText>
                         </div>
                         <div class="mt-2">
                             <QuotationService Service="quotationService" IsReadOnly="true" />
@@ -72,7 +72,7 @@ else
                 <MudCardActions>
                 </MudCardActions>
             </MudCard>
-            <MudTextField Variant="Variant.Outlined" @bind-Value="quotation.Notes" For="@(() => quotation.Notes)" Lines="10" ReadOnly Disabled />
+            <MudTextField Variant="Variant.Outlined" Placeholder="@languageContainer.Keys["Notes"]" Label="@languageContainer.Keys["Notes"]" @bind-Value="quotation.Notes" For="@(() => quotation.Notes)" Lines="10" ReadOnly Disabled />
         </MudTabPanel>
     </MudTabs>
 }
