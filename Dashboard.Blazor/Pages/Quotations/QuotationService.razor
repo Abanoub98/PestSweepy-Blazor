@@ -8,7 +8,7 @@
             <MudAutocomplete T="LookupDto" SearchFunc="@GetCategories" Adornment="Adornment.Start" AnchorOrigin="Origin.BottomCenter" ReadOnly="IsReadOnly" Disabled="IsReadOnly"
                              Variant="Variant.Outlined" ShowProgressIndicator="true" ResetValueOnEmptyText="true" CoerceText="true" AdornmentIcon="@Icons.Material.Filled.Category"
                              ProgressIndicatorColor="Color.Info" Clearable @bind-Value="quotationService.Category" For="@(() => quotationService.Category)" AdornmentColor="Color.Info" Label="@languageContainer.Keys["Category"]"
-                              ToStringFunc="@(e=> e == null ? null : $"{e.Name}")" HelperText="@languageContainer.Keys["Required"]" Placeholder="@languageContainer.Keys["Select Category"]" MaxItems="null" HelperTextOnFocus="true">
+                             ToStringFunc="@(e=> e == null ? null : $"{e.NameAr} - {e.NameEn}")" HelperText="@languageContainer.Keys["Required"]" Placeholder="@languageContainer.Keys["Select Category"]" MaxItems="null" HelperTextOnFocus="true">
                  <NoItemsTemplate>
                      <MudText Align="Align.Center" Class="px-4 py-4">
                          @languageContainer.Keys["No items found"]

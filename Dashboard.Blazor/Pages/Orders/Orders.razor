@@ -24,6 +24,7 @@
                             <MudText Class="mx-3" Typo="Typo.h5">
                                 @languageContainer.Keys["Orders"]
                             </MudText>
+                            <MudIconButton OnClick="() => OpenForm(formUri)" Icon="@Icons.Material.Filled.Add" Color="Color.Success"></MudIconButton>
                             <MudIconButton OnClick="OnInitializedAsync" Icon="@Icons.Material.Filled.Refresh" Color="Color.Info"></MudIconButton>
                         </div>
                     </div>

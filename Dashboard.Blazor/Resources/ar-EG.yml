@@ -410,3 +410,8 @@ Are you sure that you will deactivate this coupon?: "هل أنت متأكد أن
 Are you sure that you will activate this coupon?: "هل أنت متأكد أنك ستقوم بتنشيط هذا الكوبون؟"
 Not Active: "غير نشط"
 Transaction URL: "رابط العملية"
+
+Select Clients: "أختر العملاء"
+Service Option: "خيارات الخدمة"
+Select Service Option: "اختر خيارات الخدمة"
+Quantity: "الكمية"

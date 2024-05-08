@@ -4,6 +4,7 @@ public partial class Orders
 {
     private List<OrderDto> orders = new();
 
+    private readonly string formUri = "Orders/Form";
     private readonly string detailsUri = "Orders/Details";
 
     protected override async Task OnInitializedAsync()

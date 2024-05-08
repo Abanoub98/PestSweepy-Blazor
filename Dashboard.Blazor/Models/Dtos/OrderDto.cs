@@ -27,10 +27,9 @@ public class OrderDto
             ReservationDate = value;
         }
     }
+    public int CouponId { get; set; }
 
     public bool OrderAccepted { get; set; }
-
-    public ClientDto Client { get; set; } = new();
 
     public PaymentDto? Payment { get; set; }
 
@@ -84,4 +83,9 @@ public class OrderDto
     public LookupDto? Category { get; set; }
     public int CategoryId { get; set; }
     public IEnumerable<LookupDto>? Categories { get; set; }
+
+    [Required]
+    public ClientDto? Client { get; set; }
+    public int ClientId { get; set; }
+    public IEnumerable<ClientDto>? Clients { get; set; }
 }

@@ -25,7 +25,8 @@ partial class OrderForm
     {
         StartProcessing();
 
-        orderForm!.ServiceOptionId = orderForm.ServiceOption.Id;
+        orderForm!.ServiceOptionId = orderForm.ServiceOption!.Id;
+        orderForm!.ClientId = orderForm.Client!.Id;
 
         bool result;
         OrderDto? orderDtoResult;
@@ -52,6 +53,22 @@ partial class OrderForm
 
         return orderForm.Categories.Where(x => x.Name.Contains(value, StringComparison.InvariantCultureIgnoreCase));
     }
+
+    private async Task<IEnumerable<ClientDto>> GetClients(string value)
+    {
+        if (orderForm!.Clients is null)
+            orderForm.Clients = await GetAllAsync<ClientDto>("Clients");
+
+        // if text is null or empty, show complete list
+        if (string.IsNullOrEmpty(value))
+            return orderForm.Clients;
+
+        return orderForm.Clients.Where(x =>
+        x.FirstName.Contains(value, StringComparison.InvariantCultureIgnoreCase) ||
+        x.LastName.Contains(value, StringComparison.InvariantCultureIgnoreCase) ||
+        x.PhoneNumber.Contains(value, StringComparison.InvariantCultureIgnoreCase));
+    }
+
 
     private async Task<IEnumerable<ServiceDto>?> GetServices(string value)
     {
