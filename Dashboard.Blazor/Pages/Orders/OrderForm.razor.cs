@@ -5,6 +5,7 @@ partial class OrderForm
     [Parameter][EditorRequired] public int Id { get; set; }
 
     private OrderDto? orderForm;
+    private bool isContractClient;
 
     protected override async Task OnParametersSetAsync()
     {
@@ -17,8 +18,14 @@ partial class OrderForm
         {
             new(languageContainer.Keys["Home"], href: "/", icon: Icons.Material.Filled.Home),
             new(languageContainer.Keys["Orders"], href: "/Orders", icon: EntityIcons.OrderIcon),
-            new(languageContainer.Keys[Id == 0 ? "Add Order" : $"Edit {orderForm.OrderNumber}"], href: null, disabled: true),
+            new(languageContainer.Keys[Id == 0 ? $"{languageContainer.Keys["Add"]} {languageContainer.Keys[("Order")]}" : $"Edit {orderForm.OrderNumber}"], href: null, disabled: true),
         });
+    }
+
+    private void CheckedChanged(bool result)
+    {
+        isContractClient = result;
+        orderForm!.Clients = null;
     }
 
     private async Task OnValidSubmit(EditContext context)
@@ -57,7 +64,7 @@ partial class OrderForm
     private async Task<IEnumerable<ClientDto>> GetClients(string value)
     {
         if (orderForm!.Clients is null)
-            orderForm.Clients = await GetAllAsync<ClientDto>("ContractClients");
+            orderForm.Clients = await GetAllAsync<ClientDto>(isContractClient ? "ContractClients" : "Clients");
 
         // if text is null or empty, show complete list
         if (string.IsNullOrEmpty(value))
