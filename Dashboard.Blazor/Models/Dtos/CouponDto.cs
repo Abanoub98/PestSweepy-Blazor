@@ -24,6 +24,8 @@ public class CouponDto
 
     public double DiscountAmount { get; set; }
 
+    public double DiscountPercentage { get; set; }
+
     public bool IsActive { get; set; }
 
     public List<ServiceDto> Services { get; set; } = new();

@@ -31,7 +31,7 @@ else
                                AnchorOrigin="Origin.BottomCenter">
                         @foreach (var service in couponForm.Services)
                         {
-                            <MudSelectItem Value="@service.Id">@($"{service.NameAr} - {service.NameEn}")</MudSelectItem>
+                            <MudSelectItem Value="@service.Id">@($"{service.NameEn} - {service.NameAr}")</MudSelectItem>
                         }
 
                     </MudSelect>
@@ -57,6 +57,10 @@ else
                 <div class="p-3 w-100">
                     <MudNumericField HideSpinButtons="true" HelperText="@languageContainer.Keys["Required"]" @bind-Value="couponForm.MaxUses" For="@(() => couponForm.MaxUses)" Label="@languageContainer.Keys["Max Uses"]"
                                      Variant="Variant.Outlined" HelperTextOnFocus="true" />
+                </div>
+                <div class="p-3 w-100">
+                    <MudNumericField HideSpinButtons="true" HelperText="@languageContainer.Keys["Required"]" @bind-Value="couponForm.DiscountPercentage" For="@(() => couponForm.DiscountPercentage)"
+                                     Variant="Variant.Outlined" AdornmentColor="Color.Info" Adornment="Adornment.End" AdornmentText="%" HelperTextOnFocus="true" Label="@languageContainer.Keys["Discount Rate"]" />
                 </div>
             </div>
             <div class="flex-wrap gap-5 gap-md-0 d-flex flex-md-nowrap align-items-end px-3">
