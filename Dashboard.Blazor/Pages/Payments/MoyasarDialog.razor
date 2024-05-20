@@ -1,4 +1,4 @@
-﻿@page "/AddPayment"
+﻿@* @page "/AddPayment"
 @attribute [Authorize(Roles = Roles.AdminRole)]
 
 <div class="form-group mb-3">
@@ -39,4 +39,4 @@
 
         await JSRuntime.InvokeVoidAsync("eval", initializationScript);
     }
-}
+} *@
