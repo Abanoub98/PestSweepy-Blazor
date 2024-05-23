@@ -196,7 +196,7 @@ Notes: "ملاحظات"
 Total Price: "السعر الإجمالي"
 Discount Price: "سعر الخصم"
 Price: "السعر"
-Discount Rate: "نسبة الخصم"
+Discount Percentage: "نسبة الخصم"
 Count: "العدد"
 Area: "مساحه"
 Unit: "الوحدة"
@@ -395,7 +395,7 @@ Coupons: "الكوبونات"
 
 Number of Uses: "عدد الاستخدامات"
 
-Discount Amount: "مبلغ الخصم"
+Max Discount Amount: "الحد الأقصى لمبلغ الخصم"
 
 Max Uses: "الحد الأقصى للاستخدامات"
 

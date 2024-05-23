@@ -51,17 +51,18 @@ else
                     </MudAutocomplete>
                 </div>
                 <div class="p-3 w-100">
-                    <MudNumericField HideSpinButtons="true" HelperText="@languageContainer.Keys["Required"]" @bind-Value="couponForm.DiscountAmount" For="@(() => couponForm.DiscountAmount)" Label="@languageContainer.Keys["Discount Amount"]"
+                    <MudNumericField HideSpinButtons="true" HelperText="@languageContainer.Keys["Required"]" @bind-Value="couponForm.DiscountAmount" For="@(() => couponForm.DiscountAmount)" Label="@languageContainer.Keys["Max Discount Amount"]"
                                      Variant="Variant.Outlined" AdornmentColor="Color.Info" Adornment="Adornment.End" AdornmentText="@languageContainer.Keys[couponForm.Currency?.Symbol]" HelperTextOnFocus="true" />
+                </div>
+                <div class="p-3 w-100">
+                    <MudNumericField HideSpinButtons="true" HelperText="@languageContainer.Keys["Required"]" @bind-Value="couponForm.DiscountPercentage" For="@(() => couponForm.DiscountPercentage)"
+                                     Variant="Variant.Outlined" AdornmentColor="Color.Info" Adornment="Adornment.End" AdornmentText="%" HelperTextOnFocus="true" Label="@languageContainer.Keys["Discount Percentage"]" />
                 </div>
                 <div class="p-3 w-100">
                     <MudNumericField HideSpinButtons="true" HelperText="@languageContainer.Keys["Required"]" @bind-Value="couponForm.MaxUses" For="@(() => couponForm.MaxUses)" Label="@languageContainer.Keys["Max Uses"]"
                                      Variant="Variant.Outlined" HelperTextOnFocus="true" />
                 </div>
-                <div class="p-3 w-100">
-                    <MudNumericField HideSpinButtons="true" HelperText="@languageContainer.Keys["Required"]" @bind-Value="couponForm.DiscountPercentage" For="@(() => couponForm.DiscountPercentage)"
-                                     Variant="Variant.Outlined" AdornmentColor="Color.Info" Adornment="Adornment.End" AdornmentText="%" HelperTextOnFocus="true" Label="@languageContainer.Keys["Discount Rate"]" />
-                </div>
+        
             </div>
             <div class="flex-wrap gap-5 gap-md-0 d-flex flex-md-nowrap align-items-end px-3">
                 <div>
