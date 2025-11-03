@@ -105,6 +105,7 @@ public class ApiService : IApiService
             {
                 Method = HttpMethod.Delete,
                 RequestUri = new Uri($"https://api.pestsweepy.com/{endPoint}"),
+                //RequestUri = new Uri($"https://localhost:7143//{endPoint}"),
                 Content = content
             };
 

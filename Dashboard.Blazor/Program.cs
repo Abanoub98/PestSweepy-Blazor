@@ -1,11 +1,16 @@
 using System.Reflection;
+
 using Blazorise;
+
 using Dashboard.Blazor;
 using Dashboard.Blazor.Extensions;
+
 using Majorsoft.Blazor.Components.Common.JsInterop;
 using Majorsoft.Blazor.Components.Maps;
+
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
+
 using MudBlazor.Services;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
@@ -13,6 +18,7 @@ builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
 
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https://api.pestsweepy.com/") });
+//builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https://localhost:7143/") });
 builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthStateProvider>();
 builder.Services.AddScoped<IApiService, ApiService>();
 builder.Services.AddMapExtensions();
