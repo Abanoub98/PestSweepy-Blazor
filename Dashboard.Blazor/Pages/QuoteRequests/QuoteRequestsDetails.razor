@@ -1,0 +1,116 @@
+﻿@page "/QuoteRequests/Details/{Id:int}"
+@attribute [Authorize(Roles = Roles.AdminRole)]
+@inherits BasePage
+
+<PageTitle>
+    @($"{languageContainer.Keys["Quote Request"]} {languageContainer.Keys["Details"]}")
+</PageTitle>
+
+<MudBreadcrumbs Items="breadcrumbItems"></MudBreadcrumbs>
+
+@if (quoteRequest is null)
+{
+    <FormLoadingSpinner IsBigForm="true" />
+}
+else
+{
+    <div class="card shadow-sm">
+        <div class="card-header">
+            <div class="fw-bold card-title">
+                @($"{languageContainer.Keys["Quote Request"]} #{quoteRequest.Id} {languageContainer.Keys["Details"]}")
+            </div>
+
+            <div class="card-toolbar">
+                <a href="/QuoteRequests" class="btn btn-sm btn-primary me-3">
+                    <MudIcon Icon="@Icons.Material.Filled.ArrowBack" />
+                    @languageContainer.Keys["Back To"] @languageContainer.Keys["Quote Requests"]
+                </a>
+
+                <a @onclick="() => OpenForm(formUri, quoteRequest.Id)" class="btn btn-sm btn-success">
+                    <MudIcon Icon="@Icons.Material.Filled.Edit" />
+                    @languageContainer.Keys["Edit"]
+                </a>
+            </div>
+        </div>
+
+        <div class="card-body">
+            <!--begin::Details content-->
+            <div class="py-3 fs-6">
+                <div class="row">
+                    <div class="col-8 align-self-start">
+
+                        <!-- Created At -->
+                        <div class="fw-bold mt-5 mb-1">@languageContainer.Keys["Created At"]:</div>
+                        <div class="text-gray-600">
+                            @(quoteRequest.CreatedAtLocal is null
+                                                    ? "-"
+                                                    : quoteRequest.CreatedAtLocal.Value.ToString("yyyy-MM-dd HH:mm"))
+                    </div>
+
+                        <!-- Customer Name -->
+                        <div class="fw-bold mt-5 mb-1">@languageContainer.Keys["Name"]:</div>
+                        <div class="text-gray-600">@quoteRequest.Name</div>
+
+                        <!-- Customer Email -->
+                        <div class="fw-bold mt-5 mb-1">@languageContainer.Keys["Email"]:</div>
+                        <div class="text-gray-600">@quoteRequest.Email</div>
+
+                        <!-- Customer Phone -->
+                        <div class="fw-bold mt-5 mb-1">@languageContainer.Keys["Phone"]:</div>
+                        <div class="text-gray-600">@quoteRequest.Phone</div>
+
+                        <!-- Status -->
+                        <div class="fw-bold mt-5 mb-1">@languageContainer.Keys["Status"]:</div>
+                        <div class="text-gray-600">
+                            @(string.IsNullOrWhiteSpace(quoteRequest.Status) ? "-" : quoteRequest.Status)
+                        </div>
+
+                        <!-- Service -->
+                        <div class="fw-bold mt-5 mb-1">@languageContainer.Keys["Service"]:</div>
+                        <div class="text-gray-600">
+                        @if (quoteRequest.Service is not null)
+                            {
+                                <div>
+                                    @(string.IsNullOrWhiteSpace(quoteRequest.Service.NameEn) ? "-" : quoteRequest.Service.NameEn)
+                                    @(" - ")
+                                    @(string.IsNullOrWhiteSpace(quoteRequest.Service.NameAr) ? "-" : quoteRequest.Service.NameAr)
+                                </div>
+                            }
+                            else
+                            {
+                                @("-")
+                            }
+                        </div>
+
+                        <!-- Notes -->
+                        @if (quoteRequest.Notes is not null || !string.IsNullOrEmpty(quoteRequest.Notes))
+                        {
+                            <div class="fw-bold mt-5 mb-1">@languageContainer.Keys["Notes"]:</div>
+                            <div class="text-gray-600">@quoteRequest.Notes</div>
+                        }
+
+                    </div>
+
+     @*                <!-- Service Image -->
+                    <div class="col-4 text-center">
+                        <div class="fw-bold mt-5 mb-2">@languageContainer.Keys["Image"]</div>
+
+                        @if (!string.IsNullOrWhiteSpace(quoteRequest.Service?.Image))
+                        {
+                            <div @onclick="@(() => ShowImagePreview(imageUrl + quoteRequest.Service.Image))">
+                                <MudImage Class="rounded-lg border border-gray-300 mt-2"
+                                          Width="300"
+                                          Src="@(imageUrl + quoteRequest.Service.Image)" />
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="text-gray-600 mt-2">-</div>
+                        }
+                    </div> *@
+                </div>
+            </div>
+            <!--end::Details content-->
+        </div>
+    </div>
+}

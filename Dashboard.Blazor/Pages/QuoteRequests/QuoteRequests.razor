@@ -1,0 +1,184 @@
+﻿@page "/QuoteRequests"
+@attribute [Authorize(Roles = Roles.AdminRole)]
+@inherits BasePage
+
+<PageTitle>
+    @languageContainer.Keys["Quote Requests"]
+</PageTitle>
+
+<MudBreadcrumbs Items="breadcrumbItems"></MudBreadcrumbs>
+<BrowserViewportObserver TableHeightChanged="TableHeightChanged" />
+
+<MudCard Elevation="25">
+    <MudCardContent>
+        <MudDataGrid T="QuoteRequestsDto"
+                     Dense="true"
+                     Elevation="0"
+                     FixedHeader="true"
+                     Height="@($"{tableHight}px")"
+                     SelectedItemsChanged="SelectedItemsChanged"
+                     Loading="@(isLoading)"
+                     LoadingProgressColor="Color.Info"
+                     Filterable="true"
+                     MultiSelection="true"
+                     Items="quoteRequests"
+                     Hover="true"
+                     SortMode="SortMode.Single"
+                     QuickFilter="@FilterFunc">
+
+            <!-- ==== TOOLBAR ==== -->
+            <ToolBarContent>
+                <div class="d-flex justify-content-between flex-column align-items-center flex-md-row w-100">
+                    <div class="w-md-25 w-100">
+                        <div class="d-flex align-items-center">
+                            <MudAvatar Rounded="true" Color="Color.Info">
+                                <MudIcon Icon="@Icons.Material.Filled.ReceiptLong" />
+                            </MudAvatar>
+
+                            <MudText Class="mx-3" Typo="Typo.h5">
+                                @languageContainer.Keys["Quote Requests"]
+                            </MudText>
+
+                            <!-- Delete selected (اختياري) -->
+                            <MudIconButton OnClick="DeleteAll"
+                                           Disabled="@(selectedIds.Count() < 2 ? true : false)"
+                                           Icon="@Icons.Material.Filled.DeleteForever"
+                                           Color="Color.Error" />
+
+                            <!-- Refresh -->
+                            <MudIconButton OnClick="OnInitializedAsync"
+                                           Icon="@Icons.Material.Filled.Refresh"
+                                           Color="Color.Info" />
+                        </div>
+                    </div>
+
+                    <!-- Search -->
+                    <div class="w-md-50 w-100">
+                        <MudTextField @bind-Value="searchString"
+                                      Adornment="Adornment.Start"
+                                      Class="mt-0 mb-5"
+                                      Immediate="true"
+                                      Placeholder=@($"{languageContainer.Keys["Search For"]} {languageContainer.Keys["Customer Name"]}, {languageContainer.Keys["Email"]}, {languageContainer.Keys["Phone"]}, {languageContainer.Keys["Service"]}")
+                                      AdornmentIcon="@Icons.Material.Filled.Search"
+                                      IconSize="Size.Medium" />
+                    </div>
+                </div>
+            </ToolBarContent>
+
+            <!-- ==== NO RECORDS ==== -->
+            <NoRecordsContent>
+                <NoDataToDisply />
+            </NoRecordsContent>
+
+            <!-- ==== COLUMNS ==== -->
+            <Columns>
+                <!-- Select -->
+                <SelectColumn T="QuoteRequestsDto" ShowInFooter="false" />
+
+                <!-- Id -->
+                <PropertyColumn Property="x => x.Id"
+                                Title="@($"{languageContainer.Keys["Id"]}")" />
+
+                <!-- Customer Name -->
+                <PropertyColumn Property="x => x.Name"
+                                Title="@($"{languageContainer.Keys["Customer Name"]}")" />
+
+                <!-- Phone -->
+                <PropertyColumn Property="x => x.Phone"
+                                Title="@($"{languageContainer.Keys["Phone"]}")" />
+
+                <!-- Service Name English -->
+                @*                 <TemplateColumn Context="quote"
+                                Title="@($"{languageContainer.Keys["Service Name English"]}")"
+                                Sortable="true"
+                                Filterable="true">
+                    <CellTemplate>
+                        @quote.Item!.Service?.NameEn
+                    </CellTemplate>
+                </TemplateColumn> *@
+
+                <!-- Service Name Arabic -->
+                <TemplateColumn Context="quote"
+                                Title="@($"{languageContainer.Keys["Service Name Arabic"]}")"
+                                Sortable="true"
+                                Filterable="true">
+                    <CellTemplate>
+                        @quote.Item!.Service?.NameAr
+                    </CellTemplate>
+                </TemplateColumn>
+
+                <!-- Status -->
+                <TemplateColumn Context="quote" Title="@languageContainer.Keys["Status"]" CellClass="text-center" HeaderClass="text-center" Sortable="false" Filterable="false">
+                    <HeaderTemplate>
+                        <MudText Class="w-100">
+                            @languageContainer.Keys["Status"]
+                        </MudText>
+                    </HeaderTemplate>
+                    <CellTemplate>
+                        <MudChip Variant="Variant.Text" Size="Size.Small"
+                                 Color="@(quote.Item!.Status == "Pending" ? Color.Warning : Color.Success)">
+
+                            @(quote.Item!.Status)
+                        </MudChip>
+                    </CellTemplate>
+                </TemplateColumn>
+
+                <!-- Created At (Local Time) -->
+                <TemplateColumn Context="quote"
+                                Title="@($"{languageContainer.Keys["Created At"]}")"
+                                Sortable="true"
+                                Filterable="false"
+                                HeaderClass="text-center"
+                                CellClass="text-center">
+                    <HeaderTemplate>
+                        <MudText Class="w-100">
+                            @($"{languageContainer.Keys["Created At"]}")
+                        </MudText>
+                    </HeaderTemplate>
+                    <CellTemplate>
+                        @if (quote.Item!.CreatedAtLocal.HasValue)
+                        {
+                            <MudText>@quote.Item.CreatedAtLocal.Value.ToString("yyyy-MM-dd HH:mm")</MudText>
+                        }
+                        else
+                        {
+                            <MudText>-</MudText>
+                        }
+                    </CellTemplate>
+                </TemplateColumn>
+
+                <!-- Actions (DETAILS ONLY) -->
+                <!-- Actions -->
+                <TemplateColumn Title="@($"{languageContainer.Keys["Actions"]}")"
+                                CellClass="text-center"
+                                Context="quote"
+                                HeaderClass="text-center"
+                                Sortable="false"
+                                Filterable="false">
+                    <HeaderTemplate>
+                        <MudText Class="w-100">
+                            @($"{languageContainer.Keys["Actions"]}")
+                        </MudText>
+                    </HeaderTemplate>
+                    <CellTemplate>
+                        <div>
+                            <TableButtons IsDisable="isDisable" IsDeleteHide=true IsEditHide=true
+                                          DetailsClicked="() => OpenDetails(detailsUri, quote.Item!.Id)" />
+                        </div>
+                       <AuthorizeView Roles="@Roles.AdminRole">
+                            <a @onclick="() => ToggleStatus(quote.Item)" class="btn btn-sm btn-light-success">
+                                <i class="fa-solid fa-check p-0"></i>
+                            </a>
+                        </AuthorizeView>
+                    </CellTemplate>
+                </TemplateColumn>
+            </Columns>
+
+            <!-- ==== PAGER ==== -->
+            <PagerContent>
+                <MudDataGridPager T="QuoteRequestsDto" />
+            </PagerContent>
+
+        </MudDataGrid>
+    </MudCardContent>
+</MudCard>

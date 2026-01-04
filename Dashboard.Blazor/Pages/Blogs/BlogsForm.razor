@@ -1,0 +1,151 @@
+﻿@page "/Blogs/Form/{Id:int}"
+@page "/Blogs/Form"
+@attribute [Authorize(Roles = Roles.AdminRole)]
+@inherits BasePage
+
+<PageTitle>
+    @($"{languageContainer.Keys[(Id == 0 ? "Add" : "Edit")]} {languageContainer.Keys[("Blog")]}")
+</PageTitle>
+
+<MudBreadcrumbs Items="breadcrumbItems"></MudBreadcrumbs>
+
+@if (blogForm is null)
+{
+    <FormLoadingSpinner IsBigForm="true" />
+}
+else
+{
+    <MudCard Elevation="25">
+        <EditForm Model="@blogForm" OnValidSubmit="OnValidSubmit">
+            <DataAnnotationsValidator />
+
+            <!-- ========= HEADER ========= -->
+            <MudCardHeader Style="padding:20px">
+                <CardHeaderAvatar>
+                    <MudAvatar Rounded="true" Color="Color.Info">
+                        <MudIcon Icon="@EntityIcons.BlogsIcon" />
+                    </MudAvatar>
+                </CardHeaderAvatar>
+
+                <CardHeaderContent>
+                    <MudText Style="display: flex;align-items: center;" Typo="Typo.h5">
+                        @(Id == 0
+                                            ? $"{languageContainer.Keys[("Add")]} {languageContainer.Keys[("Blog")]}"
+                                            : $"{languageContainer.Keys[("Edit")]} {blogForm.Title}")
+                </MudText>
+            </CardHeaderContent>
+
+                <CardHeaderActions>
+                    <MudButton DisableElevation="true"
+                               Href="/Blogs"
+                               Style="margin:10px"
+                               Variant="Variant.Filled"
+                               StartIcon="@Icons.Material.Filled.ArrowBack"
+                               Color="Color.Info">
+                        @($"{languageContainer.Keys[("Back to")]} {languageContainer.Keys[("Blogs")]}")
+                    </MudButton>
+                </CardHeaderActions>
+            </MudCardHeader>
+
+            <!-- ========= CONTENT ========= -->
+            <MudCardContent Class="px-5 py-3">
+
+                <!-- Row 1: Title + Author + Tags + OrderIndex + Date -->
+                <div class="d-flex flex-wrap flex-md-nowrap">
+                    <!-- Title -->
+                    <div class="p-3 w-100 w-md-25">
+                        <MudTextField HelperText="@languageContainer.Keys[("Required")]"
+                                      Variant="Variant.Outlined"
+                                      @bind-Value="blogForm.Title"
+                                      For="@(() => blogForm.Title)"
+                                      HelperTextOnFocus="true"
+                                      Label="@languageContainer.Keys[("Title")]"
+                                      AdornmentColor="Color.Info"
+                                      Adornment="Adornment.Start"
+                                      AdornmentIcon="@Icons.Material.Filled.Title"
+                                      Placeholder="@languageContainer.Keys[(Placeholders.Name)]" />
+                    </div>
+
+                    <!-- Author -->
+                    <div class="p-3 w-100 w-md-25">
+                        <MudTextField HelperText="@languageContainer.Keys[("Required")]"
+                                      Variant="Variant.Outlined"
+                                      @bind-Value="blogForm.Author"
+                                      For="@(() => blogForm.Author)"
+                                      HelperTextOnFocus="true"
+                                      Label="@languageContainer.Keys[("Author")]"
+                                      AdornmentColor="Color.Info"
+                                      Adornment="Adornment.Start"
+                                      AdornmentIcon="@Icons.Material.Filled.Person"
+                                      Placeholder="@languageContainer.Keys[(Placeholders.Name)]" />
+                    </div>
+
+                    <!-- Tags -->
+                    <div class="p-3 w-100 w-md-25">
+                        <MudTextField Variant="Variant.Outlined"
+                                      @bind-Value="blogForm.Tags"
+                                      For="@(() => blogForm.Tags)"
+                                      HelperTextOnFocus="true"
+                                      Label="@languageContainer.Keys[("Tags")]"
+                                      AdornmentColor="Color.Info"
+                                      Adornment="Adornment.Start"
+                                      AdornmentIcon="@Icons.Material.Filled.Label"
+                                      Placeholder="@languageContainer.Keys[(Placeholders.Name)]" />
+                    </div>
+
+                    <!-- Order Index -->
+                    <div class="p-3 w-100 w-md-25">
+                        <MudNumericField HideSpinButtons="true"
+                                         @bind-Value="blogForm.OrderIndex"
+                                         For="@(() => blogForm.OrderIndex)"
+                                         HelperTextOnFocus="true"
+                                         Label="@languageContainer.Keys[("Order Index")]"
+                                         Variant="Variant.Outlined"
+                                         AdornmentColor="Color.Info"
+                                         Adornment="Adornment.End"
+                                         AdornmentText="#"
+                                         Placeholder="@languageContainer.Keys[(Placeholders.OrderIndex)]" />
+                    </div>
+
+                    <!-- Date -->
+                    <div class="p-3 w-100 w-md-25">
+                        <MudDatePicker AdornmentColor="Color.Info"
+                                       Variant="Variant.Outlined"
+                                       @bind-Date="blogForm.Date"
+                                       Placeholder="@languageContainer.Keys["Select Date"]"
+                                       Label="@languageContainer.Keys["Date"]" />
+                    </div>
+                </div>
+
+                <!-- Row 2: Blog Introduction -->
+                <div class="d-flex flex-wrap flex-md-nowrap">
+                    <div class="p-3 w-100">
+                        <MudTextField Lines="4"
+                                      Variant="Variant.Outlined"
+                                      @bind-Value="blogForm.BlogIntroduction"
+                                      For="@(() => blogForm.BlogIntroduction)"
+                                      HelperTextOnFocus="true"
+                                      Label="@languageContainer.Keys[("Blog Introduction")]"
+                                      AdornmentColor="Color.Info"
+                                      Adornment="Adornment.Start"
+                                      AdornmentIcon="@Icons.Material.Filled.Description"
+                                      Placeholder="@languageContainer.Keys[(Placeholders.Description)]"
+                                      Text="@blogForm.BlogIntroduction" />
+                    </div>
+                </div>
+
+                <!-- Row 3: Image upload + buttons -->
+                <div class="flex-wrap gap-5 gap-md-0 d-flex flex-md-nowrap align-items-end p-3">
+                    <ImageUpload ImageSelected="CaptureUploadedImage"
+                                 UploadedImageCleared="ClearUploadedImage"
+                                 CurrentImage="@(Id == 0 ? null : imageUrl + blogForm.Image)" />
+                    <MudSpacer />
+                    <FormButtons IsLoading="@isLoading" />
+                </div>
+            </MudCardContent>
+
+            <MudCardActions>
+            </MudCardActions>
+        </EditForm>
+    </MudCard>
+}

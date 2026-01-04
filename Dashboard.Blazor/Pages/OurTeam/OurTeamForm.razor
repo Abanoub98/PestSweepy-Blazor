@@ -1,0 +1,125 @@
+﻿@page "/OurTeam/Form/{Id:int}"
+@page "/OurTeam/Form"
+@attribute [Authorize(Roles = Roles.AdminRole)]
+@inherits BasePage
+
+<PageTitle>
+    @($"{languageContainer.Keys[(Id == 0 ? "Add" : "Edit")]} {languageContainer.Keys[("Our Team")]}")
+</PageTitle>
+
+<MudBreadcrumbs Items="breadcrumbItems"></MudBreadcrumbs>
+
+@if (ourTeamForm is null)
+{
+    <FormLoadingSpinner IsBigForm="true" />
+}
+else
+{
+    <MudCard Elevation="25">
+        <EditForm Model="@ourTeamForm" OnValidSubmit="OnValidSubmit">
+            <DataAnnotationsValidator />
+
+            <!-- ========= HEADER ========= -->
+            <MudCardHeader Style="padding:20px">
+                <CardHeaderAvatar>
+                    <MudAvatar Rounded="true" Color="Color.Info">
+                        <MudIcon Icon="@EntityIcons.OurTeamIcon" />
+                    </MudAvatar>
+                </CardHeaderAvatar>
+
+                <CardHeaderContent>
+                    <MudText Style="display: flex;align-items: center;" Typo="Typo.h5">
+                        @(Id == 0
+                                            ? $"{languageContainer.Keys[("Add")]} {languageContainer.Keys[("Our Team")]}"
+                                            : $"{languageContainer.Keys[("Edit")]} {ourTeamForm.Name}")
+                </MudText>
+            </CardHeaderContent>
+
+                <CardHeaderActions>
+                    <MudButton DisableElevation="true"
+                               Href="/OurTeam"
+                               Style="margin:10px"
+                               Variant="Variant.Filled"
+                               StartIcon="@Icons.Material.Filled.ArrowBack"
+                               Color="Color.Info">
+                        @($"{languageContainer.Keys[("Back to")]} {languageContainer.Keys[("Our Team")]}")
+                    </MudButton>
+                </CardHeaderActions>
+            </MudCardHeader>
+
+            <!-- ========= CONTENT ========= -->
+            <MudCardContent Class="px-5 py-3">
+
+                <!-- Row 1: Name + Title + YearsOfExperience + OrderIndex -->
+                <div class="d-flex flex-wrap flex-md-nowrap">
+                    <!-- Name -->
+                    <div class="p-3 w-100 w-md-25">
+                        <MudTextField HelperText="@languageContainer.Keys[("Required")]"
+                                      Variant="Variant.Outlined"
+                                      @bind-Value="ourTeamForm.Name"
+                                      For="@(() => ourTeamForm.Name)"
+                                      HelperTextOnFocus="true"
+                                      Label="@languageContainer.Keys[("Name")]"
+                                      AdornmentColor="Color.Info"
+                                      Adornment="Adornment.Start"
+                                      AdornmentIcon="@Icons.Material.Filled.AccountBox"
+                                      Placeholder="@languageContainer.Keys[(Placeholders.Name)]" />
+                    </div>
+
+                    <!-- Title -->
+                    <div class="p-3 w-100 w-md-25">
+                        <MudTextField HelperText="@languageContainer.Keys[("Required")]"
+                                      Variant="Variant.Outlined"
+                                      @bind-Value="ourTeamForm.Title"
+                                      For="@(() => ourTeamForm.Title)"
+                                      HelperTextOnFocus="true"
+                                      Label="@languageContainer.Keys[("Title")]"
+                                      AdornmentColor="Color.Info"
+                                      Adornment="Adornment.Start"
+                                      AdornmentIcon="@Icons.Material.Filled.Work"
+                                      Placeholder="@languageContainer.Keys[(Placeholders.Name)]" />
+                    </div>
+
+                    <!-- Years Of Experience -->
+                    <div class="p-3 w-100 w-md-25">
+                        <MudNumericField HideSpinButtons="true"
+                                         @bind-Value="ourTeamForm.YearsOfExperience"
+                                         For="@(() => ourTeamForm.YearsOfExperience)"
+                                         HelperTextOnFocus="true"
+                                         Label="@languageContainer.Keys[("Years Of Experience")]"
+                                         Variant="Variant.Outlined"
+                                         AdornmentColor="Color.Info"
+                                         Adornment="Adornment.End"
+                                         AdornmentText="Y" />
+                    </div>
+
+                    <!-- Order Index -->
+                    <div class="p-3 w-100 w-md-25">
+                        <MudNumericField HideSpinButtons="true"
+                                         @bind-Value="ourTeamForm.OrderIndex"
+                                         For="@(() => ourTeamForm.OrderIndex)"
+                                         HelperTextOnFocus="true"
+                                         Label="@languageContainer.Keys[("Order Index")]"
+                                         Variant="Variant.Outlined"
+                                         AdornmentColor="Color.Info"
+                                         Adornment="Adornment.End"
+                                         AdornmentText="#"
+                                         Placeholder="@languageContainer.Keys[(Placeholders.OrderIndex)]" />
+                    </div>
+                </div>
+
+                <!-- Row 2: Image upload + buttons -->
+                <div class="flex-wrap gap-5 gap-md-0 d-flex flex-md-nowrap align-items-end p-3">
+                    <ImageUpload ImageSelected="CaptureUploadedImage"
+                                 UploadedImageCleared="ClearUploadedImage"
+                                 CurrentImage="@(Id == 0 ? null : imageUrl + ourTeamForm.Image)" />
+                    <MudSpacer />
+                    <FormButtons IsLoading="@isLoading" />
+                </div>
+            </MudCardContent>
+
+            <MudCardActions>
+            </MudCardActions>
+        </EditForm>
+    </MudCard>
+}

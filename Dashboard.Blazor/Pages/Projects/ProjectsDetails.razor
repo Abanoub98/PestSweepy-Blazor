@@ -1,0 +1,107 @@
+﻿@page "/Projects/Details/{Id:int}"
+@attribute [Authorize(Roles = Roles.AdminRole)]
+@inherits BasePage
+
+<PageTitle>
+    @($"{languageContainer.Keys["Project"]} {languageContainer.Keys["Details"]}")
+</PageTitle>
+
+<MudBreadcrumbs Items="breadcrumbItems"></MudBreadcrumbs>
+
+@if (project is null)
+{
+    <FormLoadingSpinner IsBigForm="true" />
+}
+else
+{
+    <div class="card shadow-sm">
+        <div class="card-header">
+            <div class="fw-bold card-title">
+                @($"{project.NameEn} - {project.NameAr} {languageContainer.Keys["Details"]}")
+            </div>
+            <div class="card-toolbar">
+                <a href="/Projects" class="btn btn-sm btn-primary me-3">
+                    <MudIcon Icon="@Icons.Material.Filled.ArrowBack" />
+                    @languageContainer.Keys["Back To"] @languageContainer.Keys["Project"]
+                </a>
+                <a @onclick="() => OpenForm(formUri, project.Id)" class="btn btn-sm btn-success">
+                    <MudIcon Icon="@Icons.Material.Filled.Edit" />
+                    @languageContainer.Keys["Edit"]
+                </a>
+            </div>
+        </div>
+        <div class="card-body">
+            <!--begin::Details content-->
+            <div class="py-3 fs-6">
+                <div class="row">
+                    <div class="col-8 align-self-start">
+                        <!-- Name English -->
+                        <div class="fw-bold mt-5 mb-1">@languageContainer.Keys["Name English"]:</div>
+                        <div class="text-gray-600">@project.NameEn</div>
+
+                        <!-- Name Arabic -->
+                        <div class="fw-bold mt-5 mb-1">@languageContainer.Keys["Name Arabic"]:</div>
+                        <div class="text-gray-600">@project.NameAr</div>
+
+                        <!-- Description -->
+                        <div class="fw-bold mt-5 mb-1">
+                            @languageContainer.Keys[("Description")]
+                        </div>
+                        <div class="text-gray-600">
+                            @(string.IsNullOrWhiteSpace(project.Description) ? "-" : project.Description)
+                        </div>
+
+                        <!-- Link -->
+                        <div class="fw-bold mt-5 mb-1">
+                            @languageContainer.Keys[("Link")]:
+                        </div>
+                        <div class="text-gray-600">
+                            @if (!string.IsNullOrWhiteSpace(project.Link))
+                            {
+                                <MudLink Href="@project.Link" Target="_blank">
+                                    @project.Link
+                                </MudLink>
+                            }
+                            else
+                            {
+                                @("-")
+                            }
+                    </div>
+
+                    <!-- Order Index -->
+                    <div class="fw-bold mt-5 mb-1">@languageContainer.Keys["Order Index"]:</div>
+                    <div class="text-gray-600">
+                        @(project.OrderIndex is null ? "-" : project.OrderIndex)
+                    </div>
+
+                    <!-- Created At -->
+                    <div class="fw-bold mt-5 mb-1">
+                        @languageContainer.Keys[("Created At")]
+                    </div>
+                    <div class="text-gray-600">
+                        @(project.CreatedAt is null
+                                                ? "-"
+                                                : project.CreatedAt.Value.ToString("yyyy-MM-dd HH:mm"))
+                    </div>
+                </div>
+
+                    <!-- Image -->
+                    <div @onclick="@(() => ShowImagePreview(imageUrl + project.Image))"
+                         class="col-4 text-center">
+                        <MudImage Class="rounded-lg border border-gray-300 mt-5"
+                                  Width="300"
+                                  Src="@(imageUrl + project.Image)" />
+                    </div>
+                </div>
+            </div>
+            <!--end::Details content-->
+        </div>
+    </div>
+
+    @* لو في كومبوننت زي Services للـ Projects ممكن تضيفه هنا بنفس فكرة الكاتيجوريز *@
+    @* <div class="card shadow-sm mt-10">
+        <div class="card-body">
+            <ProjectSomething ProjectId="project.Id" />
+        </div>
+    </div> *@
+}

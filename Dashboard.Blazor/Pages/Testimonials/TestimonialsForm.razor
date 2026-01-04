@@ -1,0 +1,139 @@
+﻿@page "/Testimonials/Form/{Id:int}"
+@page "/Testimonials/Form"
+@attribute [Authorize(Roles = Roles.AdminRole)]
+@inherits BasePage
+
+<PageTitle>
+    @($"{languageContainer.Keys[(Id == 0 ? "Add" : "Edit")]} {languageContainer.Keys[("Testimonial")]}")
+</PageTitle>
+
+<MudBreadcrumbs Items="breadcrumbItems"></MudBreadcrumbs>
+
+@if (testimonialForm is null)
+{
+    <FormLoadingSpinner IsBigForm="true" />
+}
+else
+{
+    <MudCard Elevation="25">
+        <EditForm Model="@testimonialForm" OnValidSubmit="OnValidSubmit">
+            <DataAnnotationsValidator />
+
+            <!-- ========= HEADER ========= -->
+            <MudCardHeader Style="padding:20px">
+                <CardHeaderAvatar>
+                    <MudAvatar Rounded="true" Color="Color.Info">
+                        <MudIcon Icon="@EntityIcons.TestimonialsIcon" />
+                    </MudAvatar>
+                </CardHeaderAvatar>
+
+                <CardHeaderContent>
+                    <MudText Style="display: flex;align-items: center;" Typo="Typo.h5">
+                        @(Id == 0
+                                            ? $"{languageContainer.Keys[("Add")]} {languageContainer.Keys[("Testimonial")]}"
+                                            : $"{languageContainer.Keys[("Edit")]} {testimonialForm.Name}")
+                </MudText>
+            </CardHeaderContent>
+
+                <CardHeaderActions>
+                    <MudButton DisableElevation="true"
+                               Href="/Testimonials"
+                               Style="margin:10px"
+                               Variant="Variant.Filled"
+                               StartIcon="@Icons.Material.Filled.ArrowBack"
+                               Color="Color.Info">
+                        @($"{languageContainer.Keys[("Back to")]} {languageContainer.Keys[("Testimonials")]}")
+                    </MudButton>
+                </CardHeaderActions>
+            </MudCardHeader>
+
+            <!-- ========= CONTENT ========= -->
+            <MudCardContent Class="px-5 py-3">
+
+                <!-- Row 1: Name + Profession + Rating + OrderIndex -->
+                <div class="d-flex flex-wrap flex-md-nowrap">
+                    <!-- Name -->
+                    <div class="p-3 w-100 w-md-25">
+                        <MudTextField HelperText="@languageContainer.Keys[("Required")]"
+                                      Variant="Variant.Outlined"
+                                      @bind-Value="testimonialForm.Name"
+                                      For="@(() => testimonialForm.Name)"
+                                      HelperTextOnFocus="true"
+                                      Label="@languageContainer.Keys[("Name")]"
+                                      AdornmentColor="Color.Info"
+                                      Adornment="Adornment.Start"
+                                      AdornmentIcon="@Icons.Material.Filled.AccountBox"
+                                      Placeholder="@languageContainer.Keys[(Placeholders.Name)]" />
+                    </div>
+
+                    <!-- Profession -->
+                    <div class="p-3 w-100 w-md-25">
+                        <MudTextField Variant="Variant.Outlined"
+                                      @bind-Value="testimonialForm.Profession"
+                                      For="@(() => testimonialForm.Profession)"
+                                      HelperTextOnFocus="true"
+                                      Label="@languageContainer.Keys[("Profession")]"
+                                      AdornmentColor="Color.Info"
+                                      Adornment="Adornment.Start"
+                                      AdornmentIcon="@Icons.Material.Filled.Work" />
+                    </div>
+
+                    <!-- Rating -->
+                    <div class="p-3 w-100 w-md-25">
+                        <MudNumericField HideSpinButtons="true"
+                                         @bind-Value="testimonialForm.Rating"
+                                         For="@(() => testimonialForm.Rating)"
+                                         HelperTextOnFocus="true"
+                                         Label="@languageContainer.Keys[("Rating")]"
+                                         Variant="Variant.Outlined"
+                                         AdornmentColor="Color.Info"
+                                         Adornment="Adornment.End"
+                                         AdornmentText="★" />
+                    </div>
+
+                    <!-- Order Index -->
+                    <div class="p-3 w-100 w-md-25">
+                        <MudNumericField HideSpinButtons="true"
+                                         @bind-Value="testimonialForm.OrderIndex"
+                                         For="@(() => testimonialForm.OrderIndex)"
+                                         HelperTextOnFocus="true"
+                                         Label="@languageContainer.Keys[("Order Index")]"
+                                         Variant="Variant.Outlined"
+                                         AdornmentColor="Color.Info"
+                                         Adornment="Adornment.End"
+                                         AdornmentText="#"
+                                         Placeholder="@languageContainer.Keys[(Placeholders.OrderIndex)]" />
+                    </div>
+                </div>
+
+                <!-- Row 2: Testimonial Text -->
+                <div class="d-flex flex-wrap flex-md-nowrap">
+                    <div class="p-3 w-100">
+                        <MudTextField Lines="4"
+                                      Variant="Variant.Outlined"
+                                      @bind-Value="testimonialForm.TestimonialText"
+                                      For="@(() => testimonialForm.TestimonialText)"
+                                      HelperText="@languageContainer.Keys[("Required")]"
+                                      HelperTextOnFocus="true"
+                                      Label="@languageContainer.Keys[("Testimonial")]"
+                                      AdornmentColor="Color.Info"
+                                      Adornment="Adornment.Start"
+                                      AdornmentIcon="@Icons.Material.Filled.Description" />
+                    </div>
+                </div>
+
+                <!-- Row 3: Image upload + buttons -->
+                <div class="flex-wrap gap-5 gap-md-0 d-flex flex-md-nowrap align-items-end p-3">
+                    <ImageUpload ImageSelected="CaptureUploadedImage"
+                                 UploadedImageCleared="ClearUploadedImage"
+                                 CurrentImage="@(Id == 0 ? null : imageUrl + testimonialForm.Image)" />
+                    <MudSpacer />
+                    <FormButtons IsLoading="@isLoading" />
+                </div>
+            </MudCardContent>
+
+            <MudCardActions>
+            </MudCardActions>
+        </EditForm>
+    </MudCard>
+}

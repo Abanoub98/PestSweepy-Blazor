@@ -154,6 +154,71 @@ VAT Registration Number: "رقم تسجيل ضريبة القيمة المضاف
 Hotline: "الخط الساخن"
 Address: "العنوان"
 
+About Us Section: "قسم من نحن"
+Categories Section: "قسم الأقسام"
+Projects Section: "قسم المشاريع"
+FAQ Section: "قسم الأسئلة الشائعة"
+Team Section: "قسم الفريق"
+Testimonial Section: "قسم التقييمات"
+Blog Section: "قسم المدوّنة"
+Hero Section: "قسم الهيرو"
+
+About Us Title: "عنوان من نحن"
+About Us Subtitle: "العنوان الفرعي لمن نحن"
+About Us Description: "وصف من نحن"
+Years Of Experience: "سنوات الخبرة"
+Progress Bar Title 1: "عنوان شريط التقدم 1"
+Progress Bar Value 1: "قيمة شريط التقدم 1"
+Progress Bar Title 2: "عنوان شريط التقدم 2"
+Progress Bar Value 2: "قيمة شريط التقدم 2"
+Progress Bar Title 3: "عنوان شريط التقدم 3"
+Progress Bar Value 3: "قيمة شريط التقدم 3"
+
+Categories Title: "عنوان الأقسام"
+Categories Subtitle: "العنوان الفرعي للأقسام"
+Categories Description: "وصف الأقسام"
+
+Projects Title: "عنوان المشاريع"
+Projects Subtitle: "العنوان الفرعي للمشاريع"
+Projects Description: "وصف المشاريع"
+
+FAQ Title: "عنوان الأسئلة الشائعة"
+FAQ Subtitle: "العنوان الفرعي للأسئلة الشائعة"
+FAQ Description: "وصف الأسئلة الشائعة"
+
+Team Title: "عنوان الفريق"
+Team Subtitle: "العنوان الفرعي للفريق"
+Team Description: "وصف الفريق"
+
+Testimonial Title: "عنوان التقييمات"
+Testimonial Subtitle: "العنوان الفرعي للتقييمات"
+Testimonial Description: "وصف التقييمات"
+
+Blog Title: "عنوان المدوّنة"
+Blog Subtitle: "العنوان الفرعي للمدوّنة"
+Blog Description: "وصف المدوّنة"
+
+Hero Section Title: "عنوان قسم الهيرو"
+Hero Section Subtitle: "العنوان الفرعي لقسم الهيرو"
+Hero Section Description: "وصف قسم الهيرو"
+
+Hero Section Feature 1: "الميزة الأولى"
+Hero Section Feature 2: "الميزة الثانية"
+
+Hero Section Service 1 Title: "عنوان الخدمة الأولى"
+Hero Section Service 2 Title: "عنوان الخدمة الثانية"
+Hero Section Service 3 Title: "عنوان الخدمة الثالثة"
+Hero Section Service 4 Title: "عنوان الخدمة الرابعة"
+
+Counters Section: "قسم الإحصائيات"
+Counter Title 1: "عنوان العداد 1"
+Counter Value 1: "قيمة العداد 1"
+Counter Title 2: "عنوان العداد 2"
+Counter Value 2: "قيمة العداد 2"
+Counter Title 3: "عنوان العداد 3"
+Counter Value 3: "قيمة العداد 3"
+Counter Title 4: "عنوان العداد 4"
+Counter Value 4: "قيمة العداد 4"
 #Reviews
 Review Details: "تفاصيل التقييم"
 Rate: "التقييم"

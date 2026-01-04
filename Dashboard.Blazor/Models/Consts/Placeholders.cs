@@ -14,4 +14,10 @@ public class Placeholders
     public const string Email = "Example@Sweepy.com";
     public const string Password = "***************";
     public const string Description = "Description";
+    public const string Link = "Link";
+    public const string Question = "Question";
+    public const string Answer = "Answer";
+    public const string City = "Answer";
+    public const string Location = "Answer";
+    public const string Branch = "Answer";
 }

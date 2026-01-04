@@ -1,0 +1,70 @@
+﻿@page "/FAQ/Details/{Id:int}"
+@attribute [Authorize(Roles = Roles.AdminRole)]
+@inherits BasePage
+
+<PageTitle>
+    @($"{languageContainer.Keys["FAQ"]} {languageContainer.Keys["Details"]}")
+</PageTitle>
+
+<MudBreadcrumbs Items="breadcrumbItems"></MudBreadcrumbs>
+
+@if (faq is null)
+{
+    <FormLoadingSpinner IsBigForm="true" />
+}
+else
+{
+    <div class="card shadow-sm">
+        <div class="card-header">
+            <div class="fw-bold card-title">
+                @($"{languageContainer.Keys["Question"]}: {faq.Question} {languageContainer.Keys["Details"]}")
+            </div>
+            <div class="card-toolbar">
+                <a href="/FAQ" class="btn btn-sm btn-primary me-3">
+                    <MudIcon Icon="@Icons.Material.Filled.ArrowBack" />
+                    @languageContainer.Keys["Back To"] @languageContainer.Keys["FAQ"]
+                </a>
+                <a @onclick="() => OpenForm(formUri, faq.Id)" class="btn btn-sm btn-success">
+                    <MudIcon Icon="@Icons.Material.Filled.Edit" />
+                    @languageContainer.Keys["Edit"]
+                </a>
+            </div>
+        </div>
+        <div class="card-body">
+            <!--begin::Details content-->
+            <div class="py-3 fs-6">
+                <div class="row">
+                    <div class="col-12 align-self-start">
+                        <!-- Question -->
+                        <div class="fw-bold mt-5 mb-1">@languageContainer.Keys["Id"]:</div>
+                        <div class="text-gray-600">@faq.Id</div>
+
+                        <!-- Question -->
+                        <div class="fw-bold mt-5 mb-1">@languageContainer.Keys["Question"]:</div>
+                        <div class="text-gray-600">@faq.Question</div>
+
+                        <!-- Answer -->
+                        <div class="fw-bold mt-5 mb-1">@languageContainer.Keys["Answer"]:</div>
+                        <div class="text-gray-600">
+                            @(string.IsNullOrWhiteSpace(faq.Answer) ? "-" : faq.Answer)
+                        </div>
+
+                        <!-- Order Index -->
+                        <div class="fw-bold mt-5 mb-1">@languageContainer.Keys["Order Index"]:</div>
+                        <div class="text-gray-600">
+                            @(faq.OrderIndex is null ? "-" : faq.OrderIndex)
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--end::Details content-->
+        </div>
+    </div>
+
+    @* لو حابب تضيف أي حاجة مرتبطة بالـ FAQ (logs / tags / usage) تقدر تعمل كارد تاني هنا *@
+    @* <div class="card shadow-sm mt-10">
+        <div class="card-body">
+            <FaqSomething FaqId="faq.Id" />
+        </div>
+    </div> *@
+}

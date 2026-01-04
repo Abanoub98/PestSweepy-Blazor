@@ -1,0 +1,113 @@
+﻿@page "/FAQ/Form/{Id:int}"
+@page "/FAQ/Form"
+@attribute [Authorize(Roles = Roles.AdminRole)]
+@inherits BasePage
+
+<PageTitle>
+    @($"{languageContainer.Keys[(Id == 0 ? "Add" : "Edit")]} {languageContainer.Keys[("FAQ")]}")
+</PageTitle>
+
+<MudBreadcrumbs Items="breadcrumbItems"></MudBreadcrumbs>
+
+@if (faqForm is null)
+{
+    <FormLoadingSpinner IsBigForm="true" />
+}
+else
+{
+    <MudCard Elevation="25">
+        <EditForm Model="@faqForm" OnValidSubmit="OnValidSubmit">
+            <DataAnnotationsValidator />
+
+            <!-- ========= HEADER ========= -->
+            <MudCardHeader Style="padding:20px">
+                <CardHeaderAvatar>
+                    <MudAvatar Rounded="true" Color="Color.Info">
+                        <MudIcon Icon="@EntityIcons.FAQIcon" />
+                    </MudAvatar>
+                </CardHeaderAvatar>
+
+                <CardHeaderContent>
+                    <MudText Style="display: flex;align-items: center;" Typo="Typo.h5">
+                        @(Id == 0
+                                            ? $"{languageContainer.Keys[("Add")]} {languageContainer.Keys[("FAQ")]}"
+                                            : $"{languageContainer.Keys[("Edit")]} {faqForm.Question}")
+                </MudText>
+            </CardHeaderContent>
+
+                <CardHeaderActions>
+                    <MudButton DisableElevation="true"
+                               Href="/FAQ"
+                               Style="margin:10px"
+                               Variant="Variant.Filled"
+                               StartIcon="@Icons.Material.Filled.ArrowBack"
+                               Color="Color.Info">
+                        @($"{languageContainer.Keys[("Back to")]} {languageContainer.Keys[("FAQ")]}")
+                    </MudButton>
+                </CardHeaderActions>
+            </MudCardHeader>
+
+            <!-- ========= CONTENT ========= -->
+            <MudCardContent Class="px-5 py-3">
+
+                <!-- Row 1: Question + OrderIndex -->
+                <div class="d-flex flex-wrap flex-md-nowrap">
+                    <!-- Question -->
+                    <div class="p-3 w-100 w-md-75">
+                        <MudTextField HelperText="@languageContainer.Keys[("Required")]"
+                                      Variant="Variant.Outlined"
+                                      @bind-Value="faqForm.Question"
+                                      For="@(() => faqForm.Question)"
+                                      HelperTextOnFocus="true"
+                                      Label="@languageContainer.Keys[("Question")]"
+                                      AdornmentColor="Color.Info"
+                                      Adornment="Adornment.Start"
+                                      AdornmentIcon="@Icons.Material.Filled.HelpOutline"
+                                      Placeholder="@languageContainer.Keys[(Placeholders.Question)]" />
+                    </div>
+
+                    <!-- Order Index -->
+                    <div class="p-3 w-100 w-md-25">
+                        <MudNumericField HideSpinButtons="true"
+                                         @bind-Value="faqForm.OrderIndex"
+                                         For="@(() => faqForm.OrderIndex)"
+                                         HelperTextOnFocus="true"
+                                         Label="@languageContainer.Keys[("Order Index")]"
+                                         Variant="Variant.Outlined"
+                                         AdornmentColor="Color.Info"
+                                         Adornment="Adornment.End"
+                                         AdornmentText="#"
+                                         Placeholder="@languageContainer.Keys[(Placeholders.OrderIndex)]" />
+                    </div>
+                </div>
+
+                <!-- Row 2: Answer -->
+                <div class="d-flex flex-wrap flex-md-nowrap">
+                    <div class="p-3 w-100">
+                        <MudTextField Lines="4"
+                                      Variant="Variant.Outlined"
+                                      @bind-Value="faqForm.Answer"
+                                      For="@(() => faqForm.Answer)"
+                                      HelperTextOnFocus="true"
+                                      HelperText="@languageContainer.Keys[("Required")]"
+                                      Label="@languageContainer.Keys[("Answer")]"
+                                      AdornmentColor="Color.Info"
+                                      Adornment="Adornment.Start"
+                                      AdornmentIcon="@Icons.Material.Filled.Description"
+                                      Placeholder="@languageContainer.Keys[(Placeholders.Answer)]"
+                                      Text="@faqForm.Answer" />
+                    </div>
+                </div>
+
+                <!-- Row 3: Buttons -->
+                <div class="flex-wrap gap-5 gap-md-0 d-flex flex-md-nowrap align-items-end p-3">
+                    <MudSpacer />
+                    <FormButtons IsLoading="@isLoading" />
+                </div>
+            </MudCardContent>
+
+            <MudCardActions>
+            </MudCardActions>
+        </EditForm>
+    </MudCard>
+}

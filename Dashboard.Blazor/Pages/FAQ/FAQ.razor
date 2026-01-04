@@ -1,0 +1,126 @@
+﻿@page "/FAQ"
+@attribute [Authorize(Roles = Roles.AdminRole)]
+@inherits BasePage
+
+<PageTitle>
+    @languageContainer.Keys["FAQ"]
+</PageTitle>
+
+<MudBreadcrumbs Items="breadcrumbItems"></MudBreadcrumbs>
+<BrowserViewportObserver TableHeightChanged="TableHeightChanged" />
+
+<MudCard Elevation="25">
+    <MudCardContent>
+        <MudDataGrid T="FAQDto" Dense="true" Elevation="0" FixedHeader="true"
+                     Height="@($"{tableHight}px")"
+                     SelectedItemsChanged="SelectedItemsChanged"
+                     Loading="@(isLoading)"
+                     LoadingProgressColor="Color.Info"
+                     Filterable="true"
+                     MultiSelection="true"
+                     Items="faq"
+                     Hover="true"
+                     SortMode="SortMode.Single"
+                     QuickFilter="@FilterFunc">
+
+            <!-- ==== TOOLBAR ==== -->
+            <ToolBarContent>
+                <div class="d-flex justify-content-between flex-column align-items-center flex-md-row w-100">
+                    <div class="w-md-25 w-100">
+                        <div class="d-flex align-items-center">
+                            <MudAvatar Rounded="true" Color="Color.Info">
+                                <MudIcon Icon="@EntityIcons.FAQIcon" />
+                            </MudAvatar>
+
+                            <MudText Class="mx-3" Typo="Typo.h5">
+                                @languageContainer.Keys["FAQ"]
+                            </MudText>
+
+                            <!-- Add -->
+                            <MudIconButton OnClick="() => OpenForm(formUri)"
+                                           Icon="@Icons.Material.Filled.Add"
+                                           Color="Color.Success" />
+
+                            <!-- Delete selected -->
+                            <MudIconButton OnClick="DeleteAll"
+                                           Disabled="@(selectedIds.Count() < 2 ? true : false)"
+                                           Icon="@Icons.Material.Filled.DeleteForever"
+                                           Color="Color.Error" />
+
+                            <!-- Refresh -->
+                            <MudIconButton OnClick="OnInitializedAsync"
+                                           Icon="@Icons.Material.Filled.Refresh"
+                                           Color="Color.Info" />
+                        </div>
+                    </div>
+
+                    <!-- Search -->
+                    <div class="w-md-50 w-100">
+                        <MudTextField @bind-Value="searchString"
+                                      Adornment="Adornment.Start"
+                                      Class="mt-0 mb-5"
+                                      Immediate="true"
+                                      Placeholder=@($"{languageContainer.Keys["Search For"]} {languageContainer.Keys["Question"]}, {languageContainer.Keys["Answer"]}, {languageContainer.Keys["Order Index"]}")
+                                      AdornmentIcon="@Icons.Material.Filled.Search"
+                                      IconSize="Size.Medium" />
+                    </div>
+                </div>
+            </ToolBarContent>
+
+            <!-- ==== NO RECORDS ==== -->
+            <NoRecordsContent>
+                <NoDataToDisply />
+            </NoRecordsContent>
+
+            <!-- ==== COLUMNS ==== -->
+            <Columns>
+                <!-- Select -->
+                <SelectColumn T="FAQDto" ShowInFooter="false" />
+
+                <!-- ID -->
+                <PropertyColumn Property="x => x.Id"
+                                Title="@($"{languageContainer.Keys["Id"]}")" />
+
+                <!-- Question -->
+                <PropertyColumn Property="x => x.Question"
+                                Title="@($"{languageContainer.Keys["Question"]}")" />
+
+                <!-- Answer -->
+                <PropertyColumn Property="x => x.Answer"
+                                Title="@($"{languageContainer.Keys["Answer"]}")" />
+
+                <!-- Order Index -->
+                <PropertyColumn Property="x => x.OrderIndex"
+                                Title="@($"{languageContainer.Keys["Order Index"]}")" />
+
+                <!-- Actions -->
+                <TemplateColumn Title="@($"{languageContainer.Keys["Actions"]}")"
+                                CellClass="text-center"
+                                Context="faq"
+                                HeaderClass="text-center"
+                                Sortable="false"
+                                Filterable="false">
+                    <HeaderTemplate>
+                        <MudText Class="w-100">
+                            @($"{languageContainer.Keys["Actions"]}")
+                        </MudText>
+                    </HeaderTemplate>
+                    <CellTemplate>
+                        <div>
+                            <TableButtons IsDisable="isDisable"
+                                          EditClicked="() => OpenForm(formUri, faq.Item!.Id)"
+                                          DeleteClicked="() => Delete(faq.Item!.Id)"
+                                          DetailsClicked="() => OpenDetails(detailsUri, faq.Item!.Id)" />
+                        </div>
+                    </CellTemplate>
+                </TemplateColumn>
+            </Columns>
+
+            <!-- ==== PAGER ==== -->
+            <PagerContent>
+                <MudDataGridPager T="FAQDto" />
+            </PagerContent>
+
+        </MudDataGrid>
+    </MudCardContent>
+</MudCard>

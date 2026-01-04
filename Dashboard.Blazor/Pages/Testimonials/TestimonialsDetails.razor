@@ -1,0 +1,88 @@
+﻿@page "/Testimonials/Details/{Id:int}"
+@attribute [Authorize(Roles = Roles.AdminRole)]
+@inherits BasePage
+
+<PageTitle>
+    @($"{languageContainer.Keys["Testimonial"]} {languageContainer.Keys["Details"]}")
+</PageTitle>
+
+<MudBreadcrumbs Items="breadcrumbItems"></MudBreadcrumbs>
+
+@if (testimonial is null)
+{
+    <FormLoadingSpinner IsBigForm="true" />
+}
+else
+{
+    <div class="card shadow-sm">
+        <div class="card-header">
+            <div class="fw-bold card-title">
+                @($"{testimonial.Name} {languageContainer.Keys["Details"]}")
+            </div>
+            <div class="card-toolbar">
+                <a href="/Testimonials" class="btn btn-sm btn-primary me-3">
+                    <MudIcon Icon="@Icons.Material.Filled.ArrowBack" />
+                    @languageContainer.Keys["Back To"] @languageContainer.Keys["Testimonials"]
+                </a>
+                <a @onclick="() => OpenForm(formUri, testimonial.Id)" class="btn btn-sm btn-success">
+                    <MudIcon Icon="@Icons.Material.Filled.Edit" />
+                    @languageContainer.Keys["Edit"]
+                </a>
+            </div>
+        </div>
+        <div class="card-body">
+            <!--begin::Details content-->
+            <div class="py-3 fs-6">
+                <div class="row">
+                    <div class="col-8 align-self-start">
+                        <!-- Name -->
+                        <div class="fw-bold mt-5 mb-1">@languageContainer.Keys["Name"]:</div>
+                        <div class="text-gray-600">@testimonial.Name</div>
+
+                        <!-- Profession -->
+                        <div class="fw-bold mt-5 mb-1">@languageContainer.Keys["Profession"]:</div>
+                        <div class="text-gray-600">
+                            @(string.IsNullOrWhiteSpace(testimonial.Profession) ? "-" : testimonial.Profession)
+                        </div>
+
+                        <!-- Testimonial Text -->
+                        <div class="fw-bold mt-5 mb-1">
+                            @languageContainer.Keys["Testimonial"]
+                        </div>
+                        <div class="text-gray-600">
+                            @(string.IsNullOrWhiteSpace(testimonial.TestimonialText) ? "-" : testimonial.TestimonialText)
+                        </div>
+
+                        <!-- Rating -->
+                        <div class="fw-bold mt-5 mb-1">@languageContainer.Keys["Rating"]:</div>
+                        <div class="text-gray-600">
+                            @testimonial.Rating
+                        </div>
+
+                        <!-- Order Index -->
+                        <div class="fw-bold mt-5 mb-1">@languageContainer.Keys["Order Index"]:</div>
+                        <div class="text-gray-600">
+                            @(testimonial.OrderIndex is null ? "-" : testimonial.OrderIndex)
+                        </div>
+                    </div>
+
+                    <!-- Image -->
+                    <div @onclick="@(() => ShowImagePreview(imageUrl + testimonial.Image))"
+                         class="col-4 text-center">
+                        <MudImage Class="rounded-lg border border-gray-300 mt-5"
+                                  Width="300"
+                                  Src="@(imageUrl + testimonial.Image)" />
+                    </div>
+                </div>
+            </div>
+            <!--end::Details content-->
+        </div>
+    </div>
+
+    @* لو في كومبوننتات مرتبطة بتستيمونيالز (مثلاً Logs أو History) تقدر تضيفها هنا بنفس فكرة الكومنت تحت *@
+    @* <div class="card shadow-sm mt-10">
+        <div class="card-body">
+            <TestimonialSomething TestimonialId="testimonial.Id" />
+        </div>
+    </div> *@
+}

@@ -1,0 +1,125 @@
+﻿@page "/Partners/Form/{Id:int}"
+@page "/Partners/Form"
+@attribute [Authorize(Roles = Roles.AdminRole)]
+@inherits BasePage
+
+<PageTitle>
+    @($"{languageContainer.Keys[(Id == 0 ? "Add" : "Edit")]} {languageContainer.Keys[("Partner")]}")
+</PageTitle>
+
+<MudBreadcrumbs Items="breadcrumbItems"></MudBreadcrumbs>
+
+@if (partnerForm is null)
+{
+    <FormLoadingSpinner IsBigForm="true" />
+}
+else
+{
+    <MudCard Elevation="25">
+        <EditForm Model="@partnerForm" OnValidSubmit="OnValidSubmit">
+            <DataAnnotationsValidator />
+
+            <!-- ========= HEADER ========= -->
+            <MudCardHeader Style="padding:20px">
+                <CardHeaderAvatar>
+                    <MudAvatar Rounded="true" Color="Color.Info">
+                        <MudIcon Icon="@EntityIcons.PartnersIcon" />
+                    </MudAvatar>
+                </CardHeaderAvatar>
+
+                <CardHeaderContent>
+                    <MudText Style="display: flex;align-items: center;" Typo="Typo.h5">
+                        @(Id == 0
+                                            ? $"{languageContainer.Keys[("Add")]} {languageContainer.Keys[("Partner")]}"
+                                            : $"{languageContainer.Keys[("Edit")]} {partnerForm.NameEn} - {partnerForm.NameAr}")
+                </MudText>
+            </CardHeaderContent>
+
+                <CardHeaderActions>
+                    <MudButton DisableElevation="true"
+                               Href="/Partners"
+                               Style="margin:10px"
+                               Variant="Variant.Filled"
+                               StartIcon="@Icons.Material.Filled.ArrowBack"
+                               Color="Color.Info">
+                        @($"{languageContainer.Keys[("Back to")]} {languageContainer.Keys[("Partners")]}")
+                    </MudButton>
+                </CardHeaderActions>
+            </MudCardHeader>
+
+            <!-- ========= CONTENT ========= -->
+            <MudCardContent Class="px-5 py-3">
+
+                <!-- Row 1: Names + OrderIndex -->
+                <div class="d-flex flex-wrap flex-md-nowrap">
+                    <!-- Name English -->
+                    <div class="p-3 w-100 w-md-25">
+                        <MudTextField HelperText="@languageContainer.Keys[("Required")]"
+                                      Variant="Variant.Outlined"
+                                      @bind-Value="partnerForm.NameEn"
+                                      For="@(() => partnerForm.NameEn)"
+                                      HelperTextOnFocus="true"
+                                      Label="@languageContainer.Keys[("Name English")]"
+                                      AdornmentColor="Color.Info"
+                                      Adornment="Adornment.Start"
+                                      AdornmentIcon="@Icons.Material.Filled.AccountBox"
+                                      Placeholder="@languageContainer.Keys[(Placeholders.Name)]" />
+                    </div>
+
+                    <!-- Name Arabic -->
+                    <div class="p-3 w-100 w-md-25">
+                        <MudTextField HelperText="@languageContainer.Keys[("Required")]"
+                                      Variant="Variant.Outlined"
+                                      @bind-Value="partnerForm.NameAr"
+                                      For="@(() => partnerForm.NameAr)"
+                                      HelperTextOnFocus="true"
+                                      Label="@languageContainer.Keys[("Name Arabic")]"
+                                      AdornmentColor="Color.Info"
+                                      Adornment="Adornment.Start"
+                                      AdornmentIcon="@Icons.Material.Filled.AccountBox"
+                                      Placeholder="@languageContainer.Keys[(Placeholders.Name)]" />
+                    </div>
+
+                    <!-- Order Index -->
+                    <div class="p-3 w-100 w-md-25">
+                        <MudNumericField HideSpinButtons="true"
+                                         @bind-Value="partnerForm.OrderIndex"
+                                         For="@(() => partnerForm.OrderIndex)"
+                                         HelperTextOnFocus="true"
+                                         Label="@languageContainer.Keys[("Order Index")]"
+                                         Variant="Variant.Outlined"
+                                         AdornmentColor="Color.Info"
+                                         Adornment="Adornment.End"
+                                         AdornmentText="#"
+                                         Placeholder="@languageContainer.Keys[(Placeholders.OrderIndex)]" />
+                    </div>
+
+                    <!-- مكان فاضي رابع عشان نحافظ على نفس الجريد -->
+                    <div class="p-3 w-100 w-md-25">
+                    </div>
+                </div>
+
+                <!-- مفيش Description في Partners، فنسيب الصف ده فاضي أو نشيله خالص -->
+                @* 
+                <div class="d-flex flex-wrap flex-md-nowrap">
+                    <div class="p-3 w-100">
+                        ...
+                    </div>
+                </div>
+                *@
+
+                <!-- Row 3: Image upload + buttons -->
+                <div class="flex-wrap gap-5 gap-md-0 d-flex flex-md-nowrap align-items-end p-3">
+                    <ImageUpload ImageSelected="CaptureUploadedImage"
+                                 UploadedImageCleared="ClearUploadedImage"
+                                 CurrentImage="@(Id == 0 ? null : imageUrl + partnerForm.Image)" />
+                    <MudSpacer />
+                    <FormButtons IsLoading="@isLoading" />
+                </div>
+            </MudCardContent>
+
+            <MudCardActions>
+            </MudCardActions>
+        </EditForm>
+    </MudCard>
+}

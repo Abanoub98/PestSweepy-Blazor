@@ -1,0 +1,188 @@
+﻿@page "/Projects"
+@attribute [Authorize(Roles = Roles.AdminRole)]
+@inherits BasePage
+
+<PageTitle>
+    @languageContainer.Keys["Projects"]
+</PageTitle>
+
+<MudBreadcrumbs Items="breadcrumbItems"></MudBreadcrumbs>
+<BrowserViewportObserver TableHeightChanged="TableHeightChanged" />
+
+<MudCard Elevation="25">
+    <MudCardContent>
+        <MudDataGrid T="ProjectsDto" Dense="true" Elevation="0" FixedHeader="true"
+                     Height="@($"{tableHight}px")"
+                     SelectedItemsChanged="SelectedItemsChanged"
+                     Loading="@(isLoading)"
+                     LoadingProgressColor="Color.Info"
+                     Filterable="true"
+                     MultiSelection="true"
+                     Items="projects"
+                     Hover="true"
+                     SortMode="SortMode.Single"
+                     QuickFilter="@FilterFunc">
+
+            <!-- ==== TOOLBAR ==== -->
+            <ToolBarContent>
+                <div class="d-flex justify-content-between flex-column align-items-center flex-md-row w-100">
+                    <div class="w-md-25 w-100">
+                        <div class="d-flex align-items-center">
+                            <MudAvatar Rounded="true" Color="Color.Info">
+                                <MudIcon Icon="@EntityIcons.ProjectsIcon" />
+                            </MudAvatar>
+
+                            <MudText Class="mx-3" Typo="Typo.h5">
+                                @languageContainer.Keys["Projects"]
+                            </MudText>
+
+                            <!-- Add -->
+                            <MudIconButton OnClick="() => OpenForm(formUri)" 
+                                           Icon="@Icons.Material.Filled.Add" 
+                                           Color="Color.Success" />
+
+                            <!-- Delete selected -->
+                            <MudIconButton OnClick="DeleteAll"
+                                           Disabled="@(selectedIds.Count() < 2 ? true : false)"
+                                           Icon="@Icons.Material.Filled.DeleteForever"
+                                           Color="Color.Error" />
+
+                            <!-- Refresh -->
+                            <MudIconButton OnClick="OnInitializedAsync"
+                                           Icon="@Icons.Material.Filled.Refresh"
+                                           Color="Color.Info" />
+                        </div>
+                    </div>
+
+                    <!-- Search -->
+                    <div class="w-md-50 w-100">
+                        <MudTextField @bind-Value="searchString"
+                                      Adornment="Adornment.Start"
+                                      Class="mt-0 mb-5"
+                                      Immediate="true"
+                                      Placeholder=@($"{languageContainer.Keys["Search For"]} {languageContainer.Keys["Name"]}, {languageContainer.Keys["Order Index"]}, {languageContainer.Keys["Link"]}")
+                                      AdornmentIcon="@Icons.Material.Filled.Search"
+                                      IconSize="Size.Medium" />
+                    </div>
+                </div>
+            </ToolBarContent>
+
+            <!-- ==== NO RECORDS ==== -->
+            <NoRecordsContent>
+                <NoDataToDisply />
+            </NoRecordsContent>
+
+            <!-- ==== COLUMNS ==== -->
+            <Columns>
+                <!-- Select -->
+                <SelectColumn T="ProjectsDto" ShowInFooter="false" />
+
+                <!-- Image -->
+                <TemplateColumn CellClass="text-center"
+                                HeaderClass="text-center"
+                                Context="project"
+                                Sortable="false"
+                                Filterable="false">
+                    <CellTemplate>
+                        <MudAvatar Class="cursor-all-scroll"
+                                   @onclick="() => ShowImagePreview(imageUrl + project.Item!.Image)"
+                                   Rounded="true"
+                                   Size="Size.Large">
+                            <MudImage Src="@(imageUrl + project.Item!.Image)" />
+                        </MudAvatar>
+                    </CellTemplate>
+                </TemplateColumn>
+
+                <!-- Name English -->
+                <PropertyColumn Property="x => x.NameEn"
+                                Title="@($"{languageContainer.Keys["Name English"]}")" />
+
+                <!-- Name Arabic -->
+                <PropertyColumn Property="x => x.NameAr"
+                                Title="@($"{languageContainer.Keys["Name Arabic"]}")" />
+
+                <!-- Order Index -->
+                <PropertyColumn Property="x => x.OrderIndex"
+                                Title="@($"{languageContainer.Keys["Order Index"]}")" />
+
+                <!-- Created At -->
+                <TemplateColumn Context="project"
+                                Title="@($"{languageContainer.Keys["Created At"]}")"
+                                Sortable="true"
+                                Filterable="false"
+                                HeaderClass="text-center"
+                                CellClass="text-center">
+                    <HeaderTemplate>
+                        <MudText Class="w-100">
+                            @($"{languageContainer.Keys["Created At"]}")
+                        </MudText>
+                    </HeaderTemplate>
+                    <CellTemplate>
+                        @if (project.Item!.CreatedAt.HasValue)
+                        {
+                            <MudText>@project.Item.CreatedAt.Value.ToString("yyyy-MM-dd HH:mm")</MudText>
+                        }
+                        else
+                        {
+                            <MudText>-</MudText>
+                        }
+                    </CellTemplate>
+                </TemplateColumn>
+
+                <!-- Link -->
+                <TemplateColumn Context="project"
+                                Title="@($"{languageContainer.Keys["Link"]}")"
+                                Sortable="false"
+                                Filterable="false"
+                                HeaderClass="text-center"
+                                CellClass="text-center">
+                    <HeaderTemplate>
+                        <MudText Class="w-100">
+                            @($"{languageContainer.Keys["Link"]}")
+                        </MudText>
+                    </HeaderTemplate>
+                    <CellTemplate>
+                        @if (!string.IsNullOrWhiteSpace(project.Item!.Link))
+                        {
+                            <MudLink Href="@project.Item.Link" Target="_blank">
+                                <MudIcon Icon="@Icons.Material.Filled.Link" />
+                            </MudLink>
+                        }
+                        else
+                        {
+                            <MudText>-</MudText>
+                        }
+                    </CellTemplate>
+                </TemplateColumn>
+
+                <!-- Actions -->
+                <TemplateColumn Title="@($"{languageContainer.Keys["Actions"]}")"
+                                CellClass="text-center"
+                                Context="project"
+                                HeaderClass="text-center"
+                                Sortable="false"
+                                Filterable="false">
+                    <HeaderTemplate>
+                        <MudText Class="w-100">
+                            @($"{languageContainer.Keys["Actions"]}")
+                        </MudText>
+                    </HeaderTemplate>
+                    <CellTemplate>
+                        <div>
+                            <TableButtons IsDisable="isDisable"
+                                          EditClicked="() => OpenForm(formUri, project.Item!.Id)"
+                                          DeleteClicked="() => Delete(project.Item!.Id)"
+                                          DetailsClicked="() => OpenDetails(detailsUri, project.Item!.Id)" />
+                        </div>
+                    </CellTemplate>
+                </TemplateColumn>
+            </Columns>
+
+            <!-- ==== PAGER ==== -->
+            <PagerContent>
+                <MudDataGridPager T="ProjectsDto" />
+            </PagerContent>
+
+        </MudDataGrid>
+    </MudCardContent>
+</MudCard>
