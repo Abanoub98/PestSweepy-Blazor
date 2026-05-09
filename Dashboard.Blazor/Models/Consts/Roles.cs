@@ -6,4 +6,5 @@ public static class Roles
     public const string ManagerRole = "Manager";
     public const string SupervisorRole = "Supervisor";
     public const string ProviderRole = "Provider";
+    public const string ContractClientRole = "ContractClient";
 }

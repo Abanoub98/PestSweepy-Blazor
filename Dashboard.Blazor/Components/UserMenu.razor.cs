@@ -10,10 +10,12 @@ public partial class UserMenu
     [Parameter][EditorRequired] public EventCallback ThemeChanged { get; set; }
 
     private IEnumerable<Claim> claims = Enumerable.Empty<Claim>();
+    private string role = null!;
 
     protected override async Task OnInitializedAsync()
     {
         claims = await GetClaimsPrincipalData();
+        role = claims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value ?? string.Empty;
     }
 
     private async Task ChangeThemeAsync() => await ThemeChanged.InvokeAsync();

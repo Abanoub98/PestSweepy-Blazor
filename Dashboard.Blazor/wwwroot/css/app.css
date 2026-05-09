@@ -154,3 +154,8 @@ a, .btn-link {
 .dialogBackgroundBlur {
     backdrop-filter: blur(10px);
 }
+
+.missed-chip {
+    background-color: #b71c1c !important;
+    color: #fff !important;
+}

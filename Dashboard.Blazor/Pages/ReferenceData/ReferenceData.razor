@@ -23,7 +23,7 @@
                             </MudAvatar>
                             <MudAutocomplete T="string" Label="@languageContainer.Keys["Reference Data Tables"]" SearchFunc="@GetTablesAsync" Class="mx-2 mx-md-3"
                                              Variant="Variant.Outlined" ShowProgressIndicator="true" ResetValueOnEmptyText="true" CoerceText="true"
-                                             ProgressIndicatorColor="Color.Info" Margin="Margin.Dense" Clearable ValueChanged="TableChanged" ToStringFunc="t => ConvertPascalCaseToNormalText(t)">
+                                             ProgressIndicatorColor="Color.Info" Margin="Margin.Dense" Clearable ValueChanged="TableChanged" MaxItems="100" ToStringFunc="t => ConvertPascalCaseToNormalText(t)">
                                  <NoItemsTemplate>
                                      <MudText Align="Align.Center" Class="px-4 py-4">
                                          No items found

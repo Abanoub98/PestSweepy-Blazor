@@ -10,6 +10,7 @@ public class DashboardDto
     public int OrdersCount { get; set; }
     public int ProvidersCount { get; set; }
     public int ContractsCount { get; set; }
+    public int QuotationsCount { get; set; }
     public List<Earning> Earnings { get; set; } = new();
 }
 

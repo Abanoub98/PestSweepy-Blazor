@@ -1,0 +1,93 @@
+﻿@using Microsoft.AspNetCore.Components.Forms
+
+<div class="d-flex gap-3 align-items-end flex-wrap">
+    <div class="d-flex flex-column gap-2">
+        <MudText Typo="Typo.subtitle2">@Label</MudText>
+
+        <div class="d-flex gap-2 flex-wrap">
+            <MudButton Variant="Variant.Outlined"
+                       Color="Color.Info"
+                       StartIcon="@Icons.Material.Filled.PhotoCamera"
+                       OnClick="OpenCamera">
+                @ButtonText
+            </MudButton>
+
+            <MudButton Variant="Variant.Outlined"
+                       Color="Color.Default"
+                       StartIcon="@Icons.Material.Filled.Delete"
+                       Disabled="@(!HasImage)"
+                       OnClick="Clear">
+                Clear
+            </MudButton>
+        </div>
+
+        <InputFile @ref="_inputFile"
+                   id="@_inputId"
+                   OnChange="OnFileChanged"
+                   accept="image/*"
+                   capture="@Capture"
+                   style="display:none" />
+    </div>
+
+    @if (HasImage)
+    {
+        <MudPaper Elevation="1" Class="p-2">
+            <img src="@PreviewUrl"
+                 style="width: 140px; height: 90px; object-fit: cover; border-radius: 8px;" />
+        </MudPaper>
+    }
+</div>
+
+@code {
+    private InputFile? _inputFile;
+    private readonly string _inputId = $"cam_{Guid.NewGuid():N}";
+
+    [Parameter] public string Label { get; set; } = "Image";
+    [Parameter] public string ButtonText { get; set; } = "Use Camera";
+
+    // "environment" = back camera (recommended), "user" = front camera
+    [Parameter] public string Capture { get; set; } = "environment";
+
+    // Existing image from server (Edit mode)
+    [Parameter] public string? CurrentImage { get; set; }
+
+    // Fired when user captures an image
+    [Parameter] public EventCallback<IBrowserFile> ImageCaptured { get; set; }
+
+    // Fired when user clears image
+    [Parameter] public EventCallback ImageCleared { get; set; }
+
+    private IBrowserFile? _file;
+    private string? _localPreviewUrl;
+
+    private bool HasImage => _file is not null || !string.IsNullOrWhiteSpace(CurrentImage);
+    private string? PreviewUrl => _file is not null ? _localPreviewUrl : CurrentImage;
+
+    private async Task OpenCamera()
+    {
+        await JS.InvokeVoidAsync("openCamera", _inputId);
+    }
+
+
+    [Inject] private IJSRuntime JS { get; set; } = default!;
+
+    private async Task OnFileChanged(InputFileChangeEventArgs e)
+    {
+        _file = e.File;
+
+        // preview (base64)
+        using var stream = _file.OpenReadStream(maxAllowedSize: 10 * 1024 * 1024);
+        var buffer = new byte[_file.Size];
+        await stream.ReadAsync(buffer);
+        _localPreviewUrl = $"data:{_file.ContentType};base64,{Convert.ToBase64String(buffer)}";
+
+        await ImageCaptured.InvokeAsync(_file);
+    }
+
+    private async Task Clear()
+    {
+        _file = null;
+        _localPreviewUrl = null;
+        await ImageCleared.InvokeAsync();
+    }
+}

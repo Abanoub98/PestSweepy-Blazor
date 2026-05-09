@@ -38,7 +38,7 @@ public partial class ReferenceData
             case "OrderStates":
                 hideTableActions = true;
                 break;
-            case "PaymentMethods":
+            case "ServiceRequestType":
                 hideTableActions = true;
                 break;
             case "Templates":

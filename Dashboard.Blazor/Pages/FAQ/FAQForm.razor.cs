@@ -23,7 +23,7 @@
                 new(languageContainer.Keys["FAQ"], href: "/FAQ", icon: EntityIcons.FAQIcon),
                 new(
                     Id == 0
-                        ? $"{languageContainer.Keys["Add"]} {languageContainer.Keys["Project"]}"
+                        ? $"{languageContainer.Keys["Add"]} {languageContainer.Keys["FAQ"]}"
                         : $"{languageContainer.Keys["Edit"]} {faqForm.Question}",
                     href: null,
                     disabled: true
