@@ -1,0 +1,142 @@
+﻿@page "/Complaints/Form"
+@attribute [Authorize(Roles = $"{Roles.ContractClientRole}")]
+@inherits BasePage
+
+<PageTitle>
+    @($"{languageContainer.Keys["Add"]} {languageContainer.Keys["Complaint"]}")
+</PageTitle>
+
+<MudBreadcrumbs Items="breadcrumbItems"></MudBreadcrumbs>
+
+@if (complaintForm is null)
+{
+    <FormLoadingSpinner IsBigForm="true" />
+}
+else
+{
+    <MudCard Elevation="25">
+        <EditForm Model="@complaintForm" OnValidSubmit="OnValidSubmit">
+            <DataAnnotationsValidator />
+
+            <!-- ========= HEADER ========= -->
+            <MudCardHeader Style="padding:20px">
+                <CardHeaderAvatar>
+                    <MudAvatar Rounded="true" Color="Color.Info">
+                        <MudIcon Icon="@Icons.Material.Filled.ReportProblem" />
+                    </MudAvatar>
+                </CardHeaderAvatar>
+
+                <CardHeaderContent>
+                    <MudText Style="display:flex;align-items:center;" Typo="Typo.h5">
+                        @($"{languageContainer.Keys["Add"]} {languageContainer.Keys["Complaint"]}")
+                    </MudText>
+                </CardHeaderContent>
+
+                <CardHeaderActions>
+                    <MudButton DisableElevation="true"
+                               Href="/Complaints"
+                               Style="margin:10px"
+                               Variant="Variant.Filled"
+                               StartIcon="@Icons.Material.Filled.ArrowBack"
+                               Color="Color.Info">
+                        @($"{languageContainer.Keys[("Back to")]} {languageContainer.Keys[("Complaints")]}")
+                    </MudButton>
+                </CardHeaderActions>
+            </MudCardHeader>
+
+            <!-- ========= CONTENT ========= -->
+            <MudCardContent Class="px-5 py-3">
+
+                <!-- Row 1: Subject -->
+                <div class="d-flex flex-wrap flex-md-nowrap">
+                    <div class="p-3 w-100">
+                        <MudTextField Variant="Variant.Outlined"
+                                      @bind-Value="complaintForm.Subject"
+                                      For="@(() => complaintForm.Subject)"
+                                      Label="@languageContainer.Keys["Subject"]"
+                                      HelperTextOnFocus="true"
+                                      Adornment="Adornment.Start"
+                                      AdornmentColor="Color.Info"
+                                      AdornmentIcon="@Icons.Material.Filled.Subject"
+                                      Lines="4"
+                                      Placeholder="@languageContainer.Keys["Enter subject"]" />
+                    </div>
+                </div>
+
+                <!-- Row 2: Complaint Type + Branch -->
+                <div class="d-flex flex-wrap flex-md-nowrap">
+
+                    <!-- Complaint Type (Lookup) -->
+                    <div class="p-3 w-100 w-md-50">
+                        <MudAutocomplete T="LookupDto"
+                                         SearchFunc="@GetComplaintTypes"
+                                         Adornment="Adornment.Start"
+                                         AnchorOrigin="Origin.BottomCenter"
+                                         Label="@languageContainer.Keys["Complaint Type"]"
+                                         Variant="Variant.Outlined"
+                                         ShowProgressIndicator="true"
+                                         ResetValueOnEmptyText="true"
+                                         CoerceText="true"
+                                         AdornmentIcon="@Icons.Material.Filled.Category"
+                                         ProgressIndicatorColor="Color.Info"
+                                         Clearable
+                                         @bind-Value="complaintForm.ComplaintType"
+                                         For="@(() => complaintForm.ComplaintType)"
+                                         AdornmentColor="Color.Info"
+                                         MaxItems="null"
+                                         HelperTextOnFocus="true"
+                                         ToStringFunc="@(e => e == null ? null : $"{e.Name}")"
+                                         HelperText="@languageContainer.Keys["Required"]"
+                                         Placeholder="@languageContainer.Keys["Select Complaint Type"]">
+                            <NoItemsTemplate>
+                                <MudText Align="Align.Center" Class="px-4 py-4">
+                                    @languageContainer.Keys["No items found"]
+                                </MudText>
+                            </NoItemsTemplate>
+                        </MudAutocomplete>
+                    </div>
+
+
+                    <!-- Branch -->
+                    <div class="p-3 w-100 w-md-50">
+                        <MudAutocomplete T="BranchBaseDto"
+                                         SearchFunc="@GetBranches"
+                                         Adornment="Adornment.Start"
+                                         AnchorOrigin="Origin.BottomCenter"
+                                         Label="@languageContainer.Keys["Branch"]"
+                                         Variant="Variant.Outlined"
+                                         ShowProgressIndicator="true"
+                                         ResetValueOnEmptyText="true"
+                                         CoerceText="true"
+                                         AdornmentIcon="@Icons.Material.Filled.AccountTree"
+                                         ProgressIndicatorColor="Color.Info"
+                                         Clearable
+                                         @bind-Value="complaintForm.Branch"
+                                         For="@(() => complaintForm.Branch)"
+                                         AdornmentColor="Color.Info"
+                                         MaxItems="null"
+                                         HelperTextOnFocus="true"
+                                         ToStringFunc="@(e => e == null ? null : $"{e.Name}")"
+                                         HelperText="@languageContainer.Keys["Required"]"
+                                         Placeholder="@languageContainer.Keys["Select Branch"]">
+                            <NoItemsTemplate>
+                                <MudText Align="Align.Center" Class="px-4 py-4">
+                                    @languageContainer.Keys["No items found"]
+                                </MudText>
+                            </NoItemsTemplate>
+                        </MudAutocomplete>
+                    </div>
+                </div>
+                <!-- Row 3: Image upload + buttons -->
+                <div class="flex-wrap gap-5 gap-md-0 d-flex flex-md-nowrap align-items-end p-3">
+                    <ImageUpload ImageSelected="CaptureUploadedImage"
+                                 UploadedImageCleared="ClearUploadedImage"
+                                 CurrentImage="@(Id == 0 ? null : imageUrl + complaintForm.Image)" />
+                    <MudSpacer />
+                    <FormButtons IsLoading="@isLoading" />
+                </div>
+
+            </MudCardContent>
+        </EditForm>
+    </MudCard>
+}

@@ -4,11 +4,17 @@ public partial class Complaints
 {
     private List<ComplaintDto> complaints = new();
 
+    private readonly string formUri = "Complaints/Form";
     private readonly string detailsUri = "Complaints/Details";
+
+    private IEnumerable<Claim> claims = Enumerable.Empty<Claim>();
+    private string role = null!;
 
     protected override async Task OnInitializedAsync()
     {
         StartProcessing();
+        claims = await GetClaimsPrincipalData();
+        role = claims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value ?? string.Empty;
 
         breadcrumbItems = new List<BreadcrumbItem>
         {
