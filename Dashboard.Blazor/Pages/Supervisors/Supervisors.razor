@@ -60,6 +60,7 @@
                 </TemplateColumn>
 
                 <PropertyColumn Property="x => string.Join(' ', x.FirstName, x.LastName) " Title="@languageContainer.Keys["Full Name"]" />
+                <PropertyColumn Property="x => x.EmployeeId" Title="@languageContainer.Keys["Employee ID"]" />
                 <PropertyColumn Property="x => x.Email" Title="@languageContainer.Keys["Email"]" />
                 <PropertyColumn Property="x => x.PhoneNumber" Title="@languageContainer.Keys["Phone"]" />
 

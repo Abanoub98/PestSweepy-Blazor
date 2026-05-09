@@ -4,6 +4,8 @@ public class SupervisorDto : BaseUser
 {
     public int Id { set; get; }
 
+    public string EmployeeId { get; set; } = null!;
+
     [Required]
     public string FirstName { get; set; } = null!;
 

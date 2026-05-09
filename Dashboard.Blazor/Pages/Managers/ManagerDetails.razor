@@ -34,6 +34,11 @@ else
                         <!--end::Name-->
                         <!--begin::Position-->
                         <div class="fs-5 fw-semibold text-muted">
+                            @manager.EmployeeId
+                        </div>
+                        <!--end::Position-->
+                        <!--begin::Position-->
+                        <div class="fs-5 fw-semibold text-muted">
                             @manager.Email
                         </div>
                         <!--end::Position-->
@@ -48,50 +53,54 @@ else
                 <!--end::Card body-->
             </div>
             <!--end::Card-->
-            <div class="card shadow-sm">
-                <div class="card-header border-0 cursor-pointer">
-                    <div class="card-title m-0">
-                        <h3 class="fw-bold m-0">@languageContainer.Keys["Account Settings"]</h3>
+            <AuthorizeView Roles="Admin">
+                <Authorized>
+                    <div class="card shadow-sm">
+                        <div class="card-header border-0 cursor-pointer">
+                            <div class="card-title m-0">
+                                <h3 class="fw-bold m-0">@languageContainer.Keys["Account Settings"]</h3>
+                            </div>
+                        </div>
+                        <!--begin::Card body-->
+                        <div class="card-body">
+                            <!--begin::Email Address-->
+                            <div class="d-flex d-md-inline flex-wrap align-items-center">
+                                <!--begin::Label-->
+                                <div>
+                                    <div class="fs-6 fw-bold mb-1">@languageContainer.Keys["Email Address"]</div>
+                                    <div class="fw-semibold text-gray-600">@manager.Email</div>
+                                </div>
+                                <!--end::Label-->
+                                <!--begin::Action-->
+                                <div class="ms-auto mt-md-3">
+                                    <button @onclick="() => ShowChangeEmailAsync()" class="btn btn-light-primary">@languageContainer.Keys["Change Email"]</button>
+                                </div>
+                                <!--end::Action-->
+                            </div>
+                            <!--end::Email Address-->
+                            <!--begin::Separator-->
+                            <div class="separator separator-dashed my-6"></div>
+                            <!--end::Separator-->
+                            <!--begin::Password-->
+                            <div class="d-flex d-md-inline flex-wrap align-items-center mb-10">
+                                <!--begin::Label-->
+                                <div>
+                                    <div class="fs-6 fw-bold mb-1">@languageContainer.Keys["Password"]</div>
+                                    <div class="fw-semibold text-gray-600">************</div>
+                                </div>
+                                <!--end::Label-->
+                                <!--begin::Action-->
+                                <div class="ms-auto mt-md-3">
+                                    <button @onclick="() => ShowChangePasswordAsync(manager.UserId)" class="btn btn-light-primary">@languageContainer.Keys["Reset Password"]</button>
+                                </div>
+                                <!--end::Action-->
+                            </div>
+                            <!--end::Password-->
+                        </div>
+                        <!--end::Card body-->
                     </div>
-                </div>
-                <!--begin::Card body-->
-                <div class="card-body">
-                    <!--begin::Email Address-->
-                    <div class="d-flex d-md-inline flex-wrap align-items-center">
-                        <!--begin::Label-->
-                        <div>
-                            <div class="fs-6 fw-bold mb-1">@languageContainer.Keys["Email Address"]</div>
-                            <div class="fw-semibold text-gray-600">@manager.Email</div>
-                        </div>
-                        <!--end::Label-->
-                        <!--begin::Action-->
-                        <div class="ms-auto mt-md-3">
-                            <button @onclick="() => ShowChangeEmailAsync()" class="btn btn-light-primary">@languageContainer.Keys["Change Email"]</button>
-                        </div>
-                        <!--end::Action-->
-                    </div>
-                    <!--end::Email Address-->
-                    <!--begin::Separator-->
-                    <div class="separator separator-dashed my-6"></div>
-                    <!--end::Separator-->
-                    <!--begin::Password-->
-                    <div class="d-flex d-md-inline flex-wrap align-items-center mb-10">
-                        <!--begin::Label-->
-                        <div>
-                            <div class="fs-6 fw-bold mb-1">@languageContainer.Keys["Password"]</div>
-                            <div class="fw-semibold text-gray-600">************</div>
-                        </div>
-                        <!--end::Label-->
-                        <!--begin::Action-->
-                        <div class="ms-auto mt-md-3">
-                            <button @onclick="() => ShowChangePasswordAsync(manager.UserId)" class="btn btn-light-primary">@languageContainer.Keys["Reset Password"]</button>
-                        </div>
-                        <!--end::Action-->
-                    </div>
-                    <!--end::Password-->
-                </div>
-                <!--end::Card body-->
-            </div>
+                </Authorized>
+            </AuthorizeView>
         </div>
         <!--end::Sidebar-->
         <!--begin::Content-->
@@ -123,7 +132,7 @@ else
                                     @languageContainer.Keys["Details"]
                                 </div>
                                 <span>
-                                    <a @onclick="() => OpenForm(formUri,manager.Id)" class="btn btn-sm btn-light-primary">
+                                    <a @onclick="() => OpenForm(formUri, manager.Id)" class="btn btn-sm btn-light-primary">
                                         @languageContainer.Keys["Edit"]
                                     </a>
                                 </span>
