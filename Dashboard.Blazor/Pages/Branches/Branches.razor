@@ -1,0 +1,186 @@
+﻿@page "/Branches"
+@attribute [Authorize(Roles = Roles.AdminRole)]
+@inherits BasePage
+
+<PageTitle>
+    @languageContainer.Keys["Branches"]
+</PageTitle>
+
+<MudBreadcrumbs Items="breadcrumbItems"></MudBreadcrumbs>
+<BrowserViewportObserver TableHeightChanged="TableHeightChanged" />
+
+<MudCard Elevation="25">
+    <MudCardContent>
+        <MudDataGrid T="BranchDto" Dense="true" Elevation="0" FixedHeader="true"
+                     Height="@($"{tableHight}px")"
+                     SelectedItemsChanged="SelectedItemsChanged"
+                     Loading="@(isLoading)"
+                     LoadingProgressColor="Color.Info"
+                     Filterable="true"
+                     MultiSelection="true"
+                     Items="branches"
+                     Hover="true"
+                     SortMode="SortMode.Single"
+                     QuickFilter="@FilterFunc">
+
+            <!-- ==== TOOLBAR ==== -->
+            <ToolBarContent>
+                <div class="d-flex justify-content-between flex-column align-items-center flex-md-row w-100">
+                    <div class="w-md-25 w-100">
+                        <div class="d-flex align-items-center">
+                            <MudAvatar Rounded="true" Color="Color.Info">
+                                <MudIcon Icon="@EntityIcons.BranchesIcon" />
+                            </MudAvatar>
+
+                            <MudText Class="mx-3" Typo="Typo.h5">
+                                @languageContainer.Keys["Branches"]
+                            </MudText>
+
+                            <!-- Add -->
+                            <MudIconButton OnClick="() => OpenForm(formUri)"
+                                           Icon="@Icons.Material.Filled.Add"
+                                           Color="Color.Success" />
+
+                            <!-- Delete selected -->
+                            <MudIconButton OnClick="DeleteAll"
+                                           Disabled="@(selectedIds.Count() < 2 ? true : false)"
+                                           Icon="@Icons.Material.Filled.DeleteForever"
+                                           Color="Color.Error" />
+
+                            <!-- Refresh -->
+                            <MudIconButton OnClick="OnInitializedAsync"
+                                           Icon="@Icons.Material.Filled.Refresh"
+                                           Color="Color.Info" />
+                        </div>
+                    </div>
+
+                    <!-- Search -->
+                    <div class="w-md-50 w-100">
+                        <MudTextField @bind-Value="searchString"
+                                      Adornment="Adornment.Start"
+                                      Class="mt-0 mb-5"
+                                      Immediate="true"
+                                      Placeholder=@($"{languageContainer.Keys["Search For"]} {languageContainer.Keys["Name"]}, {languageContainer.Keys["Manager"]}, {languageContainer.Keys["Phone"]}, {languageContainer.Keys["City"]}, {languageContainer.Keys["Email"]}")
+                                      AdornmentIcon="@Icons.Material.Filled.Search"
+                                      IconSize="Size.Medium" />
+                    </div>
+                </div>
+            </ToolBarContent>
+
+            <!-- ==== NO RECORDS ==== -->
+            <NoRecordsContent>
+                <NoDataToDisply />
+            </NoRecordsContent>
+
+            <!-- ==== COLUMNS ==== -->
+            <Columns>
+                <!-- Select -->
+                <SelectColumn T="BranchDto" ShowInFooter="false" />
+
+                <!-- Image -->
+                <TemplateColumn CellClass="text-center"
+                                HeaderClass="text-center"
+                                Context="branch"
+                                Sortable="false"
+                                Filterable="false">
+                    <CellTemplate>
+                        <MudAvatar Class="cursor-all-scroll"
+                                   @onclick="() => ShowImagePreview(imageUrl + branch.Item!.Image)"
+                                   Rounded="true"
+                                   Size="Size.Large">
+                            <MudImage Src="@(imageUrl + branch.Item!.Image)" />
+                        </MudAvatar>
+                    </CellTemplate>
+                </TemplateColumn>
+
+                <!-- Name -->
+                <PropertyColumn Property="x => x.Name"
+                                Title="@($"{languageContainer.Keys["Branch Name"]}")" />
+
+                <!-- Manager -->
+                <PropertyColumn Property="x => x.Manager"
+                                Title="@($"{languageContainer.Keys["Manager"]}")" />
+
+                <!-- Email -->
+                <PropertyColumn Property="x => x.Email"
+                                Title="@($"{languageContainer.Keys["Email"]}")" />
+                <!-- Phone -->
+                <PropertyColumn Property="x => x.PhoneNumber"
+                                Title="@($"{languageContainer.Keys["Phone"]}")" />
+
+                <!-- City -->
+                <TemplateColumn Context="branch"
+                                Title="@($"{languageContainer.Keys["City"]}")"
+                                Sortable="false"
+                                Filterable="true">
+                    <CellTemplate>
+                        <MudText>
+                            @(branch.Item!.City is null ? "-" : branch.Item.City.Name)
+                        </MudText>
+                    </CellTemplate>
+                </TemplateColumn>
+
+                <!-- Location -->
+                <PropertyColumn Property="x => x.Location"
+                                Title="@($"{languageContainer.Keys["Location"]}")" />
+
+                <!-- Location URL -->
+                <TemplateColumn Context="branch"
+                                Title="@($"{languageContainer.Keys["Location URL"]}")"
+                                Sortable="false"
+                                Filterable="false"
+                                HeaderClass="text-center"
+                                CellClass="text-center">
+                    <HeaderTemplate>
+                        <MudText Class="w-100">
+                            @languageContainer.Keys["Location URL"]
+                        </MudText>
+                    </HeaderTemplate>
+                    <CellTemplate>
+                        @if (!string.IsNullOrWhiteSpace(branch.Item!.LocationURL))
+                        {
+                            <MudLink Href="@branch.Item.LocationURL"
+                                     Target="_blank"
+                                     Rel="noopener noreferrer">
+                                <MudIcon Icon="@Icons.Material.Filled.LocationOn" />
+                            </MudLink>
+                        }
+                        else
+                        {
+                            <MudText>-</MudText>
+                        }
+                    </CellTemplate>
+                </TemplateColumn>
+
+
+
+                <!-- Actions -->
+                <TemplateColumn Title="@($"{languageContainer.Keys["Actions"]}")"
+                                CellClass="text-center"
+                                Context="branch"
+                                HeaderClass="text-center"
+                                Sortable="false"
+                                Filterable="false">
+                    <HeaderTemplate>
+                        <MudText Class="w-100">
+                            @languageContainer.Keys["Actions"]
+                        </MudText>
+                    </HeaderTemplate>
+                    <CellTemplate>
+                        <div>
+                            <TableButtons IsDisable="isDisable"
+                                          EditClicked="() => OpenForm(formUri, branch.Item!.Id)"
+                                          DeleteClicked="() => Delete(branch.Item!.Id)"
+                                          DetailsClicked="() => OpenDetails(detailsUri, branch.Item!.Id)" />
+                        </div>
+                    </CellTemplate>
+                </TemplateColumn>
+            </Columns>
+
+            <!-- ==== PAGER ==== -->
+            <PagerContent>
+                <MudDataGridPager T="BranchDto" />
+            </PagerContent>
+        </MudDataGrid>
+    </MudCardContent>
+</MudCard>

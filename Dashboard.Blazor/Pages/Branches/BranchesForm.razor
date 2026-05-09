@@ -1,0 +1,226 @@
+﻿@page "/Branches/Form/{Id:int}"
+@page "/Branches/Form"
+@attribute [Authorize(Roles = Roles.AdminRole)]
+@inherits BasePage
+
+<PageTitle>
+    @($"{languageContainer.Keys[(Id == 0 ? "Add" : "Edit")]} {languageContainer.Keys[("Branch")]}")
+</PageTitle>
+
+<MudBreadcrumbs Items="breadcrumbItems"></MudBreadcrumbs>
+
+@if (branchForm is null)
+{
+    <FormLoadingSpinner IsBigForm="true" />
+}
+else
+{
+    <BaseFrom EntityBackUrl="/Branches"
+              EditTitle="@($"{branchForm.Name}")"
+              EntityName="Branch"
+              IsAddFrom="@(Id == 0 ? true : false)"
+              OnValidSubmit="OnValidSubmit"
+              Model="branchForm"
+              Icon="@EntityIcons.BranchesIcon">
+
+        <FormContent>
+
+            <!-- ========================= -->
+            <!-- Row 1: Name + Manager -->
+            <!-- ========================= -->
+            <div class="d-flex flex-wrap flex-md-nowrap">
+                <div class="p-3 w-100">
+                    <MudTextField HelperText="@languageContainer.Keys[("Required")]"
+                                  Variant="Variant.Outlined"
+                                  @bind-Value="branchForm.Name"
+                                  For="@(() => branchForm.Name)"
+                                  HelperTextOnFocus="true"
+                                  AdornmentColor="Color.Info"
+                                  Adornment="Adornment.Start"
+                                  AdornmentIcon="@Icons.Material.Filled.Store"
+                                  Placeholder="@languageContainer.Keys[Placeholders.Name]"
+                                  Label="@languageContainer.Keys[("Name")]" />
+                </div>
+
+                <div class="p-3 w-100">
+                    <MudTextField HelperText="@languageContainer.Keys[("Required")]"
+                                  Variant="Variant.Outlined"
+                                  @bind-Value="branchForm.Manager"
+                                  For="@(() => branchForm.Manager)"
+                                  HelperTextOnFocus="true"
+                                  AdornmentColor="Color.Info"
+                                  Adornment="Adornment.Start"
+                                  AdornmentIcon="@Icons.Material.Filled.Person"
+                                  Placeholder="@languageContainer.Keys[Placeholders.Name]"
+                                  Label="@languageContainer.Keys[("Manager")]" />
+                </div>
+            </div>
+
+            <!-- ========================= -->
+            <!-- Row 2: City (Lookup) + ClientId -->
+            <!-- ========================= -->
+            <div class="d-flex flex-wrap flex-md-nowrap">
+                <div class="p-3 w-100">
+                    <MudAutocomplete T="LookupDto"
+                                     SearchFunc="@GetCities"
+                                     Adornment="Adornment.Start"
+                                     AnchorOrigin="Origin.BottomCenter"
+                                     Label="@languageContainer.Keys[("City")]"
+                                     Variant="Variant.Outlined"
+                                     ShowProgressIndicator="true"
+                                     ResetValueOnEmptyText="true"
+                                     CoerceText="true"
+                                     AdornmentIcon="@Icons.Material.Filled.LocationCity"
+                                     ProgressIndicatorColor="Color.Info"
+                                     Clearable
+                                     @bind-Value="branchForm.City"
+                                     For="@(() => branchForm.City)"
+                                     AdornmentColor="Color.Info"
+                                     MaxItems="null"
+                                     HelperTextOnFocus="true"
+                                     ToStringFunc="@(e => e == null ? null : $"{e.Name}")"
+                                     HelperText="@languageContainer.Keys[("Required")]"
+                                     Placeholder="@languageContainer.Keys[("Select City")]">
+                        <NoItemsTemplate>
+                            <MudText Align="Align.Center" Class="px-4 py-4">
+                                @languageContainer.Keys[("No items found")]
+                            </MudText>
+                        </NoItemsTemplate>
+                    </MudAutocomplete>
+                </div>
+
+                <div class="p-3 w-100">
+                    <MudAutocomplete T="LookupDto" SearchFunc="@GetContractClients" @bind-Value="branchForm.Client" For="@(() => branchForm.Client)" ToStringFunc="@(e => e == null ? null : $"{e.FirstName} {e.LastName}")"
+                                     Variant="Variant.Outlined" ShowProgressIndicator="true" ResetValueOnEmptyText="true" CoerceText="true" ProgressIndicatorColor="Color.Info" Clearable
+                                     AdornmentColor="Color.Info" Adornment="Adornment.Start" AdornmentIcon="@EntityIcons.QuotationsIcon" AnchorOrigin="Origin.BottomCenter" MaxItems="null" HelperTextOnFocus="true"
+                                     Placeholder="@languageContainer.Keys["Select Contract Client"]" Label="@languageContainer.Keys["Contract Client"]" HelperText="@languageContainer.Keys["Required"]">
+                        <NoItemsTemplate>
+                            <MudText Align="Align.Center" Class="px-4 py-4">
+                                @languageContainer.Keys["No items found"]
+                            </MudText>
+                        </NoItemsTemplate>
+                    </MudAutocomplete>
+                </div>
+            </div>
+
+            <!-- ========================= -->
+            <!-- Row 3: Location + Location URL -->
+            <!-- ========================= -->
+            <div class="d-flex flex-wrap flex-md-nowrap">
+                <div class="p-3 w-100">
+                    <MudTextField HelperText="@languageContainer.Keys[("Required")]"
+                                  Variant="Variant.Outlined"
+                                  @bind-Value="branchForm.Location"
+                                  For="@(() => branchForm.Location)"
+                                  HelperTextOnFocus="true"
+                                  AdornmentColor="Color.Info"
+                                  Adornment="Adornment.Start"
+                                  AdornmentIcon="@Icons.Material.Filled.Place"
+                                  Placeholder="@languageContainer.Keys[Placeholders.Location]"
+                                  Label="@languageContainer.Keys[("Location")]" />
+                </div>
+
+                <div class="p-3 w-100">
+                    <MudTextField HelperText="@languageContainer.Keys[("Required")]"
+                                  Variant="Variant.Outlined"
+                                  @bind-Value="branchForm.LocationURL"
+                                  For="@(() => branchForm.LocationURL)"
+                                  HelperTextOnFocus="true"
+                                  AdornmentColor="Color.Info"
+                                  Adornment="Adornment.Start"
+                                  AdornmentIcon="@Icons.Material.Filled.Link"
+                                  Placeholder="@languageContainer.Keys[Placeholders.Link]"
+                                  Label="@languageContainer.Keys[("Location URL")]" />
+                </div>
+            </div>
+
+            <!-- ========================= -->
+            <!-- Row 4: Phone + Email + Password (ONLY ADD like Managers) -->
+            <!-- ========================= -->
+            @if (Id == 0)
+            {
+                <div class="flex-wrap d-flex flex-md-nowrap">
+                    <div class="p-3 w-100">
+                        <MudNumericField HideSpinButtons="true"
+                                         HelperText="@languageContainer.Keys[("Required")]"
+                                         Variant="Variant.Outlined"
+                                         AdornmentColor="Color.Info"
+                                         Adornment="Adornment.Start"
+                                         HelperTextOnFocus="true"
+                                         Required="true"
+                                         Label="@languageContainer.Keys[("Phone Number")]"
+                                         @bind-Value="branchForm.PhoneNumber"
+                                         For="@(() => branchForm.PhoneNumber)"
+                                         AdornmentIcon="@Icons.Material.Filled.Phone"
+                                         Placeholder="@languageContainer.Keys[Placeholders.PhoneNumber]"
+                                         RequiredError="@languageContainer.Keys[("Phone Number is Required")]" />
+                    </div>
+
+                    <div class="p-3 w-100">
+                        <MudTextField HelperText="@languageContainer.Keys[("Required")]"
+                                      Variant="Variant.Outlined"
+                                      InputType="InputType.Email"
+                                      AdornmentColor="Color.Info"
+                                      Adornment="Adornment.Start"
+                                      HelperTextOnFocus="true"
+                                      Label="@languageContainer.Keys[("Email")]"
+                                      @bind-Value="branchForm.Email"
+                                      For="@(() => branchForm.Email)"
+                                      AdornmentIcon="@Icons.Material.Filled.Email"
+                                      Placeholder="@languageContainer.Keys[Placeholders.Email]"
+                                      Required="true"
+                                      RequiredError="@languageContainer.Keys[("Email is Required")]" />
+                    </div>
+
+                    <div class="p-3 w-100">
+                        <MudTextField HelperText="@languageContainer.Keys[("Required")]"
+                                      Variant="Variant.Outlined"
+                                      InputType="PasswordInput"
+                                      AdornmentColor="Color.Info"
+                                      Label="@languageContainer.Keys[("Password")]"
+                                      @bind-Value="branchForm.Password"
+                                      For="@(() => branchForm.Password)"
+                                      Placeholder="**************"
+                                      HelperTextOnFocus="true"
+                                      RequiredError="Password is Required"
+                                      Adornment="Adornment.Start"
+                                      AdornmentIcon="@PasswordInputIcon"
+                                      OnAdornmentClick="ChangePasswordStatus"
+                                      AdornmentAriaLabel="@languageContainer.Keys[Placeholders.Password]"
+                                      Required="true" />
+                    </div>
+                </div>
+            }
+
+            <!-- ========================= -->
+            <!-- Row 5: Notes -->
+            <!-- ========================= -->
+            <div class="d-flex flex-wrap flex-md-nowrap">
+                <div class="p-3 w-100">
+                    <MudTextField Lines="4"
+                                  Variant="Variant.Outlined"
+                                  @bind-Value="branchForm.Notes"
+                                  For="@(() => branchForm.Notes)"
+                                  HelperTextOnFocus="true"
+                                  AdornmentColor="Color.Info"
+                                  Adornment="Adornment.Start"
+                                  AdornmentIcon="@Icons.Material.Filled.Notes"
+                                  Placeholder="@languageContainer.Keys[("Enter Notes")]"
+                                  Label="@languageContainer.Keys[("Notes")]" />
+                </div>
+            </div>
+
+            <!-- ========================= -->
+            <!-- Row 6: Image + Buttons -->
+            <!-- ========================= -->
+            <div class="flex-wrap gap-5 gap-md-0 d-flex flex-md-nowrap align-items-end p-3">
+                <ImageUpload ImageSelected="CaptureUploadedImage"
+                             UploadedImageCleared="ClearUploadedImage"
+                             CurrentImage="@(Id == 0 ? null : imageUrl + branchForm.Image)" />
+                <MudSpacer />
+                <FormButtons IsLoading="@isLoading" />
+            </div>
+
+        </FormContent>
+    </BaseFrom>
+}

@@ -1,0 +1,206 @@
+﻿@page "/Branches/Details/{Id:int}"
+@attribute [Authorize(Roles = Roles.AdminRole)]
+@inherits BasePage
+
+<PageTitle>
+    @($"{languageContainer.Keys["Branch"]} {languageContainer.Keys["Details"]}")
+</PageTitle>
+
+<MudBreadcrumbs Items="breadcrumbItems"></MudBreadcrumbs>
+
+@if (branch is null)
+{
+    <FormLoadingSpinner IsBigForm="true" />
+}
+else
+{
+    <div class="d-flex flex-column flex-md-row">
+
+        <!--begin::Sidebar-->
+        <div class="flex-column flex-lg-row-auto w-100 w-xl-350px mb-10">
+
+            <!--begin::Card-->
+            <div class="card mb-5 mb-xl-8 shadow-sm">
+                <div class="card-body pt-15">
+                    <!--begin::Summary-->
+                    <div class="d-flex flex-center flex-column">
+
+                        <!--begin::Avatar-->
+                        <MudAvatar Class="border border-gray-300"
+                                   Style="height:200px; width:200px;"
+                                   Rounded="true"
+                                   @onclick="() => ShowImagePreview(imageUrl + branch.Image)"
+                                   Color="Color.Info">
+                            <MudImage Src="@(imageUrl + branch.Image)"></MudImage>
+                        </MudAvatar>
+                        <!--end::Avatar-->
+                        <!--begin::Name-->
+                        <a class="fs-3 text-gray-800 text-hover-primary fw-bold my-2">
+                            @branch.Name
+                        </a>
+                        <!--end::Name-->
+                        <!--begin::Position-->
+                        <div class="fs-5 fw-semibold text-muted">
+                            @branch.Email
+                        </div>
+                        <!--end::Position-->
+                        <!--begin::Phone-->
+                        <div class="fs-5 fw-semibold text-muted mb-6">
+                            @branch.PhoneNumber
+                        </div>
+                        <!--end::Phone-->
+                    </div>
+                    <!--end::Summary-->
+                </div>
+            </div>
+            <!--end::Card-->
+            <!--begin::Card-->
+            <div class="card shadow-sm">
+                <div class="card-header border-0 cursor-pointer">
+                    <div class="card-title m-0">
+                        <h3 class="fw-bold m-0">@languageContainer.Keys["Account Settings"]</h3>
+                    </div>
+                </div>
+                <!--begin::Card body-->
+                <div class="card-body">
+                    <!--begin::Email Address-->
+                    <div class="d-flex d-md-inline flex-wrap align-items-center">
+                        <!--begin::Label-->
+                        <div>
+                            <div class="fs-6 fw-bold mb-1">@languageContainer.Keys["Email Address"]</div>
+                            <div class="fw-semibold text-gray-600">@branch.Email</div>
+                        </div>
+                        <!--end::Label-->
+                        <!--begin::Action-->
+                        <div class="ms-auto mt-md-3">
+                            <button @onclick="() => ShowChangeEmailAsync()" class="btn btn-light-primary">@languageContainer.Keys["Change Email"]</button>
+                        </div>
+                        <!--end::Action-->
+                    </div>
+                    <!--end::Email Address-->
+                    <!--begin::Separator-->
+                    <div class="separator separator-dashed my-6"></div>
+                    <!--end::Separator-->
+                    <!--begin::Password-->
+                    <div class="d-flex d-md-inline flex-wrap align-items-center mb-10">
+                        <!--begin::Label-->
+                        <div>
+                            <div class="fs-6 fw-bold mb-1">@languageContainer.Keys["Password"]</div>
+                            <div class="fw-semibold text-gray-600">************</div>
+                        </div>
+                        <!--end::Label-->
+                        <!--begin::Action-->
+                        <div class="ms-auto mt-md-3">
+                            <button @onclick="() => ShowChangePasswordAsync(branch.UserId)" class="btn btn-light-primary">@languageContainer.Keys["Reset Password"]</button>
+                        </div>
+                        <!--end::Action-->
+                    </div>
+                    <!--end::Password-->
+                </div>
+                <!--end::Card body-->
+            </div>
+            <!--end::Card-->
+
+        </div>
+        <!--end::Sidebar-->
+        <!--begin::Content-->
+        <div class="flex-lg-row-fluid ms-lg-15">
+
+            <!--begin:::Tabs-->
+            <ul class="nav nav-custom nav-tabs nav-line-tabs nav-line-tabs-2x border-0 fs-4 fw-semibold mb-8" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link text-active-primary pb-4 active"
+                       data-bs-toggle="tab"
+                       href="#kt_branch_view_overview_tab"
+                       aria-selected="true"
+                       role="tab">
+                        @languageContainer.Keys["Overview"]
+                    </a>
+                </li>
+            </ul>
+            <!--end:::Tabs-->
+            <!--begin:::Tab content-->
+            <div class="tab-content" id="myTabContent">
+                <div class="tab-pane fade active show" id="kt_branch_view_overview_tab" role="tabpanel">
+
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+
+                            <div class="d-flex flex-stack fs-4 py-3">
+                                <div class="fw-bold">
+                                    @languageContainer.Keys["Details"]
+                                </div>
+                                <span>
+                                    <a @onclick="() => OpenForm(formUri, branch.Id)" class="btn btn-sm btn-light-primary">
+                                        @languageContainer.Keys["Edit"]
+                                    </a>
+                                </span>
+                            </div>
+
+                            <div class="separator separator-dashed"></div>
+
+                            <div class="py-3 fs-6">
+
+                                <div class="fw-bold mt-5">@languageContainer.Keys["Client Id"]</div>
+                                <div class="text-gray-600">@branch.ClientId</div>
+
+                                <div class="fw-bold mt-5">@languageContainer.Keys["Client"]</div>
+                                <div class="text-gray-600">@branch.Client.FirstName @branch.Client.LastName</div>
+
+                                <div class="fw-bold mt-5">@languageContainer.Keys["User Id"]</div>
+                                <div class="text-gray-600">@branch.UserId</div>
+
+                                <div class="fw-bold mt-5">@languageContainer.Keys["Branch Name"]</div>
+                                <div class="text-gray-600">@branch.Name</div>
+
+                                <div class="fw-bold mt-5">@languageContainer.Keys["Manager"]</div>
+                                <div class="text-gray-600">@branch.Manager</div>
+
+                                <div class="fw-bold mt-5">@languageContainer.Keys["Phone"]</div>
+                                <div class="text-gray-600">@branch.PhoneNumber</div>
+
+                                <div class="fw-bold mt-5">@languageContainer.Keys["Email"]</div>
+                                <div class="text-gray-600">@branch.Email</div>
+
+                                <div class="fw-bold mt-5">@languageContainer.Keys["City"]</div>
+                                <div class="text-gray-600">@(branch.City?.Name ?? "-")</div>
+
+                                <div class="fw-bold mt-5">@languageContainer.Keys["Location"]</div>
+                                <div class="text-gray-600">@branch.Location</div>
+
+                                <div class="fw-bold mt-5">@languageContainer.Keys["Location URL"]</div>
+                                <div class="text-gray-600">
+                                    @if (!string.IsNullOrWhiteSpace(branch.LocationURL))
+                                    {
+                                        <MudLink Href="@branch.LocationURL"
+                                                 Target="_blank"
+                                                 Rel="noopener noreferrer">
+                                            <MudIcon Icon="@Icons.Material.Filled.LocationOn" Class="me-1" />
+                                            @languageContainer.Keys["Open Location"]
+                                        </MudLink>
+                                    }
+                                    else
+                                    {
+                                        <span>-</span>
+                                    }
+                                </div>                         
+
+                                <div class="fw-bold mt-5">@languageContainer.Keys["Notes"]</div>
+                                <div class="text-gray-600">
+                                    @(string.IsNullOrWhiteSpace(branch.Notes) ? "-" : branch.Notes)
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <!--end:::Tab content-->
+
+        </div>
+        <!--end::Content-->
+
+    </div>
+}
