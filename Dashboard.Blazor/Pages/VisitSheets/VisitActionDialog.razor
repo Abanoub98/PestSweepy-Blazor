@@ -1,0 +1,149 @@
+﻿@inherits BasePage
+@using MudBlazor
+
+<MudDialog>
+    <DialogContent>
+
+        <!-- Title -->
+        <MudText Typo="Typo.h6" Class="mb-4">
+            @languageContainer.Keys[Status switch
+                        {
+                VisitStatus.Completed   => "Complete Visit",
+                        VisitStatus.Cancelled   => "Cancel Visit",
+                        VisitStatus.ReScheduled => "Reschedule Visit",
+                        _ => "Visit Action"
+                        }]
+        </MudText>
+
+        <!-- Notes -->
+        <MudTextField @bind-Value="_notes"
+                      Lines="3"
+                      Variant="Variant.Outlined"
+                      Label="@languageContainer.Keys[Status switch
+                      {
+                          VisitStatus.Completed => "Completion Notes",
+                          VisitStatus.Cancelled => "Cancellation Notes",
+                          VisitStatus.ReScheduled => "Reschedule Notes",
+                          _ => "Notes"
+                      }]"
+                      Class="mb-4" />
+
+        @if (Status == VisitStatus.ReScheduled)
+        {
+            <MudDatePicker @bind-Date="_date"
+                           Label="@languageContainer.Keys["New Date"]"
+                           Variant="Variant.Outlined"
+                           Class="mb-4" />
+
+            <MudTimePicker @bind-Time="_time"
+                           Label="@languageContainer.Keys["New Time"]"
+                           Variant="Variant.Outlined"
+                           Class="mb-2" />
+
+            @if (_showDateTimeError)
+            {
+                <MudText Color="Color.Error" Typo="Typo.caption">
+                    @languageContainer.Keys["Date and time are required"]
+                </MudText>
+            }
+        }
+
+    </DialogContent>
+
+    <DialogActions>
+        <MudButton OnClick="Close"
+                   Variant="Variant.Text">
+            @languageContainer.Keys["Close"]
+        </MudButton>
+
+        <MudButton OnClick="SubmitAsync"
+                   Disabled="_submitting"
+                   Variant="Variant.Filled"
+                   StartIcon="@(
+                   Status == VisitStatus.Completed ? Icons.Material.Filled.CheckCircle :
+                   Status == VisitStatus.Cancelled ? Icons.Material.Filled.Cancel :
+                   Icons.Material.Filled.EventRepeat
+                                      )"
+                   Color="@(
+                                          Status == VisitStatus.Completed ? Color.Success :
+                                          Status == VisitStatus.Cancelled ? Color.Error :
+                                          Color.Warning
+                                      )">
+            @languageContainer.Keys[Status switch
+                        {
+                VisitStatus.Completed   => "Mark Completed",
+                        VisitStatus.Cancelled   => "Cancel Visit",
+                        VisitStatus.ReScheduled => "Reschedule",
+                        _ => "Submit"
+                        }]
+        </MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    [CascadingParameter] public MudDialogInstance MudDialog { get; set; } = default!;
+
+    [Parameter] public int VisitId { get; set; }
+    [Parameter] public VisitStatus Status { get; set; }
+    [Parameter] public DateTime? CurrentScheduledAt { get; set; }
+
+    private string? _notes;
+    private DateTime? _date;
+    private TimeSpan? _time;
+    private bool _submitting;
+    private bool _showDateTimeError;
+
+    protected override void OnInitialized()
+    {
+        if (Status == VisitStatus.ReScheduled)
+        {
+            var dt = CurrentScheduledAt ?? DateTime.Now;
+            _date = dt.Date;
+            _time = dt.TimeOfDay;
+        }
+    }
+
+    private void Close() => MudDialog.Close(DialogResult.Cancel());
+
+    private async Task SubmitAsync()
+    {
+        if (_submitting) return;
+
+        _showDateTimeError = false;
+
+        // Validate only reschedule
+        if (Status == VisitStatus.ReScheduled && (!_date.HasValue || !_time.HasValue))
+        {
+            _showDateTimeError = true;
+            return;
+        }
+
+        _submitting = true;
+
+        try
+        {
+            (bool isSuccess, object? obj) result;
+
+            if (Status == VisitStatus.Completed)
+            {
+                result = await UpdateAsync($"Visits/Complete/{VisitId}", new { Notes = _notes });
+            }
+            else if (Status == VisitStatus.Cancelled)
+            {
+                result = await UpdateAsync($"Visits/Cancel/{VisitId}", new { Notes = _notes });
+            }
+            else // ReScheduled
+            {
+                var newScheduledAt = _date!.Value.Date + _time!.Value;
+                result = await UpdateAsync($"Visits/Reschedule/{VisitId}", new { ScheduledAt = newScheduledAt, Notes = _notes });
+            }
+
+            if (result.isSuccess)
+                MudDialog.Close(DialogResult.Ok(true));
+        }
+        finally
+        {
+            _submitting = false;
+        }
+    }
+}

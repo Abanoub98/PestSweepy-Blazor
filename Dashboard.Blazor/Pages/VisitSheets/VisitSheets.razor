@@ -1,0 +1,208 @@
+﻿@page "/VisitSheets"
+@attribute [Authorize(Roles = $"{Roles.AdminRole},{Roles.ManagerRole},{Roles.SupervisorRole},{Roles.ContractClientRole}")]
+@inherits BasePage
+
+<PageTitle>
+    @languageContainer.Keys["Visit Sheets"]
+</PageTitle>
+
+<MudBreadcrumbs Items="breadcrumbItems"></MudBreadcrumbs>
+<BrowserViewportObserver TableHeightChanged="TableHeightChanged" />
+
+<MudCard Elevation="25">
+    <MudCardContent>
+        <MudDataGrid T="VisitSheetsDto"
+                     Dense="true"
+                     Elevation="0"
+                     FixedHeader="true"
+                     Height="@($"{tableHight}px")"
+                     SelectedItemsChanged="SelectedItemsChanged"
+                     Loading="@(isLoading)"
+                     LoadingProgressColor="Color.Info"
+                     Filterable="true"
+                     MultiSelection="true"
+                     Items="visitSheets"
+                     Hover="true"
+                     SortMode="SortMode.Single"
+                     QuickFilter="@FilterFunc">
+
+            <!-- ==== TOOLBAR ==== -->
+            <ToolBarContent>
+                <div class="d-flex justify-content-between flex-column align-items-center flex-md-row w-100">
+                    <div class="w-md-25 w-100">
+                        <div class="d-flex align-items-center">
+                            <MudAvatar Rounded="true" Color="Color.Info">
+                                <MudIcon Icon="@EntityIcons.VisitSheetsIcon" />
+                            </MudAvatar>
+
+                            <MudText Class="mx-3" Typo="Typo.h5">
+                                @languageContainer.Keys["Visit Sheets"]
+                            </MudText>
+
+                            @if (role == Roles.AdminRole)
+                            {
+                                <!-- Add -->
+                                <MudIconButton OnClick="() => OpenForm(formUri)"
+                                Icon="@Icons.Material.Filled.Add"
+                                Color="Color.Success" />
+
+                                <!-- Delete selected -->
+                                <MudIconButton OnClick="DeleteAll"
+                                Disabled="@(selectedIds.Count() < 2)"
+                                Icon="@Icons.Material.Filled.DeleteForever"
+                                Color="Color.Error" />
+                            }
+
+                            <!-- Refresh -->
+                            <MudIconButton OnClick="OnInitializedAsync"
+                                           Icon="@Icons.Material.Filled.Refresh"
+                                           Color="Color.Info" />
+                        </div>
+                    </div>
+
+                    <!-- Search -->
+                    <div class="w-md-50 w-100">
+                        <MudTextField @bind-Value="searchString"
+                                      Adornment="Adornment.Start"
+                                      Class="mt-0 mb-5"
+                                      Immediate="true"
+                                      Placeholder="@($"{languageContainer.Keys["Search For"]} {languageContainer.Keys["Client"]}, {languageContainer.Keys["Branch"]}, {languageContainer.Keys["City"]}, {languageContainer.Keys["Supervisor"]}")"
+                                      AdornmentIcon="@Icons.Material.Filled.Search"
+                                      IconSize="Size.Medium" />
+                    </div>
+                </div>
+            </ToolBarContent>
+
+            <!-- ==== NO RECORDS ==== -->
+            <NoRecordsContent>
+                <NoDataToDisply />
+            </NoRecordsContent>
+
+            <!-- ==== COLUMNS ==== -->
+            <Columns>
+                <!-- Select -->
+                <SelectColumn T="VisitSheetsDto" ShowInFooter="false" />
+
+                <!-- Client Name (from Contract -> ContractClient) -->
+                <TemplateColumn Context="row"
+                                Title="@languageContainer.Keys["Client"]"
+                                Sortable="true"
+                                Filterable="true">
+                    <CellTemplate>
+                        @{
+                            var c = row.Item?.Contract?.ContractClient;
+                            var name = c == null ? "-" : $"{c.FirstName} {c.LastName}";
+                        }
+                        <MudText>@name</MudText>
+                    </CellTemplate>
+                </TemplateColumn>
+
+                <!-- Branch Name -->
+                <TemplateColumn Context="row"
+                                Title="@languageContainer.Keys["Branch"]"
+                                Sortable="true"
+                                Filterable="true">
+                    <CellTemplate>
+                        <MudText>@(row.Item?.Branch?.Name ?? "-")</MudText>
+                    </CellTemplate>
+                </TemplateColumn>
+
+                <!-- Branch City -->
+                <TemplateColumn Context="row"
+                                Title="@languageContainer.Keys["City"]"
+                                Sortable="true"
+                                Filterable="true">
+                    <CellTemplate>
+                        <MudText>@(row.Item?.Branch?.City?.Name ?? "-")</MudText>
+                    </CellTemplate>
+                </TemplateColumn>
+
+                <!-- Supervisor Name -->
+                <TemplateColumn Context="row"
+                                Title="@languageContainer.Keys["Supervisor"]"
+                                Sortable="true"
+                                Filterable="true">
+                    <CellTemplate>
+                        @{
+                            var s= row.Item?.Supervisor;
+                            var sname = s == null ? "-" : $"{s.FirstName} {s.LastName}";
+                        }
+                        <MudText>@sname</MudText>
+                    </CellTemplate>
+                </TemplateColumn>
+
+                <!-- Total Visits -->
+                <PropertyColumn Property="x => x.TotalVisits"
+                                Title="@languageContainer.Keys["Total Visits"]" />
+
+         @*        <!-- Days -->
+                <PropertyColumn Property="x => x.Days"
+                                Title="@languageContainer.Keys["Days"]" />
+
+                <!-- Starting Date -->
+                <PropertyColumn Property="x => x.StartingDate"
+                                Title="@languageContainer.Keys["Starting Date"]"
+                                Format="dd/MM/yyyy" />
+
+                <!-- Visit Time -->
+                <TemplateColumn Context="row"
+                                Title="@languageContainer.Keys["Visit Time"]"
+                                Sortable="true"
+                                Filterable="false">
+                    <CellTemplate>
+                        <MudText>
+                            @(row.Item is null ? "-" : row.Item.VisitTime.ToString(@"hh\:mm"))
+                        </MudText>
+                    </CellTemplate>
+                </TemplateColumn> *@
+
+                <!-- Active -->
+                <TemplateColumn Context="row"
+                                Title="@languageContainer.Keys["Active"]"
+                                Sortable="true"
+                                Filterable="true">
+                    <CellTemplate>
+                        @if (row.Item?.IsActive == true)
+                        {
+                            <MudChip Color="Color.Success" Variant="Variant.Filled" Size="Size.Small">
+                                @languageContainer.Keys["Yes"]
+                            </MudChip>
+                        }
+                        else
+                        {
+                            <MudChip Color="Color.Error" Variant="Variant.Filled" Size="Size.Small">
+                                @languageContainer.Keys["No"]
+                            </MudChip>
+                        }
+                    </CellTemplate>
+                </TemplateColumn>
+
+                <!-- Actions -->
+                <TemplateColumn Title="@languageContainer.Keys["Actions"]"
+                                CellClass="text-center"
+                                Context="row"
+                                HeaderClass="text-center"
+                                Sortable="false"
+                                Filterable="false">
+                    <HeaderTemplate>
+                        <MudText Class="w-100">
+                            @languageContainer.Keys["Actions"]
+                        </MudText>
+                    </HeaderTemplate>
+                    <CellTemplate>
+                        <TableButtons IsDisable="isDisable"
+                                      EditClicked="() => OpenForm(formUri, row.Item!.Id)"
+                                      DeleteClicked="() => Delete(row.Item!.Id)"
+                                      DetailsClicked="() => OpenDetails(detailsUri, row.Item!.Id)" />
+                    </CellTemplate>
+                </TemplateColumn>
+            </Columns>
+
+            <!-- ==== PAGER ==== -->
+            <PagerContent>
+                <MudDataGridPager T="VisitSheetsDto" />
+            </PagerContent>
+
+        </MudDataGrid>
+    </MudCardContent>
+</MudCard>

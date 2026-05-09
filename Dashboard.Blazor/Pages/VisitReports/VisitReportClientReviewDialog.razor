@@ -1,0 +1,96 @@
+﻿@inherits BasePage
+@using MudBlazor
+
+<MudDialog>
+    <DialogContent>
+
+        <MudText Typo="Typo.h6" Class="mb-4">
+            @languageContainer.Keys["Rate Visit Report"]
+        </MudText>
+
+        <!-- Rating 1..5 -->
+        <MudRating @bind-SelectedValue="_customerReview"
+                   MaxValue="5"                
+                   Size="Size.Large"
+                   Class="mb-3" />
+
+        @if (_showRatingError)
+        {
+            <MudText Color="Color.Error" Typo="Typo.caption" Class="mb-2">
+                @languageContainer.Keys["Please select a rating from 1 to 5"]
+            </MudText>
+        }
+
+        <!-- Note -->
+        <MudTextField @bind-Value="_reviewNote"
+                      Lines="3"
+                      Variant="Variant.Outlined"
+                      Label="@languageContainer.Keys["Review Note"]"
+                      Class="mb-2"
+                      MaxLength="1000" />
+
+    </DialogContent>
+
+    <DialogActions>
+        <MudButton OnClick="Close" Variant="Variant.Text">
+            @languageContainer.Keys["Close"]
+        </MudButton>
+
+        <MudButton OnClick="SubmitAsync"
+                   Disabled="_submitting"
+                   Variant="Variant.Filled"
+                   Color="Color.Warning"
+                   StartIcon="@Icons.Material.Filled.Send">
+            @languageContainer.Keys["Submit Review"]
+        </MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    [CascadingParameter] public MudDialogInstance MudDialog { get; set; } = default!;
+
+    [Parameter] public int VisitReportId { get; set; }
+
+    private int _customerReview; // MudRating uses int (0 means not selected)
+    private string? _reviewNote;
+
+    private bool _submitting;
+    private bool _showRatingError;
+
+    private void Close() => MudDialog.Close(DialogResult.Cancel());
+
+    private async Task SubmitAsync()
+    {
+        if (_submitting) return;
+
+        _showRatingError = false;
+
+        // rating required (1..5)
+        if (_customerReview < 1 || _customerReview > 5)
+        {
+            _showRatingError = true;
+            return;
+        }
+
+        _submitting = true;
+
+        try
+        {
+            var payload = new
+            {
+                CustomerReview = _customerReview,
+                ReviewNote = _reviewNote
+            };
+
+            // NOTE: adjust route prefix if yours is different
+            var result = await UpdateAsync($"VisitReports/ClientReview/{VisitReportId}", payload);
+
+            if (result.isSuccess)
+                MudDialog.Close(DialogResult.Ok(true));
+        }
+        finally
+        {
+            _submitting = false;
+        }
+    }
+}

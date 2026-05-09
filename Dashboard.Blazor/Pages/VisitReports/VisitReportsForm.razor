@@ -1,0 +1,923 @@
+﻿@page "/VisitReports/Form/{Id:int}"
+@page "/VisitReports/Form"
+@using SignaturePad
+@attribute [Authorize(Roles = $"{Roles.SupervisorRole}")]
+@inherits BasePage
+
+<PageTitle>
+    @($"{languageContainer.Keys["Add"]} {languageContainer.Keys["Visit Report"]}")
+</PageTitle>
+
+<MudBreadcrumbs Items="breadcrumbItems"></MudBreadcrumbs>
+
+@if (visitReportForm is null)
+{
+    <FormLoadingSpinner IsBigForm="true" />
+}
+else
+{
+    <MudCard Elevation="25">
+        <EditForm Model="@visitReportForm" OnValidSubmit="OnValidSubmit">
+            <DataAnnotationsValidator />
+            <ValidationSummary />
+
+            <!-- ========= HEADER ========= -->
+            <MudCardHeader Style="padding:20px">
+                <CardHeaderAvatar>
+                    <MudAvatar Rounded="true" Color="Color.Info">
+                        <MudIcon Icon="@EntityIcons.VisitReportsIcon" />
+                    </MudAvatar>
+                </CardHeaderAvatar>
+
+                <CardHeaderContent>
+                    <MudText Style="display:flex;align-items:center;" Typo="Typo.h5">
+                        @($"{languageContainer.Keys["Add"]} {languageContainer.Keys["Visit Report"]}")
+                    </MudText>
+                </CardHeaderContent>
+
+                <CardHeaderActions>
+                    <MudButton DisableElevation="true"
+                               Href="/VisitSheets"
+                               Style="margin:10px"
+                               Variant="Variant.Filled"
+                               StartIcon="@Icons.Material.Filled.ArrowBack"
+                               Color="Color.Info">
+                        @($"{languageContainer.Keys["Back"]}")
+                    </MudButton>
+                </CardHeaderActions>
+            </MudCardHeader>
+
+            <!-- ========= CONTENT ========= -->
+            <MudCardContent Class="px-5 py-3">
+
+                <!-- ========================= -->
+                <!-- Row 1: VisitId -->
+                <!-- ========================= -->
+                <div class="d-flex flex-wrap flex-md-nowrap">
+                    <div class="p-3 w-100 w-md-50">
+                        <MudNumericField T="int"
+                                         Disabled="true"
+                                         HideSpinButtons="true"
+                                         Variant="Variant.Outlined"
+                                         @bind-Value="visitReportForm.Visit.VisitSheetId"
+                                         For="@(() => visitReportForm.Visit.VisitSheetId)"
+                                         Label="@languageContainer.Keys["VisitSheet Id"]"
+                                         AdornmentColor="Color.Info"
+                                         Adornment="Adornment.Start"
+                                         AdornmentIcon="@Icons.Material.Filled.Badge" />
+                    </div>
+                    <div class="p-3 w-100 w-md-50">
+                        <MudNumericField T="int"
+                                         Disabled="true"
+                                         HideSpinButtons="true"
+                                         Variant="Variant.Outlined"
+                                         @bind-Value="visitReportForm.VisitId"
+                                         For="@(() => visitReportForm.VisitId)"
+                                         Label="@languageContainer.Keys["Visit Id"]"
+                                         AdornmentColor="Color.Info"
+                                         Adornment="Adornment.Start"
+                                         AdornmentIcon="@Icons.Material.Filled.Badge" />
+                    </div>
+                </div>
+
+                <!-- ========================= -->
+                <!-- Row 3: Alternate + Notes -->
+                <!-- ========================= -->
+                <div class="d-flex flex-wrap flex-md-nowrap">
+                    <div class="p-3 w-100 w-md-50">
+                        <MudTextField T="string"
+                                      Variant="Variant.Outlined"
+                                      Value="@visitReportForm.CheckIn.ToLocalTime().ToString("dd/MM/yyyy hh:mm tt")"
+                                      Disabled="true"
+                                      Label="@languageContainer.Keys["Time In"]"
+                                      AdornmentColor="Color.Info"
+                                      Adornment="Adornment.Start"
+                                      AdornmentIcon="@Icons.Material.Filled.AccessTime" />
+                    </div>
+                    <div class="p-3 w-100 w-md-50">
+                        <MudTextField Variant="Variant.Outlined"
+                                      @bind-Value="visitReportForm.AlternateContactPerson"
+                                      For="@(() => visitReportForm.AlternateContactPerson)"
+                                      HelperTextOnFocus="true"
+                                      Label="@languageContainer.Keys["Alternate Contact Person"]"
+                                      AdornmentColor="Color.Info"
+                                      Adornment="Adornment.Start"
+                                      AdornmentIcon="@Icons.Material.Filled.Person"
+                                      Placeholder="@languageContainer.Keys["Enter name"]" />
+                    </div>
+                </div>
+
+
+
+                <!-- ========================= -->
+                <!-- General Properties -->
+                <!-- ========================= -->
+                <div class="mt-5">
+                    <h5 class="fw-bold">@languageContainer.Keys["General Properties"]</h5>
+
+                    <div class="d-flex flex-wrap flex-md-nowrap">
+            @*             <div class="p-3 w-100 w-md-25">
+                            <MudNumericField HideSpinButtons="true"
+                                             @bind-Value="visitReportForm.FloorsCount"
+                                             For="@(() => visitReportForm.FloorsCount)"
+                                             HelperTextOnFocus="true"
+                                             Label="@languageContainer.Keys["Floors Count"]"
+                                             Variant="Variant.Outlined"
+                                             AdornmentColor="Color.Info"
+                                             Adornment="Adornment.End"
+                                             AdornmentText="#"
+                                             Required
+                                             Placeholder="@languageContainer.Keys["Enter Number"]" />
+                        </div>
+
+                        <div class="p-3 w-100 w-md-25">
+                            <MudTextField Variant="Variant.Outlined"
+                                          @bind-Value="visitReportForm.Floors"
+                                          For="@(() => visitReportForm.Floors)"
+                                          HelperTextOnFocus="true"
+                                          Label="@languageContainer.Keys["Floors"]"
+                                          AdornmentColor="Color.Info"
+                                          Adornment="Adornment.Start"
+                                          AdornmentIcon="@Icons.Material.Filled.FormatListBulleted"
+                                          Required
+                                          Placeholder="@languageContainer.Keys["floor2,floor4"]" />
+                        </div>
+
+                        <div class="p-3 w-100 w-md-25">
+                            <MudNumericField HideSpinButtons="true"
+                                             @bind-Value="visitReportForm.RoomsCount"
+                                             For="@(() => visitReportForm.RoomsCount)"
+                                             HelperTextOnFocus="true"
+                                             Label="@languageContainer.Keys["Rooms Count"]"
+                                             Variant="Variant.Outlined"
+                                             AdornmentColor="Color.Info"
+                                             Adornment="Adornment.End"
+                                             AdornmentText="#"
+                                             Required
+                                             Placeholder="@languageContainer.Keys["Enter Number"]" />
+                        </div> *@
+
+                        <div class="p-3 w-100 w-md-100">
+                            <MudTextField Variant="Variant.Outlined"
+                                          @bind-Value="visitReportForm.Rooms"
+                                          For="@(() => visitReportForm.Rooms)"
+                                          HelperTextOnFocus="true"
+                                          Label="@languageContainer.Keys["Rooms"]"
+                                          AdornmentColor="Color.Info"
+                                          Adornment="Adornment.Start"
+                                          AdornmentIcon="@Icons.Material.Filled.FormatListBulleted"
+                                          Required
+                                          Placeholder="@languageContainer.Keys["r1,r2,r3"]" />
+                        </div>
+                    </div>
+
+                    <div class="d-flex flex-wrap flex-md-nowrap">
+                        <div class="p-3 w-100 w-md-33">
+                            <MudNumericField HideSpinButtons="true"
+                                             @bind-Value="visitReportForm.SuitesCount"
+                                             For="@(() => visitReportForm.SuitesCount)"
+                                             HelperTextOnFocus="true"
+                                             Label="@languageContainer.Keys["Suites Count"]"
+                                             Variant="Variant.Outlined"
+                                             AdornmentColor="Color.Info"
+                                             Adornment="Adornment.End"
+                                             AdornmentText="#"
+                                             Required
+                                             Placeholder="@languageContainer.Keys["Enter Number"]" />
+                        </div>
+
+                        <div class="p-3 w-100 w-md-33">
+                            <MudNumericField HideSpinButtons="true"
+                                             @bind-Value="visitReportForm.KitchensCount"
+                                             For="@(() => visitReportForm.KitchensCount)"
+                                             HelperTextOnFocus="true"
+                                             Label="@languageContainer.Keys["Kitchens Count"]"
+                                             Variant="Variant.Outlined"
+                                             AdornmentColor="Color.Info"
+                                             Adornment="Adornment.End"
+                                             AdornmentText="#"
+                                             Required
+                                             Placeholder="@languageContainer.Keys["Enter Number"]" />
+                        </div>
+
+                        <div class="p-3 w-100 w-md-33">
+                            <MudNumericField HideSpinButtons="true"
+                                             @bind-Value="visitReportForm.RestuarntsCount"
+                                             For="@(() => visitReportForm.RestuarntsCount)"
+                                             HelperTextOnFocus="true"
+                                             Label="@languageContainer.Keys["Restaurants Count"]"
+                                             Variant="Variant.Outlined"
+                                             AdornmentColor="Color.Info"
+                                             Adornment="Adornment.End"
+                                             AdornmentText="#"
+                                             Required
+                                             Placeholder="@languageContainer.Keys["Enter Number"]" />
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ========================= -->
+                <!-- Pest Control (VisitType filter) -->
+                <!-- ========================= -->
+                @if (visitReportForm.Visit.VisitTypeId == (int)ServiceRequestTypeEnum.PestControl)
+                {
+                    <div class="mt-5">
+                        <h5 class="fw-bold">@languageContainer.Keys["Pest Control"]</h5>
+                        <div class="d-flex flex-wrap flex-md-nowrap">
+                            <div class="p-3 w-100 w-md-50">
+                                <MudAutocomplete T="LookupDto"
+                                                 SearchFunc="@GetPestsTypes"
+                                                 Adornment="Adornment.Start"
+                                                 AnchorOrigin="Origin.BottomCenter"
+                                                 Label="@languageContainer.Keys["Pests Types"]"
+                                                 Variant="Variant.Outlined"
+                                                 ShowProgressIndicator="true"
+                                                 ResetValueOnEmptyText="true"
+                                                 CoerceText="true"
+                                                 AdornmentIcon="@Icons.Material.Filled.BugReport"
+                                                 ProgressIndicatorColor="Color.Info"
+                                                 Clearable
+                                                 Required
+                                                 @bind-Value="_pestsTypeToAdd"
+                                                 AdornmentColor="Color.Info"
+                                                 MaxItems="null"
+                                                 HelperTextOnFocus="true"
+                                                 ToStringFunc="@(e => e == null ? null : $"{e.Name}")"
+                                                 Placeholder="@languageContainer.Keys["Select Pests Type"]" />
+
+                                <div class="mt-3">
+                                    <MudChipSet>
+                                        @foreach (var x in _selectedPestsTypes)
+                                        {
+                                            <MudChip OnClose="@(() => RemoveSelected(_selectedPestsTypes, x))"
+                                                     Closeable="true"
+                                                     Color="Color.Info"
+                                                     Variant="Variant.Outlined">
+                                                @x.Name
+                                            </MudChip>
+                                        }
+                                    </MudChipSet>
+                                </div>
+
+                                <div class="mt-3">
+                                    <MudButton Variant="Variant.Outlined"
+                                               Color="Color.Info"
+                                               StartIcon="@Icons.Material.Filled.Add"
+                                               OnClick="@AddSelectedPestsType">
+                                        @languageContainer.Keys["Add"]
+                                    </MudButton>
+                                </div>
+                            </div>
+                            <div class="p-3 w-100 w-md-25">
+                                <MudAutocomplete T="LookupDto"
+                                                 SearchFunc="@GetPestsActivities"
+                                                 Adornment="Adornment.Start"
+                                                 AnchorOrigin="Origin.BottomCenter"
+                                                 Label="@languageContainer.Keys[("Pests Activity")]"
+                                                 Variant="Variant.Outlined"
+                                                 ShowProgressIndicator="true"
+                                                 ResetValueOnEmptyText="true"
+                                                 CoerceText="true"
+                                                 AdornmentIcon="@Icons.Material.Filled.Category"
+                                                 ProgressIndicatorColor="Color.Info"
+                                                 Clearable
+                                                 Required
+                                                 @bind-Value="visitReportForm.PestsActivity"
+                                                 For="@(() => visitReportForm.PestsActivity)"
+                                                 AdornmentColor="Color.Info"
+                                                 MaxItems="null"
+                                                 HelperTextOnFocus="true"
+                                                 ToStringFunc="@(e => e == null ? null : $"{e.Name}")"
+                                                 Placeholder="@languageContainer.Keys[("Select Activity")]">
+                                    <NoItemsTemplate>
+                                        <MudText Align="Align.Center" Class="px-4 py-4">
+                                            @languageContainer.Keys[("No items found")]
+                                        </MudText>
+                                    </NoItemsTemplate>
+                                </MudAutocomplete>
+                            </div>
+                            <div class="p-3 w-100 w-md-25">
+                                <MudAutocomplete T="LookupDto"
+                                                 SearchFunc="@GetTargetPestTypes"
+                                                 Adornment="Adornment.Start"
+                                                 AnchorOrigin="Origin.BottomCenter"
+                                                 Label="@languageContainer.Keys[("Target Pest Type")]"
+                                                 Variant="Variant.Outlined"
+                                                 ShowProgressIndicator="true"
+                                                 ResetValueOnEmptyText="true"
+                                                 CoerceText="true"
+                                                 AdornmentIcon="@Icons.Material.Filled.BugReport"
+                                                 ProgressIndicatorColor="Color.Info"
+                                                 Clearable
+                                                 Required
+                                                 @bind-Value="visitReportForm.TargetPestType"
+                                                 For="@(() => visitReportForm.TargetPestType)"
+                                                 AdornmentColor="Color.Info"
+                                                 MaxItems="null"
+                                                 HelperTextOnFocus="true"
+                                                 ToStringFunc="@(e => e == null ? null : $"{e.Name}")"
+                                                 Placeholder="@languageContainer.Keys[("Select Target Pest")]">
+                                    <NoItemsTemplate>
+                                        <MudText Align="Align.Center" Class="px-4 py-4">
+                                            @languageContainer.Keys[("No items found")]
+                                        </MudText>
+                                    </NoItemsTemplate>
+                                </MudAutocomplete>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-5">
+                        <h5 class="fw-bold">@languageContainer.Keys["Area"]</h5>
+                        <div class="d-flex flex-wrap flex-md-nowrap">
+                            <div class="p-3 w-100 w-md-50">
+                                <MudTextField Lines="3"
+                                              Variant="Variant.Outlined"
+                                              @bind-Value="visitReportForm.AreasApplied"
+                                              For="@(() => visitReportForm.AreasApplied)"
+                                              HelperTextOnFocus="true"
+                                              Label="@languageContainer.Keys["Areas Applied"]"
+                                              AdornmentColor="Color.Info"
+                                              Adornment="Adornment.Start"
+                                              AdornmentIcon="@Icons.Material.Filled.Place"
+                                              Required
+                                              Placeholder="@languageContainer.Keys["Enter areas"]" />
+                            </div>
+                            <div class="p-3 w-100 w-md-50">
+                                <MudTextField Lines="3"
+                                              Variant="Variant.Outlined"
+                                              @bind-Value="visitReportForm.AreasTreated"
+                                              For="@(() => visitReportForm.AreasTreated)"
+                                              HelperTextOnFocus="true"
+                                              Label="@languageContainer.Keys["Areas Treated"]"
+                                              AdornmentColor="Color.Info"
+                                              Adornment="Adornment.Start"
+                                              AdornmentIcon="@Icons.Material.Filled.Place"
+                                              Required
+                                              Placeholder="@languageContainer.Keys["beds, wardrobe"]" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-5">
+                        <h5 class="fw-bold">@languageContainer.Keys["Treatment"]</h5>
+                        <div class="d-flex flex-wrap flex-md-nowrap">
+                            <div class="p-3 w-100 w-md-25">
+                                <MudAutocomplete T="LookupDto"
+                                                 SearchFunc="@GetInfections"
+                                                 Adornment="Adornment.Start"
+                                                 AnchorOrigin="Origin.BottomCenter"
+                                                 Label="@languageContainer.Keys["Causes of Infection"]"
+                                                 Variant="Variant.Outlined"
+                                                 ShowProgressIndicator="true"
+                                                 ResetValueOnEmptyText="true"
+                                                 CoerceText="true"
+                                                 AdornmentIcon="@Icons.Material.Filled.BugReport"
+                                                 ProgressIndicatorColor="Color.Info"
+                                                 Clearable
+                                                 Required
+                                                 @bind-Value="_infectionToAdd"
+                                                 AdornmentColor="Color.Info"
+                                                 MaxItems="null"
+                                                 HelperTextOnFocus="true"
+                                                 ToStringFunc="@(e => e == null ? null : $"{e.Name}")"
+                                                 Placeholder="@languageContainer.Keys["Select Infection"]" />
+
+                                <div class="mt-3">
+                                    <MudChipSet>
+                                        @foreach (var x in _selectedInfections)
+                                        {
+                                            <MudChip OnClose="@(() => RemoveSelected(_selectedInfections, x))"
+                                                     Closeable="true"
+                                                     Color="Color.Info"
+                                                     Variant="Variant.Outlined">
+                                                @x.Name
+                                            </MudChip>
+                                        }
+                                    </MudChipSet>
+                                </div>
+
+                                <div class="mt-3">
+                                    <MudButton Variant="Variant.Outlined"
+                                               Color="Color.Info"
+                                               StartIcon="@Icons.Material.Filled.Add"
+                                               OnClick="@AddSelectedInfection">
+                                        @languageContainer.Keys["Add"]
+                                    </MudButton>
+                                </div>
+                            </div>
+
+                            <div class="p-3 w-100 w-md-25">
+                                <MudAutocomplete T="LookupDto"
+                                                 SearchFunc="@GetPestsTreatmentTypes"
+                                                 Adornment="Adornment.Start"
+                                                 AnchorOrigin="Origin.BottomCenter"
+                                                 Label="@languageContainer.Keys["Treatment Types"]"
+                                                 Variant="Variant.Outlined"
+                                                 ShowProgressIndicator="true"
+                                                 ResetValueOnEmptyText="true"
+                                                 CoerceText="true"
+                                                 AdornmentIcon="@Icons.Material.Filled.MedicalServices"
+                                                 ProgressIndicatorColor="Color.Info"
+                                                 Clearable
+                                                 Required
+                                                 @bind-Value="_pestsTreatmentTypeToAdd"
+                                                 AdornmentColor="Color.Info"
+                                                 MaxItems="null"
+                                                 HelperTextOnFocus="true"
+                                                 ToStringFunc="@(e => e == null ? null : $"{e.Name}")"
+                                                 Placeholder="@languageContainer.Keys["Select Treatment Type"]" />
+
+                                <div class="mt-3">
+                                    <MudChipSet>
+                                        @foreach (var x in _selectedPestsTreatmentTypes)
+                                        {
+                                            <MudChip OnClose="@(() => RemoveSelected(_selectedPestsTreatmentTypes, x))"
+                                                     Closeable="true"
+                                                     Color="Color.Info"
+                                                     Variant="Variant.Outlined">
+                                                @x.Name
+                                            </MudChip>
+                                        }
+                                    </MudChipSet>
+                                </div>
+
+                                <div class="mt-3">
+                                    <MudButton Variant="Variant.Outlined"
+                                               Color="Color.Info"
+                                               StartIcon="@Icons.Material.Filled.Add"
+                                               OnClick="@AddSelectedPestsTreatmentType">
+                                        @languageContainer.Keys["Add"]
+                                    </MudButton>
+                                </div>
+                            </div>
+                            <div class="p-3 w-100 w-md-50">
+                                <MudTextField Lines="2"
+                                              Variant="Variant.Outlined"
+                                              @bind-Value="visitReportForm.TreatmentMethodSummary"
+                                              For="@(() => visitReportForm.TreatmentMethodSummary)"
+                                              HelperTextOnFocus="true"
+                                              Label="@languageContainer.Keys["Treatment Method Summary"]"
+                                              AdornmentColor="Color.Info"
+                                              Adornment="Adornment.Start"
+                                              AdornmentIcon="@Icons.Material.Filled.Summarize"
+                                              Placeholder="@languageContainer.Keys["Enter summary"]" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-5">
+                        <h5 class="fw-bold">@languageContainer.Keys["Chemicals"]</h5>
+                        <div class="d-flex flex-wrap flex-md-nowrap">
+                            <div class="p-3 w-100 w-md-50">
+                                <MudAutocomplete T="LookupDto"
+                                                 SearchFunc="@GetChemicals"
+                                                 Adornment="Adornment.Start"
+                                                 AnchorOrigin="Origin.BottomCenter"
+                                                 Label="@languageContainer.Keys["Chemicals"]"
+                                                 Variant="Variant.Outlined"
+                                                 ShowProgressIndicator="true"
+                                                 ResetValueOnEmptyText="true"
+                                                 CoerceText="true"
+                                                 AdornmentIcon="@Icons.Material.Filled.Science"
+                                                 ProgressIndicatorColor="Color.Info"
+                                                 Clearable
+                                                 Required
+                                                 @bind-Value="_chemicalToAdd"
+                                                 AdornmentColor="Color.Info"
+                                                 MaxItems="null"
+                                                 HelperTextOnFocus="true"
+                                                 ToStringFunc="@(e => e == null ? null : $"{e.Name}")"
+                                                 Placeholder="@languageContainer.Keys["Select Chemical"]" />
+
+                                <div class="mt-3">
+                                    <MudChipSet>
+                                        @foreach (var x in _selectedChemicals)
+                                        {
+                                            <MudChip OnClose="@(() => RemoveSelected(_selectedChemicals, x))"
+                                                     Closeable="true"
+                                                     Color="Color.Info"
+                                                     Variant="Variant.Outlined">
+                                                @x.Name
+                                            </MudChip>
+                                        }
+                                    </MudChipSet>
+                                </div>
+
+                                <div class="mt-3">
+                                    <MudButton Variant="Variant.Outlined"
+                                               Color="Color.Info"
+                                               StartIcon="@Icons.Material.Filled.Add"
+                                               OnClick="@AddSelectedChemical">
+                                        @languageContainer.Keys["Add"]
+                                    </MudButton>
+                                </div>
+                            </div>
+                            <div class="p-3 w-100 w-md-50">
+                                <MudNumericField HideSpinButtons="true"
+                                                 @bind-Value="visitReportForm.DilutionPercent"
+                                                 For="@(() => visitReportForm.DilutionPercent)"
+                                                 HelperTextOnFocus="true"
+                                                 Label="@languageContainer.Keys["Dilution Percent"]"
+                                                 Variant="Variant.Outlined"
+                                                 AdornmentColor="Color.Info"
+                                                 Adornment="Adornment.End"
+                                                 AdornmentText="%"
+                                                 Required
+                                                 Placeholder="@languageContainer.Keys["Enter Percent"]" />
+                            </div>
+                        </div>
+                    </div>
+                }
+
+                <!-- ========================= -->
+                <!-- Deep Cleaning -->
+                <!-- ========================= -->
+                @if (visitReportForm.Visit.VisitTypeId == (int)ServiceRequestTypeEnum.DeepCleaning)
+                {
+                    <div class="mt-5">
+                        <h5 class="fw-bold">@languageContainer.Keys["Deep Cleaning"]</h5>
+
+                        <div class="d-flex flex-wrap flex-md-nowrap">
+                            <div class="p-3 w-100 w-md-50">
+                                <MudAutocomplete T="LookupDto"
+                                                 SearchFunc="@GetCleaningTypes"
+                                                 Adornment="Adornment.Start"
+                                                 AnchorOrigin="Origin.BottomCenter"
+                                                 Label="@languageContainer.Keys[("Cleaning Type")]"
+                                                 Variant="Variant.Outlined"
+                                                 ShowProgressIndicator="true"
+                                                 ResetValueOnEmptyText="true"
+                                                 CoerceText="true"
+                                                 AdornmentIcon="@Icons.Material.Filled.CleaningServices"
+                                                 ProgressIndicatorColor="Color.Info"
+                                                 Clearable
+                                                 Required
+                                                 @bind-Value="visitReportForm.CleaningType"
+                                                 For="@(() => visitReportForm.CleaningType)"
+                                                 AdornmentColor="Color.Info"
+                                                 MaxItems="null"
+                                                 HelperTextOnFocus="true"
+                                                 ToStringFunc="@(e => e == null ? null : $"{e.Name}")"
+                                                 Placeholder="@languageContainer.Keys[("Select Cleaning Type")]">
+                                    <NoItemsTemplate>
+                                        <MudText Align="Align.Center" Class="px-4 py-4">
+                                            @languageContainer.Keys[("No items found")]
+                                        </MudText>
+                                    </NoItemsTemplate>
+                                </MudAutocomplete>
+                            </div>
+
+                            <div class="p-3 w-100 w-md-50">
+                                <MudAutocomplete T="LookupDto"
+                                                 SearchFunc="@GetUnits"
+                                                 Adornment="Adornment.Start"
+                                                 AnchorOrigin="Origin.BottomCenter"
+                                                 Label="@languageContainer.Keys[("Unit")]"
+                                                 Variant="Variant.Outlined"
+                                                 ShowProgressIndicator="true"
+                                                 ResetValueOnEmptyText="true"
+                                                 CoerceText="true"
+                                                 AdornmentIcon="@Icons.Material.Filled.Straighten"
+                                                 ProgressIndicatorColor="Color.Info"
+                                                 Clearable
+                                                 Required
+                                                 @bind-Value="visitReportForm.Unit"
+                                                 For="@(() => visitReportForm.Unit)"
+                                                 AdornmentColor="Color.Info"
+                                                 MaxItems="null"
+                                                 HelperTextOnFocus="true"
+                                                 ToStringFunc="@(e => e == null ? null : $"{e.Name}")"
+                                                 Placeholder="@languageContainer.Keys[("Select Unit")]">
+                                    <NoItemsTemplate>
+                                        <MudText Align="Align.Center" Class="px-4 py-4">
+                                            @languageContainer.Keys[("No items found")]
+                                        </MudText>
+                                    </NoItemsTemplate>
+                                </MudAutocomplete>
+                            </div>
+                        </div>
+
+                        <div class="d-flex flex-wrap flex-md-nowrap">
+                            <div class="p-3 w-100 w-md-50">
+                                <MudNumericField HideSpinButtons="true"
+                                                 @bind-Value="visitReportForm.MeasureArea"
+                                                 For="@(() => visitReportForm.MeasureArea)"
+                                                 HelperTextOnFocus="true"
+                                                 Label="@languageContainer.Keys["Measure Area"]"
+                                                 Variant="Variant.Outlined"
+                                                 AdornmentColor="Color.Info"
+                                                 Adornment="Adornment.End"
+                                                 AdornmentText="m²"
+                                                 Required
+                                                 Placeholder="@languageContainer.Keys["Enter Area"]" />
+                            </div>
+                        </div>
+                    </div>
+                }
+
+                <!-- ========================= -->
+                <!-- Building Surface -->
+                <!-- ========================= -->
+                @if (visitReportForm.Visit.VisitTypeId == (int)ServiceRequestTypeEnum.BuildingSurface)
+                {
+                    <div class="mt-5">
+                        <h5 class="fw-bold">@languageContainer.Keys["Building Surface"]</h5>
+
+                        <div class="d-flex flex-wrap flex-md-nowrap">
+                            <div class="p-3 w-100 w-md-50">
+                                <MudAutocomplete T="LookupDto"
+                                                 SearchFunc="@GetSurfaceTypes"
+                                                 Adornment="Adornment.Start"
+                                                 AnchorOrigin="Origin.BottomCenter"
+                                                 Label="@languageContainer.Keys[("Surface Type")]"
+                                                 Variant="Variant.Outlined"
+                                                 ShowProgressIndicator="true"
+                                                 ResetValueOnEmptyText="true"
+                                                 CoerceText="true"
+                                                 AdornmentIcon="@Icons.Material.Filled.Wallpaper"
+                                                 ProgressIndicatorColor="Color.Info"
+                                                 Clearable
+                                                 Required
+                                                 @bind-Value="visitReportForm.SurfaceType"
+                                                 For="@(() => visitReportForm.SurfaceType)"
+                                                 AdornmentColor="Color.Info"
+                                                 MaxItems="null"
+                                                 HelperTextOnFocus="true"
+                                                 ToStringFunc="@(e => e == null ? null : $"{e.Name}")"
+                                                 Placeholder="@languageContainer.Keys[("Select Surface Type")]">
+                                    <NoItemsTemplate>
+                                        <MudText Align="Align.Center" Class="px-4 py-4">
+                                            @languageContainer.Keys[("No items found")]
+                                        </MudText>
+                                    </NoItemsTemplate>
+                                </MudAutocomplete>
+                            </div>
+
+                            <div class="p-3 w-100 w-md-50">
+                                <MudAutocomplete T="LookupDto"
+                                                 SearchFunc="@GetWorkWays"
+                                                 Adornment="Adornment.Start"
+                                                 AnchorOrigin="Origin.BottomCenter"
+                                                 Label="@languageContainer.Keys[("Work Way")]"
+                                                 Variant="Variant.Outlined"
+                                                 ShowProgressIndicator="true"
+                                                 ResetValueOnEmptyText="true"
+                                                 CoerceText="true"
+                                                 AdornmentIcon="@Icons.Material.Filled.Construction"
+                                                 ProgressIndicatorColor="Color.Info"
+                                                 Clearable
+                                                 Required
+                                                 @bind-Value="visitReportForm.WorkWay"
+                                                 For="@(() => visitReportForm.WorkWay)"
+                                                 AdornmentColor="Color.Info"
+                                                 MaxItems="null"
+                                                 HelperTextOnFocus="true"
+                                                 ToStringFunc="@(e => e == null ? null : $"{e.Name}")"
+                                                 Placeholder="@languageContainer.Keys[("Select Work Way")]">
+                                    <NoItemsTemplate>
+                                        <MudText Align="Align.Center" Class="px-4 py-4">
+                                            @languageContainer.Keys[("No items found")]
+                                        </MudText>
+                                    </NoItemsTemplate>
+                                </MudAutocomplete>
+                            </div>
+                        </div>
+                    </div>
+                }
+
+                <!-- ========================= -->
+                <!-- Maintenance -->
+                <!-- ========================= -->
+                @if (visitReportForm.Visit.VisitTypeId == (int)ServiceRequestTypeEnum.Maintenance)
+                {
+                    <div class="mt-5">
+                        <h5 class="fw-bold">@languageContainer.Keys["Maintenance"]</h5>
+
+                        <div class="p-3">
+                            <MudAutocomplete T="LookupDto"
+                                             SearchFunc="@GetMaintenanceTypes"
+                                             Adornment="Adornment.Start"
+                                             AnchorOrigin="Origin.BottomCenter"
+                                             Label="@languageContainer.Keys["Maintenance Types"]"
+                                             Variant="Variant.Outlined"
+                                             ShowProgressIndicator="true"
+                                             ResetValueOnEmptyText="true"
+                                             CoerceText="true"
+                                             AdornmentIcon="@Icons.Material.Filled.Build"
+                                             ProgressIndicatorColor="Color.Info"
+                                             Clearable
+                                             Required
+                                             @bind-Value="_maintenanceTypeToAdd"
+                                             AdornmentColor="Color.Info"
+                                             MaxItems="null"
+                                             HelperTextOnFocus="true"
+                                             ToStringFunc="@(e => e == null ? null : $"{e.Name}")"
+                                             Placeholder="@languageContainer.Keys["Select Maintenance Type"]" />
+
+                            <div class="mt-3">
+                                <MudChipSet>
+                                    @foreach (var x in _selectedMaintenanceTypes)
+                                    {
+                                        <MudChip OnClose="@(() => RemoveSelected(_selectedMaintenanceTypes, x))"
+                                                 Closeable="true"
+                                                 Color="Color.Info"
+                                                 Variant="Variant.Outlined">
+                                            @x.Name
+                                        </MudChip>
+                                    }
+                                </MudChipSet>
+                            </div>
+
+                            <div class="mt-3">
+                                <MudButton Variant="Variant.Outlined"
+                                           Color="Color.Info"
+                                           StartIcon="@Icons.Material.Filled.Add"
+                                           OnClick="@AddSelectedMaintenanceType">
+                                    @languageContainer.Keys["Add"]
+                                </MudButton>
+                            </div>
+                        </div>
+                    </div>
+                }
+
+
+
+                <!-- ========================= -->
+                <!-- M:M Providers (Add + Chips) -->
+                <!-- ========================= -->
+                <div class="mt-5">
+                    <h5 class="fw-bold">@languageContainer.Keys["Providers"]</h5>
+
+                    <div class="d-flex flex-wrap flex-md-nowrap">
+                        <div class="p-3 w-100">
+                            <MudAutocomplete T="LookupDto"
+                                             SearchFunc="@GetProviders"
+                                             Adornment="Adornment.Start"
+                                             AnchorOrigin="Origin.BottomCenter"
+                                             Label="@languageContainer.Keys["Provider"]"
+                                             Variant="Variant.Outlined"
+                                             ShowProgressIndicator="true"
+                                             ResetValueOnEmptyText="true"
+                                             CoerceText="true"
+                                             AdornmentIcon="@Icons.Material.Filled.MedicalInformation"
+                                             ProgressIndicatorColor="Color.Info"
+                                             Clearable
+                                             Required
+                                             @bind-Value="_providerToAdd"
+                                             AdornmentColor="Color.Info"
+                                             MaxItems="null"
+                                             HelperTextOnFocus="true"
+                                             ToStringFunc="@(e => e == null ? null : $"{e.FirstName} {e.LastName} - ({e.EmployeeId})")"
+                                             Placeholder="@languageContainer.Keys["Select Provider"]">
+                                <NoItemsTemplate>
+                                    <MudText Align="Align.Center" Class="px-4 py-4">
+                                        @languageContainer.Keys[("No items found")]
+                                    </MudText>
+                                </NoItemsTemplate>
+                            </MudAutocomplete>
+
+                            <div class="mt-3">
+                                <MudChipSet>
+                                    @foreach (var p in _selectedProviders)
+                                    {
+                                        <MudChip OnClose="@(() => RemoveSelected(_selectedProviders, p))"
+                                                 Closeable="true"
+                                                 Color="Color.Info"
+                                                 Variant="Variant.Outlined">
+                                            @p.FirstName @p.LastName - (@p.EmployeeId)
+                                        </MudChip>
+                                    }
+                                </MudChipSet>
+                            </div>
+
+                            <div class="mt-3">
+                                <MudButton Variant="Variant.Outlined"
+                                           Color="Color.Info"
+                                           StartIcon="@Icons.Material.Filled.Add"
+                                           OnClick="@AddSelectedProvider">
+                                    @languageContainer.Keys["Add"]
+                                </MudButton>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- Row: Camera capture + buttons -->
+                <div class="mt-5">
+                    <h5 class="fw-bold">@languageContainer.Keys["Required Media"]</h5>
+                    <div class="flex-wrap gap-5 gap-md-0 d-flex flex-md-nowrap align-items-end">
+                        <div class="p-3 w-100 w-md-50 d-flex flex-column">
+                            <CameraCapture Label="Report Image"
+                                           ButtonText="Use Camera"
+                                           Capture="environment"
+                                           ImageCaptured="CaptureUploadedImage"
+                                           ImageCleared="ClearUploadedImage"
+                                           CurrentImage="@(Id == 0 || string.IsNullOrEmpty(visitReportForm?.Image) ? null : imageUrl + visitReportForm?.Image)" />
+                            <MudSpacer />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-10">
+                    <h5 class="fw-bold">@languageContainer.Keys["Additional Media"]</h5>
+                    <div class="flex-wrap gap-5 gap-md-0 d-flex flex-md-nowrap align-items-end">
+                        <div class="p-3 w-100 d-flex flex-column">
+                            <ImagesUpload ImagesSelected="CaptureUploadedImages"
+                                          UploadedImagesCleared="ClearUploadedImages"
+                                          CurrentImages="@(Id == 0 ? new List<string>() : visitReportForm?.AdditionalImages)" />
+                            <MudSpacer />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="d-flex flex-wrap flex-md-nowrap">
+                    <div class="p-3 w-100">
+                        <MudTextField Lines="4"
+                                      Variant="Variant.Outlined"
+                                      @bind-Value="visitReportForm.Notes"
+                                      For="@(() => visitReportForm.Notes)"
+                                      HelperTextOnFocus="true"
+                                      Label="@languageContainer.Keys["Notes"]"
+                                      AdornmentColor="Color.Info"
+                                      Adornment="Adornment.Start"
+                                      AdornmentIcon="@Icons.Material.Filled.Notes"
+                                      Placeholder="@languageContainer.Keys["Enter Notes"]" />
+                    </div>
+                </div>
+
+                <!-- ========= Signatures ========= -->
+                <div class="mt-5">
+                    <h5 class="fw-bold">@languageContainer.Keys["Signatures"]</h5>
+                    <div class="d-flex flex-wrap flex-md-nowrap gap-4">
+                        <!-- Supervisor Signature -->
+                        <div class="p-3 w-100 w-md-50 d-flex flex-column">
+                            <span class="fw-bold mb-2">@languageContainer.Keys["Supervisor Signature"]</span>
+
+                            @if (!string.IsNullOrEmpty(visitReportForm!.SupervisorSignatureImage))
+                            {
+                                var supervisorSigntureImagePath = imageUrl + visitReportForm?.SupervisorSignatureImage;
+                                <img class="img-fluid border-1 border-gray-500" src="@supervisorSigntureImagePath" />
+                            }
+                            else
+                            {
+                                <SignaturePad class="border-1 border-gray-500"
+                                              @bind-value="SupervisorSignature.Signature"
+                                              ClearButtonText="@languageContainer.Keys["Clear Signature"]"
+                                              style="width: 100%;" />
+                            }
+                        </div>
+
+
+                        <!-- Client Signature -->
+                        <div class="p-3 w-100 w-md-50 d-flex flex-column">
+                            <span class="fw-bold mb-2">@languageContainer.Keys["Client Signature"]</span>
+
+                            @if (!string.IsNullOrEmpty(visitReportForm!.ClientSignatureImage))
+                            {
+                                var clientSigntureImagePath = imageUrl + visitReportForm?.ClientSignatureImage;
+                                <img class="img-fluid border-1 border-gray-500" src="@clientSigntureImagePath" />
+                            }
+                            else
+                            {
+                                <SignaturePad class="border-1 border-gray-500"
+                                              @bind-value="ClientSignature.Signature"
+                                              ClearButtonText="@languageContainer.Keys["Clear Signature"]"
+                                              style="width: 100%;" />
+                            }
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="flex-wrap gap-5 gap-md-0 d-flex flex-md-nowrap align-items-end p-3">
+                    <MudSpacer />
+
+                    @*               <MudButton Variant="Variant.Filled"
+                               Color="Color.Error"
+                               StartIcon="@Icons.Material.Filled.Logout"
+                               OnClick="CheckOut">
+                        @languageContainer.Keys["Check Out"]
+                    </MudButton>
+ *@         
+                        <FormButtons IsLoading="@isLoading" />
+
+                    <button type="button" @onclick="CheckOut" style="height:fit-content" class="btn btn-danger @(isLoading ? "disabled" : string.Empty)">
+                        @if (isLoading)
+                        {
+                            <span class="indicator-label">
+                                @languageContainer.Keys["Please Wait"]... <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
+                            </span>
+                        }
+                        else
+                        {
+                            <span class="indicator-label">
+                                @languageContainer.Keys["Check Out"]
+                            </span>
+                        }
+                    </button>
+                </div>
+
+
+            </MudCardContent>
+        </EditForm>
+    </MudCard>
+}

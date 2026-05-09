@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
+﻿<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
 
 	<PropertyGroup>
 		<TargetFramework>net7.0</TargetFramework>
@@ -34,6 +34,7 @@
 
 	<ItemGroup>
 		<PackageReference Include="AKSoftware.Localization.MultiLanguages.Blazor" Version="1.5.0" />
+		<PackageReference Include="Blazor.SignaturePad" Version="7.5.0" />
 		<PackageReference Include="Blazored.LocalStorage" Version="4.4.0" />
 		<PackageReference Include="Blazorise.QRCode" Version="1.4.0" />
 		<PackageReference Include="Majorsoft.Blazor.Components.Common.JsInterop" Version="1.5.0" />

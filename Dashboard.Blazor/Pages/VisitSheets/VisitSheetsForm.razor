@@ -1,0 +1,309 @@
+﻿@page "/VisitSheets/Form/{Id:int}"
+@page "/VisitSheets/Form"
+@attribute [Authorize(Roles = Roles.AdminRole)]
+@inherits BasePage
+
+<PageTitle>
+    @($"{languageContainer.Keys[(Id == 0 ? "Add" : "Edit")]} {languageContainer.Keys["Visit Sheet"]}")
+</PageTitle>
+
+<MudBreadcrumbs Items="breadcrumbItems"></MudBreadcrumbs>
+
+@if (visitSheetForm is null)
+{
+    <FormLoadingSpinner IsBigForm="true" />
+}
+else
+{
+    <MudCard Elevation="25">
+        <EditForm Model="@visitSheetForm" OnValidSubmit="OnValidSubmit">
+            <DataAnnotationsValidator />
+
+            <!-- ========= HEADER ========= -->
+            <MudCardHeader Style="padding:20px">
+                <CardHeaderAvatar>
+                    <MudAvatar Rounded="true" Color="Color.Info">
+                        <MudIcon Icon="@EntityIcons.VisitSheetsIcon" />
+                    </MudAvatar>
+                </CardHeaderAvatar>
+
+                <CardHeaderContent>
+                    <MudText Style="display:flex;align-items:center;" Typo="Typo.h5">
+                        @(Id == 0
+                                            ? $"{languageContainer.Keys["Add"]} {languageContainer.Keys["Visit Sheet"]}"
+                                            : $"{languageContainer.Keys["Edit"]} {languageContainer.Keys["Visit Sheet"]} {visitSheetForm.Id}")
+                </MudText>
+            </CardHeaderContent>
+
+                <CardHeaderActions>
+                    <MudButton DisableElevation="true"
+                               Href="/VisitSheets"
+                               Style="margin:10px"
+                               Variant="Variant.Filled"
+                               StartIcon="@Icons.Material.Filled.ArrowBack"
+                               Color="Color.Info">
+                        @($"{languageContainer.Keys["Back to"]} {languageContainer.Keys["Visit Sheets"]}")
+                    </MudButton>
+                </CardHeaderActions>
+            </MudCardHeader>
+
+            <!-- ========= CONTENT ========= -->
+            <MudCardContent Class="px-5 py-3">
+
+            @if (Id == 0)
+                {
+                    <!-- ========================= -->
+                    <!-- Row 1: Contract -->
+                    <!-- ========================= -->
+                    <div class="d-flex flex-wrap flex-md-nowrap">
+                        <div class="p-3 w-100">
+                            <MudAutocomplete T="ContractBaseDto"
+                                             SearchFunc="@GetContracts"
+                                             Adornment="Adornment.Start"
+                                             AnchorOrigin="Origin.BottomCenter"
+                                             Label="@languageContainer.Keys["Contract"]"
+                                             Variant="Variant.Outlined"
+                                             ShowProgressIndicator="true"
+                                             ResetValueOnEmptyText="true"
+                                             CoerceText="true"
+                                             AdornmentIcon="@Icons.Material.Filled.Assignment"
+                                             ProgressIndicatorColor="Color.Info"
+                                             Clearable
+                                             Value="visitSheetForm!.Contract"
+                                             ValueChanged="OnContractChanged"
+                                             For="@(() => visitSheetForm!.Contract)"
+                                             AdornmentColor="Color.Info"
+                                             MaxItems="null"
+                                             HelperTextOnFocus="true"
+                                             ToStringFunc="@(e => e == null ? null : $"{e.Title}")"
+                                             HelperText="@languageContainer.Keys["Required"]"
+                                             Placeholder="@languageContainer.Keys["Select Contract"]">
+                                <NoItemsTemplate>
+                                    <MudText Align="Align.Center" Class="px-4 py-4">
+                                        @languageContainer.Keys["No items found"]
+                                    </MudText>
+                                </NoItemsTemplate>
+                            </MudAutocomplete>
+                        </div>
+                    </div>
+
+                    <!-- ========================= -->
+                    <!-- Row 2: Branch + Supervisor -->
+                    <!-- ========================= -->
+                    <div class="d-flex flex-wrap flex-md-nowrap">
+                        <div class="p-3 w-100 w-md-50">
+                            <MudAutocomplete T="BranchBaseDto"
+                                             SearchFunc="@GetBranches"
+                                             Adornment="Adornment.Start"
+                                             AnchorOrigin="Origin.BottomCenter"
+                                             Label="@languageContainer.Keys["Branch"]"
+                                             Variant="Variant.Outlined"
+                                             ShowProgressIndicator="true"
+                                             ResetValueOnEmptyText="true"
+                                             CoerceText="true"
+                                             AdornmentIcon="@Icons.Material.Filled.AccountTree"
+                                             ProgressIndicatorColor="Color.Info"
+                                             Clearable
+                                             @bind-Value="visitSheetForm.Branch"
+                                             For="@(() => visitSheetForm.Branch)"
+                                             AdornmentColor="Color.Info"
+                                             MaxItems="null"
+                                             HelperTextOnFocus="true"
+                                             ToStringFunc="@(e => e == null ? null : $"{e.Name}")"
+                                             HelperText="@languageContainer.Keys["Required"]"
+                                             Placeholder="@languageContainer.Keys["Select Branch"]">
+                                <NoItemsTemplate>
+                                    <MudText Align="Align.Center" Class="px-4 py-4">
+                                        @languageContainer.Keys["No items found"]
+                                    </MudText>
+                                </NoItemsTemplate>
+                            </MudAutocomplete>
+                        </div>
+
+                        <div class="p-3 w-100 w-md-50">
+                            <MudAutocomplete T="SupervisorBaseDto"
+                                             SearchFunc="@GetSupervisors"
+                                             Adornment="Adornment.Start"
+                                             AnchorOrigin="Origin.BottomCenter"
+                                             Label="@languageContainer.Keys["Supervisor"]"
+                                             Variant="Variant.Outlined"
+                                             ShowProgressIndicator="true"
+                                             ResetValueOnEmptyText="true"
+                                             CoerceText="true"
+                                             AdornmentIcon="@Icons.Material.Filled.SupervisorAccount"
+                                             ProgressIndicatorColor="Color.Info"
+                                             Clearable
+                                             @bind-Value="visitSheetForm.Supervisor"
+                                             For="@(() => visitSheetForm.Supervisor)"
+                                             AdornmentColor="Color.Info"
+                                             MaxItems="null"
+                                             HelperTextOnFocus="true"
+                                             ToStringFunc="@(e => e == null ? null : $"{e.FirstName} {e.LastName}")"
+                                             HelperText="@languageContainer.Keys["Required"]"
+                                             Placeholder="@languageContainer.Keys["Select Supervisor"]">
+                                <NoItemsTemplate>
+                                    <MudText Align="Align.Center" Class="px-4 py-4">
+                                        @languageContainer.Keys["No items found"]
+                                    </MudText>
+                                </NoItemsTemplate>
+                            </MudAutocomplete>
+                        </div>
+                    </div>
+
+                    <!-- ========================= -->
+                    <!-- Plan Card: TotalVisits + Days + StartingDate + Time -->
+                    <!-- ========================= -->
+                    <div class="p-3">
+                        <MudPaper Class="p-4" Elevation="2" Rounded="true">
+                            <MudText Class="fw-bold mb-3">@languageContainer.Keys["Plan"]</MudText>
+
+                            <div class="d-flex flex-wrap flex-md-nowrap">
+                                <div class="p-2 w-100 w-md-50">
+                                    <MudNumericField T="int"
+                                                     HideSpinButtons="true"
+                                                     Variant="Variant.Outlined"
+                                                     @bind-Value="visitSheetForm.TotalVisits"
+                                                     For="@(() => visitSheetForm.TotalVisits)"
+                                                     Label="@languageContainer.Keys["No Of Visits"]"
+                                                     AdornmentColor="Color.Info"
+                                                     Adornment="Adornment.Start"
+                                                     AdornmentIcon="@Icons.Material.Filled.FormatListNumbered"
+                                                     HelperText="@languageContainer.Keys["Required"]" />
+                                </div>
+                                <!-- Row 3: Service Request Type (Lookup) -->
+                                <div class="p-3 w-100">
+                                    <MudAutocomplete T="LookupDto"
+                                                     SearchFunc="@GetVisitTypes"
+                                                     Adornment="Adornment.Start"
+                                                     AnchorOrigin="Origin.BottomCenter"
+                                                     Label="@languageContainer.Keys[("Visit Type")]"
+                                                     Variant="Variant.Outlined"
+                                                     ShowProgressIndicator="true"
+                                                     ResetValueOnEmptyText="true"
+                                                     CoerceText="true"
+                                                     AdornmentIcon="@Icons.Material.Filled.Category"
+                                                     ProgressIndicatorColor="Color.Info"
+                                                     Clearable
+                                                     @bind-Value="visitSheetForm.VisitType"
+                                                     For="@(() => visitSheetForm.VisitType)"
+                                                     AdornmentColor="Color.Info"
+                                                     MaxItems="null"
+                                                     HelperTextOnFocus="true"
+                                                     ToStringFunc="@(e => e == null ? null : $"{e.Name}")"
+                                                     HelperText="@languageContainer.Keys[("Required")]"
+                                                     Placeholder="@languageContainer.Keys[("Select Request Type")]">
+                                        <NoItemsTemplate>
+                                            <MudText Align="Align.Center" Class="px-4 py-4">
+                                                @languageContainer.Keys[("No items found")]
+                                            </MudText>
+                                        </NoItemsTemplate>
+                                    </MudAutocomplete>
+                                </div>
+                            </div>
+
+                            <!-- Days -->
+                            <div class="p-2">
+                                <MudText Class="fw-bold mb-2">@languageContainer.Keys["Days"]</MudText>
+
+                                <div class="d-flex flex-wrap">
+                                    <!-- Column 1 -->
+                                    <div class="me-10 mb-3">
+                                        <MudCheckBox Label="@languageContainer.Keys["Saturday"]"
+                                                     Value="@IsDaySelected(VisitDays.Saturday)"
+                                                     ValueChanged="@((bool v) => SetDay(VisitDays.Saturday, v))" />
+
+                                        <MudCheckBox Label="@languageContainer.Keys["Tuesday"]"
+                                                     Value="@IsDaySelected(VisitDays.Tuesday)"
+                                                     ValueChanged="@((bool v) => SetDay(VisitDays.Tuesday, v))" />
+
+                                        <MudCheckBox Label="@languageContainer.Keys["Friday"]"
+                                                     Value="@IsDaySelected(VisitDays.Friday)"
+                                                     ValueChanged="@((bool v) => SetDay(VisitDays.Friday, v))" />
+                                    </div>
+
+                                    <!-- Column 2 -->
+                                    <div class="me-10 mb-3">
+                                        <MudCheckBox Label="@languageContainer.Keys["Sunday"]"
+                                                     Value="@IsDaySelected(VisitDays.Sunday)"
+                                                     ValueChanged="@((bool v) => SetDay(VisitDays.Sunday, v))" />
+
+                                        <MudCheckBox Label="@languageContainer.Keys["Wednesday"]"
+                                                     Value="@IsDaySelected(VisitDays.Wednesday)"
+                                                     ValueChanged="@((bool v) => SetDay(VisitDays.Wednesday, v))" />
+                                    </div>
+
+                                    <!-- Column 3 -->
+                                    <div class="mb-3">
+                                        <MudCheckBox Label="@languageContainer.Keys["Monday"]"
+                                                     Value="@IsDaySelected(VisitDays.Monday)"
+                                                     ValueChanged="@((bool v) => SetDay(VisitDays.Monday, v))" />
+
+                                        <MudCheckBox Label="@languageContainer.Keys["Thursday"]"
+                                                     Value="@IsDaySelected(VisitDays.Thursday)"
+                                                     ValueChanged="@((bool v) => SetDay(VisitDays.Thursday, v))" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Start Date + Time -->
+                            <div class="d-flex flex-wrap flex-md-nowrap">
+                                <div class="p-2 w-100 w-md-50">
+                                    <MudDatePicker Variant="Variant.Outlined"
+                                                   @bind-Date="StartingDateProxy"
+                                                   Label="@languageContainer.Keys["Starting Date"]"
+                                                   Required="true"
+                                                   Adornment="Adornment.End"
+                                                   AdornmentIcon="@Icons.Material.Filled.CalendarMonth"
+                                                   AdornmentColor="Color.Info" />
+                                </div>
+
+                                <div class="p-2 w-100 w-md-50">
+                                    <MudTimePicker Variant="Variant.Outlined"
+                                                   @bind-Time="VisitTimeProxy"
+                                                   Label="@languageContainer.Keys["Time"]"
+                                                   Required="true"
+                                                   Adornment="Adornment.End"
+                                                   AdornmentIcon="@Icons.Material.Filled.AccessTime"
+                                                   AdornmentColor="Color.Info" />
+                                </div>
+                            </div>
+                        </MudPaper>
+                    </div>
+                }
+
+                <!-- ========================= -->
+                <!-- Notes + Active (Edit only) -->
+                <!-- ========================= -->
+                <div class="d-flex flex-wrap flex-md-nowrap">
+                    <div class="p-3 w-100 @(Id != 0 ? "w-md-75" : "w-md-100")">
+                        <MudTextField Lines="3"
+                                      Variant="Variant.Outlined"
+                                      @bind-Value="visitSheetForm.Notes"
+                                      For="@(() => visitSheetForm.Notes)"
+                                      Label="@languageContainer.Keys["Notes"]"
+                                      AdornmentColor="Color.Info"
+                                      Adornment="Adornment.Start"
+                                      AdornmentIcon="@Icons.Material.Filled.Notes"
+                                      Placeholder="@languageContainer.Keys["Enter Notes"]" />
+                    </div>
+
+                    @if (Id != 0)
+                    {
+                        <div class="p-3 w-100 w-md-25 d-flex align-items-end">
+                            <MudSwitch Color="Color.Success"
+                                       @bind-Value="visitSheetForm.IsActive"
+                                       Label="@languageContainer.Keys["Active"]" />
+                        </div>
+                    }
+                </div>
+
+                <!-- ========= Buttons ========= -->
+                <div class="flex-wrap gap-5 gap-md-0 d-flex flex-md-nowrap align-items-end p-3">
+                    <MudSpacer />
+                    <FormButtons IsLoading="@isLoading" />
+                </div>
+
+            </MudCardContent>
+        </EditForm>
+    </MudCard>
+}

@@ -1,0 +1,586 @@
+﻿@page "/VisitSheets/Details/{Id:int}"
+@attribute [Authorize(Roles = $"{Roles.AdminRole},{Roles.ManagerRole},{Roles.SupervisorRole},{Roles.ContractClientRole}")]
+@inherits BasePage
+
+<PageTitle>
+    @($"{languageContainer.Keys["Visit Sheet"]} {languageContainer.Keys["Details"]}")
+</PageTitle>
+
+<MudBreadcrumbs Items="breadcrumbItems"></MudBreadcrumbs>
+
+@if (visitSheet is null)
+{
+    <FormLoadingSpinner IsBigForm="true" />
+}
+else
+{
+    var client = visitSheet.Contract?.ContractClient;
+    var clientName = client == null ? null : $"{client.FirstName} {client.LastName}".Trim();
+    var supervisorName = visitSheet.Supervisor == null ? null : $"{visitSheet.Supervisor.FirstName} {visitSheet.Supervisor.LastName}".Trim();
+
+    <div class="d-flex flex-column flex-md-row">
+
+        <!--begin::Sidebar-->
+        <div class="flex-column flex-lg-row-auto w-100 w-xl-350px mb-10">
+
+            <!--begin::Client Card-->
+            <!-- ===================== -->
+            <!-- SIDEBAR (NULL-SAFE) -->
+            <!-- ===================== -->
+            <div class="card mb-5 mb-xl-8 shadow-sm">
+                <div class="card-body pt-15">
+                    <div class="d-flex flex-center flex-column">
+
+                        <MudAvatar Class="border border-gray-300"
+                                   Style="height:200px; width:200px;"
+                                   Rounded="true"
+                                   Color="Color.Primary"
+                                   @onclick="() => ShowImagePreview(imageUrl + (client?.Image ?? string.Empty))">
+
+                            @if (!string.IsNullOrWhiteSpace(client?.Image))
+                            {
+                                <MudImage Src="@(imageUrl + client!.Image)"></MudImage>
+                            }
+                            else
+                            {
+                                <MudIcon Icon="@Icons.Material.Filled.Person" Size="Size.Large" />
+                            }
+                        </MudAvatar>
+
+                        @if (!string.IsNullOrWhiteSpace(clientName))
+                        {
+                            <a class="fs-3 text-gray-800 text-hover-primary fw-bold my-2">
+                                @clientName
+                            </a>
+                        }
+
+                        @if (!string.IsNullOrWhiteSpace(client?.Email))
+                        {
+                            <div class="fs-5 fw-semibold text-muted">
+                                @client.Email
+                            </div>
+                        }
+
+                        @if (!string.IsNullOrWhiteSpace(client?.PhoneNumber))
+                        {
+                            <div class="fs-5 fw-semibold text-muted mb-6">
+                                @client.PhoneNumber
+                            </div>
+                        }
+
+                        @if (!string.IsNullOrWhiteSpace(visitSheet.Branch?.Name))
+                        {
+                            <MudChip Color="Color.Info" Variant="Variant.Filled" Size="Size.Small" Class="mb-2">
+                                @languageContainer.Keys["Branch"]: @visitSheet.Branch.Name
+                            </MudChip>
+                        }
+
+                        @if (!string.IsNullOrWhiteSpace(supervisorName))
+                        {
+                            <div class="fs-6 fw-semibold text-muted">
+                                @languageContainer.Keys["Supervisor"]: @supervisorName
+                            </div>
+                        }
+
+                        @if (!string.IsNullOrWhiteSpace(visitSheet.Contract?.Title))
+                        {
+                            <div class="fs-6 fw-semibold text-muted">
+                                @languageContainer.Keys["Contract"]: @visitSheet.Contract!.Title
+                            </div>
+                        }
+
+                    </div>
+                </div>
+            </div>
+            <!--end::Client Card-->
+            <!--begin::Quick Info Card-->
+            <!--end::Quick Info Card-->
+
+        </div>
+        <!--end::Sidebar-->
+        <!--begin::Content-->
+        <div class="flex-lg-row-fluid ms-lg-15">
+
+            <!--begin:::Tabs-->
+            <ul class="nav nav-custom nav-tabs nav-line-tabs nav-line-tabs-2x border-0 fs-4 fw-semibold mb-8 d-flex" role="tablist">
+
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link text-active-primary pb-4 active"
+                       data-bs-toggle="tab"
+                       href="#vs_overview_tab"
+                       aria-selected="true"
+                       role="tab">
+                        @languageContainer.Keys["Overview"]
+                    </a>
+                </li>
+
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link text-active-primary pb-4"
+                       data-bs-toggle="tab"
+                       href="#vs_visits_tab"
+                       aria-selected="false"
+                       role="tab"
+                       tabindex="-1">
+                        @languageContainer.Keys["Visits"]
+                    </a>
+                </li>
+
+            </ul>
+            <!--end:::Tabs-->
+            <!--begin:::Tab content-->
+            <div class="tab-content" id="myTabContent">
+
+                <!-- ===================== -->
+                <!-- OVERVIEW TAB (ONLY SHOW IF NOT NULL) -->
+                <!-- ===================== -->
+                <div class="tab-pane fade active show" id="vs_overview_tab" role="tabpanel">
+                    <div class="py-3 fs-6">
+                        <!-- Contract -->
+                        <h5 class="fw-bold mt-3">@languageContainer.Keys["Contract Details"]</h5>
+
+                        @if (!string.IsNullOrWhiteSpace(visitSheet.Contract?.Title))
+                        {
+                            <div class="fw-bold mt-4 mb-1">@languageContainer.Keys["Contract"]:</div>
+                            <div class="text-gray-600">@visitSheet.Contract!.Title</div>
+                        }
+
+                        @if (visitSheet.Contract != null && visitSheet.Contract.EffectiveDate != default)
+                        {
+                            <div class="fw-bold mt-4 mb-1">@languageContainer.Keys["Contract Effective Date"]:</div>
+                            <div class="text-gray-600">@visitSheet.Contract.EffectiveDate.ToString("dd/MM/yyyy")</div>
+                        }
+
+                        @if (!string.IsNullOrWhiteSpace(clientName))
+                        {
+                            <div class="fw-bold mt-4 mb-1">@languageContainer.Keys["Client"]:</div>
+                            <div class="text-gray-600">@clientName</div>
+                        }
+
+                        @if (!string.IsNullOrWhiteSpace(client?.Email))
+                        {
+                            <div class="fw-bold mt-4 mb-1">@languageContainer.Keys["Client Email"]:</div>
+                            <div class="text-gray-600">@client.Email</div>
+                        }
+
+                        @if (!string.IsNullOrWhiteSpace(client?.PhoneNumber))
+                        {
+                            <div class="fw-bold mt-4 mb-1">@languageContainer.Keys["Client Phone"]:</div>
+                            <div class="text-gray-600">@client.PhoneNumber</div>
+                        }
+
+                        <!-- Branch -->
+                        <hr />
+                        <h5 class="fw-bold mt-3">@languageContainer.Keys["Branch Details"]</h5>
+
+                        @if (!string.IsNullOrWhiteSpace(visitSheet.Branch?.Name))
+                        {
+                            <div class="fw-bold mt-4 mb-1">@languageContainer.Keys["Branch"]:</div>
+                            <div class="text-gray-600">@visitSheet.Branch!.Name</div>
+                        }
+
+                        @if (!string.IsNullOrWhiteSpace(visitSheet.Branch?.Manager))
+                        {
+                            <div class="fw-bold mt-4 mb-1">@languageContainer.Keys["Branch Manager"]:</div>
+                            <div class="text-gray-600">@visitSheet.Branch!.Manager</div>
+                        }
+
+                        @if (!string.IsNullOrWhiteSpace(visitSheet.Branch?.PhoneNumber))
+                        {
+                            <div class="fw-bold mt-4 mb-1">@languageContainer.Keys["Branch Phone"]:</div>
+                            <div class="text-gray-600">@visitSheet.Branch!.PhoneNumber</div>
+                        }
+
+                        @if (!string.IsNullOrWhiteSpace(visitSheet.Branch?.City?.Name))
+                        {
+                            <div class="fw-bold mt-4 mb-1">@languageContainer.Keys["City"]:</div>
+                            <div class="text-gray-600">@visitSheet.Branch!.City!.Name</div>
+                        }
+
+                        @if (!string.IsNullOrWhiteSpace(visitSheet.Branch?.Location))
+                        {
+                            <div class="fw-bold mt-4 mb-1">@languageContainer.Keys["Location"]:</div>
+                            <div class="text-gray-600">@visitSheet.Branch!.Location</div>
+                        }
+
+                        @if (!string.IsNullOrWhiteSpace(visitSheet.Branch?.LocationURL))
+                        {
+                            <div class="fw-bold mt-4 mb-1">@languageContainer.Keys["Location URL"]:</div>
+                            <div class="text-gray-600">
+                                <MudLink Href="@visitSheet.Branch!.LocationURL" Target="_blank">
+                                    @visitSheet.Branch.LocationURL
+                                </MudLink>
+                            </div>
+                        }
+
+                        @if (!string.IsNullOrWhiteSpace(visitSheet.Branch?.Email))
+                        {
+                            <div class="fw-bold mt-4 mb-1">@languageContainer.Keys["Branch Email"]:</div>
+                            <div class="text-gray-600">@visitSheet.Branch!.Email</div>
+                        }
+
+                        <!-- Supervisor -->
+                        @if (!string.IsNullOrWhiteSpace(supervisorName))
+                        {
+                            <hr />
+                            <h5 class="fw-bold mt-3">@languageContainer.Keys["Supervisor Details"]</h5>
+
+                            <div class="fw-bold mt-4 mb-1">@languageContainer.Keys["Supervisor"]:</div>
+                            <div class="text-gray-600">@supervisorName</div>
+                        }
+
+                        <!-- Plan -->
+                        <hr />
+                        <h5 class="fw-bold mt-3">@languageContainer.Keys["Visit Sheet Plan"]</h5>
+
+                        @if (visitSheet.TotalVisits > 0)
+                        {
+                            <div class="fw-bold mt-4 mb-1">@languageContainer.Keys["Total Visits"]:</div>
+                            <div class="text-gray-600">@visitSheet.TotalVisits</div>
+                        }
+
+                        @*          @if (visitSheet.Days != default && visitSheet.Days.ToString() != "None")
+                        {
+                            <div class="fw-bold mt-4 mb-1">@languageContainer.Keys["Days"]:</div>
+                            <div class="text-gray-600">@visitSheet.Days</div>
+                        } *@
+
+                        @if (visitSheet.StartingDate != default)
+                        {
+                            <div class="fw-bold mt-4 mb-1">@languageContainer.Keys["Starting Date"]:</div>
+                            <div class="text-gray-600">@visitSheet.StartingDate.ToString("dd/MM/yyyy")</div>
+                        }
+
+                        @if (visitSheet.VisitTime != default)
+                        {
+                            <div class="fw-bold mt-4 mb-1">@languageContainer.Keys["Visit Time"]:</div>
+                            <div class="text-gray-600">@visitSheet.VisitTime.ToString(@"hh\:mm")</div>
+                        }
+
+                        <!-- Active (usually always useful to show) -->
+                        <div class="fw-bold mt-4 mb-1">@languageContainer.Keys["Active"]:</div>
+                        <div class="text-gray-600">
+                            @if (visitSheet.IsActive)
+                            {
+                                <MudChip Color="Color.Success" Variant="Variant.Filled" Size="Size.Small">
+                                    @languageContainer.Keys["Yes"]
+                                </MudChip>
+                            }
+                            else
+                            {
+                                <MudChip Color="Color.Error" Variant="Variant.Filled" Size="Size.Small">
+                                    @languageContainer.Keys["No"]
+                                </MudChip>
+                            }
+                        </div>
+
+                        @if (!string.IsNullOrWhiteSpace(visitSheet.Notes))
+                        {
+                            <div class="fw-bold mt-4 mb-1">@languageContainer.Keys["Notes"]:</div>
+                            <div class="text-gray-600">@visitSheet.Notes</div>
+                        }
+
+                    </div>
+                </div>
+                <!-- ===================== -->
+                <!-- Visits Tab -->
+                <!-- ===================== -->
+                <div class="tab-pane fade" id="vs_visits_tab" role="tabpanel">
+
+                    <BrowserViewportObserver TableHeightChanged="TableHeightChanged" />
+                    <MudCard Elevation="25">
+                        <MudCardContent>
+
+                            <MudDataGrid T="VisitBaseDto"
+                                         Dense="true"
+                                         Elevation="0"
+                                         FixedHeader="true"
+                                         Height="@($"{tableHight}px")"
+                                         SelectedItemsChanged="SelectedVisitItemsChanged"
+                                         Loading="@(isLoading)"
+                                         LoadingProgressColor="Color.Info"
+                                         Filterable="true"
+                                         MultiSelection="true"
+                                         Items="@(visitSheet?.Visits)"
+                                         Hover="true"
+                                         SortMode="SortMode.Single"
+                                         QuickFilter="@VisitsFilterFunc">
+
+                                <!-- ==== TOOLBAR ==== -->
+                                <ToolBarContent>
+                                    <div class="d-flex justify-content-between flex-column align-items-center flex-md-row w-100">
+                                        <div class="w-md-25 w-100">
+                                            <div class="d-flex align-items-center">
+                                                <MudAvatar Rounded="true" Color="Color.Info">
+                                                    <MudIcon Icon="@Icons.Material.Filled.Event" />
+                                                </MudAvatar>
+
+                                                <MudText Class="mx-3" Typo="Typo.h5">
+                                                    @languageContainer.Keys["Visits"]
+                                                </MudText>
+
+                                                <!-- Add -->
+                                                @*      <MudIconButton OnClick="() => OpenForm(visitFormUri)"
+                                                               Icon="@Icons.Material.Filled.Add"
+                                                               Color="Color.Success" /> *@
+
+                                                <!-- Delete selected -->
+                                                @if (role == Roles.AdminRole)
+                                                {
+                                                    <MudIconButton OnClick="DeleteAllVisits"
+                                                                   Disabled="@(selectedVisitIds.Count() < 2)"
+                                                                   Icon="@Icons.Material.Filled.DeleteForever"
+                                                                   Color="Color.Error" />
+                                                }
+
+                                                <!-- Refresh (reload details) -->
+                                                <MudIconButton OnClick="ReloadDetailsAsync"
+                                                               Icon="@Icons.Material.Filled.Refresh"
+                                                               Color="Color.Info" />
+                                            </div>
+                                        </div>
+
+                                        <!-- Search -->
+                                        <div class="w-md-50 w-100">
+                                            <MudTextField @bind-Value="visitsSearchString"
+                                                          Adornment="Adornment.Start"
+                                                          Class="mt-0 mb-5"
+                                                          Immediate="true"
+                                                          Placeholder="@($"{languageContainer.Keys["Search For"]} {languageContainer.Keys["Date"]}, {languageContainer.Keys["Status"]}, {languageContainer.Keys["Notes"]}")"
+                                                          AdornmentIcon="@Icons.Material.Filled.Search"
+                                                          IconSize="Size.Medium" />
+                                        </div>
+                                    </div>
+                                </ToolBarContent>
+
+                                <!-- ==== NO RECORDS ==== -->
+                                <NoRecordsContent>
+                                    <NoDataToDisply />
+                                </NoRecordsContent>
+
+                                <!-- ==== COLUMNS ==== -->
+                                <Columns>
+                                    <SelectColumn T="VisitBaseDto" ShowInFooter="false" />
+                                    <!-- Id -->
+                                    <TemplateColumn Context="row"
+                                                    Title="@languageContainer.Keys["Id"]"
+                                                    Sortable="true"
+                                                    Filterable="true">
+                                        <CellTemplate>
+                                            <MudText>@row.Item!.Id</MudText>
+                                        </CellTemplate>
+                                    </TemplateColumn>
+
+
+                                    <!-- Date -->
+                                    <TemplateColumn Context="row"
+                                                    Title="@languageContainer.Keys["Date"]"
+                                                    Sortable="true"
+                                                    Filterable="true">
+                                        <CellTemplate>
+                                            <MudText>@row.Item!.ScheduledAt.ToString("dd/MM/yyyy")</MudText>
+                                        </CellTemplate>
+                                    </TemplateColumn>
+
+                                    <!-- Time -->
+                                    <TemplateColumn Context="row"
+                                                    Title="@languageContainer.Keys["Time"]"
+                                                    Sortable="true"
+                                                    Filterable="false">
+                                        <CellTemplate>
+                                            <MudText>@row.Item!.ScheduledAt.ToString("HH:mm")</MudText>
+                                        </CellTemplate>
+                                    </TemplateColumn>
+
+                                    <!-- Visit Status (Chip) - Status is string (NO Trim) -->
+                                    <TemplateColumn Context="row"
+                                                    Title="@languageContainer.Keys["Status"]"
+                                                    Sortable="true"
+                                                    Filterable="true">
+                                        <CellTemplate>
+                                            @{
+                                                var status = row.Item?.Status ?? string.Empty;
+
+                                                // Normalize ONLY for matching (no Trim)
+                                                var key = status.Replace(" ", "").ToLowerInvariant();
+
+                                                (Color color, string text, string? cssClass) = key switch
+                                                {
+                                                    "scheduled" => (Color.Info, languageContainer.Keys["Scheduled"], null),          // blue
+                                                    "inprogress" => (Color.Dark, languageContainer.Keys["In Progress"], null),          // grey
+                                                    "completed" => (Color.Success, languageContainer.Keys["Completed"], null),          // green
+                                                    "rescheduled" => (Color.Warning, languageContainer.Keys["ReScheduled"], null),          // yellow
+                                                    "missed" => (Color.Error, languageContainer.Keys["Missed"], "missed-chip"), // dark red shade via css
+                                                    "cancelled" => (Color.Error, languageContainer.Keys["Cancelled"], null),          // red
+                                                    _ => (Color.Default, string.IsNullOrWhiteSpace(status) ? "-" : status, null)
+                                                };
+                                            }
+                                            <MudTooltip Text="@(
+                                                        row.Item?.Status == VisitStatus.Completed.ToString() && row.Item?.CompletedAt != null
+                                                            ? row.Item?.CompletedAt.Value.ToString("dd/MM/yyyy HH:mm")
+                                                            : row.Item?.Status == VisitStatus.Cancelled.ToString() && row.Item?.CanceledAt != null
+                                                                ? row.Item?.CanceledAt.Value.ToString("dd/MM/yyyy HH:mm")
+                                                                : "-"
+                                                                                                                                                                                                                                                            )" Placement="Placement.Top" Arrow="true">
+                                            <MudChip Class="@cssClass"
+                                                     Color="@color"
+                                                     Variant="Variant.Filled"
+                                                     Size="Size.Small">
+                                                @text
+                                            </MudChip>
+                                        </MudTooltip>
+                                    </CellTemplate>
+                                </TemplateColumn>
+
+                                    <!-- Visit Report Status (Chip) - Status is string (NO Trim) -->
+                                    @*    <TemplateColumn Context="row"
+                                                    Title="@languageContainer.Keys["Report Status"]"
+                                                    Sortable="true"
+                                                    Filterable="true">
+                                        <CellTemplate>
+                                        @{
+                                                var status = row.Item?.VisitReport?.Status ?? string.Empty;
+
+                                                // Normalize ONLY for matching (no Trim)
+                                                var key = status.Replace(" ", "").ToLowerInvariant();
+
+                                                (Color color, string text, string? cssClass) = key switch
+                                                {
+                                                    "checkedin" => (Color.Info, languageContainer.Keys["CheckedIn"], null),          // blue
+                                                    "inprogress" => (Color.Dark, languageContainer.Keys["InProgress"], ""),          // grey
+                                                    "completed" => (Color.Success, languageContainer.Keys["Completed"], null),          // green
+                                                    "cancelled" => (Color.Error, languageContainer.Keys["Cancelled"], null),          // red
+                                                    _ => (Color.Default, string.IsNullOrWhiteSpace(status) ? "-" : status, null)
+                                                };
+                                            }
+
+                                            <MudChip Class="@cssClass"
+                                                     Color="@color"
+                                                     Variant="Variant.Filled"
+                                                     Size="Size.Small">
+                                                @text
+                                            </MudChip>
+                                    </CellTemplate>
+                                </TemplateColumn> *@
+
+                                    <!-- Completion Notes -->
+                                    <TemplateColumn Context="row"
+                                                    Title="@languageContainer.Keys["Notes"]"
+                                                    Sortable="false"
+                                                    Filterable="true">
+                                        <CellTemplate>
+                                            <MudText>
+                                                @(string.IsNullOrWhiteSpace(row.Item!.Notes) ? "-" : row.Item.Notes)
+                                            </MudText>
+                                        </CellTemplate>
+                                    </TemplateColumn>
+
+                                    <!-- Actions -->
+                                    <TemplateColumn Title="@languageContainer.Keys["Actions"]"
+                                                    CellClass="text-center"
+                                                    Context="row"
+                                                    HeaderClass="text-center"
+                                                    Sortable="false"
+                                                    Filterable="false">
+                                        <HeaderTemplate>
+                                            <MudText Class="w-100">@languageContainer.Keys["Actions"]</MudText>
+                                        </HeaderTemplate>
+                                        <CellTemplate>
+                                        @if (row.Item?.Status == VisitStatus.Completed.ToString() && role == Roles.AdminRole)
+                                            {
+
+                                            }
+                                            else if (row.Item?.Status == VisitStatus.ReScheduled.ToString() && role == Roles.AdminRole)
+                                            {
+
+                                                <MudTooltip Text="@languageContainer.Keys["Reschedule"]" Arrow="true">
+                                                    <MudIconButton Icon="@Icons.Material.Filled.EventRepeat"
+                                                                   Color="Color.Warning"
+                                                                   OnClick="() => OpenVisitAction(row.Item!, VisitStatus.ReScheduled)" />
+                                                </MudTooltip>
+
+                                                <MudTooltip Text="@languageContainer.Keys["Cancel"]" Arrow="true">
+                                                    <MudIconButton Icon="@Icons.Material.Filled.Cancel"
+                                                                   Color="Color.Error"
+                                                                   OnClick="() => OpenVisitAction(row.Item!, VisitStatus.Cancelled)" />
+                                                </MudTooltip>
+                                            }
+                                            else if (row.Item?.Status == VisitStatus.Scheduled.ToString() && role == Roles.AdminRole)
+                                            {
+                                                <MudTooltip Text="@languageContainer.Keys["Complete"]" Arrow="true">
+                                                    <MudIconButton Icon="@Icons.Material.Filled.CheckCircle"
+                                                                   Color="Color.Success"
+                                                                   OnClick="() => OpenVisitAction(row.Item!, VisitStatus.Completed)" />
+                                                </MudTooltip>
+
+                                                <MudTooltip Text="@languageContainer.Keys["Cancel"]" Arrow="true">
+                                                    <MudIconButton Icon="@Icons.Material.Filled.Cancel"
+                                                                   Color="Color.Error"
+                                                                   OnClick="() => OpenVisitAction(row.Item!, VisitStatus.Cancelled)" />
+                                                </MudTooltip>
+
+                                                <MudTooltip Text="@languageContainer.Keys["Reschedule"]" Arrow="true">
+                                                    <MudIconButton Icon="@Icons.Material.Filled.EventRepeat"
+                                                                   Color="Color.Warning"
+                                                                   OnClick="() => OpenVisitAction(row.Item!, VisitStatus.ReScheduled)" />
+                                                </MudTooltip>
+                                            }
+                                            else
+                                            {
+
+                                            }
+
+                                            @if ((row.Item!.VisitReport != null || row.Item!.VisitReportId != null) && row.Item!.VisitReport?.Status != "Completed" && role == Roles.SupervisorRole)
+                                            {
+                                                <MudButton Variant="Variant.Outlined"
+                                                           Color="Color.Info"
+                                                           StartIcon="@Icons.Material.Filled.Description"
+                                                           OnClick="@(() => OpenVisitReport(row.Item!))">
+                                                    @languageContainer.Keys["Edit Report"]
+                                                </MudButton>
+                                            }
+                                            else if ((row.Item!.VisitReport == null || row.Item!.VisitReportId == null) && row.Item!.VisitReport?.Status != "Completed" && role == Roles.SupervisorRole)
+                                            {
+                                                <MudButton Variant="Variant.Filled"
+                                                           Color="Color.Success"
+                                                           StartIcon="@Icons.Material.Filled.Login"
+                                                           OnClick="@(() => InitVisitReport(row.Item!.Id))"
+                                                           Disabled="@isLoading">
+                                                    @languageContainer.Keys["Check In"]
+                                                </MudButton>
+                                            }
+                                            else if ((row.Item!.VisitReport != null || row.Item!.VisitReportId != null) && row.Item!.VisitReport?.Status == "Completed")
+                                            {
+
+                                                <MudButton Variant="Variant.Outlined"
+                                                           Color="Color.Secondary"
+                                                           StartIcon="@Icons.Material.Filled.Description"
+                                                           Href="@($"/VisitReports/Details/{row.Item!.VisitReportId}")">
+                                                    @languageContainer.Keys["View Report"]
+                                                </MudButton>
+                                            }
+
+                                            @*             <TableButtons IsDisable="isDisable"
+                                                          EditClicked="() => OpenForm(visitFormUri, row.Item!.Id)"
+                                                          DeleteClicked="() => DeleteVisit(row.Item!.Id)"
+                                                          DetailsClicked="() => OpenDetails(visitDetailsUri, row.Item!.Id)" /> *@
+                                        </CellTemplate>
+                                    </TemplateColumn>
+                                </Columns>
+
+                                <!-- ==== PAGER ==== -->
+                                <PagerContent>
+                                    <MudDataGridPager T="VisitBaseDto" />
+                                </PagerContent>
+
+                            </MudDataGrid>
+
+                        </MudCardContent>
+                    </MudCard>
+                </div>
+
+            </div>
+            <!--end:::Tab content-->
+        </div>
+        <!--end::Content-->
+    </div>
+}
