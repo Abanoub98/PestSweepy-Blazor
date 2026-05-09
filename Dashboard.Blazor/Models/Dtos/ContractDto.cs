@@ -30,46 +30,40 @@ public class ContractDto
         }
     }
 
-    [Required]
-    public string FirstParty { get; set; } = null!;
+    public DateTime? EndDate { get; set; }
 
-    [Required]
-    public string SecondParty { get; set; } = null!;
+    public DateTime? EndDateLocal
+    {
+        get
+        {
+            if (EndDate is null)
+                return DateTime.Now;
+
+            return EndDate?.ToLocalTime();
+        }
+        set
+        {
+            EndDate = value?.ToUniversalTime();
+        }
+    }
+
+
+    public string FpExecutiveOfficer { get; set; } = null!;
+    public string FpExecutiveOfficerJob { get; set; } = null!;
 
     [Required]
     public string SpExecutiveOfficer { get; set; } = null!;
 
     [Required]
-    public string FpExecutiveOfficer { get; set; } = null!;
-
-    [Required]
-    public string SpEmail { get; set; } = null!;
-
-    [Required]
-    public string FpEmail { get; set; } = null!;
-
-    [Required]
     public string SpExecutiveOfficerJob { get; set; } = null!;
 
-    [Required]
-    public string FpExecutiveOfficerJob { get; set; } = null!;
+    public List<TermDto>? Terms { get; set; } = new();
 
-    [Required]
-    public string FpCommercialRegistrationNo { get; set; } = null!;
-
-    [Required]
-    public string SpCommercialRegistrationNo { get; set; } = null!;
-
-    public List<TermDto> Terms { get; set; } = new();
-
-    [Required]
     public string ContractConclusion { get; set; } = null!;
 
-    [Required]
     public string Notes { get; set; } = null!;
 
-    [Required]
-    public string ContractIntro { get; set; } = null!;
+    public string? ContractIntro { get; set; }
 
     [Required]
     public LookupDto? ContractDuration { get; set; }
@@ -77,24 +71,39 @@ public class ContractDto
     public IEnumerable<LookupDto>? ContractDurations { get; set; }
 
     [Required]
-    public LookupDto? ContractClient { get; set; }
+    public ContractClientDto ContractClient { get; set; } = null!;
     public int? ContractClientId { get; set; }
-    public IEnumerable<LookupDto>? ContractClients { get; set; }
+    public IEnumerable<ContractClientDto>? ContractClients { get; set; }
 
     public IEnumerable<TermDto>? UploadedTerms { get; set; }
-    public IEnumerable<QuotationDto>? Quotations { get; set; }
+
+    public int QuotationID { get; set; }
+    public QuotationDto Quotation { get; set; } = null!;
+    public IEnumerable<QuotationDto> Quotations { get; set; } = null!;
+
+    public int PaymentMethodId { get; set; }
+    public LookupDto PaymentMethod { get; set; } = null!;
+    public IEnumerable<LookupDto> PaymentMethods { get; set; } = null!;
+
+    public string? SerialNumber { get; set; }
+
+    public CompanyInfoDto CompanyInfo { get; set; } = null!;
+
+    public string? UploadedContract { get; set; }
 }
 
 public class TermDto
 {
-    public string Title { get; set; } = null!;
+    public string? Title { get; set; }
 
-    public string Term { get; set; } = null!;
+    public string? Term { get; set; }
+    public string? TitleAr { get; set; }
+    public string? TermAr { get; set; }
 
-    public string SelectedTerm { get; set; } = null!;
+    public string? SelectedTerm { get; set; }
 
-    public QuotationDto? Quotation { get; set; }
-    public int? QuotationId { get; set; }
+    //public QuotationDto? Quotation { get; set; }
+    //public int? QuotationId { get; set; }
 
-    public bool ShowQuotationsList { get; set; }
+    //public bool ShowQuotationsList { get; set; }
 }

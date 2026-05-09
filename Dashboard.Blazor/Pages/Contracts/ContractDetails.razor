@@ -23,10 +23,10 @@ else
                     <MudIcon Icon="@Icons.Material.Filled.ArrowBack" />
                     @languageContainer.Keys["Back To"] @languageContainer.Keys["Contract"]
                 </a>
-                <a @onclick="() => OpenForm(formUri,contract.Id)" class="btn btn-sm btn-success">
+         @*        <a @onclick="() => OpenForm(formUri,contract.Id)" class="btn btn-sm btn-success">
                     <MudIcon Icon="@Icons.Material.Filled.Edit" />
                     @languageContainer.Keys["Edit"]
-                </a>
+                </a> *@
             </div>
         </div>
         <div class="card-body">
@@ -49,24 +49,24 @@ else
                             <div class="col-4 ps-5">
                                 <!--begin::Details item-->
                                 <div class="fw-bold mb-1">@languageContainer.Keys["First Party"]:</div>
-                                <div class="text-gray-600">@contract.FirstParty</div>
+                                <div class="text-gray-600">@contract.CompanyInfo.CompanyName</div>
                                 <!--begin::Details item-->
                                 <div class="fw-bold mt-5 mb-1">@languageContainer.Keys["First Party CEO"]:</div>
                                 <div class="text-gray-600">@contract.FpExecutiveOfficer</div>
                                 <!--begin::Details item-->
                                 <div class="fw-bold mt-5 mb-1">@languageContainer.Keys["First Party Commercial Registration No."]:</div>
-                                <div class="text-gray-600">@contract.FpCommercialRegistrationNo</div>
+                                <div class="text-gray-600">@contract.CompanyInfo.CommercialRegistrationNo</div>
                             </div>
                             <div class="col-4 ps-5">
                                 <!--begin::Details item-->
                                 <div class="fw-bold mb-1">@languageContainer.Keys["Second Party"]:</div>
-                                <div class="text-gray-600">@contract.SecondParty</div>
+                                <div class="text-gray-600">@contract.ContractClient?.FirstName @contract.ContractClient?.LastName</div>
                                 <!--begin::Details item-->
                                 <div class="fw-bold mt-5 mb-1">@languageContainer.Keys["Second Party CEO"]:</div>
                                 <div class="text-gray-600">@contract.SpExecutiveOfficer</div>
                                 <!--begin::Details item-->
                                 <div class="fw-bold mt-5 mb-1">@languageContainer.Keys["Second Party Commercial Registration No."]:</div>
-                                <div class="text-gray-600">@contract.SpCommercialRegistrationNo</div>
+                                <div class="text-gray-600">@contract.ContractClient?.CommercialRegistrationNo</div>
                             </div>
                         </div>
                     </div>

@@ -4,14 +4,31 @@ public partial class QuotationService
 {
     [Parameter][EditorRequired] public QuotationServiceType? Service { get; set; }
     [Parameter] public CurrencyDto? Currency { get; set; }
+    [Parameter] public int? ContractClientId { get; set; }
     [Parameter] public EventCallback TotalValueChanged { get; set; }
     [Parameter] public bool IsReadOnly { get; set; }
 
     private QuotationServiceType? quotationService;
+    private int? _lastContractClientId;
 
     protected override void OnParametersSet()
     {
         quotationService = Service;
+
+        if (_lastContractClientId != ContractClientId)
+        {
+            _lastContractClientId = ContractClientId;
+
+            if (quotationService is not null)
+            {
+                quotationService.Branches = null;
+                quotationService.Branch = null!;
+
+                // لو عندك BranchId في الموديل
+                quotationService.BranchId = 0;
+            }
+        }
+
     }
 
     private async Task<IEnumerable<LookupDto>> GetCategories(string value)
@@ -24,6 +41,18 @@ public partial class QuotationService
             return quotationService.Categories;
 
         return quotationService.Categories.Where(x => x.Name.Contains(value, StringComparison.InvariantCultureIgnoreCase));
+    }
+
+    private async Task<IEnumerable<LookupDto>> GetServiceRequestTypes(string value)
+    {
+        if (quotationService!.ServiceRequestTypes is null)
+            quotationService.ServiceRequestTypes = await GetAllLookupsAsync("ReferenceData?tableName=ServiceRequestType");
+
+        // if text is null or empty, show complete list
+        if (string.IsNullOrEmpty(value))
+            return quotationService.ServiceRequestTypes;
+
+        return quotationService.ServiceRequestTypes.Where(x => x.Name.Contains(value, StringComparison.InvariantCultureIgnoreCase));
     }
 
     private async Task<IEnumerable<LookupDto>> GetTypes(string value)
@@ -66,6 +95,36 @@ public partial class QuotationService
             x.NameEn.Contains(value, StringComparison.InvariantCultureIgnoreCase));
     }
 
+    //private async Task<IEnumerable<LookupDto>> GetBranches(string value)
+    //{
+    //    if (quotationService!.Branches is null)
+    //        quotationService.Branches = await GetAllLookupsAsync("ReferenceData?tableName=Branchs");
+
+    //    // if text is null or empty, show complete list
+    //    if (string.IsNullOrEmpty(value))
+    //        return quotationService.Branches;
+
+    //    return quotationService.Branches.Where(x => x.Name.Contains(value, StringComparison.InvariantCultureIgnoreCase));
+    //}
+
+    private async Task<IEnumerable<BranchBaseDto>> GetBranches(string value)
+    {
+        var clientId = ContractClientId;
+        if (clientId is null)
+            return Enumerable.Empty<BranchBaseDto>();
+
+        if (quotationService!.Branches is null)
+            quotationService.Branches = await GetAllAsync<BranchBaseDto>(
+                $"/Branches?FilterQuery=clientId%3D{clientId}"
+            );
+
+        if (string.IsNullOrWhiteSpace(value))
+            return quotationService.Branches;
+
+        return quotationService.Branches
+            .Where(x => x.Name.Contains(value, StringComparison.InvariantCultureIgnoreCase));
+    }
+
     private void CalculateTotalPrice()
     {
         if (quotationService!.Type is null)
@@ -73,7 +132,12 @@ public partial class QuotationService
 
         quotationService!.DiscountPrice = quotationService.DiscountRate < 100 ? quotationService.Price * (quotationService.DiscountRate / 100) : 0;
 
-        var variable = quotationService.Type.Name == "Area" ? quotationService.Area : quotationService.Quantity;
+        var variable =
+            quotationService.Type.Name == "Area" ? quotationService.Area :
+            quotationService.Type.Name == "Quantity" ? quotationService.Quantity :
+            quotationService.Type.Name == "Visits" ? quotationService.NoOfVisits :
+            quotationService.NoOfVisits;
+
         quotationService!.TotalPrice = (quotationService.Price - quotationService.DiscountPrice) * variable;
     }
 

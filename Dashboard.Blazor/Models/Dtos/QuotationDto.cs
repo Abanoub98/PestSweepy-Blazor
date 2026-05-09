@@ -26,9 +26,8 @@ public class QuotationDto
         }
     }
 
-    [Required]
     [Label(name: "Notes")]
-    public string Notes { get; set; } = null!;
+    public string? Notes { get; set; }
 
     [Required]
     [EmailAddress]
@@ -56,6 +55,8 @@ public class QuotationDto
     public IEnumerable<CurrencyDto>? PriceCurrencies { get; set; }
 
     public List<QuotationServiceType> QuotationBodies { get; set; } = new();
+    public List<TermDto>? Terms { get; set; } = new();
+    public IEnumerable<TermDto>? UploadedTerms { get; set; }
 }
 
 public class QuotationServiceType
@@ -72,6 +73,12 @@ public class QuotationServiceType
     public IEnumerable<ServiceDto>? Services { get; set; }
 
     [Required]
+    [Label(name: "Branch")]
+    public BranchBaseDto? Branch { get; set; }
+    public int? BranchId { get; set; }
+    public IEnumerable<BranchBaseDto>? Branches { get; set; }
+
+    [Required]
     [Label(name: "Unit")]
     public LookupDto? Unit { get; set; }
     public int UnitId { get; set; }
@@ -82,6 +89,12 @@ public class QuotationServiceType
     public LookupDto? Type { get; set; }
     public int TypeId { get; set; }
     public IEnumerable<LookupDto>? Types { get; set; }
+
+    [Required]
+    [Label(name: "ServiceRequestType")]
+    public LookupDto? ServiceRequestType { get; set; }
+    public int ServiceRequestTypeId { get; set; }
+    public IEnumerable<LookupDto>? ServiceRequestTypes { get; set; }
 
     public int NoOfVisits { get; set; }
 

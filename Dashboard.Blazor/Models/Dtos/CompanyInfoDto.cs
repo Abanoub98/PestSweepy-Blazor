@@ -2,6 +2,8 @@
 
 public class CompanyInfoDto
 {
+    [Required]
+    public string? CompanyName { get; set; }
 
     [Required]
     public string? Address { get; set; }
@@ -16,6 +18,9 @@ public class CompanyInfoDto
 
     [Required]
     public string? VatRegistrationNumber { get; set; }
+
+    [Required]
+    public string? CommercialRegistrationNo { get; set; }
 
     [Required]
     public string? ContactPhone { get; set; }

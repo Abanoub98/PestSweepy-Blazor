@@ -24,143 +24,719 @@
                 <div class="border rounded-lg border-gray-600" style="width:992px;background-color:white !important">
                     <div id="Report" class="px-8 py-5 h-100">
                         <div class="row" dir="rtl" style="direction:rtl;background-color:white !important;">
-                            <div class="col-11">
+                            <div class="col-12">
                                 <div class="d-flex flex-column h-100">
                                     <div>
-                                        <div class="row align-items-center justify-content-between mb-20">
-                                            <div class="col-auto px-5">
+                                        <div class="row align-items-center justify-content-between mb-10">
+                                            @* RIGHT: Arabic text *@
+                                            <div class="col-4 d-flex justify-content-start px-5">
                                                 <div class="d-flex flex-column align-items-center">
                                                     <p class="fs-1 fw-bold text-primary text-center">
-                                                        شركة المكافحة المتميزة<br /><span class="text-success">للتشغيل والصيانة</span>
+                                                        شركة المكافحة المتميزة<br />
+                                                        <span class="text-success">للتشغيل والصيانة</span>
                                                     </p>
                                                 </div>
                                             </div>
-                                            <div class="col-auto px-5">
+
+                                            @* CENTER: New image *@
+                                            <div class="col-4 d-flex justify-content-center">
+                                                <MudImage Src="/images/Logo-QR.png" Width="120" />
+                                            </div>
+
+                                            @* LEFT: Logo *@
+                                            <div class="col-4 d-flex justify-content-end px-5">
                                                 <MudImage Src="/images/Logo.png" Width="150" />
                                             </div>
                                         </div>
-                                        <div class="text-center mb-10">
-                                            <div style="width: fit-content;" class="fs-2 fw-bold border border-black border-4 rounded-lg p-3 m-auto">
+
+                                        <!-- Title -->
+                                        <div class="text-center mb-4">
+                                            <div class="d-inline-block fs-4 fw-bold border border-dark border-1 rounded-2 px-4 py-2">
                                                 @contract.Title
                                             </div>
                                         </div>
-                                        <div class="h5">
-                                            <p>التاريخ: @contract.CreatedAtLocal.ToShortDateString()</p>
-                                            <p>مدة العقد: @contract.ContractDuration?.Name</p>
+
+                                        <!-- Dates + Serial Number: AR right / EN left (4 lines under each other) -->
+                                        <div class="row mb-4 fw-bolder text-start">
+                                            <div class="col-12">
+                                                <div>Contract Serial Number: @contract.SerialNumber</div>
+                                                <div>Contract Create Date: @(contract.CreatedAtLocal.ToString("dd/MM/yyyy"))</div>
+                                                <div>Contract Effective Date: @(contract.EffectiveDateLocal?.ToString("dd/MM/yyyy"))</div>
+                                                <div>Contract End Date: @(contract.EndDateLocal?.ToString("dd/MM/yyyy"))</div>
+                                            </div>
                                         </div>
-                                        <div class="h5">
-                                            <p>بوجب هذا العقد قد تم الإتفاق بين كل من:</p>
-                                            <p>السادة/ @contract.FirstParty . ويشار إليها في العقد بوصفها الطرف الأول . سجل تجاري: @contract.FpCommercialRegistrationNo</p>
-                                            <p>ويمثل الطرف الأول في هذا التعاقد @contract.FpExecutiveOfficer . بصفته @contract.FpExecutiveOfficerJob</p>
-                                            <p>البريد الإلكتروني المعتمد لدى للطرف الأول: @contract.FpEmail</p>
-                                            <p>السادة/ @contract.SecondParty . ويشار إليها في العقد بوصفها الطرف الثاني . سجل تجاري: @contract.SpCommercialRegistrationNo </p>
-                                            <p>ويمثل الطرف الثاني في هذا التعاقد  @contract.SpExecutiveOfficer . بصفته @contract.SpExecutiveOfficerJob</p>
-                                            <p>البريد الإلكتروني المعتمد لدى للطرف الأول: @contract.SpEmail</p>
+
+                                        <!-- Basic Details (like the screenshot) -->
+                                        <div class="row mb-4">
+
+                                            <!-- RIGHT: Arabic -->
+                                            <div class="col-6 text-end" dir="rtl" lang="ar">
+
+                                                <div class="fw-bold mb-2">الطرف الأول: @((contract?.CompanyInfo?.CompanyName.SplitLocalized("ar") ?? "-"))</div>
+                                                <div>السجل التجاري: @((contract?.CompanyInfo?.CommercialRegistrationNo ?? "-"))</div>
+                                                <div>الرقم الضريبي: @((contract?.CompanyInfo?.VatRegistrationNumber ?? "-"))</div>
+                                                <div>العنوان: @((contract?.CompanyInfo?.Address.SplitLocalized("ar") ?? "-"))</div>
+                                                <div>رقم الهاتف: @((contract?.CompanyInfo?.ContactPhone ?? "-"))</div>
+                                                <div>رقم الجوال: @((contract?.CompanyInfo?.ContactMobile ?? "-"))</div>
+                                                <div>البريد الإلكتروني: @((contract?.CompanyInfo?.ContactEmail ?? "-"))</div>
+
+                                                <div class="fw-bold mt-4 mb-2">الطرف الثاني: @((contract?.ContractClient is null) ? "-" : $"{contract.ContractClient.LastName}")</div>
+                                                <div>السجل التجاري: @((contract?.ContractClient?.CommercialRegistrationNo ?? "-"))</div>
+                                                <div>الرقم الضريبي: @((contract?.ContractClient?.VatRegistrationNumber ?? "-"))</div>
+                                                <div>العنوان: @((contract?.ContractClient?.Address.SplitLocalized("ar") ?? "-"))</div>
+                                                <div>رقم الهاتف: @((contract?.ContractClient?.ContactPhone ?? "-"))</div>
+                                                <div>رقم الجوال: @((contract?.ContractClient?.ContactMobile ?? "-"))</div>
+                                                <div>البريد الإلكتروني: @((contract?.ContractClient?.ContactEmail ?? "-"))</div>
+
+                                                <div class="mt-3">اسم المسؤول من طرف العميل: @((contract?.SpExecutiveOfficer.SplitLocalized("ar") ?? "-"))</div>
+                                                <div>المسمى الوظيفي للمسؤول: @((contract?.SpExecutiveOfficerJob.SplitLocalized("ar") ?? "-"))</div>
+                                            </div>
+
+                                            <!-- LEFT: English -->
+                                            <!-- LEFT: English -->
+                                            <div class="col-6 text-start" dir="ltr" lang="en">
+
+                                                <div class="fw-bold mb-2">
+                                                    First party: @((contract?.CompanyInfo?.CompanyName.SplitLocalized("en") ?? "-"))
+                                                </div>
+                                                <div>Commercial number: @((contract?.CompanyInfo?.CommercialRegistrationNo ?? "-"))</div>
+                                                <div>VAT number: @((contract?.CompanyInfo?.VatRegistrationNumber ?? "-"))</div>
+                                                <div>Location: @((contract?.CompanyInfo?.Address.SplitLocalized("en") ?? "-"))</div>
+                                                <div>Telephone number: @((contract?.CompanyInfo?.ContactPhone ?? "-"))</div>
+                                                <div>Phone number: @((contract?.CompanyInfo?.ContactMobile ?? "-"))</div>
+                                                <div>E-mail: @((contract?.CompanyInfo?.ContactEmail ?? "-"))</div>
+
+                                                <div class="fw-bold mt-4 mb-2">
+                                                    Second party: @((contract?.ContractClient is null) ? "-" : $"{contract.ContractClient.FirstName}")
+                                                </div>
+                                                <div>Commercial number: @((contract?.ContractClient?.CommercialRegistrationNo ?? "-"))</div>
+                                                <div>VAT number: @((contract?.ContractClient?.VatRegistrationNumber ?? "-"))</div>
+                                                <div>Location: @((contract?.ContractClient?.Address.SplitLocalized("en") ?? "-"))</div>
+                                                <div>Telephone number: @((contract?.ContractClient?.ContactPhone ?? "-"))</div>
+                                                <div>Phone number: @((contract?.ContractClient?.PhoneNumber ?? "-"))</div>
+                                                <div>E-mail: @((contract?.ContractClient?.ContactEmail ?? "-"))</div>
+
+                                                <div class="mt-3">HOD name: @((contract?.SpExecutiveOfficer.SplitLocalized("en") ?? "-"))</div>
+                                                <div>HOD position: @((contract?.SpExecutiveOfficerJob.SplitLocalized("en") ?? "-"))</div>
+
+                                            </div>
+
+
                                         </div>
-                                        <div class="h3 mt-5 fw-bold text-center">
-                                            <p>التمهيد</p>
-                                        </div>
-                                        <div class="h5">
-                                            <p>@contract.ContractIntro</p>
-                                        </div>
-                                        <div style="background-image: url(/images/LogoOpacity.png);background-repeat:no-repeat;background-size: 400px 400px;background-position: top;">
-                                            @{
-                                                var termNumber = 1;
-                                                foreach (var term in contract.Terms)
-                                                {
-                                                    <div class="h5">
-                                                        <p><span class="fw-bold text-decoration-underline">@($"{GetTermText(termNumber++)}-{term.Title}"): </span>@term.Term</p>
-                                                    </div>
-                                                    if (term.Quotation is not null)
-                                                    {
-                                                        var currency = string.Empty;
-                                                        if (term.Quotation.PriceCurrency?.Symbol=="AED")
-                                                        {
-                                                            currency = "د.إ";
-                                                        }
-                                                        else if (term.Quotation.PriceCurrency?.Symbol=="SAR")
-                                                        {
-                                                            currency = "ر.س";
-                                                        }
-                                                        else if (term.Quotation.PriceCurrency?.Symbol=="EGP")
-                                                        {
-                                                            currency = "ج.م";
-                                                        }
-                                                        else if (term.Quotation.PriceCurrency?.Symbol == "$")
-                                                        {
-                                                            currency = "$";
-                                                        }
-                                                        <div class="h5">
-                                                            <div class="table-responsive">
-                                                                <table class="table table-bordered border-gray-800">
-                                                                    <thead>
-                                                                        <tr class="fw-bold fs-6 text-gray-800">
-                                                                            <th>نوع الخدمة</th>
-                                                                            <th>عدد الزيارات</th>
-                                                                            <th>الوحدة</th>
-                                                                            <th>العدد</th>
-                                                                            <th>المساحة</th>
-                                                                            <th>السعر (@currency)</th>
-                                                                            <th>نسبة الخصم</th>
-                                                                            <th>قيمة الخصم</th>                                                                           
-                                                                            <th>المجموع (@currency)</th>
-                                                                        </tr>
-                                                                    </thead>
-                                                                    <tbody>
-                                                                        @foreach (var body in term.Quotation.QuotationBodies)
+
+                                        @{
+                                            var quotation = contract?.Quotation;
+
+                                            <section class="mb-10 mt-10">
+                                                <div class="row" dir="rtl" style="direction:rtl;background-color:white !important;">
+                                                    <div class="col-12">
+                                                        <div class="d-flex flex-column h-100">
+                                                            <div>
+                                                                <div class="text-center mb-5">
+                                                                    <div style="width: fit-content;" class="fs-5 fw-bold p-3 m-auto text-center">
+                                                                        عرض السعر موضوع العقد - Contract Quotation
+                                                                    </div>
+                                                                </div>
+                                                                <div class="h5 d-flex gap-3 mb-5">
+                                                                    <p>عرض رقم: @quotation.SerialNumber</p>
+                                                                </div>
+                                                                <div>
+                                                                    @{
+                                                                        if (quotation is not null)
                                                                         {
-                                                                            <tr>
-                                                                                <td>@body.Service?.NameAr</td>
-                                                                                <td>@body.NoOfVisits</td>
-                                                                                <td>@body.Unit?.Name</td>
-                                                                                <td>@(body.Quantity == 0 ? "-" : body.Quantity)</td>
-                                                                                <td>@(body.Area == 0 ? "-" : body.Area)</td>
-                                                                                <td>@(body.Price)</td>
-                                                                                <td>@body.DiscountRate %</td>
-                                                                                @if (body.Quantity == 0 && body.Area != 0)
-                                                                                {
-                                                                                    <td>@(body.DiscountPrice * body.Area)</td>
-                                                                                }
-                                                                                else if (body.Quantity != 0 && body.Area == 0)
-                                                                                {
-                                                                                    <td>@(body.DiscountPrice * body.Quantity)</td>
-                                                                                }
-                                                                                <td>@(body.TotalPrice)</td>
-                                                                            </tr>
+                                                                            var currency = string.Empty;
+                                                                            if (quotation.PriceCurrency?.Symbol == "AED")
+                                                                            {
+                                                                                currency = "د.إ";
+                                                                            }
+                                                                            else if (quotation.PriceCurrency?.Symbol == "SAR")
+                                                                            {
+                                                                                currency = "ر.س";
+                                                                            }
+                                                                            else if (quotation.PriceCurrency?.Symbol == "EGP")
+                                                                            {
+                                                                                currency = "ج.م";
+                                                                            }
+                                                                            else if (quotation.PriceCurrency?.Symbol == "$")
+                                                                            {
+                                                                                currency = "$";
+                                                                            }
+                                                                            <div class="h5">
+                                                                                <div class="table-responsive">
+                                                                                    <table class="table table-bordered border-gray-800">
+                                                                                        <thead>
+                                                                                            <tr class="fw-bold fs-6 text-gray-800">
+                                                                                                <th class="text-center">
+                                                                                                    نوع الخدمة<br />
+                                                                                                    <small class="d-block text-nowrap">Service type</small>
+                                                                                                </th>                                                                                   
+                                                                                                <th class="text-center">
+                                                                                                    اسم الفرع<br />
+                                                                                                    <small class="d-block text-nowrap">Branch</small>
+                                                                                                </th>
+                                                                                                <th class="text-center">
+                                                                                                    عدد / مساحة<br />
+                                                                                                    <small class="d-block text-nowrap">Qty / Area</small>
+                                                                                                </th>
+                                                                                                <th class="text-center">
+                                                                                                    الوحدة<br />
+                                                                                                    <small class="d-block text-nowrap">Unit</small>
+                                                                                                </th>
+                                                                                                <th class="text-center">
+                                                                                                    سعر الوحدة (@currency)<br />
+                                                                                                    <small class="d-block text-nowrap">Unit price</small>
+                                                                                                </th>
+                                                                                                <th class="text-center">
+                                                                                                    نسبة الخصم<br />
+                                                                                                    <small class="d-block text-nowrap">Discount %</small>
+                                                                                                </th>
+                                                                                                <th class="text-center">
+                                                                                                    قيمة الخصم<br />
+                                                                                                    <small class="d-block text-nowrap">Dis value</small>
+                                                                                                </th>
+                                                                                                <th class="text-center">
+                                                                                                    المجموع (@currency)<br />
+                                                                                                    <small class="d-block text-nowrap">Total</small>
+                                                                                                </th>
+                                                                                            </tr>
+                                                                                        </thead>
+                                                                                        <tbody>
+                                                                                            @foreach (var body in quotation.QuotationBodies)
+                                                                                            {
+                                                                                                <tr>
+                                                                                                    <td>@body.Service?.NameAr</td>
+                                                                                                    <td>@body.Branch?.Name</td>
+                                                                                                    <td>
+                                                                                                        @if (body.NoOfVisits != 0)
+                                                                                                        {
+                                                                                                            @body.NoOfVisits
+                                                                                                        }
+                                                                                                        else if (body.Quantity != 0)
+                                                                                                        {
+                                                                                                            @body.Quantity
+                                                                                                        }
+                                                                                                        else if (body.Area != 0)
+                                                                                                        {
+                                                                                                            @body.Area
+                                                                                                        }
+                                                                                                        else
+                                                                                                        {
+                                                                                                            <text>-</text>
+                                                                                                        }
+                                                                                                    </td>
+                                                                                                    <td>@body.Unit?.Name</td>                                                                                         
+                                                                                                    <td>@(body.Price)</td>
+                                                                                                    <td>@body.DiscountRate %</td>
+                                                                                                    @if (body.Quantity == 0 && body.NoOfVisits == 0 && body.Area != 0)
+                                                                                                    {
+                                                                                                        <td>@(body.DiscountPrice* body.Area)</td>
+                                                                                                    }
+                                                                                                    else if (body.Quantity != 0 && body.NoOfVisits == 0 && body.Area == 0)
+                                                                                                    {
+                                                                                                        <td>@(body.DiscountPrice* body.Quantity)</td>
+                                                                                                    }
+                                                                                                    else if (body.Quantity == 0 && body.NoOfVisits != 0 && body.Area == 0)
+                                                                                                    {
+                                                                                                        <td>@(body.DiscountPrice* body.NoOfVisits)</td>
+                                                                                                    }
+                                                                                                    <td>@(body.TotalPrice)</td>
+                                                                                                </tr>
+                                                                                            }
+                                                                                            <tr>
+                                                                                                <td colspan="7" class="text-center">
+                                                                                                    المجموع الكلي
+                                                                                                </td>
+                                                                                                <td>
+                                                                                                    @(quotation.TotalPrice)
+                                                                                                </td>
+                                                                                            </tr>
+                                                                                        </tbody>
+                                                                                    </table>
+                                                                                </div>
+
+
+                                                                            </div>
                                                                         }
-                                                                        <tr>
-                                                                            <td colspan="8" class="text-center">
-                                                                                المجموع الكلي
-                                                                            </td>
-                                                                            <td>
-                                                                                @(term.Quotation.TotalPrice)
-                                                                            </td>
-                                                                        </tr>
-                                                                    </tbody>
-                                                                </table>
+
+                                                                        // <!-- Quote Notes (Bootstrap) -->
+                                                                        <div class="row fw-bold start mt-10">
+                                                                            <div class="col-6 text-end" lang="ar">
+                                                                                <div class="mb-1">- هذه الأسعار لا تشمل 15 % ضريبة القيمة المضافة.</div>
+                                                                                <div class="mb-1">- سيتم إصدار الفواتير الشهرية، مع الدفع بالطرق التالية: تحويل بنكي إلى حساب شركة المكافحة المتميزة للتشغيل والصيانة رقم الحساب (البنك الاهلي السعودي) SA0810000010400000477903 من تاريخ بداية العقد.</div>
+                                                                            </div>
+
+                                                                            <div class="col-6 text-start" dir="ltr">
+                                                                                <div class="mb-1">- This quote doesn’t include 15% of VAT.</div>
+                                                                                <div class="mb-1">- Monthly invoices will be issued, with payment via the following methods: Bank Transfer to the account of company al-mukafahah al-mutamayyizah for operation and maintenance, account number (National Commercial Bank) SA0810000010400000477903 from the starting date.</div>
+                                                                            </div>
+
+                                                                        </div>
+
+                                                                        @if (quotation?.Terms is not null && quotation.Terms.Any())
+                                                                        {
+                                                                            <div class="mt-4 mb-3">
+                                                                                <h5 class="fw-bold mb-3">بنود العرض - Quotation Clauses</h5>
+
+                                                                                <div class="list-group">
+                                                                                    @{
+                                                                                        var termNumber = 1;
+                                                                                    }
+
+                                                                                    @foreach (var term in quotation.Terms)
+                                                                                    {
+                                                                                        <div class="list-group-item p-3">
+                                                                                            <div class="row g-3 align-items-stretch">
+                                                                                                @* RIGHT: Arabic (same content) *@
+                                                                                                <div class="col-6 d-flex text-end" dir="rtl" lang="ar">
+                                                                                                    <div class="w-100 h-100 d-flex flex-column">
+                                                                                                        <div class="d-flex align-items-center gap-2 mb-1">
+                                                                                                            <span class="badge rounded-pill bg-primary">@termNumber</span>
+                                                                                                            <span class="fw-bold">@($"{GetTermText(termNumber)} - {term.TitleAr}")</span>
+                                                                                                        </div>
+
+                                                                                                        <div class="fw-normal fs-6 lh-lg text-end flex-grow-1">
+                                                                                                            @term.TermAr
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                </div>
+
+                                                                                                @* LEFT: English *@
+                                                                                                <div class="col-6 d-flex text-start" dir="ltr" lang="en">
+                                                                                                    <div class="w-100 h-100 d-flex flex-column">
+                                                                                                        <div class="d-flex align-items-center gap-2 mb-1">
+                                                                                                            <span class="badge rounded-pill bg-primary">@termNumber</span>
+                                                                                                            <span class="fw-bold">@($"{GetTermTextEn(termNumber)} - {term.Title}")</span>
+                                                                                                        </div>
+
+                                                                                                        <div class="fw-normal fs-6 lh-lg text-start flex-grow-1">
+                                                                                                            @term.Term
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+
+                                                                                        termNumber++;
+                                                                                    }
+                                                                                </div>
+                                                                            </div>
+                                                                        }
+
+                                                                        if (!string.IsNullOrEmpty(quotation?.Notes))
+                                                                        {
+                                                                            <div class="h3 mt-5 fw-bold text-center">
+                                                                                <p>ملاحظات</p>
+                                                                            </div>
+                                                                            <div class="h5">
+                                                                                <p>@quotation.Notes</p>
+                                                                            </div>
+                                                                        }
+                                                                    }
+                                                                </div>
                                                             </div>
                                                         </div>
-                                                    }
+                                                    </div>
+                                                </div>
+                                            </section>
+                                        }
+
+                                        <!-- Bootstrap 5 - Contract Clauses (Static AR/EN) -->
+
+                                        <section class="mb-10">
+                                            <div class="d-flex align-items-center justify-content-between mb-3">
+                                                <h4 class="m-0 fw-bold">اتفق الطرفان على البنود الأساسية التالية:</h4>
+                                                @*  <span class="badge bg-secondary">13 Clauses</span> *@
+                                            </div>
+
+                                            <div class="row mt-4 align-items-start">
+                                                <!-- RIGHT: Arabic -->
+                                                <div class="col-6 text-end" dir="rtl" lang="ar">
+                                                    <table class="table table-bordered border-dark text-end">
+                                                        <tbody class="fw-bold">
+                                                            <tr>
+                                                                <td style="width:25%">قيمة العقد</td>
+                                                                <td>@($"{contract?.Quotation?.TotalPrice} ريال (غير شامل ضريبة القيمة المضافة 15%).")</td>
+                                                            </tr>
+
+                                                            <tr>
+                                                                <td>مدة العقد</td>
+                                                                <td>
+                                                                    تاريخ البداية: @contract?.EffectiveDateLocal?.ToShortDateString()
+                                                                    &nbsp;&nbsp;
+                                                                    تاريخ النهاية: @contract?.EndDateLocal?.ToShortDateString()
+                                                                </td>
+                                                            </tr>
+
+                                                            <tr>
+                                                                <td>نوع العقد</td>
+                                                                <td>@(contract?.ContractDuration?.Name.SplitLocalized("ar") ?? "-")</td>
+                                                            </tr>
+
+                                                            <tr>
+                                                                <td>طريقة السداد</td>
+                                                                <td>@(contract?.PaymentMethod.Name.SplitLocalized("ar") ?? "-")</td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                                <!-- LEFT: English -->
+                                                <div class="col-6 text-start" dir="ltr" lang="en">
+                                                    <table class="table table-bordered border-dark">
+                                                        <tbody class="fw-bold">
+                                                            <tr>
+                                                                <td style="width:35%">Contract Value</td>
+                                                                <td>@($"{contract?.Quotation?.TotalPrice} SAR (VAT 15% Excluded).")</td>
+                                                            </tr>
+
+                                                            <tr>
+                                                                <td>Contract Duration</td>
+                                                                <td>
+                                                                    Start: @contract?.EffectiveDateLocal?.ToShortDateString()
+                                                                    &nbsp;
+                                                                    End: @contract?.EndDateLocal?.ToShortDateString()
+                                                                </td>
+                                                            </tr>
+
+                                                            <tr>
+                                                                <td>Contract Type</td>
+                                                                <td>@(contract?.ContractDuration?.Name.SplitLocalized("en") ?? "-")</td>
+                                                            </tr>
+
+                                                            <tr>
+                                                                <td>Payment Method</td>
+                                                                <td>@(contract?.PaymentMethod.Name.SplitLocalized("en") ?? "-")</td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+
+                                            <!-- 1 -->
+                                            <div class="mb-3">
+                                                <div class="row g-3">
+                                                    <div class="col-6 text-end" dir="rtl" lang="ar">
+                                                        <div class="fw-bold mb-2">1. التوضيح</div>
+                                                        <div class="mb-2">1.1 تشكل هذه الشروط والأحكام العامة، واتفاقية البيع، وعرض السعر المحدد للخدمات والرسوم، وأي جداول أو شروط خاصة مرفقة ("الاتفاقية")، وتُعتبر ملحقات العقد بجميع صفاتها ومسمياتها جزءًا أساسيًا من الاتفاقية.</div>
+                                                        <div class="mb-2">1.2 في هذا العقد يُعتبر:</div>
+                                                        <div>1.2.1 "الطرف الأول" مشارًا إليه كمورد ومنفذ في عرض السعر.</div>
+                                                        <div>1.2.2 "الطرف الثاني" مشارًا إليه كعميل في عرض السعر.</div>
+                                                    </div>
+
+                                                    <div class="col-6 text-start" dir="ltr" style="font-size:11px">
+                                                        <div class="fw-bold mb-2">1. Clarification</div>
+                                                        <div class="mb-2">1.1. These General Terms and Conditions, the Sales Agreement, the Quotation specifying the services and fees, and any attached schedules or special conditions (the “Agreement”) shall collectively constitute the Agreement. All annexes to the contract, in all their forms and titles, shall be deemed an integral part of the Agreement.</div>
+                                                        <div class="mb-2">1.2. For the purposes of this Contract:</div>
+                                                        <div>1.2.1. “First Party” shall mean the Supplier and Service Provider as identified in the Quotation.</div>
+                                                        <div>1.2.2. “Second Party” shall mean the Client as identified in the Quotation.</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- 2 -->
+                                            <div class="mb-3">
+                                                <div class="row g-3">
+                                                    <div class="col-6 text-end" dir="rtl" lang="ar">
+                                                        <div class="fw-bold mb-2">2. الالتزامات</div>
+                                                        <div class="mb-2">2.1 يلتزم الطرف الأول "المورد" بتقديم الخدمات المحددة مسبقًا في عرض السعر، أو تقديم خدمات روتينية منتظمة بالتردد المحدد في عرض السعر.</div>
+                                                        <div class="mb-2">2.2 يلتزم الطرف الثاني "العميل" بتوفير جميع وسائل الوصول والمرافق وتهيئتها ليتمكن المورد من تقديم خدماته على الوجه المطلوب.</div>
+                                                        <div class="mb-2">2.3 يلتزم الطرف الثاني "العميل" باتباع نصائح وإرشادات الصحة والسلامة التي يقدمها المورد والامتثال لها، ولا يعتبر المورد مسؤولًا عن مشاكل الإهمال الصحي لدى العميل وعدم اتباعه الإرشادات والتوصيات.</div>
+                                                        <div>2.4 يلتزم الطرف الأول "المورد" بتقديم التحذيرات والإرشادات الوقائية للعميل في مرافق العقد في حالة وجود أي مواد خطرة على الصحة والسلامة، ويحتفظ المورد بالحق في رفض تقديم أي خدمات في المناطق الملوثة، أو المتأثرة بمواد خطرة، أو مواد قابلة للاشتعال.</div>
+                                                    </div>
+
+                                                    <div class="col-6 text-start" dir="ltr" style="font-size:11px">
+                                                        <div class="fw-bold mb-2">2. Obligations</div>
+                                                        <div class="mb-2">2.1. The First Party (the “Supplier”) shall be obligated to provide the services specified in the Quotation, or to perform regular routine services at the frequency stated in the Quotation.</div>
+                                                        <div class="mb-2">2.2. The Second Party (the “Client”) shall be obligated to provide and facilitate all necessary access, utilities, and facilities required for the Supplier to properly perform its services.</div>
+                                                        <div class="mb-2">2.3. The Second Party (the “Client”) shall comply with and adhere to the health and safety advice and instructions provided by the Supplier. The Supplier shall not be held liable for any issues arising from the Client’s negligence or failure to follow the provided instructions and recommendations.</div>
+                                                        <div>2.4. The First Party (the “Supplier”) shall provide the Client with all necessary warnings and preventive instructions in relation to the contract facilities if any materials hazardous to health and safety are involved. The Supplier reserves the right to refuse to provide any services in contaminated areas, or in areas affected by hazardous or flammable substances.</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- 3 -->
+                                            <div class="mb-3">
+                                                <div class="row g-3">
+                                                    <div class="col-6 text-end" dir="rtl" lang="ar">
+                                                        <div class="fw-bold mb-2">3. الدفع</div>
+                                                        <div class="mb-2">3.1 يدفع الطرف الثاني "العميل" المبالغ المستحقة للمورد والالتزام بطرق الدفع المتفق عليها من الطرفين في عرض السعر (وهي لا تشمل ضريبة القيمة المضافة 15% ويتم تحميلها على فاتورة العميل) دون أي مقاصة أو خصم غير مذكور بعرض السعر، بحلول تاريخ الاستحقاق.</div>
+                                                        <div class="mb-2">3.2 تحدد المستحقات الواجب سدادها على الطرف الثاني "العميل" بداية من توقيعه أو من تاريخ بدء الخدمات أو التوريدات أيهما أسبق، حسب المدة المتفق عليها للتوريد أو تنفيذ الخدمات، ولا يجوز زيادة الرسوم والمستحقات إلا بعد انقضاء المدة المتفق عليها.</div>
+                                                        <div class="mb-2">3.3 لا يحق للطرف الثاني "العميل" استرداد قيمة الزيارات الدورية أو قيمة الخدمات أو تكلفة النقل والتوريد في حالة عدم التزامه بالبند رقم 2.2، لعدم سماحه للمورد بالوصول وعدم تقديم التعليمات المناسبة قبل 24 ساعة على الأقل من تاريخ جدولة تقديم الخدمة أو تاريخ التوريد.</div>
+                                                        <div>3.4 في حالة تخلف الطرف الثاني "العميل" عن دفع المستحقات المطلوبة لمدة 14 يومًا من تاريخ إصدار الفاتورة، يتم إخطاره خطيًا أو عن طريق البريد الإلكتروني، ويحق للطرف الأول "المورد" اتخاذ الإجراءات القانونية ضد الطرف الثاني بعد انقضاء 30 يومًا من تاريخ أول إخطار.</div>
+                                                    </div>
+
+                                                    <div class="col-6 text-start" dir="ltr" style="font-size:11px">
+                                                        <div class="fw-bold mb-2">3. Payment</div>
+                                                        <div class="mb-2">3.1. The Second Party (the “Client”) shall pay the amounts due to the Supplier and comply with the payment methods agreed upon by both parties in the Quotation (which do not include 15% Value Added Tax, to be added to the Client’s invoice), without any set-off or deduction not specified in the Quotation, by the due date.</div>
+                                                        <div class="mb-2">3.2. The amounts payable by the Second Party (the “Client”) shall be calculated starting from the date of signature or from the commencement date of the services or supplies, whichever occurs first, in accordance with the agreed duration for supply or service execution. The fees and charges may not be increased except after the expiry of the agreed term.</div>
+                                                        <div class="mb-2">3.3. The Second Party (the “Client”) shall not be entitled to claim a refund for scheduled periodic visits, service fees, transportation costs, or supply charges in the event of non-compliance with Clause 2.2, including failure to grant the Supplier access or failure to provide proper notice at least twenty-four (24) hours prior to the scheduled service or supply date.</div>
+                                                        <div>3.4. If the Second Party (the “Client”) fails to pay the amounts due within fourteen (14) days from the invoice issuance date, the Client shall be notified in writing or by email. The First Party (the “Supplier”) shall have the right to take legal action against the Second Party after thirty (30) days from the date of the first notice.</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- 4 -->
+                                            <div class="mb-3">
+                                                <div class="row g-3">
+                                                    <div class="col-6 text-end" dir="rtl" lang="ar">
+                                                        <div class="fw-bold mb-2">4. البضائع والمعدات</div>
+                                                        <div class="mb-2">4.1 يحتفظ المورد بحق تعديل مواصفات المنتجات المستخدمة بموجب الاتفاقية إذا اقتضت بذلك أي متطلبات قانونية أو تنظيمية، ويتعين على المورد إخطار العميل بذلك.</div>
+                                                        <div class="mb-2">4.2 ينتقل خطر تلف أو فقدان أي بضائع إلى العميل بمجرد أن يقوم المورد بتسليم هذه البضائع وتركيبها إذا اشتملت على بند التركيب في الموقع، ولن يتم إتمام عملية التوريد كاملة حتى يتلقى المورد كامل المستحقات المتفق عليها.</div>
+                                                        <div>4.3 في حالة الاتفاقات التي تلزم احتفاظ العميل بالمعدات اللازمة لعمل المورد، فإن العميل يلتزم بحفظ وتخزين هذه المعدات، وفي حالة تعرضها لأي تلفيات يحق لمقدم الخدمة التحقيق من خلال العميل وأنظمة المراقبة، وفي حالة ثبوت أن التلفيات حدثت من طرف العميل يتم احتساب التلفيات والتعويض عنها بقيمة الضرر وتحميلها على العميل.</div>
+                                                    </div>
+
+                                                    <div class="col-6 text-start" dir="ltr" style="font-size:11px">
+                                                        <div class="fw-bold mb-2">4. Goods and Equipment</div>
+                                                        <div class="mb-2">4.1. The Supplier reserves the right to modify the specifications of the products used under the Agreement if required by any legal or regulatory requirements, provided that the Supplier notifies the Client accordingly.</div>
+                                                        <div class="mb-2">4.2. The risk of damage to or loss of any goods shall pass to the Client once the Supplier delivers the goods and installs them, if on-site installation is included. The supply process shall not be considered complete until the Supplier has received full payment of the agreed amounts.</div>
+                                                        <div>4.3. In agreements requiring the Client to retain equipment necessary for the Supplier’s work, the Client shall be responsible for safeguarding and storing such equipment. In the event of any damage, the Supplier shall be entitled to investigate through the Client and the monitoring systems. If it is established that the damage was caused by the Client, the cost of the damage shall be calculated and charged to the Client as compensation.</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- 5 -->
+                                            <div class="mb-3">
+                                                <div class="row g-3">
+                                                    <div class="col-6 text-end" dir="rtl" lang="ar">
+                                                        <div class="fw-bold mb-2">5. السرية</div>
+                                                        <div class="mb-2">5.1 يحتفظ كلا الطرفين بسرية بياناتهما، وعدم إفصاح أحد الطرفين عن بيانات الطرف الآخر إلا في إطار تنفيذ العمل.</div>
+                                                        <div class="mb-2">5.2 تحت إطار تنفيذ الأعمال يتم الإفصاح عن بيانات كلا الطرفين للموظفين أو المقاولين المعنيين بتنفيذ تلك الخدمات، ولا يعتبر ذلك خرقًا لهذا البند إلا إذا تم الإفصاح عنها بشكل علني.</div>
+                                                        <div>5.3 إذا طُلب من أحد الطرفين الكشف عن سرية المعلومات بموجب تنفيذ الاتفاقية، ووجب إفصاحها لتنفيذ الخدمات، فيجب على الطرف الآخر عدم استخدام تلك المعلومات أو الإفصاح عنها إلا إذا كان هذا الإفصاح بموجب القانون أو بناءً على طلب من السلطات الحكومية والتنظيمية.</div>
+                                                    </div>
+
+                                                    <div class="col-6 text-start" dir="ltr" style="font-size:11px">
+                                                        <div class="fw-bold mb-2">5. Confidentiality</div>
+                                                        <div class="mb-2">5.1. Both parties shall maintain the confidentiality of their data and shall not disclose the other party’s information except within the scope of performing the work.</div>
+                                                        <div class="mb-2">5.2. Within the scope of performing the work, the data of both parties may be disclosed to employees or contractors involved in providing those services. Such disclosure shall not constitute a breach of this clause unless the information is disclosed publicly.</div>
+                                                        <div>5.3. If either party is required to disclose confidential information in order to perform the Agreement, the other party shall not use or disclose such information except as required by law or in response to a request from governmental or regulatory authorities.</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- 6 -->
+                                            <div class="mb-3">
+                                                <div class="row g-3">
+                                                    <div class="col-6 text-end" dir="rtl" lang="ar">
+                                                        <div class="fw-bold mb-2">6. المدة والإنهاء</div>
+                                                        <div class="mb-2">6.1 يبدأ سريان هذا الاتفاق من التاريخ المذكور فيه (تاريخ البدء)، ويستمر هذا الاتفاق حتى انتهاء مدة العقد وسداد جميع المستحقات.</div>
+                                                        <div class="mb-2">6.2 يجوز لأي من الطرفين إنهاء التعاقد فورًا بإشعار الطرف الآخر إذا ارتكب إخلالًا جوهريًا بأي بند من بنود الاتفاق، وكان هذا البند غير قابل للإصلاح أو لم يتم إصلاح هذا البند في غضون 7 أيام من تاريخ الإخطار.</div>
+                                                        <div class="mb-2">6.3 يحق للمورد إنهاء التعاقد فورًا بإخطار للعميل إذا أعلن إفلاسه، أو لم يتم سداد ديونه عند استحقاقها، أو كان له تصنيفات ائتمانية غير مرضية.</div>
+                                                        <div class="mb-2">6.4 إذا أنهى العميل هذا العقد قبل تاريخ انتهائه أو تجديده دون وجود أي خرق لبنود العقد وملحقاته، يقوم العميل بدفع جميع الرسوم المستحقة عن الخدمات المقدمة مضافًا إليها أي تكاليف أخرى يتكبدها المورد للفترة المتبقية، وفي حالة الخدمات الدورية إذا تم إنهاء التعاقد قبل تاريخ انتهاء العقد يتم دفع الرسوم المستحقة عن الخدمات المقدمة مضافًا إليها 20% من قيمة الرسوم التي كان من المقرر دفعها للفترة المتبقية.</div>
+                                                        <div>6.5 يحق للعميل (الطرف الثاني) في حالة عدم رضاه عن الخدمة إلغاء التعاقد خلال (45 يومًا) بسداد جميع مستحقاته دون أي التزامات أخرى.</div>
+                                                    </div>
+
+                                                    <div class="col-6 text-start" dir="ltr" style="font-size:11px">
+                                                        <div class="fw-bold mb-2">6. Term and Termination</div>
+                                                        <div class="mb-2">6.1. This Agreement shall commence on the date specified herein (the “Start Date”) and shall continue until the expiration of the contract term and full payment of all amounts due.</div>
+                                                        <div class="mb-2">6.2. Either party may terminate the Agreement immediately by notifying the other party if a material breach of any clause of the Agreement occurs, provided that the breach is irremediable or has not been remedied within seven (7) days from the date of notice.</div>
+                                                        <div class="mb-2">6.3. The Supplier shall have the right to terminate the Agreement immediately by notifying the Client if the Client declares bankruptcy, fails to pay its debts when due, or has unsatisfactory credit ratings.</div>
+                                                        <div class="mb-2">6.4. If the Client terminates this Agreement before its expiration or renewal date without any breach of the Agreement or its annexes, the Client shall pay all fees due for services already provided, in addition to any other costs incurred by the Supplier for the remaining period. In the case of recurring services, if the contract is terminated before the Agreement’s end date, the Client shall pay the fees for services already rendered plus 20% of the fees that were scheduled for the remaining period.</div>
+                                                        <div>6.5. The Client (the “Second Party”) shall have the right to terminate the Agreement within forty-five (45) days if dissatisfied with the service, by paying all amounts due without any further obligations.</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- 7 -->
+                                            <div class="mb-3">
+                                                <div class="row g-3">
+                                                    <div class="col-6 text-end" dir="rtl" lang="ar">
+                                                        <div class="fw-bold mb-2">7. الملكية الفكرية</div>
+                                                        <div>7.1 يحتفظ المورد بجميع حقوق الملكية الفكرية المتعلقة بتقديم خدماته وسلعه، وتبقى الملكية الفكرية الحالية أو المستقبلية، سواء كانت مسجلة أم لا، ملكية حصرية للمورد، ولا يجوز للعميل الإفصاح عنها في سياق تقديم الخدمات.</div>
+                                                    </div>
+
+                                                    <div class="col-6 text-start" dir="ltr" style="font-size:11px">
+                                                        <div class="fw-bold mb-2">7. Intellectual Property</div>
+                                                        <div>7.1. The Supplier shall retain all intellectual property rights related to the provision of its services and goods. All current or future intellectual property, whether registered or not, shall remain the exclusive property of the Supplier, and the Client shall not disclose it in the context of service provision.</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- 8 -->
+                                            <div class="mb-3">
+                                                <div class="row g-3">
+                                                    <div class="col-6 text-end" dir="rtl" lang="ar">
+                                                        <div class="fw-bold mb-2">8. المسؤولية</div>
+                                                        <div class="mb-2">8.1 إذا لم يقدم الطرف الأول "المورد" الخدمات الدورية بالوتيرة المحددة في عرض السعر، بسبب عدم امتثال العميل لالتزاماته بموجب هذا العقد، ومع مراعاة البند رقم 3.3، فيحق للعميل رصيد مؤجل من الخدمات يتم إعادة جدولته في حالة الالتزام ببند الإخطار، وفي حالة عدم الإخطار فلا يتوجب على المورد إعادة جدولة هذه الخدمات الدورية.</div>
+                                                        <div class="mb-2">8.2 لا يستثني أي من الطرفين مسؤوليته عن الإصابة الشخصية أو الوفاة الناجمة عن الإهمال أو الاحتيال أو التحريف الاحتيالي أو ما يماثلها، وأي فعل أو امتناع آخر لا يمكن استثناؤه أو الحد منه بموجب أي قانون ساري.</div>
+                                                        <div class="mb-2">8.3 باستثناء ما هو منصوص عليه في البند 8.2، لا يتحمل المورد سوى المسؤولية التي تنشأ نتيجة لأدائه الخدمات والتي تتعلق بما يلي: (أ) الضرر المادي للممتلكات بسبب إهمال المورد أو خطئه في تقديم الخدمات؛ أو (ب) عدم تقديم الخدمات وفقًا للاتفاقية أو عرض الأسعار.</div>
+                                                        <div class="mb-2">8.4 يجب على العميل: (أ) اتخاذ جميع الخطوات المعقولة للتخفيف من خسائره؛ و(ب) إخطار المورد بأي شكوى تتعلق بالخدمة في غضون 30 يومًا من تقديم الخدمة المعنية أو جزء منها حتى يتمكن المورد من التحقيق فيها.</div>
+                                                        <div>8.5 مع مراعاة البنود من 8.1 إلى 8.6، يستثني المورد جميع المسؤوليات إلى أقصى حد يسمح به القانون.</div>
+                                                    </div>
+
+                                                    <div class="col-6 text-start" dir="ltr" style="font-size:11px">
+                                                        <div class="fw-bold mb-2">8. Liability</div>
+                                                        <div class="mb-2">8.1. If the First Party (the “Supplier”) fails to provide recurring services at the frequency specified in the Quotation due to the Client’s non-compliance with its obligations under this Agreement, and subject to Clause 3.3, the Client shall be entitled to a deferred service credit that may be rescheduled if proper notice is given. In the absence of such notice, the Supplier shall not be required to reschedule these recurring services.</div>
+                                                        <div class="mb-2">8.2. Neither party shall be exempt from liability for personal injury or death resulting from negligence, fraud, fraudulent misrepresentation, or similar acts, nor for any act or omission that cannot be excluded or limited under any applicable law.</div>
+                                                        <div class="mb-2">8.3. Except as provided in Clause 8.2, the Supplier shall be liable only for obligations arising from its performance of services, specifically relating to: (a) physical damage to property caused by the Supplier’s negligence or error in providing the services; or (b) failure to provide the services in accordance with the Agreement or the Quotation.</div>
+                                                        <div class="mb-2">8.4. The Client shall: (a) take all reasonable steps to mitigate its losses; and (b) notify the Supplier of any complaint regarding the service within thirty (30) days of the provision of the relevant service or any part thereof, so that the Supplier may investigate it.</div>
+                                                        <div>8.5. Subject to Clauses 8.1 to 8.6, the Supplier shall exclude all liabilities to the maximum extent permitted by law.</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- 9 -->
+                                            <div class="mb-3">
+                                                <div class="row g-3">
+                                                    <div class="col-6 text-end" dir="rtl" lang="ar">
+                                                        <div class="fw-bold mb-2">9. الإشعار</div>
+                                                        <div>9.1 يجب أن يكون أي إشعار يُقدم بموجب هذا الاتفاق كتابيًا، ويُسلم باليد أو يُوقّع عليه ويُرسل بالبريد: (أ) إلى العميل على العنوان المحدد في هذه الاتفاقية أو عرض الأسعار. (ب) إلى المورد على العنوان المحدد في عرض الأسعار ("عنوان الشركة").</div>
+                                                    </div>
+
+                                                    <div class="col-6 text-start" dir="ltr" style="font-size:11px">
+                                                        <div class="fw-bold mb-2">9. Notices</div>
+                                                        <div>9.1. Any notice under this Agreement shall be in writing and delivered by hand or signed and sent by mail: (a) to the Client at the address specified in this Agreement or the Quotation; and (b) to the Supplier at the address specified in the Quotation (“Company Address”).</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- 10 -->
+                                            <div class="mb-3">
+                                                <div class="row g-3">
+                                                    <div class="col-6 text-end" dir="rtl" lang="ar">
+                                                        <div class="fw-bold mb-2">10. العقوبات</div>
+                                                        <div>10.1 يلتزم كل طرف بما يلي: (أ) الامتثال، والاستمرار في الامتثال خلال مدة هذا الاتفاق، لجميع القوانين أو اللوائح المعمول بها المتعلقة بالعقوبات الاقتصادية أو ضوابط التجارة والتصدير وغيرها من التدابير التقييدية التي تفرضها أو تديرها أو تنفذها سلطة العقوبات (ويشار إليها مجتمعة بـ "العقوبات"). (ب) الإقرار بأنه غير خاضع لأي إجراءات عقوبات فعلية أو مزعومة أو مهددة، بما في ذلك التقاضي أو غيره من الإجراءات، أو التحقيق أو الاستفسار أو إجراءات الإنفاذ (بما في ذلك فرض الغرامات أو العقوبات) من قبل أي سلطة عقوبات. (ج) الإقرار بأنه ليس مدرجًا، ولم يكن مدرجًا، في أي قائمة صادرة أو محفوظة من قبل سلطة عقوبات تحدد الأشخاص الخاضعين للعقوبات ("قائمة العقوبات"). (د) أن يُقر بأنه ليس مملوكًا أو خاضعًا لسيطرة شخص مدرج في قائمة العقوبات، وليس مقيمًا أو متوطنًا أو موجودًا في دولة أو إقليم خاضع للعقوبات، أو مؤسسة أو منظمة منشأة بموجب قوانينها. (هـ) أن يكون لديه ويحافظ، طوال مدة هذا الاتفاق، على سياسات وإجراءات كافية مصممة لضمان الامتثال للعقوبات، وأن ينفذ ويفرض هذه السياسات والإجراءات. (و) أن يُبلغ الطرف الآخر كتابيًا على الفور بأي خرق محتمل أو مشتبه به أو فعلي لهذا البند. (ز) أن يكون له الحق في تعليق أو إنهاء هذا الاتفاق فورًا وبأثر فوري عن طريق إرسال إشعار كتابي إلى الطرف الآخر إذا أصبح الطرف الآخر خاضعًا للعقوبات، أو متورطًا في إجراءات العقوبات، أو منتهكًا للعقوبات بأي شكل من الأشكال، أو مخالفًا لهذا البند من الاتفاق.</div>
+                                                    </div>
+
+                                                    <div class="col-6 text-start" dir="ltr" style="font-size:11px">
+                                                        <div class="fw-bold mb-2">10. Sanctions</div>
+                                                        <div>10.1. Each party shall undertake the following: (a) comply with, and continue to comply during the term of this Agreement, with all applicable laws or regulations relating to economic sanctions, trade and export controls, and other restrictive measures imposed, administered, or enforced by any sanctions authority (collectively referred to as “Sanctions”); (b) acknowledge that it is not subject to any actual, alleged, or threatened sanctions proceedings, including litigation, other actions, investigations, inquiries, or enforcement measures (including fines or penalties) by any sanctions authority; (c) acknowledge that it is not, and has never been, listed on any list issued or maintained by a sanctions authority identifying sanctioned persons (the “Sanctions List”); (d) confirm that it is not owned or controlled by any person listed on a Sanctions List, is not resident, domiciled, or located in any sanctioned country or territory, and is not an entity or organization established under the laws of such jurisdictions; (e) maintain, throughout the term of this Agreement, adequate policies and procedures designed to ensure compliance with Sanctions, and implement and enforce such policies and procedures; (f) immediately notify the other party in writing of any actual, suspected, or potential breach of this clause; and (g) have the right to suspend or terminate this Agreement immediately by providing written notice to the other party if the other party becomes subject to Sanctions, is involved in sanctions proceedings, violates Sanctions in any manner, or breaches this clause of the Agreement.</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- 11 -->
+                                            <div class="mb-3">
+                                                <div class="row g-3">
+                                                    <div class="col-6 text-end" dir="rtl" lang="ar">
+                                                        <div class="fw-bold mb-2">11. القوة القاهرة</div>
+                                                        <div>11.1 إذا مُنع أي من الطرفين من أداء أي من التزاماته (بخلاف التزامات الدفع) بموجب هذه الاتفاقية أو عرض الأسعار، أو تأخر في ذلك، بسبب ظروف خارجة عن سيطرته المعقولة، فلن يكون الطرف المتضرر مسؤولًا عن عدم أداء التزاماته أو عن التأخير في أدائها، حسب الاقتضاء، طوال مدة حدث القوة القاهرة. وإذا استمر حدث القوة القاهرة لأكثر من 30 يومًا، يحق لأي من الطرفين إنهاء هذه الاتفاقية بإشعار كتابي للطرف الآخر.</div>
+                                                    </div>
+
+                                                    <div class="col-6 text-start" dir="ltr" style="font-size:11px">
+                                                        <div class="fw-bold mb-2">11. Force Majeure</div>
+                                                        <div>11.1. If either party is prevented or delayed from performing any of its obligations (other than payment obligations) under this Agreement or the Quotation due to circumstances beyond its reasonable control, the affected party shall not be liable for failure to perform its obligations or for any delay in performance, as applicable, for the duration of the force majeure event. If the force majeure event continues for more than thirty (30) days, either party shall have the right to terminate this Agreement by giving written notice to the other party.</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- 12 -->
+                                            <div class="mb-3">
+                                                <div class="row g-3">
+                                                    <div class="col-6 text-end" dir="rtl" lang="ar">
+                                                        <div class="fw-bold mb-2">12. أحكام عامة</div>
+                                                        <div class="mb-2">12.1 يجوز للمورد تعديل هذه الاتفاقية بإشعار العميل قبل 90 يومًا. وإذا كان التعديل ضارًا بالعميل، فيجوز للعميل إنهاء هذه الاتفاقية بإشعار خلال 30 يومًا من إشعار المورد، على أن يسري مفعول التعديل في التاريخ الذي كان من المفترض أن يسري فيه. بخلاف ذلك، لا يجوز تعديل هذه الاتفاقية إلا بموجب اتفاقية مكتوبة بين الطرفين.</div>
+                                                        <div>12.2 إذا اعتُبر أي بند من بنود هذه الاتفاقية غير قانوني أو غير قابل للتنفيذ، فلن يُعتبر جزءًا من هذه الاتفاقية، ولن يتأثر باقي بنودها بذلك.</div>
+                                                    </div>
+
+                                                    <div class="col-6 text-start" dir="ltr" style="font-size:11px">
+                                                        <div class="fw-bold mb-2">12. General Provisions</div>
+                                                        <div class="mb-2">12.1. The Supplier may amend this Agreement by notifying the Client ninety (90) days in advance. If the amendment is detrimental to the Client, the Client may terminate this Agreement by giving notice within thirty (30) days of the Supplier’s notice, provided that the amendment shall take effect on the originally intended effective date. Otherwise, this Agreement may only be amended by a written agreement between both parties.</div>
+                                                        <div>12.2. If any clause of this Agreement is deemed illegal or unenforceable, it shall not be considered part of this Agreement, and the remaining clauses shall remain unaffected.</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- 13 -->
+                                            <div class="mb-3">
+                                                <div class="row g-3">
+                                                    <div class="col-6 text-end" dir="rtl" lang="ar">
+                                                        <div class="fw-bold mb-2">13. القانون الحاكم وفض النزاعات</div>
+                                                        <div>13.1 تخضع هذه الاتفاقية وأي نزاع أو مطالبة تنشأ عنها لقانون دولة عمل كيان المورد المتعاقد، وتُفسر وفقًا له، ويخضع الطرفان لاختصاص محاكمها الحصري.</div>
+                                                    </div>
+
+                                                    <div class="col-6 text-start" dir="ltr" style="font-size:11px">
+                                                        <div class="fw-bold mb-2">13. Governing Law and Dispute Resolution</div>
+                                                        <div>13.1. This Agreement, and any dispute or claim arising out of it, shall be governed by and construed in accordance with the laws of the country where the Supplier entity operates, and both parties submit to the exclusive jurisdiction of its courts.</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- 14 -->
+                                            <div class="mb-3">
+                                                <div class="row g-3">
+                                                    <div class="col-6 text-end" dir="rtl" lang="ar">
+                                                        <div class="fw-bold mb-2">14. نظام الاعتماد الإلكتروني</div>
+                                                        <div>14.1 يتم اعتماد التوقيع الإلكتروني بشكل رسمي من خلال أنظمة الشركة الإلكترونية على جميع الأوراق والمستندات المرفقة بالأنظمة الإلكترونية، سواء كان هذا التوقيع يدويًا، أو من خلال رمز إلكتروني يُرسل إلى البريد الإلكتروني أو رقم جوال الطرف الثاني "العميل" (رمز لمرة واحدة - OTP).</div>
+                                                    </div>
+
+                                                    <div class="col-6 text-start" dir="ltr" style="font-size:11px">
+                                                        <div class="fw-bold mb-2">14. Electronic Approval System</div>
+                                                        <div>14.1. The electronic signature is officially approved through the company’s electronic systems on all papers and documents attached to such electronic systems, whether this signature is handwritten or made through an electronic code sent to the email address or mobile number of the Second Party (the “Client”) (one-time password – OTP).</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </section>
+
+                                        @* Additional Terms (Dynamic) *@
+
+                                        @if (contract?.Terms is not null && contract.Terms.Any())
+                                        {
+                                            <section class="mb-10">
+                                                <div class="d-flex align-items-center justify-content-between mb-10">
+                                                    <h4 class="m-0 fw-bold">البنود الاضافية</h4>
+                                                    @*  <span class="badge bg-secondary">13 Clauses</span> *@
+                                                </div>
+                                                @{
+                                                    var termNumber = 1;
                                                 }
-                                            }
-                                        </div>
+
+                                                @foreach (var term in contract.Terms)
+                                                {
+                                                    <div class="mb-3">
+                                                        <div class="row g-3">
+
+                                                            <!-- AR (Right) -->
+                                                            <div class="col-6 text-end" dir="rtl" lang="ar">
+                                                                <div class="fw-bold mb-2">
+                                                                    @($"{termNumber}. {term.TitleAr}")
+                                                                </div>
+
+                                                                <div>
+                                                                    @term.TermAr
+                                                                </div>
+                                                            </div>
+
+                                                            <!-- EN (Left) -->
+                                                            <div class="col-6 text-start" dir="ltr" style="font-size:11px">
+                                                                <div class="fw-bold mb-2">
+                                                                    @($"{termNumber}. {term.Title}")
+                                                                </div>
+
+                                                                <div>
+                                                                    @term.Term
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+
+                                                    termNumber++;
+                                                }
+
+                                            </section>
+                                        }
+
                                         <div class="h5">
-                                            <p>ويعتبر هذا العقد ساريا إعتبارا من تاريخ: @contract.EffectiveDateLocal!.Value.ToShortDateString()</p>
+                                            <p>ويعتبر هذا العقد ساريا إعتبارا من تاريخ: @contract?.EffectiveDateLocal!.Value.ToShortDateString()</p>
                                         </div>
-                                        <div class="h3 mt-5 fw-bold text-center">
-                                            <p>ملاحظات</p>
-                                        </div>
-                                        <div class="h5">
-                                            <p>@contract.Notes</p>
-                                        </div>
-                                        <div style="margin-bottom:300px" class="row align-items-center justify-content-around mt-20">
+
+                                        @if (!string.IsNullOrEmpty(contract?.Notes))
+                                        {
+                                            <div class="h3 mt-5 fw-bold text-center">
+                                                <p>ملاحظات</p>
+                                            </div>
+                                            <div class="h5">
+                                                <p>@contract.Notes</p>
+                                            </div>
+                                        }
+                                        <div style="margin-bottom:200px" class="row align-items-center justify-content-around mt-20">
                                             <div class="col-auto">
                                                 <div class="d-flex flex-column align-items-center">
                                                     <p class="fs-4 fw-bold">
                                                         الطرف الأول
                                                     </p>
                                                     <p class="fs-4 fw-bold">
-                                                        @contract.FirstParty
+                                                        @contract?.CompanyInfo?.CompanyName.SplitLocalized("ar")
                                                     </p>
                                                 </div>
                                             </div>
@@ -170,51 +746,118 @@
                                                         الطرف الثاني
                                                     </p>
                                                     <p class="fs-4 fw-bold">
-                                                        @contract.SecondParty
+                                                        @contract?.ContractClient?.LastName
                                                     </p>
                                                 </div>
                                             </div>
                                         </div>
-
                                     </div>
-                                    <div dir="ltr" style="direction:ltr;">
-                                        <div class="text-center">
-                                            <a class="align-items-center text-gray-800 text-hover-primary fs-2">
-                                                <i class="ki-duotone ki-geolocation fs-2 me-1">
-                                                    <span class="path1"></span>
-                                                    <span class="path2"></span>
-                                                </i>
-                                                Saudi Arabia - Jeddah Khalid Ibn Alwaleed - AI Rabie Commercial Centere
-                                            </a>
+                                    @*   <div class="footer">
+                                        <div class="row align-items-center mb-3">                                          
+                                                    <div class="col-12 d-flex justify-content-center">
+                                                <MudImage Src="/images/Logo-QR.png" Width="120" />
+                                            </div>
                                         </div>
-                                        <div class="d-flex justify-content-center mt-10 mb-5">
-                                            <a class="align-items-center text-gray-800 text-hover-primary fs-2 me-3">
-                                                <i class="ki-duotone ki-phone fs-2 me-1">
-                                                    <span class="path1"></span>
-                                                    <span class="path2"></span>
-                                                </i>
-                                                +966 567 780 260
-                                            </a>
-                                            <a class="align-items-center text-gray-800 text-hover-primary fs-2 me-3">
-                                                <i class="ki-duotone ki-sms fs-2 me-1">
-                                                    <span class="path1"></span>
-                                                    <span class="path2"></span>
-                                                </i>
-                                                Info@pestsweepy.com
-                                            </a>
-                                            <a class="align-items-center text-gray-800 text-hover-primary fs-2 me-3">
-                                                <i class="ki-duotone ki-tablet fs-2 me-1">
-                                                    <span class="path1"></span>
-                                                    <span class="path2"></span>
-                                                    <span class="path3"></span>
-                                                </i>
-                                                920013270
-                                            </a>
+                                        <div dir="ltr" style="direction:ltr;">
+                                            <div class="text-center">
+                                                <a class="align-items-center text-gray-800 text-hover-primary fs-2">
+                                                    <i class="ki-duotone ki-geolocation fs-2 me-1">
+                                                        <span class="path1"></span>
+                                                        <span class="path2"></span>
+                                                    </i> Saudi Arabia - Jeddah Khalid Ibn Alwaleed - AI Rabie Commercial Centere
+                                                </a>
+                                            </div>
+                                            <div class="d-flex justify-content-center mt-10 mb-5">
+                                                <a class="align-items-center text-gray-800 text-hover-primary fs-2 me-3">
+                                                    <i class="ki-duotone ki-phone fs-2 me-1">
+                                                        <span class="path1"></span>
+                                                        <span class="path2"></span>
+                                                    </i> +966 567 780 260
+                                                </a>
+                                                <a class="align-items-center text-gray-800 text-hover-primary fs-2 me-3">
+                                                    <i class="ki-duotone ki-sms fs-2 me-1">
+                                                        <span class="path1"></span>
+                                                        <span class="path2"></span>
+                                                    </i> Info@pestsweepy.com
+                                                </a>
+                                                <a class="align-items-center text-gray-800 text-hover-primary fs-2 me-3">
+                                                    <i class="ki-duotone ki-tablet fs-2 me-1">
+                                                        <span class="path1"></span>
+                                                        <span class="path2"></span>
+                                                        <span class="path3"></span>
+                                                    </i> 920013270
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div> *@
+                                    <div class="footer d-flex justify-content-center">
+                                        <div class="d-flex align-items-start" dir="ltr" style="direction:ltr; gap: 16px;">
+
+                                            <!-- QR -->
+                                            <div style="flex: 0 0 auto;">
+                                                <MudImage Src="/images/Logo-QR.png" Width="100" />
+                                            </div>
+
+                                            <!-- Info -->
+                                            <div style="flex: 1; font-size: 17px; line-height: 2;">
+
+                                                <!-- Row 1 -->
+                                                <div class="d-flex align-items-center flex-wrap">
+                                                    <span class="d-inline-flex align-items-center me-4">
+                                                        <i class="ki-duotone ki-tablet fs-3 me-1">
+                                                            <span class="path1"></span>
+                                                            <span class="path2"></span>
+                                                            <span class="path3"></span>
+                                                        </i>
+                                                        @*     @contract?.CompanyInfo.ContactPhone *@
+                                                        920013270
+                                                    </span>
+
+                                                    <span class="d-inline-flex align-items-center">
+                                                        <i class="ki-duotone ki-phone fs-3 me-1">
+                                                            <span class="path1"></span>
+                                                            <span class="path2"></span>
+                                                        </i>
+                                                        @*   @contract?.CompanyInfo.ContactMobile *@
+                                                        +966 567 780 260
+                                                    </span>
+                                                </div>
+
+                                                <!-- Row 2 -->
+                                                <div class="d-flex align-items-center flex-wrap">
+                                                    <span class="d-inline-flex align-items-center me-4">
+                                                        <i class="ki-duotone ki-devices fs-3 me-1">
+                                                            <span class="path1"></span>
+                                                            <span class="path2"></span>
+                                                            <span class="path3"></span>
+                                                        </i>
+                                                        @contract?.CompanyInfo.CommercialRegistrationNo
+                                                    </span>
+
+                                                    <span class="d-inline-flex align-items-center">
+                                                        <i class="ki-duotone ki-sms fs-3 me-1">
+                                                            <span class="path1"></span>
+                                                            <span class="path2"></span>
+                                                        </i>
+                                                        @contract?.CompanyInfo.ContactEmail
+                                                    </span>
+                                                </div>
+
+                                                <!-- Row 3 -->
+                                                <div class="d-inline-flex align-items-center">
+                                                    <i class="ki-duotone ki-geolocation fs-3 me-1">
+                                                        <span class="path1"></span>
+                                                        <span class="path2"></span>
+                                                    </i>
+                                                    @contract?.CompanyInfo.Address.SplitLocalized("en")
+                                                </div>
+
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-1" style="border-left: solid 30px #00a2e5;"></div>
+                            @*             <div class="col-1" style="border-left: solid 30px #00a2e5;"></div> *@
                         </div>
                     </div>
                 </div>
@@ -243,7 +886,7 @@
     [CascadingParameter] MudDialogInstance MudDialog { get; set; } = default!;
 
 
-    private ContractDto? contract;
+    private ContractDto contract = null!;
 
     protected override async Task OnParametersSetAsync()
     {
@@ -345,5 +988,38 @@
         }
 
         return termText;
+    }
+
+    private string GetTermTextEn(int termNumber)
+    {
+        return termNumber switch
+        {
+            1 => "Clause One",
+            2 => "Clause Two",
+            3 => "Clause Three",
+            4 => "Clause Four",
+            5 => "Clause Five",
+            6 => "Clause Six",
+            7 => "Clause Seven",
+            8 => "Clause Eight",
+            9 => "Clause Nine",
+            10 => "Clause Ten",
+            11 => "Clause Eleven",
+            12 => "Clause Twelve",
+            13 => "Clause Thirteen",
+            14 => "Clause Fourteen",
+            15 => "Clause Fifteen",
+            16 => "Clause Sixteen",
+            17 => "Clause Seventeen",
+            18 => "Clause Eighteen",
+            19 => "Clause Nineteen",
+            20 => "Clause Twenty",
+            21 => "Clause Twenty-One",
+            22 => "Clause Twenty-Two",
+            23 => "Clause Twenty-Three",
+            24 => "Clause Twenty-Four",
+            25 => "Clause Twenty-Five",
+            _ => $"Clause {termNumber}"
+        };
     }
 }

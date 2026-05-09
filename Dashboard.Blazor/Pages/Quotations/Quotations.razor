@@ -1,5 +1,5 @@
 ﻿@page "/Quotations"
-@attribute [Authorize(Roles = $"{Roles.AdminRole},{Roles.ManagerRole}")]
+@attribute [Authorize(Roles = $"{Roles.AdminRole},{Roles.ManagerRole},{Roles.ContractClientRole}")]
 @inherits BasePage
 
 <PageTitle>
@@ -42,7 +42,7 @@
 
             <Columns>
                 <PropertyColumn Property="x => x.SerialNumber" Title="@languageContainer.Keys["Serial Number"]" />
-                <PropertyColumn Property="x => (x.Client == null ? x.ClientName : string.Join(' ', x.Client.FirstName, x.Client.LastName ) )" Title="@languageContainer.Keys["Client Name"]" />
+                <PropertyColumn Property="x => (x.Client == null ? x.ClientName : string.Join(' ', x.Client.FirstName,'~', x.Client.LastName ) )" Title="@languageContainer.Keys["Client Name"]" />
                 <PropertyColumn Property="x => x.CreatedAtLocal" Title="@languageContainer.Keys["Date"]" />
                 <PropertyColumn Property="x => x.TotalPrice" Title="@languageContainer.Keys["Total Price"]" />
 

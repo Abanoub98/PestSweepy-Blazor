@@ -49,7 +49,7 @@
                                         </div>
                                         <div class="h5">
                                             <p>
-                                                السادة/ @(quotation.Client is null ? quotation.ClientName : $"{quotation.Client.FirstName} {quotation.Client.LastName}") الموقرين...
+                                                السادة/ @(quotation.Client is null ? quotation.ClientName : $"'{quotation.Client.FirstName} ~ {quotation.Client.LastName}'  الموقرين...")
                                             </p>
                                             <p>
                                                 ويمثلهم/ @quotation.Ceo
@@ -84,15 +84,38 @@
                                                             <table class="table table-bordered border-gray-800">
                                                                 <thead>
                                                                     <tr class="fw-bold fs-6 text-gray-800">
-                                                                        <th>نوع الخدمة</th>
-                                                                        <th>عدد الزيارات</th>
-                                                                        <th>الوحدة</th>
-                                                                        <th>العدد</th>
-                                                                        <th>المساحة</th>
-                                                                        <th>السعر (@currency)</th>
-                                                                        <th>نسبة الخصم</th>
-                                                                        <th>قيمة الخصم</th>                                                                   
-                                                                        <th>المجموع (@currency)</th>
+                                                                        <th class="text-center">
+                                                                            نوع الخدمة<br />
+                                                                            <small class="d-block text-nowrap">Service type</small>
+                                                                        </th>
+                                                                        <th class="text-center">
+                                                                           اسم الفرع<br />
+                                                                            <small class="d-block text-nowrap">Branch</small>
+                                                                        </th>
+                                                                        <th class="text-center">
+                                                                            عدد / مساحة<br />
+                                                                            <small class="d-block text-nowrap">Qty / Area</small>
+                                                                        </th>
+                                                                        <th class="text-center">
+                                                                            الوحدة<br />
+                                                                            <small class="d-block text-nowrap">Unit</small>
+                                                                        </th>
+                                                                        <th class="text-center">
+                                                                            سعر الوحدة (@currency)<br />
+                                                                            <small class="d-block text-nowrap">Unit price</small>
+                                                                        </th>
+                                                                        <th class="text-center">
+                                                                            نسبة الخصم<br />
+                                                                            <small class="d-block text-nowrap">Discount %</small>
+                                                                        </th>
+                                                                        <th class="text-center">
+                                                                            قيمة الخصم<br />
+                                                                            <small class="d-block text-nowrap">Disc value</small>
+                                                                        </th>
+                                                                        <th class="text-center">
+                                                                            المجموع (@currency)<br />
+                                                                            <small class="d-block text-nowrap">Total</small>
+                                                                        </th>
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody>
@@ -100,25 +123,45 @@
                                                                     {
                                                                         <tr>
                                                                             <td>@body.Service?.NameAr</td>
-                                                                            <td>@body.NoOfVisits</td>
+                                                                            <td>@body.Branch?.Name</td>
+                                                                            <td>
+                                                                                @if (body.NoOfVisits != 0)
+                                                                                {
+                                                                                    @body.NoOfVisits
+                                                                                }
+                                                                                else if (body.Quantity != 0)
+                                                                                {
+                                                                                    @body.Quantity
+                                                                                }
+                                                                                else if (body.Area != 0)
+                                                                                {
+                                                                                    @body.Area
+                                                                                }
+                                                                                else
+                                                                                {
+                                                                                    <text>-</text>
+                                                                                }
+                                                                            </td>
                                                                             <td>@body.Unit?.Name</td>
-                                                                            <td>@(body.Quantity == 0 ? "-" : body.Quantity)</td>
-                                                                            <td>@(body.Area == 0 ? "-" : body.Area)</td>
                                                                             <td>@(body.Price)</td>
                                                                             <td>@body.DiscountRate %</td>
-                                                                            @if(body.Quantity==0 && body.Area !=0)
+                                                                            @if (body.Quantity == 0 && body.NoOfVisits == 0 && body.Area != 0)
                                                                             {
-                                                                                <td>@(body.DiscountPrice * body.Area)</td>
+                                                                                <td>@(body.DiscountPrice* body.Area)</td>
                                                                             }
-                                                                            else if (body.Quantity != 0 && body.Area == 0)
+                                                                            else if (body.Quantity != 0 && body.NoOfVisits == 0 && body.Area == 0)
                                                                             {
-                                                                                <td>@(body.DiscountPrice * body.Quantity)</td>
-                                                                            }                                                                           
+                                                                                <td>@(body.DiscountPrice* body.Quantity)</td>
+                                                                            }
+                                                                            else if (body.Quantity == 0 && body.NoOfVisits != 0 && body.Area == 0)
+                                                                            {
+                                                                                <td>@(body.DiscountPrice* body.NoOfVisits)</td>
+                                                                            }
                                                                             <td>@(body.TotalPrice)</td>
                                                                         </tr>
                                                                     }
                                                                     <tr>
-                                                                        <td colspan="8" class="text-center">
+                                                                        <td colspan="7" class="text-center">
                                                                             المجموع الكلي
                                                                         </td>
                                                                         <td>
@@ -132,14 +175,143 @@
 
                                                     </div>
                                                 }
+
+                                                // <!-- Quote Notes (Bootstrap) -->
+                                                <div class="row fw-bold start mt-10">
+                                                    <div class="col-6 text-end" lang="ar">
+                                                        <div class="mb-1">- هذه الأسعار لا تشمل 15 % ضريبة القيمة المضافة.</div>
+                                                        <div class="mb-1">- يعتبر هذا العرض سارٍ لمدة ٧ أيام من تاريخ إصداره.</div>
+                                                        <div class="mb-1">- سيتم إصدار الفواتير الشهرية، مع الدفع بالطرق التالية: تحويل بنكي إلى حساب شركة المكافحة المتميزة للتشغيل والصيانة رقم الحساب (البنك الاهلي السعودي) SA0810000010400000477903 من تاريخ بداية العقد.</div>
+                                                    </div>
+                                                
+                                                    <div class="col-6 text-start" dir="ltr">
+                                                        <div class="mb-1">- This quote doesn’t include 15% of VAT.</div>
+                                                        <div class="mb-1">- This offer is valid for 7 days from the date of issuance.</div>
+                                                        <div class="mb-1">- Monthly invoices will be issued, with payment via the following methods: Bank Transfer to the account of company al-mukafahah al-mutamayyizah for operation and maintenance, account number (National Commercial Bank) SA0810000010400000477903 from the starting date.</div>
+                                                    </div>
+                                                
+                                                </div>
+
+                                                // @if (quotation?.Terms is not null && quotation.Terms.Any())
+                                                // {
+                                                //     <div class="mt-4">
+                                                //         <h5 class="fw-bold mb-3">بنود العقد</h5>
+
+                                                //         <div class="row g-3">
+                                                //             @* RIGHT: Arabic list-group (YOUR ORIGINAL, unchanged) *@
+                                                //             <div class="col-12 col-md-6 text-start" dir="rtl" lang="ar">
+                                                //                 <div class="list-group">
+                                                //                     @{
+                                                //                         var termNumber = 1;
+                                                //                     }
+
+                                                //                     @foreach (var term in quotation.Terms)
+                                                //                     {
+                                                //                         <div class="list-group-item p-3">
+                                                //                             <div class="d-flex align-items-center gap-2 mb-1">
+                                                //                                 <span class="badge rounded-pill bg-primary">@termNumber</span>
+                                                //                                 <span class="fw-bold">@($"{GetTermText(termNumber)} - {term.TitleAr}")</span>
+                                                //                             </div>
+
+                                                //                             <div class="fw-normal fs-6 lh-lg text-end">
+                                                //                                 @term.TermAr
+                                                //                             </div>
+                                                //                         </div>
+
+                                                //                         termNumber++;
+                                                //                     }
+                                                //                 </div>
+                                                //             </div>
+
+                                                //             @* LEFT: English list-group *@
+                                                //             <div class="col-12 col-md-6 text-end" dir="ltr" lang="en">
+                                                //                 <div class="list-group">
+                                                //                     @{
+                                                //                         var termNumberEn = 1;
+                                                //                     }
+
+                                                //                     @foreach (var term in quotation.Terms)
+                                                //                     {
+                                                //                         <div class="list-group-item p-3">
+                                                //                             <div class="d-flex align-items-center gap-2 mb-1">
+                                                //                                 <span class="badge rounded-pill bg-primary">@termNumberEn</span>
+                                                //                                 <span class="fw-bold">@($"{GetTermTextEn(termNumberEn)} - {term.Title}")</span>
+                                                //                             </div>
+
+                                                //                             <div class="fw-normal fs-6 lh-lg text-start">
+                                                //                                 @term.Term
+                                                //                             </div>
+                                                //                         </div>
+
+                                                //                         termNumberEn++;
+                                                //                     }
+                                                //                 </div>
+                                                //             </div>
+                                                //         </div>
+                                                //     </div>
+                                                // }
+
+                                                @if (quotation?.Terms is not null && quotation.Terms.Any())
+                                                {
+                                                    <div class="mt-4">
+                                                        <h5 class="fw-bold mb-3">بنود العقد</h5>
+
+                                                        <div class="list-group">
+                                                            @{
+                                                                var termNumber = 1;
+                                                            }
+
+                                                            @foreach (var term in quotation.Terms)
+                                                            {
+                                                                <div class="list-group-item p-3">
+                                                                    <div class="row g-3 align-items-stretch">
+                                                                        @* RIGHT: Arabic (same content) *@
+                                                                        <div class="col-6 d-flex text-end" dir="rtl" lang="ar">
+                                                                            <div class="w-100 h-100 d-flex flex-column">
+                                                                                <div class="d-flex align-items-center gap-2 mb-1">
+                                                                                    <span class="badge rounded-pill bg-primary">@termNumber</span>
+                                                                                    <span class="fw-bold">@($"{GetTermText(termNumber)} - {term.TitleAr}")</span>
+                                                                                </div>
+
+                                                                                <div class="fw-normal fs-6 lh-lg text-end flex-grow-1">
+                                                                                    @term.TermAr
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+
+                                                                        @* LEFT: English *@
+                                                                        <div class="col-6 d-flex text-start" dir="ltr" lang="en">
+                                                                            <div class="w-100 h-100 d-flex flex-column">
+                                                                                <div class="d-flex align-items-center gap-2 mb-1">
+                                                                                    <span class="badge rounded-pill bg-primary">@termNumber</span>
+                                                                                    <span class="fw-bold">@($"{GetTermTextEn(termNumber)} - {term.Title}")</span>
+                                                                                </div>
+
+                                                                                <div class="fw-normal fs-6 lh-lg text-start flex-grow-1">
+                                                                                    @term.Term
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+                                                                termNumber++;
+                                                            }
+                                                        </div>
+                                                    </div>
+                                                }
+
+                                                if (!string.IsNullOrEmpty(quotation?.Notes))
+                                                {
+                                                    <div class="h3 mt-5 fw-bold text-center">
+                                                        <p>ملاحظات</p>
+                                                    </div>
+                                                    <div class="h5">
+                                                        <p>@quotation.Notes</p>
+                                                    </div>
+                                                }
                                             }
-                                            <div class="h3 mt-5 fw-bold text-center">
-                                                <p>ملاحظات</p>
-                                            </div>
-                                            <div class="h5">
-                                                <p>@quotation.Notes</p>
-                                            </div>
-                                            <div style="margin-bottom:100px" class="mt-10">
+                                            <div style="margin-bottom:60px" class="mt-10">
                                                 <p class="fs-4 fw-bold text-start w-100">
                                                     شركة المكافحة المتميزة
                                                 </p>
@@ -151,10 +323,26 @@
                                                             <span class="path1"></span>
                                                             <span class="path2"></span>
                                                         </i>
-                                                        Saudi Arabia - Jeddah Khalid Ibn Alwaleed - AI Rabie Commercial Centere
+                                                        Bin Hamad Center3 - King Fahd Road - Jeddah, Saudi Arabia
                                                     </a>
                                                 </div>
                                                 <div class="d-flex justify-content-center mt-10 mb-5">
+                                                    <a class="align-items-center text-gray-800 text-hover-primary fs-2 me-3">
+                                                        <i class="ki-duotone ki-badge fs-2 me-1">
+                                                            <span class="path1"></span>
+                                                            <span class="path2"></span>
+                                                            <span class="path3"></span>
+                                                        </i>
+                                                        4030427513
+                                                    </a>
+                                                    <a class="align-items-center text-gray-800 text-hover-primary fs-2 me-3">
+                                                        <i class="ki-duotone ki-tablet fs-2 me-1">
+                                                            <span class="path1"></span>
+                                                            <span class="path2"></span>
+                                                            <span class="path3"></span>
+                                                        </i>
+                                                        920013270
+                                                    </a>
                                                     <a class="align-items-center text-gray-800 text-hover-primary fs-2 me-3">
                                                         <i class="ki-duotone ki-phone fs-2 me-1">
                                                             <span class="path1"></span>
@@ -168,14 +356,6 @@
                                                             <span class="path2"></span>
                                                         </i>
                                                         Info@pestsweepy.com
-                                                    </a>
-                                                    <a class="align-items-center text-gray-800 text-hover-primary fs-2 me-3">
-                                                        <i class="ki-duotone ki-tablet fs-2 me-1">
-                                                            <span class="path1"></span>
-                                                            <span class="path2"></span>
-                                                            <span class="path3"></span>
-                                                        </i>
-                                                        920013270
                                                     </a>
                                                 </div>
                                             </div>
@@ -229,6 +409,128 @@
     {
 
         await JSRuntime.InvokeVoidAsync("DownloadPdf");
+    }
+
+    private string GetTermText(int termNumber)
+    {
+        string termText = string.Empty;
+
+        switch (termNumber)
+        {
+            case 1:
+                termText = "البند الأول";
+                break;
+            case 2:
+                termText = "البند الثاني";
+                break;
+            case 3:
+                termText = "البند الثالث";
+                break;
+            case 4:
+                termText = "البند الرابع";
+                break;
+            case 5:
+                termText = "البند الخامس";
+                break;
+            case 6:
+                termText = "البند السادس";
+                break;
+            case 7:
+                termText = "البند السابع";
+                break;
+            case 8:
+                termText = "البند الثامن";
+                break;
+            case 9:
+                termText = "البند التاسع";
+                break;
+            case 10:
+                termText = "البند العاشر";
+                break;
+            case 11:
+                termText = "البند الحادي عشر";
+                break;
+            case 12:
+                termText = "البند الثاني عشر";
+                break;
+            case 13:
+                termText = "البند الثالث عشر";
+                break;
+            case 14:
+                termText = "البند الرابع عشر";
+                break;
+            case 15:
+                termText = "البند الخامس عشر";
+                break;
+            case 16:
+                termText = "البند السادس عشر";
+                break;
+            case 17:
+                termText = "البند السابع عشر";
+                break;
+            case 18:
+                termText = "البند الثامن عشر";
+                break;
+            case 19:
+                termText = "البند التاسع عشر";
+                break;
+            case 20:
+                termText = "البند العشرون";
+                break;
+            case 21:
+                termText = "البند الحادي والعشرون";
+                break;
+            case 22:
+                termText = "البند الثاني والعشرون";
+                break;
+            case 23:
+                termText = "البند الثالث والعشرون";
+                break;
+            case 24:
+                termText = "البند الرابع والعشرون";
+                break;
+            case 25:
+                termText = "البند الخامس والعشرون";
+                break;
+            default:
+                termText = $"{termNumber} البند";
+                break;
+        }
+
+        return termText;
+    }
+
+    private string GetTermTextEn(int termNumber)
+    {
+        return termNumber switch
+        {
+            1 => "Clause One",
+            2 => "Clause Two",
+            3 => "Clause Three",
+            4 => "Clause Four",
+            5 => "Clause Five",
+            6 => "Clause Six",
+            7 => "Clause Seven",
+            8 => "Clause Eight",
+            9 => "Clause Nine",
+            10 => "Clause Ten",
+            11 => "Clause Eleven",
+            12 => "Clause Twelve",
+            13 => "Clause Thirteen",
+            14 => "Clause Fourteen",
+            15 => "Clause Fifteen",
+            16 => "Clause Sixteen",
+            17 => "Clause Seventeen",
+            18 => "Clause Eighteen",
+            19 => "Clause Nineteen",
+            20 => "Clause Twenty",
+            21 => "Clause Twenty-One",
+            22 => "Clause Twenty-Two",
+            23 => "Clause Twenty-Three",
+            24 => "Clause Twenty-Four",
+            25 => "Clause Twenty-Five",
+            _ => $"Clause {termNumber}"
+        };
     }
 }
 

@@ -1,5 +1,5 @@
 ﻿@page "/Contracts"
-@attribute [Authorize(Roles = $"{Roles.AdminRole},{Roles.ManagerRole}")]
+@attribute [Authorize(Roles = $"{Roles.AdminRole},{Roles.ManagerRole}, {Roles.ContractClientRole}")]
 @inherits BasePage
 
 <PageTitle>
@@ -24,7 +24,11 @@
                             <MudText Class="mx-3" Typo="Typo.h5">
                                 @languageContainer.Keys["Contracts"]
                             </MudText>
+
+                            @if (role != Roles.ContractClientRole)
+                            {
                             <MudIconButton OnClick="() => OpenForm(formUri)" Icon="@Icons.Material.Filled.Add" Color="Color.Success"></MudIconButton>
+                            }
                             <MudIconButton OnClick="OnInitializedAsync" Icon="@Icons.Material.Filled.Refresh" Color="Color.Info"></MudIconButton>
                         </div>
                     </div>
@@ -42,7 +46,7 @@
 
             <Columns>
                 <PropertyColumn Property="x => x.Title" Title="@languageContainer.Keys["Title"]" />
-                <PropertyColumn Property="x => string.Join(' ', x.ContractClient!.FirstName, x.ContractClient.LastName )" Title="@languageContainer.Keys["Contract Client"]" />
+                <PropertyColumn Property="x => string.Join(' ', x.ContractClient!.FirstName, '~', x.ContractClient.LastName)" Title="@languageContainer.Keys["Contract Client"]" />
                 <PropertyColumn Property="x => x.CreatedAtLocal" Title="@languageContainer.Keys["Created Date"]" />
                 <PropertyColumn Property="x => x.EffectiveDateLocal" Title="@languageContainer.Keys["Effective Date"]" />
 
@@ -54,11 +58,44 @@
                     </HeaderTemplate>
                     <CellTemplate>
                         <div>
-                            <TableButtons IsDisable="isDisable" EditClicked="() => OpenForm(formUri,contract.Item!.Id)"
-                                          IsDeleteHide="true" DetailsClicked="() => OpenDetails(detailsUri,contract.Item!.Id)" />
+                            @if (role != Roles.ContractClientRole)
+                            {
+                                <TableButtons IsDisable="isDisable" IsEditHide=true
+                                              IsDeleteHide="true" DetailsClicked="() => OpenDetails(detailsUri,contract.Item!.Id)" />
+                            }
+                            else
+                            {
+                                <TableButtons IsDisable="isDisable" IsDeleteHide=true IsEditHide=true
+                                              DetailsClicked="() => OpenDetails(detailsUri, contract.Item!.Id)" />
+                            }
                             <a @onclick="() => ShowContract(contract.Item!.Id)" title="@languageContainer.Keys["Show Report"]" class="btn btn-sm btn-light-success me-1">
                                 <i class="fa-solid fa-file-pdf p-0"></i>
                             </a>
+
+                            @{
+                                var uploadedContractPath = !string.IsNullOrEmpty(contract.Item?.UploadedContract)
+                                ? imageUrl + contract.Item.UploadedContract
+                                : null;
+                            }
+
+                            @if (!string.IsNullOrEmpty(contract.Item?.UploadedContract))
+                            {
+                                <a href="@uploadedContractPath"
+                                   target="_blank"
+                                   title="@languageContainer.Keys["Open PDF"]"
+                                   class="btn btn-sm btn-light-danger me-1">
+                                    <i class="fa-solid fa-file-pdf p-0"></i>
+                                </a>
+                            }
+                            else
+                            {
+                                <a @onclick='() => ShowPdfUploadForm(contract.Item!.Id, "Contracts")'
+                                   title="@languageContainer.Keys["Upload Contract"]"
+                                   class="btn btn-sm btn-light-primary me-1">
+                                    <i class="fa-solid fa-envelope-open-text p-0"></i>
+                                </a>
+                            }
+
                         </div>
                     </CellTemplate>
                 </TemplateColumn>

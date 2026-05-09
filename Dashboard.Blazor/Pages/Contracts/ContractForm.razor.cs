@@ -8,21 +8,27 @@ public partial class ContractForm
 
     protected override async Task OnParametersSetAsync()
     {
-        contractForm = (Id == 0) ? new() { Terms = new() { new TermDto() } } : await GetByIdAsync<ContractDto>($"Contracts/{Id}");
+        if (Id == 0)
+        {
+            contractForm = new();
+        }
+        else
+        {
+            contractForm = await GetByIdAsync<ContractDto>($"Contracts/{Id}");
+
+            if (contractForm is null)
+                return;
+        }
+
 
         if (contractForm is null)
             return;
-
-        foreach (var term in contractForm.Terms.Where(t => t.Quotation is not null))
-        {
-            term.ShowQuotationsList = true;
-        }
 
         breadcrumbItems.AddRange(new List<BreadcrumbItem>
         {
             new(languageContainer.Keys["Home"], href: "/", icon: Icons.Material.Filled.Home),
             new(languageContainer.Keys["Contracts"], href: "/Contracts", icon: EntityIcons.ContractsIcon),
-            new(languageContainer.Keys[Id == 0 ? "Add Contract" : $"Edit {contractForm.ContractClient!.Name} Contract"], href: null, disabled: true),
+            new(languageContainer.Keys[Id == 0 ? "Add Contract" : $"Edit {contractForm.ContractClient!.FirstName} {contractForm.ContractClient!.LastName} Contract"], href: null, disabled: true),
         });
     }
 
@@ -32,12 +38,8 @@ public partial class ContractForm
 
         contractForm!.ContractClientId = contractForm.ContractClient!.Id;
         contractForm!.ContractDurationId = contractForm.ContractDuration!.Id;
-
-        foreach (var term in contractForm.Terms.Where(t => t.ShowQuotationsList))
-        {
-            term.QuotationId = term.Quotation?.Id;
-        }
-
+        contractForm!.QuotationID = contractForm.Quotation!.Id;
+        contractForm!.PaymentMethodId = contractForm.PaymentMethod!.Id;
 
         (bool isSuccess, ContractDto? contractDto) result;
 
@@ -52,19 +54,34 @@ public partial class ContractForm
         StopProcessing();
     }
 
-    private void AddTerm() => contractForm!.Terms.Add(new());
+    private void AddTerm() => contractForm!.Terms?.Add(new());
 
-    private void DeleteTerm(TermDto term) => contractForm!.Terms.Remove(term);
+    private void DeleteTerm(TermDto term) => contractForm!.Terms?.Remove(term);
+
+    private void OnTermSelected(TermDto term, string? value)
+    {
+        term.SelectedTerm = value ?? string.Empty;
+
+        if (string.IsNullOrWhiteSpace(term.SelectedTerm))
+            return;
+
+        var selected = contractForm!.UploadedTerms?
+            .FirstOrDefault(x => x.Term == term.SelectedTerm);
+
+        if (selected is null)
+        {
+            term.Term = term.SelectedTerm;
+            return;
+        }
+
+        term.Title = selected.Title ?? string.Empty;
+        term.Term = selected.Term ?? string.Empty;
+        term.TitleAr = selected.TitleAr ?? string.Empty;
+        term.TermAr = selected.TermAr ?? string.Empty;
+    }
 
     private void CopyTermToTextArea(TermDto term) => term.Term = term.SelectedTerm;
 
-    private void DeleteQuotation(bool args, TermDto term)
-    {
-        term.ShowQuotationsList = args;
-
-        if (!term.ShowQuotationsList)
-            term.Quotation = null;
-    }
 
     private async Task<IEnumerable<LookupDto>> GetDurations(string value)
     {
@@ -78,39 +95,94 @@ public partial class ContractForm
         return contractForm.ContractDurations.Where(x => x.Name.Contains(value, StringComparison.InvariantCultureIgnoreCase));
     }
 
-    private async Task<IEnumerable<LookupDto>> GetContractClients(string value)
+    private async Task<IEnumerable<LookupDto>> GetPaymentMethods(string value)
+    {
+        if (contractForm!.PaymentMethods is null)
+            contractForm.PaymentMethods = await GetAllLookupsAsync("ReferenceData?tableName=PaymentMethods");
+
+        // if text is null or empty, show complete list
+        if (string.IsNullOrEmpty(value))
+            return contractForm.PaymentMethods;
+
+        return contractForm.PaymentMethods
+            .Where(x => x.Name.Contains(value, StringComparison.InvariantCultureIgnoreCase));
+    }
+
+    private async Task<IEnumerable<ContractClientDto>> GetContractClients(string value)
     {
         if (contractForm!.ContractClients is null)
-            contractForm.ContractClients = await GetAllLookupsAsync("/ContractClients");
+            contractForm.ContractClients = await GetAllAsync<ContractClientDto>("/ContractClients");
 
         // if text is null or empty, show complete list
         if (string.IsNullOrEmpty(value))
             return contractForm.ContractClients;
 
-        return contractForm.ContractClients.Where(x => x.Name.Contains(value, StringComparison.InvariantCultureIgnoreCase));
+        return contractForm.ContractClients.Where(x => x.FirstName.Contains(value, StringComparison.InvariantCultureIgnoreCase));
     }
 
     private async Task<IEnumerable<string>> GetTerms(string value)
     {
-        if (contractForm!.UploadedTerms is null)
-            contractForm.UploadedTerms = await GetAllAsync<TermDto>("/Terms");
+        contractForm ??= new();
 
-        // if text is null or empty, show complete list
-        if (string.IsNullOrEmpty(value))
-            return contractForm.UploadedTerms.Select(t => t.Term).Distinct().ToList();
+        contractForm.UploadedTerms ??= await GetAllAsync<TermDto>("/Terms") ?? new List<TermDto>();
 
-        return contractForm.UploadedTerms.Where(x => x.Term!.Contains(value, StringComparison.InvariantCultureIgnoreCase)).Select(t => t.Term).Distinct().ToList();
+        var terms = contractForm.UploadedTerms
+            .Where(x => x is not null);
+
+        if (string.IsNullOrWhiteSpace(value))
+        {
+            return terms
+                .Select(t => t.Term)
+                .Where(x => !string.IsNullOrWhiteSpace(x))
+                .Distinct()
+                .ToList()!;
+        }
+
+        return terms
+            .Where(x =>
+                (!string.IsNullOrWhiteSpace(x.Term) && x.Term.Contains(value, StringComparison.InvariantCultureIgnoreCase)) ||
+                (!string.IsNullOrWhiteSpace(x.Title) && x.Title.Contains(value, StringComparison.InvariantCultureIgnoreCase)) ||
+                (!string.IsNullOrWhiteSpace(x.TermAr) && x.TermAr.Contains(value, StringComparison.InvariantCultureIgnoreCase)) ||
+                (!string.IsNullOrWhiteSpace(x.TitleAr) && x.TitleAr.Contains(value, StringComparison.InvariantCultureIgnoreCase))
+            )
+            .Select(t => t.Term)
+            .Where(x => !string.IsNullOrWhiteSpace(x))
+            .Distinct()
+            .ToList()!;
     }
 
     private async Task<IEnumerable<QuotationDto>> GetQuotations(string value)
     {
-        if (contractForm!.Quotations is null)
-            contractForm.Quotations = await GetAllAsync<QuotationDto>("/Quotations");
+        if (contractForm?.ContractClient?.Id is null)
+            return Enumerable.Empty<QuotationDto>();
 
-        // if text is null or empty, show complete list
-        if (string.IsNullOrEmpty(value))
+        if (contractForm!.Quotations is null)
+            contractForm.Quotations = await GetAllAsync<QuotationDto>(
+                $"/Quotations?FilterQuery=clientId%3D{contractForm.ContractClient.Id}"
+            );
+
+        if (string.IsNullOrWhiteSpace(value))
             return contractForm.Quotations;
 
-        return contractForm.Quotations.Where(x => x.Client?.Name.Contains(value, StringComparison.InvariantCultureIgnoreCase) ?? x.ClientName.Contains(value, StringComparison.InvariantCultureIgnoreCase));
+        return contractForm.Quotations.Where(x =>
+            (x.Client?.FirstName?.Contains(value, StringComparison.InvariantCultureIgnoreCase) ?? false)
+            || (x.ClientName?.Contains(value, StringComparison.InvariantCultureIgnoreCase) ?? false)
+        );
+    }
+
+    private async Task OnContractClientChanged(ContractClientDto client)
+    {
+        contractForm!.ContractClient = client;
+
+        contractForm.Quotations = null!;
+        contractForm.Quotation = null!;
+        contractForm.QuotationID = 0;
+
+        if (client is not null)
+            contractForm.Quotations = await GetAllAsync<QuotationDto>(
+                $"/Quotations?FilterQuery=clientId%3D{client.Id}"
+            );
+
+        StateHasChanged();
     }
 }
