@@ -20,11 +20,11 @@ else
             <div class="d-flex flex-wrap flex-md-nowrap">
                 <div class="p-3  w-100">
                     <MudTextField HelperText="@languageContainer.Keys[("Required")]" Variant="Variant.Outlined" @bind-Value="contractClientForm.FirstName" For="@(() => contractClientForm.FirstName)" HelperTextOnFocus="true"
-                                  AdornmentColor="Color.Info" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.AccountBox" Placeholder="@languageContainer.Keys[Placeholders.Name]" Label="@languageContainer.Keys["First Name"]" />
+                                  AdornmentColor="Color.Info" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.AccountBox" Placeholder="@languageContainer.Keys[Placeholders.Name]" Label="@languageContainer.Keys["Name English"]" />
                 </div>
                 <div class="p-3  w-100">
                     <MudTextField HelperText="@languageContainer.Keys[("Required")]" Variant="Variant.Outlined" @bind-Value="contractClientForm.LastName" For="@(() => contractClientForm.LastName)" HelperTextOnFocus="true"
-                                  AdornmentColor="Color.Info" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.AccountBox" Placeholder="@languageContainer.Keys[Placeholders.Name]" Label="@languageContainer.Keys["Last Name"]" />
+                                  AdornmentColor="Color.Info" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.AccountBox" Placeholder="@languageContainer.Keys[Placeholders.Name]" Label="@languageContainer.Keys["Name Arabic"]" />
                 </div>
             </div>
             <div class="d-flex flex-wrap flex-md-nowrap">
@@ -64,6 +64,105 @@ else
                     </MudAutocomplete>
                 </div>
             </div>
+            <div class="d-flex flex-wrap flex-md-nowrap">
+
+                <div class="p-3 w-100">
+                    <MudTextField HelperText="@languageContainer.Keys[("Required")]"
+                                  Variant="Variant.Outlined"
+                                  @bind-Value="contractClientForm.ContactEmail"
+                                  For="@(() => contractClientForm.ContactEmail)"
+                                  HelperTextOnFocus="true"
+                                  Required="true"
+                                  RequiredError="@languageContainer.Keys[("Contact Email is Required")]"
+                                  AdornmentColor="Color.Info"
+                                  Adornment="Adornment.Start"
+                                  AdornmentIcon="@Icons.Material.Filled.Email"
+                                  Placeholder="@languageContainer.Keys[("Enter Contact Email")]"
+                                  Label="@languageContainer.Keys[("Contact Email")]" />
+                </div>
+
+                <div class="p-3 w-100">
+                    <MudTextField HelperText="@languageContainer.Keys[("Required")]"
+                                  Variant="Variant.Outlined"
+                                  @bind-Value="contractClientForm.ContactPhone"
+                                  For="@(() => contractClientForm.ContactPhone)"
+                                  HelperTextOnFocus="true"
+                                  Required="true"
+                                  RequiredError="@languageContainer.Keys[("Contact Phone is Required")]"
+                                  AdornmentColor="Color.Info"
+                                  Adornment="Adornment.Start"
+                                  AdornmentIcon="@Icons.Material.Filled.Phone"
+                                  Placeholder="@languageContainer.Keys[(Placeholders.PhoneNumber)]"
+                                  Label="@languageContainer.Keys[("Contact Phone")]" />
+                </div>
+
+
+                <div class="p-3 w-100">
+                    <MudTextField HelperText="@languageContainer.Keys[("Required")]"
+                                  Variant="Variant.Outlined"
+                                  @bind-Value="contractClientForm.ContactMobile"
+                                  For="@(() => contractClientForm.ContactMobile)"
+                                  HelperTextOnFocus="true"
+                                  Required="true"
+                                  RequiredError="@languageContainer.Keys[("Contact Mobile is Required")]"
+                                  AdornmentColor="Color.Info"
+                                  Adornment="Adornment.Start"
+                                  AdornmentIcon="@Icons.Material.Filled.PhoneIphone"
+                                  Placeholder="@languageContainer.Keys[(Placeholders.PhoneNumber)]"
+                                  Label="@languageContainer.Keys[("Contact Mobile")]" />
+                </div>
+
+                <div class="p-3 w-100">
+                    <MudTextField HelperText="@languageContainer.Keys[("Required")]"
+                                  Variant="Variant.Outlined"
+                                  @bind-Value="contractClientForm.Address"
+                                  For="@(() => contractClientForm.Address)"
+                                  HelperTextOnFocus="true"
+                                  Required="true"
+                                  RequiredError="@languageContainer.Keys[("Address is Required")]"
+                                  AdornmentColor="Color.Info"
+                                  Adornment="Adornment.Start"
+                                  AdornmentIcon="@Icons.Material.Filled.LocationOn"
+                                  Placeholder="@languageContainer.Keys[("Enter Address")]"
+                                  Label="@languageContainer.Keys[("Address")]" />
+                </div>
+
+                <div class="p-3 w-100">
+                    <MudTextField T="string"
+                                  HelperText="@languageContainer.Keys["Required"]"
+                                  Variant="Variant.Outlined"
+                                  @bind-Value="contractClientForm.VatRegistrationNumber"
+                                  For="@(() => contractClientForm.VatRegistrationNumber)"
+                                  HelperTextOnFocus="true"
+                                  Required="true"
+                                  RequiredError="@languageContainer.Keys["VAT Registration Number is Required"]"
+                                  MaxLength="15"
+                                  Immediate="true"
+                                  AdornmentColor="Color.Info"
+                                  Adornment="Adornment.Start"
+                                  AdornmentIcon="@Icons.Material.Filled.ReceiptLong"
+                                  Placeholder="@languageContainer.Keys["Enter VAT number"]"
+                                  Label="@languageContainer.Keys["VAT Registration Number"]" />
+                </div>
+
+                <div class="p-3 w-100">
+                    <MudTextField T="string"
+                                  HelperText="@languageContainer.Keys["Required"]"
+                                  Variant="Variant.Outlined"
+                                  @bind-Value="contractClientForm.CommercialRegistrationNo"
+                                  For="@(() => contractClientForm.CommercialRegistrationNo)"
+                                  HelperTextOnFocus="true"
+                                  Required="true"
+                                  RequiredError="@languageContainer.Keys["Commercial Registration Number is Required"]"
+                                  MaxLength="10"
+                                  Immediate="true"
+                                  AdornmentColor="Color.Info"
+                                  Adornment="Adornment.Start"
+                                  AdornmentIcon="@Icons.Material.Filled.Badge"
+                                  Placeholder="@languageContainer.Keys["Enter commercial registration number"]"
+                                  Label="@languageContainer.Keys["Commercial Registration Number"]" />
+                </div>
+            </div>
             @if (Id == 0)
             {
                 <div class="flex-wrap d-flex flex-md-nowrap">
@@ -72,7 +171,7 @@ else
                             <div class="col-5">
                                 <MudSelect @bind-Value="countryCode" Label="@languageContainer.Keys[("Country Code")]">
                                     <MudSelectItem Value="@(@"^((00|\+)?1)?\d{10}$")">
-                                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/US_flag_51_stars.svg/1235px-US_flag_51_stars.svg.png" height="14" class="mr-1" />(+1)
+                                        <img src="https://upload.wikimedia.org/wikipedia/commons/9/96/Flag_of_the_United_States_%28DDD-F-416E_specifications%29.svg.png" height="14" class="mr-1" />(+1)
                                     </MudSelectItem>
                                     <MudSelectItem Value="@(@"^((00|\+)?20)?1\d{9}$")">
                                         <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fe/Flag_of_Egypt.svg/800px-Flag_of_Egypt.svg.png" height="14" class="mr-1" />(+20)
@@ -80,7 +179,7 @@ else
                                     <MudSelectItem Value="@(@"^((00|\+)?971)?\d{9}$")">
                                         <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Flag_of_the_United_Arab_Emirates.svg/255px-Flag_of_the_United_Arab_Emirates.svg.png" height="14" class="mr-1" />(+971)
                                     </MudSelectItem>
-                                    <MudSelectItem Value="@(@"^((00|\+)?966)?\d{9}$")">
+                                    <MudSelectItem Value="@(@"^((00|\+)?966|0)?5\d{8}$")">
                                         <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0d/Flag_of_Saudi_Arabia.svg/2560px-Flag_of_Saudi_Arabia.svg.png" height="14" class="mr-1" />(+966)
                                     </MudSelectItem>
                                 </MudSelect>

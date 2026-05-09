@@ -2,7 +2,7 @@
 
 public partial class ContractClients
 {
-    private List<ClientDto> contractClients = new();
+    private List<ContractClientDto> contractClients = new();
 
     private readonly string formUri = "ContractClients/Form";
     private readonly string detailsUri = "ContractClients/Details";
@@ -17,7 +17,7 @@ public partial class ContractClients
             new(languageContainer.Keys["Contract Clients"], href: null, disabled: true, icon: Icons.Material.Outlined.Diversity1),
         };
 
-        contractClients = await GetAllAsync<ClientDto>("ContractClients?OrderBy=id&Asc=false");
+        contractClients = await GetAllAsync<ContractClientDto>("ContractClients?OrderBy=id&Asc=false");
 
         StopProcessing();
     }
@@ -26,7 +26,7 @@ public partial class ContractClients
     {
         StartProcessing();
 
-        var isSuccess = await DeleteAsync<ClientDto>($"ContractClients/{id}");
+        var isSuccess = await DeleteAsync<ContractClientDto>($"ContractClients/{id}");
 
         if (isSuccess)
         {
@@ -39,13 +39,13 @@ public partial class ContractClients
         StopProcessing();
     }
 
-    private void SelectedItemsChanged(HashSet<ClientDto> items) => selectedIds = items.Select(i => i.Id).ToList();
+    private void SelectedItemsChanged(HashSet<ContractClientDto> items) => selectedIds = items.Select(i => i.Id).ToList();
 
     private async Task DeleteAll()
     {
         StartProcessing();
 
-        var isSuccess = await DeleteAllAsync<ClientDto>($"ContractClients/DeleteMultiple", selectedIds);
+        var isSuccess = await DeleteAllAsync<ContractClientDto>($"ContractClients/DeleteMultiple", selectedIds);
 
         if (isSuccess)
         {
@@ -76,7 +76,7 @@ public partial class ContractClients
         await DialogService.ShowAsync<FileUpload>($"{languageContainer.Keys["Upload"]} {languageContainer.Keys["PDF"]}", Parameters, dialogOptions);
     }
 
-    private bool FilterFunc(ClientDto element)
+    private bool FilterFunc(ContractClientDto element)
     {
         if (string.IsNullOrWhiteSpace(searchString))
             return true;

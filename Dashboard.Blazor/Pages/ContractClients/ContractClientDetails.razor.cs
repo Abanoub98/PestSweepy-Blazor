@@ -4,12 +4,12 @@ public partial class ContractClientDetails
 {
     [Parameter][EditorRequired] public int Id { get; set; }
 
-    private ClientDto? contractClient;
+    private ContractClientDto? contractClient;
     private readonly string formUri = "ContractClients/Form";
 
     protected override async Task OnParametersSetAsync()
     {
-        contractClient = await GetByIdAsync<ClientDto>($"ContractClients/{Id}");
+        contractClient = await GetByIdAsync<ContractClientDto>($"ContractClients/{Id}");
 
         if (contractClient is null)
             return;

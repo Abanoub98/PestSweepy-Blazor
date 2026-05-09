@@ -141,6 +141,21 @@ else
                                 <div class="fw-bold mt-5">@languageContainer.Keys["Phone"]</div>
                                 <div class="text-gray-600">@contractClient.PhoneNumber</div>
                                 <!--begin::Details item-->
+
+                                <div class="fw-bold mt-5">@languageContainer.Keys["Contact Phone"]</div>
+                                <div class="text-gray-600">@((contractClient.ContactPhone ?? "-"))</div>
+
+                                <div class="fw-bold mt-5">@languageContainer.Keys["Contact Mobile"]</div>
+                                <div class="text-gray-600">@((contractClient.ContactMobile ?? "-"))</div>
+
+                                <div class="fw-bold mt-5">@languageContainer.Keys["Address"]</div>
+                                <div class="text-gray-600">@((contractClient.Address ?? "-"))</div>
+
+                                <div class="fw-bold mt-5">@languageContainer.Keys["VAT Registration Number"]</div>
+                                <div class="text-gray-600">@((contractClient.VatRegistrationNumber ?? "-"))</div>
+
+                                <div class="fw-bold mt-5">@languageContainer.Keys["Commercial Registration Number"]</div>
+                                <div class="text-gray-600">@((contractClient.CommercialRegistrationNo ?? "-"))</div>
                             </div>
                             <!--end::Details content-->
                         </div>

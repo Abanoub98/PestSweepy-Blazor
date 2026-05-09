@@ -10,7 +10,7 @@
 
 <MudCard Elevation="25">
     <MudCardContent>
-        <MudDataGrid T="ClientDto" Dense="true" Elevation="0" FixedHeader="true" Height="@($"{tableHight}px")" MultiSelection="true"
+        <MudDataGrid T="ContractClientDto" Dense="true" Elevation="0" FixedHeader="true" Height="@($"{tableHight}px")" MultiSelection="true"
                      Loading="@(isLoading)" LoadingProgressColor="Color.Info" Filterable="true" SelectedItemsChanged="SelectedItemsChanged"
                      Items="contractClients" Hover="true" SortMode="SortMode.Single" QuickFilter="@FilterFunc">
 
@@ -42,7 +42,7 @@
             </NoRecordsContent>
 
             <Columns>
-                <SelectColumn T="ClientDto" ShowInFooter="false" />
+                <SelectColumn T="ContractClientDto" ShowInFooter="false" />
 
                 <TemplateColumn Context="contractClient" CellClass="text-center" HeaderClass="text-center" Sortable="false" Filterable="false">
                     <CellTemplate>
@@ -52,7 +52,7 @@
                     </CellTemplate>
                 </TemplateColumn>
 
-                <PropertyColumn Property="x => string.Join(' ',  x.FirstName,x.LastName)" Title="@languageContainer.Keys["Full Name"]" />
+                <PropertyColumn Property="x => string.Join(' ',  x.FirstName,'~',x.LastName)" Title="@languageContainer.Keys["Full Name"]" />
                 <PropertyColumn Property="x => x.Email" Title="@languageContainer.Keys["Email"]" />
                 <PropertyColumn Property="x => x.PhoneNumber" Title="@languageContainer.Keys["Phone"]" />
 
@@ -66,16 +66,16 @@
                         <div>
                             <TableButtons IsDisable="isDisable" EditClicked="() => OpenForm(formUri, contractClient.Item!.Id)" DeleteClicked="() => Delete(contractClient.Item!.Id)"
                                           DetailsClicked="() => OpenDetails(detailsUri, contractClient.Item!.Id)" />
-                            <a @onclick="() => ShowPdfUploadForm(contractClient.Item!.Id)" title="@languageContainer.Keys["Upload Report"]" class="btn btn-sm btn-light-info me-1">
-                                <i class="fa-solid fa-envelope-open-text p-0"></i>
-                            </a>
+                        @*         <a @onclick="() => ShowPdfUploadForm(contractClient.Item!.Id)" title="@languageContainer.Keys["Upload Report"]" class="btn btn-sm btn-light-info me-1">
+                                    <i class="fa-solid fa-envelope-open-text p-0"></i>
+                                </a> *@
                         </div>
                     </CellTemplate>
                 </TemplateColumn>
             </Columns>
 
             <PagerContent>
-                <MudDataGridPager T="ClientDto" />
+                <MudDataGridPager T="ContractClientDto" />
             </PagerContent>
         </MudDataGrid>
     </MudCardContent>
