@@ -1,0 +1,176 @@
+﻿@page "/ServiceRequests"
+@attribute [Authorize(Roles = $"{Roles.AdminRole},{Roles.ManagerRole}")]
+@inherits BasePage
+
+<PageTitle>
+    @languageContainer.Keys["Service Requests"]
+</PageTitle>
+
+<MudBreadcrumbs Items="breadcrumbItems"></MudBreadcrumbs>
+<BrowserViewportObserver TableHeightChanged="TableHeightChanged" />
+
+<MudCard Elevation="25">
+    <MudCardContent>
+        <MudDataGrid T="ServiceRequestsDto"
+                     Dense="true"
+                     Elevation="0"
+                     FixedHeader="true"
+                     Height="@($"{tableHight}px")"
+                     SelectedItemsChanged="SelectedItemsChanged"
+                     Loading="@(isLoading)"
+                     LoadingProgressColor="Color.Info"
+                     Filterable="true"
+                     MultiSelection="true"
+                     Items="serviceRequests"
+                     Hover="true"
+                     SortMode="SortMode.Single"
+                     QuickFilter="@FilterFunc">
+
+            <!-- ==== TOOLBAR ==== -->
+            <ToolBarContent>
+                <div class="d-flex justify-content-between flex-column align-items-center flex-md-row w-100">
+                    <div class="w-md-25 w-100">
+                        <div class="d-flex align-items-center">
+                            <MudAvatar Rounded="true" Color="Color.Info">
+                                <MudIcon Icon="@EntityIcons.ServiceRequestsIcon" />
+                            </MudAvatar>
+
+                            <MudText Class="mx-3" Typo="Typo.h5">
+                                @languageContainer.Keys["Service Requests"]
+                            </MudText>
+
+                            <!-- Add -->
+                            <MudIconButton OnClick="() => OpenForm(formUri)"
+                                           Icon="@Icons.Material.Filled.Add"
+                                           Color="Color.Success" />
+
+                            <!-- Delete selected -->
+                            <MudIconButton OnClick="DeleteAll"
+                                           Disabled="@(selectedIds.Count() < 2 ? true : false)"
+                                           Icon="@Icons.Material.Filled.DeleteForever"
+                                           Color="Color.Error" />
+
+                            <!-- Refresh -->
+                            <MudIconButton OnClick="OnInitializedAsync"
+                                           Icon="@Icons.Material.Filled.Refresh"
+                                           Color="Color.Info" />
+                        </div>
+                    </div>
+
+                    <!-- Search -->
+                    <div class="w-md-50 w-100">
+                        <MudTextField @bind-Value="searchString"
+                                      Adornment="Adornment.Start"
+                                      Class="mt-0 mb-5"
+                                      Immediate="true"
+                                      Placeholder=@($"{languageContainer.Keys["Search For"]} {languageContainer.Keys["Entity Name"]}, {languageContainer.Keys["City"]}, {languageContainer.Keys["Phone"]}, {languageContainer.Keys["Email"]}, {languageContainer.Keys["Branch"]}, {languageContainer.Keys["Location"]}, {languageContainer.Keys["Request Type"]}")
+                                      AdornmentIcon="@Icons.Material.Filled.Search"
+                                      IconSize="Size.Medium" />
+                    </div>
+                </div>
+            </ToolBarContent>
+
+            <!-- ==== NO RECORDS ==== -->
+            <NoRecordsContent>
+                <NoDataToDisply />
+            </NoRecordsContent>
+
+            <!-- ==== COLUMNS ==== -->
+            <Columns>
+                <!-- Select -->
+                <SelectColumn T="ServiceRequestsDto" ShowInFooter="false" />
+
+                <!-- Entity Name -->
+                <PropertyColumn Property="x => x.EntityName"
+                                Title="@($"{languageContainer.Keys["Entity Name"]}")" />
+
+                <!-- Entity Phone -->
+                <PropertyColumn Property="x => x.EntityPhone"
+                                Title="@($"{languageContainer.Keys["Phone"]}")" />
+
+                <!-- Entity Email -->
+                <PropertyColumn Property="x => x.EntityEmail"
+                                Title="@($"{languageContainer.Keys["Email"]}")" />
+
+                <!-- City -->
+                <PropertyColumn Property="x => x.City"
+                                Title="@($"{languageContainer.Keys["City"]}")" />
+
+                <!-- Branch -->
+                <PropertyColumn Property="x => x.Branch"
+                                Title="@($"{languageContainer.Keys["Branch"]}")" />
+
+                <!-- Location -->
+                <PropertyColumn Property="x => x.Location"
+                                Title="@($"{languageContainer.Keys["Location"]}")" />
+
+                <!-- Location URL -->
+                <TemplateColumn Context="req"
+                                Title="@($"{languageContainer.Keys["Location URL"]}")"
+                                Sortable="false"
+                                Filterable="false"
+                                HeaderClass="text-center"
+                                CellClass="text-center">
+                    <HeaderTemplate>
+                        <MudText Class="w-100">
+                            @($"{languageContainer.Keys["Location URL"]}")
+                        </MudText>
+                    </HeaderTemplate>
+
+                    <CellTemplate>
+                        @if (!string.IsNullOrWhiteSpace(req.Item!.LocationURL))
+                        {
+                            <a href="@req.Item.LocationURL" Target="_blank" Rel="noopener noreferrer">
+                                <MudIcon Icon="@Icons.Material.Filled.LocationOn" />
+                            </a>
+                        }
+                        else
+                        {
+                            <MudText>-</MudText>
+                        }
+                    </CellTemplate>
+                </TemplateColumn>
+
+                <!-- Service Request Type -->
+                <TemplateColumn Context="req"
+                                Title="@($"{languageContainer.Keys["Request Type"]}")"
+                                Sortable="true"
+                                Filterable="true">
+                    <CellTemplate>
+                        <MudText>
+                            @req.Item!.ServiceRequestType.Name
+                        </MudText>
+                    </CellTemplate>
+                </TemplateColumn>
+
+                <!-- Actions -->
+                <TemplateColumn Title="@($"{languageContainer.Keys["Actions"]}")"
+                                CellClass="text-center"
+                                Context="req"
+                                HeaderClass="text-center"
+                                Sortable="false"
+                                Filterable="false">
+                    <HeaderTemplate>
+                        <MudText Class="w-100">
+                            @($"{languageContainer.Keys["Actions"]}")
+                        </MudText>
+                    </HeaderTemplate>
+                    <CellTemplate>
+                        <div>
+                            <TableButtons IsDisable="isDisable"
+                                          EditClicked="() => OpenForm(formUri, req.Item!.Id)"
+                                          DeleteClicked="() => Delete(req.Item!.Id)"
+                                          DetailsClicked="() => OpenDetails(detailsUri, req.Item!.Id)" />
+                        </div>
+                    </CellTemplate>
+                </TemplateColumn>
+            </Columns>
+
+            <!-- ==== PAGER ==== -->
+            <PagerContent>
+                <MudDataGridPager T="ServiceRequestsDto" />
+            </PagerContent>
+
+        </MudDataGrid>
+    </MudCardContent>
+</MudCard>

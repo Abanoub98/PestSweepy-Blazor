@@ -1,0 +1,187 @@
+﻿@page "/ServiceRequests/Details/{Id:int}"
+@attribute [Authorize(Roles = $"{Roles.AdminRole},{Roles.ManagerRole}")]
+@inherits BasePage
+
+<PageTitle>
+    @($"{languageContainer.Keys["Service Request"]} {languageContainer.Keys["Details"]}")
+</PageTitle>
+
+<MudBreadcrumbs Items="breadcrumbItems"></MudBreadcrumbs>
+
+@if (serviceRequest is null)
+{
+    <FormLoadingSpinner IsBigForm="true" />
+}
+else
+{
+    <div class="card shadow-sm">
+        <div class="card-header">
+            <div class="fw-bold card-title">
+                @($"{serviceRequest.EntityName} {languageContainer.Keys["Details"]}")
+            </div>
+
+            <div class="card-toolbar">
+                <a href="/ServiceRequests" class="btn btn-sm btn-primary me-3">
+                    <MudIcon Icon="@Icons.Material.Filled.ArrowBack" />
+                    @languageContainer.Keys["Back To"] @languageContainer.Keys["Service Requests"]
+                </a>
+
+                <a @onclick="() => OpenForm(formUri, serviceRequest.Id)" class="btn btn-sm btn-success">
+                    <MudIcon Icon="@Icons.Material.Filled.Edit" />
+                    @languageContainer.Keys["Edit"]
+                </a>
+            </div>
+        </div>
+
+        <div class="card-body">
+            <div class="py-3 fs-6">
+
+                <!-- ========================= -->
+                <!-- General Entity Details -->
+                <!-- ========================= -->
+                <h5 class="fw-bold mt-3">@languageContainer.Keys["Entity Details"]</h5>
+
+                <div class="fw-bold mt-4 mb-1">@languageContainer.Keys["Entity Name"]:</div>
+                <div class="text-gray-600">@serviceRequest.EntityName</div>
+
+                <div class="fw-bold mt-4 mb-1">@languageContainer.Keys["Phone"]:</div>
+                <div class="text-gray-600">@((serviceRequest.EntityPhone ?? "-"))</div>
+
+                <div class="fw-bold mt-4 mb-1">@languageContainer.Keys["Email"]:</div>
+                <div class="text-gray-600">@((serviceRequest.EntityEmail ?? "-"))</div>
+
+                <div class="fw-bold mt-4 mb-1">@languageContainer.Keys["City"]:</div>
+                <div class="text-gray-600">@serviceRequest.City</div>
+
+                <div class="fw-bold mt-4 mb-1">@languageContainer.Keys["Branch"]:</div>
+                <div class="text-gray-600">@((serviceRequest.Branch ?? "-"))</div>
+
+                <div class="fw-bold mt-4 mb-1">@languageContainer.Keys["Location"]:</div>
+                <div class="text-gray-600">@serviceRequest.Location</div>
+
+                <div class="fw-bold mt-4 mb-1">@languageContainer.Keys["Location URL"]:</div>
+                <div class="text-gray-600">
+                    @if (!string.IsNullOrWhiteSpace(serviceRequest.LocationURL))
+                    {
+                        <MudLink Href="@serviceRequest.LocationURL" Target="_blank">
+                            @serviceRequest.LocationURL
+                        </MudLink>
+                    }
+                    else
+                    {
+                        @("-")
+                    }
+                </div>
+
+                <div class="fw-bold mt-4 mb-1">@languageContainer.Keys["Request Type"]:</div>
+                <div class="text-gray-600">@serviceRequest.ServiceRequestType.Name</div>
+
+                <!-- ========================= -->
+                <!-- Pest Control -->
+                <!-- ========================= -->
+                @if (serviceRequest.BuildingTypeId > 0)
+                {
+                    <hr />
+                    <h5 class="fw-bold mt-3">@languageContainer.Keys["Pest Control Details"]</h5>
+
+                    <div class="fw-bold mt-4 mb-1">@languageContainer.Keys["Building Type"]:</div>
+                    <div class="text-gray-600">@serviceRequest.BuildingType?.Name</div>
+
+                    <div class="fw-bold mt-4 mb-1">@languageContainer.Keys["Pests Type"]:</div>
+                    <div class="text-gray-600">@serviceRequest.PestsType?.Name</div>
+
+                    <div class="fw-bold mt-4 mb-1">@languageContainer.Keys["Treatment Type"]:</div>
+                    <div class="text-gray-600">@serviceRequest.PestsTreatmentType?.Name</div>
+
+                    <div class="fw-bold mt-4 mb-1">@languageContainer.Keys["Infection Percent"]:</div>
+                    <div class="text-gray-600">@((serviceRequest.InfectionPercent?.ToString() ?? "-"))</div>
+
+                    <div class="fw-bold mt-4 mb-1">@languageContainer.Keys["Rooms Count"]:</div>
+                    <div class="text-gray-600">@((serviceRequest.RoomsCount?.ToString() ?? "-"))</div>
+
+                    <div class="fw-bold mt-4 mb-1">@languageContainer.Keys["Suites Count"]:</div>
+                    <div class="text-gray-600">@((serviceRequest.SuitesCount?.ToString() ?? "-"))</div>
+
+                    <div class="fw-bold mt-4 mb-1">@languageContainer.Keys["Kitchens Count"]:</div>
+                    <div class="text-gray-600">@((serviceRequest.KitchensCount?.ToString() ?? "-"))</div>
+
+                    <div class="fw-bold mt-4 mb-1">@languageContainer.Keys["Restaurants Count"]:</div>
+                    <div class="text-gray-600">@((serviceRequest.RestuarntsCount?.ToString() ?? "-"))</div>
+                }
+
+                <!-- ========================= -->
+                <!-- Deep Cleaning -->
+                <!-- ========================= -->
+                @if (serviceRequest.CleaningTypeId.HasValue)
+                {
+                    <hr />
+                    <h5 class="fw-bold mt-3">@languageContainer.Keys["Deep Cleaning Details"]</h5>
+
+                    <div class="fw-bold mt-4 mb-1">@languageContainer.Keys["Cleaning Type"]:</div>
+                    <div class="text-gray-600">@serviceRequest.CleaningType?.Name</div>
+
+                    <div class="fw-bold mt-4 mb-1">@languageContainer.Keys["Entity Count"]:</div>
+                    <div class="text-gray-600">@((serviceRequest.EntityCount?.ToString() ?? "-"))</div>
+                }
+
+                <!-- ========================= -->
+                <!-- Building Surface -->
+                <!-- ========================= -->
+                @if (serviceRequest.SurfaceTypeId.HasValue)
+                {
+                    <hr />
+                    <h5 class="fw-bold mt-3">@languageContainer.Keys["Building Surface Details"]</h5>
+
+                    <div class="fw-bold mt-4 mb-1">@languageContainer.Keys["Surface Type"]:</div>
+                    <div class="text-gray-600">@serviceRequest.SurfaceType?.Name</div>
+
+                    <div class="fw-bold mt-4 mb-1">@languageContainer.Keys["Work Way"]:</div>
+                    <div class="text-gray-600">@serviceRequest.WorkWay?.Name</div>
+                }
+
+                <!-- ========================= -->
+                <!-- General Properties -->
+                <!-- ========================= -->
+                <hr />
+                <h5 class="fw-bold mt-3">@languageContainer.Keys["General Details"]</h5>
+
+                <div class="fw-bold mt-4 mb-1">@languageContainer.Keys["Floors Count"]:</div>
+                <div class="text-gray-600">@((serviceRequest.FloorsCount?.ToString() ?? "-"))</div>
+
+                <div class="fw-bold mt-4 mb-1">@languageContainer.Keys["Unit"]:</div>
+                <div class="text-gray-600">@serviceRequest.Unit?.Name</div>
+
+                <div class="fw-bold mt-4 mb-1">@languageContainer.Keys["Measure Area"]:</div>
+                <div class="text-gray-600">@((serviceRequest.MeasureArea?.ToString() ?? "-"))</div>
+
+                <div class="fw-bold mt-4 mb-1">@languageContainer.Keys["Notes"]:</div>
+                <div class="text-gray-600">@serviceRequest.Notes</div>
+
+                <div class="fw-bold mt-4 mb-1">@languageContainer.Keys["Checkup"]:</div>
+                <div class="text-gray-600">@serviceRequest.CheckupSummary</div>
+
+                <div class="fw-bold mt-6 mb-2">@languageContainer.Keys["Service Request Attachments"]:</div>
+                @if (serviceRequest.ServiceRequestAttachments is not null && serviceRequest.ServiceRequestAttachments.Any())
+                {
+                    <div class="d-flex flex-wrap gap-3 mt-2">
+                        @foreach (var serviceRequestAttachment in serviceRequest.ServiceRequestAttachments)
+                        {
+                            <div @onclick="@(() => ShowImagePreview(serviceRequestAttachment))" style="cursor:pointer;">
+                                <MudImage Class="rounded-lg border border-gray-300"
+                                          Width="120"
+                                          Height="120"
+                                          Style="object-fit: cover;"
+                                          Src="@serviceRequestAttachment" />
+                            </div>
+                        }
+                    </div>
+                }
+                else
+                {
+                    <div class="text-gray-600">-</div>
+                }
+
+            </div>
+        </div>
+    </div>
+}

@@ -20,6 +20,7 @@ public static class EntityIcons
     public const string PartnersIcon = Icons.Material.Outlined.Build;
     public const string CertificatesIcon = Icons.Material.Outlined.DocumentScanner;
     public const string QuoteRequests = Icons.Material.Outlined.ReceiptLong;
+    public const string ServiceRequestsIcon = Icons.Material.Outlined.CleaningServices;
     public const string VisitSheetsIcon = Icons.Material.Outlined.CalendarMonth;
     public const string VisitReportsIcon = Icons.Material.Outlined.Assignment;
     public const string VisitsIcon = Icons.Material.Outlined.CalendarViewDay;
