@@ -1,5 +1,5 @@
 ﻿@page "/QuoteRequests"
-@attribute [Authorize(Roles = Roles.AdminRole)]
+@attribute [Authorize(Roles = $"{Roles.AdminRole},{Roles.OperationManagerRole},{Roles.SalesRole}")]
 @inherits BasePage
 
 <PageTitle>

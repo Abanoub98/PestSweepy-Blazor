@@ -121,11 +121,11 @@ public partial class Contracts
     {
         if (string.IsNullOrWhiteSpace(searchString))
             return true;
-        if (element.CreatedAtLocal.ToString().Contains(searchString, StringComparison.OrdinalIgnoreCase))
-            return true;
-        if (element.CompanyInfo.CompanyName!.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+        if (element.Title.Contains(searchString, StringComparison.OrdinalIgnoreCase))
             return true;
         if (element.ContractClient.FirstName.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+            return true;
+        if (element.ContractClient.LastName.Contains(searchString, StringComparison.OrdinalIgnoreCase))
             return true;
 
         return false;

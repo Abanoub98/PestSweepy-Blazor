@@ -1,6 +1,6 @@
 ﻿@page "/Quotations/Form/{Id:int}"
 @page "/Quotations/Form"
-@attribute [Authorize(Roles = $"{Roles.AdminRole},{Roles.ManagerRole}")]
+@attribute [Authorize(Roles = $"{Roles.AdminRole},{Roles.ManagerRole},{Roles.OperationManagerRole},{Roles.SalesRole}")]
 @inherits BasePage
 
 <PageTitle>

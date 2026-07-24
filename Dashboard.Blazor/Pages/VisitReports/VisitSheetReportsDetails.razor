@@ -1,0 +1,418 @@
+﻿@page "/VisitReportsList/{VisitSheetId:int}"
+@attribute [Authorize(Roles = $"{Roles.AdminRole},{Roles.ManagerRole},{Roles.ContractClientRole},{Roles.SupervisorRole},{Roles.OperationManagerRole},{Roles.SalesRole}")]
+@inherits BasePage
+
+<PageTitle>@($"{languageContainer.Keys["VisitReports"]} - {languageContainer.Keys["Visit Sheet"]} #{VisitSheetId}")</PageTitle>
+
+<MudBreadcrumbs Items="breadcrumbItems"></MudBreadcrumbs>
+
+@if (isLoading)
+{
+    <FormLoadingSpinner IsBigForm="true" />
+}
+else if (visitReports.Count == 0)
+{
+    <MudCard Elevation="10">
+        <MudCardContent>
+            <NoDataToDisply />
+        </MudCardContent>
+    </MudCard>
+}
+else
+{
+    <div class="card shadow-sm mb-5">
+        <div class="card-header">
+            <div class="fw-bold card-title">@languageContainer.Keys["VisitReports"] - @languageContainer.Keys["Visit Sheet"] #@VisitSheetId</div>
+
+            <div class="card-toolbar">
+                <MudIconButton Icon="@Icons.Material.Filled.Refresh" Color="Color.Info" OnClick="LoadReportsAsync" />
+
+                <a href="/VisitSheets" class="btn btn-sm btn-primary ms-2">
+                    <MudIcon Icon="@Icons.Material.Filled.ArrowBack" />
+                    @languageContainer.Keys["Back"]
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <MudExpansionPanels MultiExpansion="true">
+        @foreach (var visitReportForm in visitReports)
+        {
+            var visitTypeId = visitReportForm.Visit?.VisitTypeId ?? 0;
+            var status = visitReportForm.Status.ToString();
+            var statusKey = status.Replace(" ", "").ToLowerInvariant();
+
+            var statusColor = statusKey switch
+            {
+                "checkedin" => Color.Info,
+                "inprogress" => Color.Dark,
+                "completed" => Color.Success,
+                "cancelled" => Color.Error,
+                _ => Color.Default
+            };
+
+            var statusText = statusKey switch
+            {
+                "checkedin" => languageContainer.Keys["CheckedIn"],
+                "inprogress" => languageContainer.Keys["InProgress"],
+                "completed" => languageContainer.Keys["Completed"],
+                "cancelled" => languageContainer.Keys["Cancelled"],
+                _ => string.IsNullOrWhiteSpace(status) ? "-" : status
+            };
+
+            <MudExpansionPanel IsInitiallyExpanded="true">
+                <TitleContent>
+                    <div class="d-flex align-items-center justify-content-between w-100">
+                        <div class="d-flex align-items-center">
+                            <MudIcon Icon="@EntityIcons.VisitReportsIcon" Color="Color.Info" Class="me-2" />
+
+                            <MudText Typo="Typo.h6">@languageContainer.Keys["Visit Report"] #@visitReportForm.Id</MudText>
+
+                            <div class="ms-3">
+                                <MudChip Color="@statusColor" Variant="Variant.Filled" Size="Size.Small">@statusText</MudChip>
+                            </div>
+                        </div>
+
+                        <div class="me-5" @onclick:stopPropagation="true">
+                       @*      <a href="@($"/VisitReports/Details/{visitReportForm.Id}")" class="btn btn-sm btn-primary me-2">
+                                <MudIcon Icon="@Icons.Material.Filled.Visibility" />
+                                @languageContainer.Keys["Details"]
+                            </a> *@
+
+                            @if (visitReportForm.Status.ToString() != "Completed")
+                            {
+                                <a href="@($"/VisitReports/Form/{visitReportForm.Id}")" class="btn btn-sm btn-success">
+                                    <MudIcon Icon="@Icons.Material.Filled.Edit" />
+                                    @languageContainer.Keys["Edit"]
+                                </a>
+                            }
+                        </div>
+                    </div>
+                </TitleContent>
+
+                <ChildContent>
+                    <div class="py-3 fs-6">
+                        <div class="row">
+                            <div class="col-lg-8 col-md-7 col-12">
+                                <h5 class="fw-bold mt-2">@languageContainer.Keys["General"]</h5>
+
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="fw-bold mt-4 mb-1">@languageContainer.Keys["Id"]:</div>
+                                        <div class="text-gray-600">@visitReportForm.Id</div>
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <div class="fw-bold mt-4 mb-1">@languageContainer.Keys["Visit Id"]:</div>
+                                        <div class="text-gray-600">@visitReportForm.VisitId</div>
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <div class="fw-bold mt-4 mb-1">@languageContainer.Keys["Branch"]:</div>
+                                        <div class="text-gray-600">@(string.IsNullOrWhiteSpace(visitReportForm.BranchName) ? "-" : visitReportForm.BranchName)</div>
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <div class="fw-bold mt-4 mb-1">@languageContainer.Keys["Status"]:</div>
+                                        <MudChip Color="@statusColor" Variant="Variant.Filled" Size="Size.Small">@statusText</MudChip>
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <div class="fw-bold mt-4 mb-1">@languageContainer.Keys["Time In"]:</div>
+                                        <div class="text-gray-600">@visitReportForm.CheckInLocal.ToString("yyyy-MM-dd HH:mm")</div>
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <div class="fw-bold mt-4 mb-1">@languageContainer.Keys["Time Out"]:</div>
+                                        <div class="text-gray-600">@(visitReportForm.CheckOut.HasValue? visitReportForm.CheckOut.Value.ToLocalTime().ToString("yyyy-MM-dd HH:mm") : "-")</div>
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <div class="fw-bold mt-4 mb-1">@languageContainer.Keys["Alternate Contact Person"]:</div>
+                                        <div class="text-gray-600">@(string.IsNullOrWhiteSpace(visitReportForm.AlternateContactPerson) ? "-" : visitReportForm.AlternateContactPerson)</div>
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <div class="fw-bold mt-4 mb-1">@languageContainer.Keys["Is Check Out"]:</div>
+
+                                        @if (visitReportForm.CheckOut.HasValue)
+                                        {
+                                            <MudChip Color="Color.Success" Variant="Variant.Filled" Size="Size.Small">@languageContainer.Keys["Yes"]</MudChip>
+                                        }
+                                        else
+                                        {
+                                            <MudChip Color="Color.Error" Variant="Variant.Filled" Size="Size.Small">@languageContainer.Keys["No"]</MudChip>
+                                        }
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <div class="fw-bold mt-4 mb-1">@languageContainer.Keys["Visit Type"]:</div>
+                                        <div class="text-gray-600">@(visitReportForm.Visit?.VisitType?.Name ?? "-")</div>
+                                    </div>
+                                </div>
+
+                                <div class="fw-bold mt-4 mb-1">@languageContainer.Keys["Notes"]:</div>
+                                <div class="text-gray-600" style="white-space: pre-wrap;">@(string.IsNullOrWhiteSpace(visitReportForm.Notes) ? "-" : visitReportForm.Notes)</div>
+
+                                <hr />
+
+                                <h5 class="fw-bold mt-3">@languageContainer.Keys["Location Details"]</h5>
+
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="fw-bold mt-4 mb-1">@languageContainer.Keys["Floors Count"]:</div>
+                                        <div class="text-gray-600">@(visitReportForm.FloorsCount?.ToString() ?? "-")</div>
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <div class="fw-bold mt-4 mb-1">@languageContainer.Keys["Rooms Count"]:</div>
+                                        <div class="text-gray-600">@(visitReportForm.RoomsCount?.ToString() ?? "-")</div>
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <div class="fw-bold mt-4 mb-1">@languageContainer.Keys["Suites Count"]:</div>
+                                        <div class="text-gray-600">@(visitReportForm.SuitesCount?.ToString() ?? "-")</div>
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <div class="fw-bold mt-4 mb-1">@languageContainer.Keys["Kitchens Count"]:</div>
+                                        <div class="text-gray-600">@(visitReportForm.KitchensCount?.ToString() ?? "-")</div>
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <div class="fw-bold mt-4 mb-1">@languageContainer.Keys["Restaurants Count"]:</div>
+                                        <div class="text-gray-600">@(visitReportForm.RestuarntsCount?.ToString() ?? "-")</div>
+                                    </div>
+                                </div>
+
+                                <div class="fw-bold mt-4 mb-1">@languageContainer.Keys["Floors"]:</div>
+                                <div class="text-gray-600">@(string.IsNullOrWhiteSpace(visitReportForm.Floors) ? "-" : visitReportForm.Floors)</div>
+
+                                <div class="fw-bold mt-4 mb-1">@languageContainer.Keys["Rooms"]:</div>
+                                <div class="text-gray-600">@(string.IsNullOrWhiteSpace(visitReportForm.Rooms) ? "-" : visitReportForm.Rooms)</div>
+
+                                <hr />
+
+                                <h5 class="fw-bold mt-3">@languageContainer.Keys["Providers"]</h5>
+
+                                @if (visitReportForm.Providers != null && visitReportForm.Providers.Any())
+                                {
+                                    @foreach (var provider in visitReportForm.Providers)
+                                    {
+                                        <MudChip Class="me-1 mb-1" Color="Color.Info" Variant="Variant.Filled" Size="Size.Small">@(provider.Provider?.FirstName ?? "-") @(provider.Provider?.LastName ?? "-") (@provider.Provider?.EmployeeId)</MudChip>
+                                    }
+                                }
+                                else
+                                {
+                                    <div class="text-gray-600">-</div>
+                                }
+
+                                @if (visitTypeId == (int)ServiceRequestTypeEnum.PestControl)
+                                {
+                                    <hr />
+
+                                    <h5 class="fw-bold mt-3">@languageContainer.Keys["Pest Control"]</h5>
+
+                                    <div class="fw-bold mt-4 mb-1">@languageContainer.Keys["Pests Activity"]:</div>
+                                    <div class="text-gray-600">@(visitReportForm.PestsActivity?.Name ?? "-")</div>
+
+                                    <div class="fw-bold mt-4 mb-1">@languageContainer.Keys["Target Pest Type"]:</div>
+                                    <div class="text-gray-600">@(visitReportForm.TargetPestType?.Name ?? "-")</div>
+
+                                    <div class="fw-bold mt-4 mb-1">@languageContainer.Keys["Treatment Method Summary"]:</div>
+                                    <div class="text-gray-600">@(string.IsNullOrWhiteSpace(visitReportForm.TreatmentMethodSummary) ? "-" : visitReportForm.TreatmentMethodSummary)</div>
+
+                                    <div class="fw-bold mt-4 mb-1">@languageContainer.Keys["Areas Applied"]:</div>
+                                    <div class="text-gray-600">@(string.IsNullOrWhiteSpace(visitReportForm.AreasApplied) ? "-" : visitReportForm.AreasApplied)</div>
+
+                                    <div class="fw-bold mt-4 mb-1">@languageContainer.Keys["Areas Treated"]:</div>
+                                    <div class="text-gray-600">@(string.IsNullOrWhiteSpace(visitReportForm.AreasTreated) ? "-" : visitReportForm.AreasTreated)</div>
+
+                                    <div class="fw-bold mt-4 mb-1">@languageContainer.Keys["Dilution Percent"]:</div>
+                                    <div class="text-gray-600">@(visitReportForm.DilutionPercent?.ToString() ?? "-")</div>
+
+                                    <div class="fw-bold mt-4 mb-1">@languageContainer.Keys["Treatment Types"]:</div>
+
+                                    @if (visitReportForm.PestsTreatmentTypes != null && visitReportForm.PestsTreatmentTypes.Any())
+                                    {
+                                        @foreach (var item in visitReportForm.PestsTreatmentTypes)
+                                        {
+                                            <MudChip Class="me-1 mb-1" Color="Color.Dark" Variant="Variant.Filled" Size="Size.Small">@(item.PestsTreatmentType?.Name ?? "-")</MudChip>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <div class="text-gray-600">-</div>
+                                    }
+
+                                    <div class="fw-bold mt-4 mb-1">@languageContainer.Keys["Pests Types"]:</div>
+
+                                    @if (visitReportForm.PestsTypes != null && visitReportForm.PestsTypes.Any())
+                                    {
+                                        @foreach (var item in visitReportForm.PestsTypes)
+                                        {
+                                            <MudChip Class="me-1 mb-1" Color="Color.Warning" Variant="Variant.Filled" Size="Size.Small">@(item.PestsType?.Name ?? "-")</MudChip>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <div class="text-gray-600">-</div>
+                                    }
+
+                                    <div class="fw-bold mt-4 mb-1">@languageContainer.Keys["Chemicals"]:</div>
+
+                                    @if (visitReportForm.Chemicals != null && visitReportForm.Chemicals.Any())
+                                    {
+                                        @foreach (var item in visitReportForm.Chemicals)
+                                        {
+                                            <MudChip Class="me-1 mb-1" Color="Color.Secondary" Variant="Variant.Filled" Size="Size.Small">@(item.Chemical?.Name ?? "-")</MudChip>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <div class="text-gray-600">-</div>
+                                    }
+
+                                    <div class="fw-bold mt-4 mb-1">@languageContainer.Keys["Causes of Infection"]:</div>
+
+                                    @if (visitReportForm.Infections != null && visitReportForm.Infections.Any())
+                                    {
+                                        @foreach (var item in visitReportForm.Infections)
+                                        {
+                                            <MudChip Class="me-1 mb-1" Color="Color.Error" Variant="Variant.Filled" Size="Size.Small">@(item.Infection?.Name ?? "-")</MudChip>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <div class="text-gray-600">-</div>
+                                    }
+                                }
+
+                                @if (visitTypeId == (int)ServiceRequestTypeEnum.DeepCleaning)
+                                {
+                                    <hr />
+
+                                    <h5 class="fw-bold mt-3">@languageContainer.Keys["Deep Cleaning"]</h5>
+
+                                    <div class="fw-bold mt-4 mb-1">@languageContainer.Keys["Cleaning Type"]:</div>
+                                    <div class="text-gray-600">@(visitReportForm.CleaningType?.Name ?? "-")</div>
+
+                                    <div class="fw-bold mt-4 mb-1">@languageContainer.Keys["Unit"]:</div>
+                                    <div class="text-gray-600">@(visitReportForm.Unit?.Name ?? "-")</div>
+
+                                    <div class="fw-bold mt-4 mb-1">@languageContainer.Keys["Measure Area"]:</div>
+                                    <div class="text-gray-600">@(visitReportForm.MeasureArea?.ToString() ?? "-")</div>
+                                }
+
+                                @if (visitTypeId == (int)ServiceRequestTypeEnum.BuildingSurface)
+                                {
+                                    <hr />
+
+                                    <h5 class="fw-bold mt-3">@languageContainer.Keys["Building Surface"]</h5>
+
+                                    <div class="fw-bold mt-4 mb-1">@languageContainer.Keys["Surface Type"]:</div>
+                                    <div class="text-gray-600">@(visitReportForm.SurfaceType?.Name ?? "-")</div>
+
+                                    <div class="fw-bold mt-4 mb-1">@languageContainer.Keys["Work Way"]:</div>
+                                    <div class="text-gray-600">@(visitReportForm.WorkWay?.Name ?? "-")</div>
+                                }
+
+                                @if (visitTypeId == (int)ServiceRequestTypeEnum.Maintenance)
+                                {
+                                    <hr />
+
+                                    <h5 class="fw-bold mt-3">@languageContainer.Keys["Maintenance"]</h5>
+
+                                    @if (visitReportForm.MaintenanceTypes != null && visitReportForm.MaintenanceTypes.Any())
+                                    {
+                                        @foreach (var item in visitReportForm.MaintenanceTypes)
+                                        {
+                                            <MudChip Class="me-1 mb-1" Color="Color.Success" Variant="Variant.Filled" Size="Size.Small">@(item.MaintenanceType?.Name ?? "-")</MudChip>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <div class="text-gray-600">-</div>
+                                    }
+                                }
+                            </div>
+
+                            <div class="col-lg-4 col-md-5 col-12 text-center">
+                                <div class="fw-bold mt-5 mb-2">@languageContainer.Keys["Image"]:</div>
+
+                                @if (!string.IsNullOrWhiteSpace(visitReportForm.Image))
+                                {
+                                    <div @onclick="@(() => ShowImagePreview(imageUrl + visitReportForm.Image))" style="cursor:pointer;">
+                                        <MudImage Class="rounded-lg border border-gray-300 mt-2" Width="250" Src="@(imageUrl + visitReportForm.Image)" />
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="text-gray-600">-</div>
+                                }
+
+                                <div class="fw-bold mt-6 mb-2">@languageContainer.Keys["Additional Media"]:</div>
+
+                                @if (visitReportForm.AdditionalImages != null && visitReportForm.AdditionalImages.Any())
+                                {
+                                    <div class="d-flex flex-wrap gap-3 justify-content-center mt-2">
+                                        @foreach (var additionalImage in visitReportForm.AdditionalImages)
+                                        {
+                                            <div @onclick="@(() => ShowImagePreview(additionalImage))" style="cursor:pointer;">
+                                                <MudImage Class="rounded-lg border border-gray-300" Width="120" Height="120" Style="object-fit: cover;" Src="@(additionalImage)" />
+                                            </div>
+                                        }
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="text-gray-600">-</div>
+                                }
+
+                                <div class="fw-bold mt-6 mb-2">@languageContainer.Keys["Supervisor Signature"]:</div>
+
+                                @if (!string.IsNullOrWhiteSpace(visitReportForm.SupervisorSignatureImage))
+                                {
+                                    <div @onclick="@(() => ShowImagePreview(imageUrl + visitReportForm.SupervisorSignatureImage))" style="cursor:pointer;">
+                                        <MudImage Class="rounded-lg border border-gray-300 mt-2" Width="300" Src="@(imageUrl + visitReportForm.SupervisorSignatureImage)" />
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="text-gray-600">-</div>
+                                }
+
+                                <div class="fw-bold mt-6 mb-2">@languageContainer.Keys["Client Signature"]:</div>
+
+                                @if (!string.IsNullOrWhiteSpace(visitReportForm.ClientSignatureImage))
+                                {
+                                    <div @onclick="@(() => ShowImagePreview(imageUrl + visitReportForm.ClientSignatureImage))" style="cursor:pointer;">
+                                        <MudImage Class="rounded-lg border border-gray-300 mt-2" Width="300" Src="@(imageUrl + visitReportForm.ClientSignatureImage)" />
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="text-gray-600">-</div>
+                                }
+
+                                <div class="fw-bold mt-6 mb-2">@languageContainer.Keys["Customer Review"]:</div>
+
+                                @if (visitReportForm.CustomerReview.HasValue && visitReportForm.CustomerReview.Value >= 1 && visitReportForm.CustomerReview.Value <= 5)
+                                {
+                                    <MudRating SelectedValue="visitReportForm.CustomerReview.Value" ReadOnly="true" MaxValue="5" Size="Size.Medium" />
+                                }
+                                else
+                                {
+                                    <div class="text-gray-600">-</div>
+                                }
+
+                                <div class="fw-bold mt-4 mb-2">@languageContainer.Keys["Review Note"]:</div>
+                                <div class="text-gray-600" style="white-space: pre-wrap;">@(string.IsNullOrWhiteSpace(visitReportForm.ReviewNote) ? "-" : visitReportForm.ReviewNote)</div>
+                            </div>
+                        </div>
+                    </div>
+                </ChildContent>
+            </MudExpansionPanel>
+        }
+    </MudExpansionPanels>
+}

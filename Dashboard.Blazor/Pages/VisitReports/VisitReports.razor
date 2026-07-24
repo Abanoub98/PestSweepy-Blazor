@@ -1,5 +1,5 @@
 ﻿@page "/VisitReports"
-@attribute [Authorize(Roles = $"{Roles.AdminRole},{Roles.ManagerRole},{Roles.SupervisorRole},{Roles.ContractClientRole}")]
+@attribute [Authorize(Roles = $"{Roles.AdminRole},{Roles.ManagerRole},{Roles.SupervisorRole},{Roles.ContractClientRole},{Roles.OperationManagerRole},{Roles.SalesRole}")]
 @inherits BasePage
 
 <PageTitle>
@@ -206,7 +206,7 @@
                         </MudText>
                     </HeaderTemplate>
                     <CellTemplate>
-                        <AuthorizeView Roles="Admin,Manager,ContractClient">
+                        <AuthorizeView Roles="Admin,Manager,ContractClient,OperationManager">
                             <Authorized>
                                 <div>
                                     @if (report.Item?.CustomerReview == null || report.Item?.CustomerReview == 0)

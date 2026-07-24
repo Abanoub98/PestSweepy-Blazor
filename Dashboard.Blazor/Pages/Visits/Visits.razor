@@ -1,5 +1,5 @@
 ﻿@page "/Visits"
-@attribute [Authorize(Roles = $"{Roles.AdminRole},{Roles.ManagerRole},{Roles.SupervisorRole},{Roles.ContractClientRole}")]
+@attribute [Authorize(Roles = $"{Roles.AdminRole},{Roles.ManagerRole},{Roles.SupervisorRole},{Roles.ContractClientRole},{Roles.OperationManagerRole},{Roles.SalesRole}")]
 @inherits BasePage
 
 <PageTitle>
@@ -251,7 +251,7 @@
 
                     <CellTemplate>
                         @* نفس منطق الأكشنز اللي عندك *@
-                        <AuthorizeView Roles="Admin,Manager">
+                        <AuthorizeView Roles="Admin,Manager,OperationManager">
                             <Authorized>
 
                                 @if (row.Item?.Status == VisitStatus.ReScheduled.ToString())

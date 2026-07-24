@@ -1,5 +1,5 @@
 ﻿@page "/VisitSheets"
-@attribute [Authorize(Roles = $"{Roles.AdminRole},{Roles.ManagerRole},{Roles.SupervisorRole},{Roles.ContractClientRole}")]
+@attribute [Authorize(Roles = $"{Roles.AdminRole},{Roles.ManagerRole},{Roles.SupervisorRole},{Roles.ContractClientRole},{Roles.OperationManagerRole},{Roles.SalesRole}")]
 @inherits BasePage
 
 <PageTitle>
@@ -39,7 +39,7 @@
                                 @languageContainer.Keys["Visit Sheets"]
                             </MudText>
 
-                            @if (role == Roles.AdminRole)
+                            @if (role == Roles.AdminRole || role == Roles.OperationManagerRole)
                             {
                                 <!-- Add -->
                                 <MudIconButton OnClick="() => OpenForm(formUri)"

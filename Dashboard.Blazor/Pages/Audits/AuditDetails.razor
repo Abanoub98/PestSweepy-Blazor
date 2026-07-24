@@ -1,5 +1,5 @@
 ﻿@inherits BasePage
-@attribute [Authorize(Roles = $"{Roles.AdminRole},{Roles.ManagerRole}")]
+@attribute [Authorize(Roles = $"{Roles.AdminRole},{Roles.ManagerRole},{Roles.OperationManagerRole},{Roles.SalesRole}")]
 
 <MudDialog>
     <DialogContent>

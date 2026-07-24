@@ -1,0 +1,137 @@
+﻿@page "/OperationManagers/Details/{Id:int}"
+@attribute [Authorize(Roles = Roles.AdminRole)]
+@inherits BasePage
+
+<PageTitle>
+    @($"{languageContainer.Keys["Operation Manager"]} {languageContainer.Keys["Details"]}")
+</PageTitle>
+<MudBreadcrumbs Items="breadcrumbItems"></MudBreadcrumbs>
+
+@if (operationManager is null)
+{
+    <FormLoadingSpinner IsBigForm="true" />
+}
+else
+{
+    <div class="d-flex flex-column flex-md-row">
+        <div class="flex-column flex-lg-row-auto w-100 w-xl-350px mb-10">
+            <div class="card mb-5 mb-xl-8 shadow-sm">
+                <div class="card-body pt-15">
+                    <div class="d-flex flex-center flex-column">
+                        <MudAvatar Class="border border-gray-300" Style="height:200px; width:200px;" Rounded="true" @onclick="() => ShowImagePreview(imageUrl + operationManager.Image)" Color="Color.Primary">
+                            <MudImage Src="@(imageUrl + operationManager.Image)"></MudImage>
+                        </MudAvatar>
+
+                        <a class="fs-3 text-gray-800 text-hover-primary fw-bold my-2">
+                            @operationManager.FirstName @operationManager.LastName
+                        </a>
+
+                        <div class="fs-5 fw-semibold text-muted">
+                            @operationManager.EmployeeId
+                        </div>
+
+                        <div class="fs-5 fw-semibold text-muted">
+                            @operationManager.Email
+                        </div>
+
+                        <div class="fs-5 fw-semibold text-muted mb-6">
+                            @operationManager.PhoneNumber
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <AuthorizeView Roles="Admin">
+                <Authorized>
+                    <div class="card shadow-sm">
+                        <div class="card-header border-0 cursor-pointer">
+                            <div class="card-title m-0">
+                                <h3 class="fw-bold m-0">@languageContainer.Keys["Account Settings"]</h3>
+                            </div>
+                        </div>
+
+                        <div class="card-body">
+                            <div class="d-flex d-md-inline flex-wrap align-items-center">
+                                <div>
+                                    <div class="fs-6 fw-bold mb-1">@languageContainer.Keys["Email Address"]</div>
+                                    <div class="fw-semibold text-gray-600">@operationManager.Email</div>
+                                </div>
+
+                                <div class="ms-auto mt-md-3">
+                                    <button @onclick="() => ShowChangeEmailAsync()" class="btn btn-light-primary">@languageContainer.Keys["Change Email"]</button>
+                                </div>
+                            </div>
+
+                            <div class="separator separator-dashed my-6"></div>
+
+                            <div class="d-flex d-md-inline flex-wrap align-items-center mb-10">
+                                <div>
+                                    <div class="fs-6 fw-bold mb-1">@languageContainer.Keys["Password"]</div>
+                                    <div class="fw-semibold text-gray-600">************</div>
+                                </div>
+
+                                <div class="ms-auto mt-md-3">
+                                    <button @onclick="() => ShowChangePasswordAsync(operationManager.UserId)" class="btn btn-light-primary">@languageContainer.Keys["Reset Password"]</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </Authorized>
+            </AuthorizeView>
+        </div>
+
+        <div class="flex-lg-row-fluid ms-lg-15">
+            <ul class="nav nav-custom nav-tabs nav-line-tabs nav-line-tabs-2x border-0 fs-4 fw-semibold mb-8 d-flex" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link text-active-primary pb-4 active" data-bs-toggle="tab" href="#kt_customer_view_overview_tab" aria-selected="true" role="tab">
+                        @languageContainer.Keys["Overview"]
+                    </a>
+                </li>
+            </ul>
+
+            <div class="tab-content" id="myTabContent">
+                <div class="tab-pane fade active show" id="kt_customer_view_overview_tab" role="tabpanel">
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            <div class="d-flex flex-stack fs-4 py-3">
+                                <div class="fw-bold">
+                                    @languageContainer.Keys["Details"]
+                                </div>
+                                <span>
+                                    <a @onclick="() => OpenForm(formUri, operationManager.Id)" class="btn btn-sm btn-light-primary">
+                                        @languageContainer.Keys["Edit"]
+                                    </a>
+                                </span>
+                            </div>
+
+                            <div class="separator separator-dashed"></div>
+
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="py-3 fs-6">
+                                    <div class="fw-bold mt-5">@languageContainer.Keys["Nationality"]</div>
+                                    <div class="text-gray-600">@operationManager.Nationality?.Name</div>
+
+                                    <div class="fw-bold mt-5">@languageContainer.Keys["Gender"]</div>
+                                    <div class="text-gray-600">@operationManager.Gender</div>
+
+                                    <div class="fw-bold mt-5">@languageContainer.Keys["Email"]</div>
+                                    <div class="text-gray-600">@operationManager.Email</div>
+
+                                    <div class="fw-bold mt-5">@languageContainer.Keys["Phone"]</div>
+                                    <div class="text-gray-600">@operationManager.PhoneNumber</div>
+
+                                    <div class="fw-bold mt-5">@languageContainer.Keys["National Id"]</div>
+                                    <div class="text-gray-600">@operationManager.NationalId</div>
+                                </div>
+
+                                <div>
+                                    <QRCode PixelsPerModule="6" Value="@($"https://pestsweepy.com/OperationManagers/Details/{Id}")" Alt="QRCode image" EccLevel="EccLevel.H" Icon="@Base64Images.Logo" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}

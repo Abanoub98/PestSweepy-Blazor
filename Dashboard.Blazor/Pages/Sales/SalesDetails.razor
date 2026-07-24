@@ -1,13 +1,13 @@
-﻿@page "/Providers/Details/{Id:int}"
-@attribute [Authorize(Roles = $"{Roles.AdminRole},{Roles.ManagerRole},{Roles.SupervisorRole},{Roles.OperationManagerRole}")]
+﻿@page "/Sales/Details/{Id:int}"
+@attribute [Authorize(Roles = $"{Roles.AdminRole},{Roles.OperationManagerRole}")]
 @inherits BasePage
 
 <PageTitle>
-    @($"{languageContainer.Keys["Provider"]} {languageContainer.Keys["Details"]}")
+    @($"{languageContainer.Keys["Sales"]} {languageContainer.Keys["Details"]}")
 </PageTitle>
 <MudBreadcrumbs Items="breadcrumbItems"></MudBreadcrumbs>
 
-@if (provider is null)
+@if (sales is null)
 {
     <FormLoadingSpinner IsBigForm="true" />
 }
@@ -23,28 +23,28 @@ else
                     <!--begin::Summary-->
                     <div class="d-flex flex-center flex-column">
                         <!--begin::Avatar-->
-                        <MudAvatar Class="border border-gray-300" Style="height:200px; width:200px;" Rounded="true" @onclick="() => ShowImagePreview(imageUrl + provider.Image)" Color="Color.Primary">
-                            <MudImage Src="@(imageUrl + provider.Image)"></MudImage>
+                        <MudAvatar Class="border border-gray-300" Style="height:200px; width:200px;" Rounded="true" @onclick="() => ShowImagePreview(imageUrl + sales.Image)" Color="Color.Primary">
+                            <MudImage Src="@(imageUrl + sales.Image)"></MudImage>
                         </MudAvatar>
                         <!--end::Avatar-->
                         <!--begin::Name-->
                         <a class="fs-3 text-gray-800 text-hover-primary fw-bold my-2">
-                            @provider.FirstName @provider.LastName
+                            @sales.FirstName @sales.LastName
                         </a>
                         <!--end::Name-->
                         <!--begin::Position-->
                         <div class="fs-5 fw-semibold text-muted">
-                            @provider.EmployeeId
+                            @sales.EmployeeId
                         </div>
                         <!--end::Position-->
                         <!--begin::Position-->
                         <div class="fs-5 fw-semibold text-muted">
-                            @provider.Email
+                            @sales.Email
                         </div>
                         <!--end::Position-->
                         <!--begin::Position-->
                         <div class="fs-5 fw-semibold text-muted mb-6">
-                            @provider.PhoneNumber
+                            @sales.PhoneNumber
                         </div>
                         <!--end::Position-->
                     </div>
@@ -68,7 +68,7 @@ else
                                 <!--begin::Label-->
                                 <div>
                                     <div class="fs-6 fw-bold mb-1">@languageContainer.Keys["Email Address"]</div>
-                                    <div class="fw-semibold text-gray-600">@provider.Email</div>
+                                    <div class="fw-semibold text-gray-600">@sales.Email</div>
                                 </div>
                                 <!--end::Label-->
                                 <!--begin::Action-->
@@ -91,7 +91,7 @@ else
                                 <!--end::Label-->
                                 <!--begin::Action-->
                                 <div class="ms-auto mt-md-3">
-                                    <button @onclick="() => ShowChangePasswordAsync(provider.UserId)" class="btn btn-light-primary">@languageContainer.Keys["Reset Password"]</button>
+                                    <button @onclick="() => ShowChangePasswordAsync(sales.UserId)" class="btn btn-light-primary">@languageContainer.Keys["Reset Password"]</button>
                                 </div>
                                 <!--end::Action-->
                             </div>
@@ -106,10 +106,12 @@ else
         <!--begin::Content-->
         <div class="flex-lg-row-fluid ms-lg-15">
             <!--begin:::Tabs-->
-            <ul class="nav nav-custom nav-tabs nav-line-tabs nav-line-tabs-2x border-0 fs-4 fw-semibold mb-8" role="tablist">
+            <ul class="nav nav-custom nav-tabs nav-line-tabs nav-line-tabs-2x border-0 fs-4 fw-semibold mb-8 d-flex" role="tablist">
                 <!--begin:::Tab item-->
                 <li class="nav-item" role="presentation">
-                    <a class="nav-link text-active-primary pb-4 active" data-bs-toggle="tab" href="#kt_customer_view_overview_tab" aria-selected="true" role="tab">@languageContainer.Keys["Overview"]</a>
+                    <a class="nav-link text-active-primary pb-4 active" data-bs-toggle="tab" href="#kt_customer_view_overview_tab" aria-selected="true" role="tab">
+                        @languageContainer.Keys["Overview"]
+                    </a>
                 </li>
                 <!--end:::Tab item-->
             </ul>
@@ -125,7 +127,7 @@ else
                                     @languageContainer.Keys["Details"]
                                 </div>
                                 <span>
-                                    <a @onclick="() => OpenForm(formUri, provider.Id)" class="btn btn-sm btn-light-primary">
+                                    <a @onclick="() => OpenForm(formUri, sales.Id)" class="btn btn-sm btn-light-primary">
                                         @languageContainer.Keys["Edit"]
                                     </a>
                                 </span>
@@ -137,37 +139,30 @@ else
                                 <div class="py-3 fs-6">
                                     <!--begin::Details item-->
                                     <div class="fw-bold mt-5">@languageContainer.Keys["Nationality"]</div>
-                                    <div class="text-gray-600">@provider.Nationality?.Name</div>
+                                    <div class="text-gray-600">@sales.Nationality?.Name</div>
                                     <!--begin::Details item-->
                                     <!--begin::Details item-->
                                     <div class="fw-bold mt-5">@languageContainer.Keys["Gender"]</div>
-                                    <div class="text-gray-600">@provider.Gender</div>
+                                    <div class="text-gray-600">@sales.Gender</div>
                                     <!--begin::Details item-->
                                     <!--begin::Details item-->
                                     <div class="fw-bold mt-5">@languageContainer.Keys["Email"]</div>
-                                    <div class="text-gray-600">@provider.Email</div>
+                                    <div class="text-gray-600">@sales.Email</div>
                                     <!--begin::Details item-->
                                     <!--begin::Details item-->
                                     <div class="fw-bold mt-5">@languageContainer.Keys["Phone"]</div>
-                                    <div class="text-gray-600">@provider.PhoneNumber</div>
+                                    <div class="text-gray-600">@sales.PhoneNumber</div>
                                     <!--begin::Details item-->
                                     <!--begin::Details item-->
                                     <div class="fw-bold mt-5">@languageContainer.Keys["National Id"]</div>
-                                    <div class="text-gray-600">@provider.NationalId</div>
-                                    <!--begin::Details item-->
-                                    <!--begin::Details item-->
-                                    <div class="fw-bold mt-5">@languageContainer.Keys["Supervisor"]</div>
-                                    <a href="/Managers/details/@provider.Supervisor?.Id" class="text-gray-600 text-hover-primary">
-                                        @($"{provider.Supervisor?.FirstName} {provider.Supervisor?.LastName}")
-                                    </a>
+                                    <div class="text-gray-600">@sales.NationalId</div>
                                     <!--begin::Details item-->
                                 </div>
                                 <!--end::Details content-->
                                 <div>
-                                    <QRCode PixelsPerModule="6" Value="@($"https://pestsweepy.com/Providers/Details/{Id}")" Alt="QRCode image" EccLevel="EccLevel.H" Icon="@Base64Images.Logo" />
+                                    <QRCode PixelsPerModule="6" Value="@($"https://pestsweepy.com/Sales/Details/{Id}")" Alt="QRCode image" EccLevel="EccLevel.H" Icon="@Base64Images.Logo" />
                                 </div>
                             </div>
-
                         </div>
                     </div>
                 </div>

@@ -1,5 +1,5 @@
 ﻿@page "/Supervisors/Details/{Id:int}"
-@attribute [Authorize(Roles = $"{Roles.AdminRole},{Roles.ManagerRole}")]
+@attribute [Authorize(Roles = $"{Roles.AdminRole},{Roles.ManagerRole},{Roles.OperationManagerRole}")]
 @inherits BasePage
 
 <PageTitle>

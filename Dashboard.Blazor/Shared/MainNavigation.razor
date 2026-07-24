@@ -20,6 +20,14 @@
         {
             <ProviderSidebarMenu IsDarkMood="IsDarkMood" />
         }
+        else if (role == Roles.SalesRole)
+        {
+            <SalesSidebarMenu IsDarkMood="IsDarkMood" />
+        }
+        else if (role == Roles.OperationManagerRole)
+        {
+            <OperationManagerSidebarMenu IsDarkMood="IsDarkMood" />
+        }
         else if (role == Roles.ContractClientRole)
         {
             <ContractClientSidebarMenu IsDarkMood="IsDarkMood" />

@@ -1,5 +1,5 @@
 ﻿@page "/VisitSheets/Details/{Id:int}"
-@attribute [Authorize(Roles = $"{Roles.AdminRole},{Roles.ManagerRole},{Roles.SupervisorRole},{Roles.ContractClientRole}")]
+@attribute [Authorize(Roles = $"{Roles.AdminRole},{Roles.ManagerRole},{Roles.SupervisorRole},{Roles.ContractClientRole},{Roles.OperationManagerRole},{Roles.SalesRole}")]
 @inherits BasePage
 
 <PageTitle>
@@ -88,6 +88,9 @@ else
                                 @languageContainer.Keys["Contract"]: @visitSheet.Contract!.Title
                             </div>
                         }
+                        <MudTooltip Text="@languageContainer.Keys["VisitReports"]" Arrow="true">
+                            <MudIconButton Icon="@Icons.Material.Filled.Assignment" Color="Color.Info" Href="@($"/VisitReportsList/{visitSheet.Id}")" />
+                        </MudTooltip>
 
                     </div>
                 </div>

@@ -62,7 +62,17 @@ public partial class Branches
             return true;
         if (element.Name.Contains(searchString, StringComparison.OrdinalIgnoreCase))
             return true;
-        if (element.Email.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+        if (element.Manager.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+            return true;
+        if (element.Client.FirstName.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+            return true;
+        if (element.Client.LastName.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+            return true;
+        if (element.City.Name.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+            return true;
+        if (element.PhoneNumber!.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+            return true;
+        if (element.Email!.Contains(searchString, StringComparison.OrdinalIgnoreCase))
             return true;
 
         return false;

@@ -1,6 +1,6 @@
 ﻿@page "/VisitSheets/Form/{Id:int}"
 @page "/VisitSheets/Form"
-@attribute [Authorize(Roles = Roles.AdminRole)]
+@attribute [Authorize(Roles = $"{Roles.AdminRole},{Roles.OperationManagerRole}")]
 @inherits BasePage
 
 <PageTitle>

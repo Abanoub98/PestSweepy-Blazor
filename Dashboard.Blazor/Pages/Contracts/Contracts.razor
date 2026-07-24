@@ -1,5 +1,5 @@
 ﻿@page "/Contracts"
-@attribute [Authorize(Roles = $"{Roles.AdminRole},{Roles.ManagerRole}, {Roles.ContractClientRole}")]
+@attribute [Authorize(Roles = $"{Roles.AdminRole},{Roles.ManagerRole}, {Roles.ContractClientRole},{Roles.OperationManagerRole},{Roles.SalesRole}")]
 @inherits BasePage
 
 <PageTitle>
@@ -34,7 +34,7 @@
                     </div>
                     <div class="w-md-50 w-100">
                         <MudTextField @bind-Value="searchString" Adornment="Adornment.Start" Class="mt-0 mb-5" Immediate="true"
-                                      Placeholder=@($"{languageContainer.Keys["Search For"]} {languageContainer.Keys["Title"]}, {languageContainer.Keys["Client Name"]}, {languageContainer.Keys["Date"]}")
+                                      Placeholder=@($"{languageContainer.Keys["Search For"]} {languageContainer.Keys["Title"]}, {languageContainer.Keys["Client Name"]}")
                                       AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" />
                     </div>
                 </div>
