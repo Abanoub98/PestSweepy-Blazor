@@ -32,6 +32,8 @@ namespace Dashboard.Blazor.Pages.VisitReports
             if (visitReportForm is null)
                 return;
 
+            visitReportForm.Pests ??= new List<VisitReportPestDto>();
+
             //visitReportForm.TargetPestTypeId = visitReportForm.TargetPestType!.Id;
             //visitReportForm.UnitId = visitReportForm!.Unit!.Id;
             //visitReportForm.PestsActivityId = visitReportForm!.PestsActivity!.Id;
@@ -235,18 +237,6 @@ namespace Dashboard.Blazor.Pages.VisitReports
                 .Where(x => x.Name.Contains(value, StringComparison.InvariantCultureIgnoreCase));
         }
 
-        private async Task<IEnumerable<LookupDto>> GetTargetPestTypes(string value)
-        {
-            if (visitReportForm!.TargetPestTypes is null)
-                visitReportForm.TargetPestTypes = await GetAllLookupsAsync("ReferenceData?tableName=PestsType");
-
-            if (string.IsNullOrEmpty(value))
-                return visitReportForm.TargetPestTypes;
-
-            return visitReportForm.TargetPestTypes
-                .Where(x => x.Name.Contains(value, StringComparison.InvariantCultureIgnoreCase));
-        }
-
         // Deep Cleaning lookups
         private async Task<IEnumerable<LookupDto>> GetCleaningTypes(string value)
         {
@@ -301,18 +291,6 @@ namespace Dashboard.Blazor.Pages.VisitReports
         private LookupDto? _providerToAdd;
         private readonly List<LookupDto> _selectedProviders = new();
 
-        private LookupDto? _pestsTreatmentTypeToAdd;
-        private readonly List<LookupDto> _selectedPestsTreatmentTypes = new();
-
-        private LookupDto? _infectionToAdd;
-        private readonly List<LookupDto> _selectedInfections = new();
-
-        private LookupDto? _pestsTypeToAdd;
-        private readonly List<LookupDto> _selectedPestsTypes = new();
-
-        private LookupDto? _chemicalToAdd;
-        private readonly List<LookupDto> _selectedChemicals = new();
-
         private LookupDto? _maintenanceTypeToAdd;
         private readonly List<LookupDto> _selectedMaintenanceTypes = new();
 
@@ -322,62 +300,45 @@ namespace Dashboard.Blazor.Pages.VisitReports
 
         private void RemoveSelected(List<LookupDto> list, LookupDto item)
         {
-            if (item is null) return;
+            if (item is null)
+                return;
+
             list.RemoveAll(x => x.Id == item.Id);
         }
 
         private void AddSelectedProvider()
         {
-            if (_providerToAdd is null) return;
-            if (_selectedProviders.Any(x => x.Id == _providerToAdd.Id)) return;
+            if (_providerToAdd is null)
+                return;
+
+            if (_selectedProviders.Any(x => x.Id == _providerToAdd.Id))
+                return;
 
             _selectedProviders.Add(_providerToAdd);
             _providerToAdd = null;
         }
 
-        private void AddSelectedPestsTreatmentType()
-        {
-            if (_pestsTreatmentTypeToAdd is null) return;
-            if (_selectedPestsTreatmentTypes.Any(x => x.Id == _pestsTreatmentTypeToAdd.Id)) return;
-
-            _selectedPestsTreatmentTypes.Add(_pestsTreatmentTypeToAdd);
-            _pestsTreatmentTypeToAdd = null;
-        }
-
-        private void AddSelectedInfection()
-        {
-            if (_infectionToAdd is null) return;
-            if (_selectedInfections.Any(x => x.Id == _infectionToAdd.Id)) return;
-
-            _selectedInfections.Add(_infectionToAdd);
-            _infectionToAdd = null;
-        }
-
-        private void AddSelectedPestsType()
-        {
-            if (_pestsTypeToAdd is null) return;
-            if (_selectedPestsTypes.Any(x => x.Id == _pestsTypeToAdd.Id)) return;
-
-            _selectedPestsTypes.Add(_pestsTypeToAdd);
-            _pestsTypeToAdd = null;
-        }
-
-        private void AddSelectedChemical()
-        {
-            if (_chemicalToAdd is null) return;
-            if (_selectedChemicals.Any(x => x.Id == _chemicalToAdd.Id)) return;
-
-            _selectedChemicals.Add(_chemicalToAdd);
-            _chemicalToAdd = null;
-        }
-
         private void AddSelectedMaintenanceType()
         {
-            if (_maintenanceTypeToAdd is null) return;
-            if (_selectedMaintenanceTypes.Any(x => x.Id == _maintenanceTypeToAdd.Id)) return;
+            if (_maintenanceTypeToAdd is null)
+                return;
+
+            if (_selectedMaintenanceTypes.Any(x => x.Id == _maintenanceTypeToAdd.Id))
+                return;
 
             _selectedMaintenanceTypes.Add(_maintenanceTypeToAdd);
             _maintenanceTypeToAdd = null;
+        }
+
+        private void AddPest()
+        {
+            visitReportForm!.Pests ??= new List<VisitReportPestDto>();
+            visitReportForm.Pests.Add(new VisitReportPestDto());
+        }
+
+        private void RemovePest(VisitReportPestDto pest)
+        {
+            visitReportForm?.Pests?.Remove(pest);
         }
 
         // -------------------------
@@ -387,59 +348,33 @@ namespace Dashboard.Blazor.Pages.VisitReports
         private void HydrateSelectedFromDto()
         {
             _selectedProviders.Clear();
-            _selectedPestsTreatmentTypes.Clear();
-            _selectedInfections.Clear();
-            _selectedPestsTypes.Clear();
-            _selectedChemicals.Clear();
             _selectedMaintenanceTypes.Clear();
 
-            // Providers
-            if (visitReportForm!.Providers is not null && visitReportForm.Providers.Any())
+            if (visitReportForm!.Providers is not null)
             {
-                foreach (var x in visitReportForm.Providers)
-                    if (x.Provider is not null)
-                        _selectedProviders.Add(x.Provider);
+                foreach (var item in visitReportForm.Providers)
+                {
+                    if (item.Provider is not null &&
+                        _selectedProviders.All(x => x.Id != item.ProviderId))
+                    {
+                        _selectedProviders.Add(item.Provider);
+                    }
+                }
             }
 
-            // PestsTreatmentTypes
-            if (visitReportForm.PestsTreatmentTypes is not null && visitReportForm.PestsTreatmentTypes.Any())
+            if (visitReportForm.MaintenanceTypes is not null)
             {
-                foreach (var x in visitReportForm.PestsTreatmentTypes)
-                    if (x.PestsTreatmentType is not null)
-                        _selectedPestsTreatmentTypes.Add(x.PestsTreatmentType);
+                foreach (var item in visitReportForm.MaintenanceTypes)
+                {
+                    if (item.MaintenanceType is not null &&
+                        _selectedMaintenanceTypes.All(x => x.Id != item.MaintenanceTypeId))
+                    {
+                        _selectedMaintenanceTypes.Add(item.MaintenanceType);
+                    }
+                }
             }
 
-            // Infections
-            if (visitReportForm.Infections is not null && visitReportForm.Infections.Any())
-            {
-                foreach (var x in visitReportForm.Infections)
-                    if (x.Infection is not null)
-                        _selectedInfections.Add(x.Infection);
-            }
-
-            // PestsTypes
-            if (visitReportForm.PestsTypes is not null && visitReportForm.PestsTypes.Any())
-            {
-                foreach (var x in visitReportForm.PestsTypes)
-                    if (x.PestsType is not null)
-                        _selectedPestsTypes.Add(x.PestsType);
-            }
-
-            // Chemicals
-            if (visitReportForm.Chemicals is not null && visitReportForm.Chemicals.Any())
-            {
-                foreach (var x in visitReportForm.Chemicals)
-                    if (x.Chemical is not null)
-                        _selectedChemicals.Add(x.Chemical);
-            }
-
-            // MaintenanceTypes
-            if (visitReportForm.MaintenanceTypes is not null && visitReportForm.MaintenanceTypes.Any())
-            {
-                foreach (var x in visitReportForm.MaintenanceTypes)
-                    if (x.MaintenanceType is not null)
-                        _selectedMaintenanceTypes.Add(x.MaintenanceType);
-            }
+            visitReportForm.Pests ??= new List<VisitReportPestDto>();
         }
 
         // -------------------------
@@ -448,7 +383,6 @@ namespace Dashboard.Blazor.Pages.VisitReports
 
         private void ApplySelectedToDto()
         {
-            // Providers
             visitReportForm!.Providers = _selectedProviders
                 .Select(x => new VisitReportsProviderDto
                 {
@@ -458,47 +392,6 @@ namespace Dashboard.Blazor.Pages.VisitReports
                 })
                 .ToList();
 
-            // PestsTreatmentTypes
-            visitReportForm.PestsTreatmentTypes = _selectedPestsTreatmentTypes
-                .Select(x => new VisitReportsPestsTreatmentTypeDto
-                {
-                    VisitReportId = visitReportForm.Id,
-                    PestsTreatmentTypeId = x.Id,
-                    PestsTreatmentType = x
-                })
-                .ToList();
-
-            // Infections
-            visitReportForm.Infections = _selectedInfections
-                .Select(x => new VisitReportsInfectionDto
-                {
-                    VisitReportId = visitReportForm.Id,
-                    InfectionId = x.Id,
-                    Infection = x
-                })
-                .ToList();
-
-            // PestsTypes
-            visitReportForm.PestsTypes = _selectedPestsTypes
-                .Select(x => new VisitReportsPestsTypeDto
-                {
-                    VisitReportId = visitReportForm.Id,
-                    PestsTypeId = x.Id,
-                    PestsType = x
-                })
-                .ToList();
-
-            // Chemicals
-            visitReportForm.Chemicals = _selectedChemicals
-                .Select(x => new VisitReportsChemicalDto
-                {
-                    VisitReportId = visitReportForm.Id,
-                    ChemicalId = x.Id,
-                    Chemical = x
-                })
-                .ToList();
-
-            // MaintenanceTypes
             visitReportForm.MaintenanceTypes = _selectedMaintenanceTypes
                 .Select(x => new VisitReportsMaintenanceTypeDto
                 {
@@ -507,6 +400,23 @@ namespace Dashboard.Blazor.Pages.VisitReports
                     MaintenanceType = x
                 })
                 .ToList();
+
+            ApplyPestLookupIds();
+        }
+
+        private void ApplyPestLookupIds()
+        {
+            if (visitReportForm?.Pests is null)
+                return;
+
+            foreach (var pest in visitReportForm.Pests)
+            {
+                pest.PestTypeId = pest.PestType?.Id ?? 0;
+                pest.PestsActivityId = pest.PestsActivity?.Id;
+                pest.InfectionId = pest.Infection?.Id;
+                pest.PestsTreatmentTypeId = pest.PestsTreatmentType?.Id;
+                pest.ChemicalId = pest.Chemical?.Id;
+            }
         }
 
         // -------------------------
@@ -515,24 +425,17 @@ namespace Dashboard.Blazor.Pages.VisitReports
 
         private void ApplySingleLookupsIds()
         {
-            visitReportForm!.PestsActivityId =
-                visitReportForm.PestsActivity is null ? null : visitReportForm.PestsActivity.Id;
+            visitReportForm!.CleaningTypeId =
+                visitReportForm.CleaningType?.Id;
 
-            visitReportForm.TargetPestTypeId =
-                visitReportForm.TargetPestType is null ? null : visitReportForm.TargetPestType.Id;
-
-            visitReportForm.CleaningTypeId =
-                visitReportForm.CleaningType is null ? null : visitReportForm.CleaningType.Id;
-
-            // UnitId is int in DTO (0 => not selected)
             visitReportForm.UnitId =
-                visitReportForm.Unit is null ? null : visitReportForm.Unit.Id;
+                visitReportForm.Unit?.Id;
 
             visitReportForm.SurfaceTypeId =
-                visitReportForm.SurfaceType is null ? null : visitReportForm.SurfaceType.Id;
+                visitReportForm.SurfaceType?.Id;
 
             visitReportForm.WorkWayId =
-                visitReportForm.WorkWay is null ? null : visitReportForm.WorkWay.Id;
+                visitReportForm.WorkWay?.Id;
         }
 
         private void CaptureUploadedImage(IBrowserFile image) => visitReportForm!.UploadedImage = image;

@@ -188,92 +188,94 @@ else
                             <hr />
                             <h5 class="fw-bold mt-3">@languageContainer.Keys["Pest Control"]</h5>
 
-                            <div class="fw-bold mt-4 mb-1">@languageContainer.Keys["Pests Activity"]:</div>
-                            <div class="text-gray-600">@(visitReportForm.PestsActivity?.Name ?? "-")</div>
-
-                            <div class="fw-bold mt-4 mb-1">@languageContainer.Keys["Target Pest Type"]:</div>
-                            <div class="text-gray-600">@(visitReportForm.TargetPestType?.Name ?? "-")</div>
-
-                            <div class="fw-bold mt-4 mb-1">@languageContainer.Keys["Treatment Method Summary"]:</div>
-                            <div class="text-gray-600">@(string.IsNullOrWhiteSpace(visitReportForm.TreatmentMethodSummary) ? "-" : visitReportForm.TreatmentMethodSummary)</div>
-
-                            <div class="fw-bold mt-4 mb-1">@languageContainer.Keys["Areas Applied"]:</div>
-                            <div class="text-gray-600">@(string.IsNullOrWhiteSpace(visitReportForm.AreasApplied) ? "-" : visitReportForm.AreasApplied)</div>
-
-                            <div class="fw-bold mt-4 mb-1">@languageContainer.Keys["Areas Treated"]:</div>
-                            <div class="text-gray-600">@(string.IsNullOrWhiteSpace(visitReportForm.AreasTreated) ? "-" : visitReportForm.AreasTreated)</div>
-
-                            <div class="fw-bold mt-4 mb-1">@languageContainer.Keys["Dilution Percent"]:</div>
-                            <div class="text-gray-600">@(visitReportForm.DilutionPercent is null ? "-" : visitReportForm.DilutionPercent)</div>
-
-                            <div class="fw-bold mt-4 mb-1">@languageContainer.Keys["Treatment Types"]:</div>
-                            <div class="text-gray-600">
-                                @if (visitReportForm.PestsTreatmentTypes != null && visitReportForm.PestsTreatmentTypes.Any())
+                            @if (visitReportForm.Pests is not null && visitReportForm.Pests.Any())
+                            {
+                                @foreach (var pest in visitReportForm.Pests)
                                 {
-                                    @foreach (var x in visitReportForm.PestsTreatmentTypes)
-                                    {
-                                        <MudChip Class="me-1 mb-1" Color="Color.Dark" Variant="Variant.Filled" Size="Size.Small">
-                                            @(x?.PestsTreatmentType?.Name ?? "-")
-                                        </MudChip>
-                                    }
-                                }
-                                else
-                                {
-                                    <span>-</span>
-                                }
-                            </div>
+                                    <MudCard Class="mb-4 mt-3" Outlined="true">
+                                        <MudCardHeader>
+                                            <CardHeaderAvatar>
+                                                <MudAvatar Rounded="true" Color="Color.Info">
+                                                    <MudIcon Icon="@Icons.Material.Filled.BugReport" />
+                                                </MudAvatar>
+                                            </CardHeaderAvatar>
 
-                            <div class="fw-bold mt-4 mb-1">@languageContainer.Keys["Causes of Infection"]:</div>
-                            <div class="text-gray-600">
-                                @if (visitReportForm.Infections != null && visitReportForm.Infections.Any())
-                                {
-                                    @foreach (var x in visitReportForm.Infections)
-                                    {
-                                        <MudChip Class="me-1 mb-1" Color="Color.Dark" Variant="Variant.Filled" Size="Size.Small">
-                                            @(x?.Infection?.Name ?? "-")
-                                        </MudChip>
-                                    }
-                                }
-                                else
-                                {
-                                    <span>-</span>
-                                }
-                            </div>
+                                            <CardHeaderContent>
+                                                <MudText Typo="Typo.h6">
+                                                    @(pest.PestType?.Name ?? languageContainer.Keys["Pest"])
+                                                </MudText>
+                                            </CardHeaderContent>
+                                        </MudCardHeader>
 
+                                        <MudCardContent>
+                                            <div class="row">
+                                        @*         <div class="col-md-6">
+                                                    <div class="fw-bold mb-1">@languageContainer.Keys["Pest Type"]:</div>
+                                                    <div class="text-gray-600">@(pest.PestType?.Name ?? "-")</div>
+                                                </div> *@
 
-                            <div class="fw-bold mt-4 mb-1">@languageContainer.Keys["Pests Types"]:</div>
-                            <div class="text-gray-600">
-                                @if (visitReportForm.PestsTypes != null && visitReportForm.PestsTypes.Any())
-                                {
-                                    @foreach (var x in visitReportForm.PestsTypes)
-                                    {
-                                        <MudChip Class="me-1 mb-1" Color="Color.Warning" Variant="Variant.Filled" Size="Size.Small">
-                                            @(x?.PestsType?.Name ?? "-")
-                                        </MudChip>
-                                    }
-                                }
-                                else
-                                {
-                                    <span>-</span>
-                                }
-                            </div>
+                                                <div class="col-md-6">
+                                                    <div class="fw-bold mb-1">@languageContainer.Keys["Causes of Infection"]:</div>
+                                                    <div class="text-gray-600">@(pest.Infection?.Name ?? "-")</div>
+                                                </div>
 
-                            <div class="fw-bold mt-4 mb-1">@languageContainer.Keys["Chemicals"]:</div>
-                            <div class="text-gray-600">
-                                @if (visitReportForm.Chemicals != null && visitReportForm.Chemicals.Any())
-                                {
-                                    @foreach (var x in visitReportForm.Chemicals)
-                                    {
-                                        <MudChip Class="me-1 mb-1" Color="Color.Secondary" Variant="Variant.Filled" Size="Size.Small">
-                                            @(x?.Chemical?.Name ?? "-")
-                                        </MudChip>
-                                    }
+                                                <div class="col-md-6">
+                                                    <div class="fw-bold mb-1">@languageContainer.Keys["Pests Activity"]:</div>
+                                                    <div class="text-gray-600">@(pest.PestsActivity?.Name ?? "-")</div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row mt-4">                                        
+                                                <div class="col-md-6">
+                                                    <div class="fw-bold mb-1">@languageContainer.Keys["Dilution Percent"]:</div>
+                                                    <div class="text-gray-600">
+                                                        @(pest.DilutionPercent is null ? "-" : $"{pest.DilutionPercent}%")
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-6">
+                                                    <div class="fw-bold mb-1">@languageContainer.Keys["Chemical"]:</div>
+                                                    <div class="text-gray-600">@(pest.Chemical?.Name ?? "-")</div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row mt-4">                               
+                                                <div class="col-md-6">
+                                                    <div class="fw-bold mb-1">@languageContainer.Keys["Treatment Type"]:</div>
+                                                    <div class="text-gray-600">@(pest.PestsTreatmentType?.Name ?? "-")</div>
+                                                </div>
+
+                                                <div class="col-md-6">
+                                                    <div class="fw-bold mb-1">@languageContainer.Keys["Treatment Method Summary"]:</div>
+                                                    <div class="text-gray-600" style="white-space: pre-wrap;">
+                                                        @(string.IsNullOrWhiteSpace(pest.TreatmentMethodSummary) ? "-" : pest.TreatmentMethodSummary)
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row mt-4">
+                                                <div class="col-md-6">
+                                                    <div class="fw-bold mb-1">@languageContainer.Keys["Areas Applied"]:</div>
+                                                    <div class="text-gray-600" style="white-space: pre-wrap;">
+                                                        @(string.IsNullOrWhiteSpace(pest.AreasApplied) ? "-" : pest.AreasApplied)
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-6">
+                                                    <div class="fw-bold mb-1">@languageContainer.Keys["Areas Treated"]:</div>
+                                                    <div class="text-gray-600" style="white-space: pre-wrap;">
+                                                        @(string.IsNullOrWhiteSpace(pest.AreasTreated) ? "-" : pest.AreasTreated)
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </MudCardContent>
+                                    </MudCard>
                                 }
-                                else
-                                {
-                                    <span>-</span>
-                                }
-                            </div>
+                            }
+                            else
+                            {
+                                <div class="text-gray-600 mt-3">-</div>
+                            }
                         }
 
                         @* -------------------------

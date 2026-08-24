@@ -1,0 +1,139 @@
+@inherits BasePage
+
+<MudCard Elevation="10">
+    <MudCardHeader Style="padding:20px">
+        <CardHeaderAvatar>
+            <MudAvatar Rounded="true" Color="Color.Info">
+                <MudIcon Icon="@Icons.Material.Filled.Assessment" />
+            </MudAvatar>
+        </CardHeaderAvatar>
+
+        <CardHeaderContent>
+            <MudText Typo="Typo.h5">@languageContainer.Keys["Compilation Reports"]</MudText>
+        </CardHeaderContent>
+
+        <CardHeaderActions>
+            <MudIconButton Icon="@Icons.Material.Filled.Refresh" Color="Color.Info" OnClick="LoadReportsAsync" />
+        </CardHeaderActions>
+    </MudCardHeader>
+
+    <MudCardContent>
+        <div class="d-flex flex-wrap align-items-end">
+            <div class="p-3 w-100 w-md-35">
+                <MudDatePicker Label="@languageContainer.Keys["Period From"]" Variant="Variant.Outlined" Date="@periodFrom" DateChanged="OnPeriodFromChanged" MinDate="@StartingDate.Date" Clearable="false" />
+            </div>
+
+            <div class="p-3 w-100 w-md-35">
+                <MudDatePicker Label="@languageContainer.Keys["Period To"]" Variant="Variant.Outlined" @bind-Date="periodTo" MinDate="@(periodFrom?.Date ?? StartingDate.Date)" Clearable="false" />
+            </div>
+
+            <div class="p-3 w-100 w-md-30">
+                <MudButton FullWidth="true" Variant="Variant.Filled" Color="Color.Success" StartIcon="@Icons.Material.Filled.PostAdd" Disabled="@isGenerating" OnClick="GenerateReport">@languageContainer.Keys["Generate Report"]</MudButton>
+            </div>
+        </div>
+
+        @if (isLoading)
+        {
+            <FormLoadingSpinner IsBigForm="true" />
+        }
+        else
+        {
+            <MudDataGrid T="VisitSheetReportBaseDto" Dense="true" Elevation="0" FixedHeader="true" Filterable="true" Items="@reports" Hover="true" SortMode="SortMode.Single">
+                <NoRecordsContent>
+                    <NoDataToDisply />
+                </NoRecordsContent>
+
+                <Columns>
+                    <PropertyColumn Property="x => x.ReportCode" Title="@languageContainer.Keys["Report Code"]" />
+                    <TemplateColumn Title="@languageContainer.Keys["Period"]" Context="row"><CellTemplate><MudText>@row.Item.PeriodFrom.ToString("dd/MM/yyyy") - @row.Item.PeriodTo.ToString("dd/MM/yyyy")</MudText></CellTemplate></TemplateColumn>
+                    <PropertyColumn Property="x => x.TotalVisits" Title="@languageContainer.Keys["Total Visits"]" />
+                    <TemplateColumn Title="@languageContainer.Keys["Status"]" Context="row"><CellTemplate><MudChip Color="@GetStatusColor(row.Item.Status)" Variant="Variant.Filled" Size="Size.Small">@GetStatusText(row.Item.Status)</MudChip></CellTemplate></TemplateColumn>
+                    <TemplateColumn Title="@languageContainer.Keys["Generated At"]" Context="row"><CellTemplate><MudText>@row.Item.GeneratedAt.ToLocalTime().ToString("dd/MM/yyyy HH:mm")</MudText></CellTemplate></TemplateColumn>
+                    <TemplateColumn Title="@languageContainer.Keys["Actions"]" Context="row" Sortable="false" Filterable="false">
+                        <CellTemplate>
+                            <MudTooltip Text="@(IsCompleted(row.Item.Status) ? languageContainer.Keys["View"] : languageContainer.Keys["Edit"])" Arrow="true">
+                                <MudIconButton Icon="@(IsCompleted(row.Item.Status) ? Icons.Material.Filled.Visibility : Icons.Material.Filled.Edit)" Color="@(IsCompleted(row.Item.Status) ? Color.Info : Color.Success)" Href="@($"/VisitSheetReports/Form/{row.Item.Id}")" />
+                            </MudTooltip>
+                            <MudTooltip Text="@languageContainer.Keys["Print"]" Arrow="true">
+                                <MudIconButton Icon="@Icons.Material.Filled.Print" Color="Color.Secondary" OnClick="() => OpenPrint(row.Item.Id)" />
+                            </MudTooltip>
+                        </CellTemplate>
+                    </TemplateColumn>
+                </Columns>
+
+                <PagerContent>
+                    <MudDataGridPager T="VisitSheetReportBaseDto" />
+                </PagerContent>
+            </MudDataGrid>
+        }
+    </MudCardContent>
+</MudCard>
+
+@code {
+    [Parameter] public int VisitSheetId { get; set; }
+    [Parameter] public DateTime StartingDate { get; set; }
+
+    [Inject] private IDialogService DialogService { get; set; } = default!;
+
+    private bool isLoading;
+    private bool isGenerating;
+    private DateTime? periodFrom;
+    private DateTime? periodTo;
+    private List<VisitSheetReportBaseDto> reports = new();
+
+    protected override async Task OnParametersSetAsync()
+    {
+        periodFrom ??= StartingDate.Date;
+        periodTo ??= DateTime.Today < StartingDate.Date ? StartingDate.Date : DateTime.Today;
+        await LoadReportsAsync();
+    }
+
+    private async Task LoadReportsAsync()
+    {
+        isLoading = true;
+        var filter = Uri.EscapeDataString($"VisitSheetId={VisitSheetId}");
+        reports = await GetAllAsync<VisitSheetReportBaseDto>($"VisitSheetReports?FilterQuery={filter}&OrderBy=GeneratedAt&Asc=false") ?? new List<VisitSheetReportBaseDto>();
+        isLoading = false;
+    }
+
+    private async Task GenerateReport()
+    {
+        if (!periodFrom.HasValue || !periodTo.HasValue)
+        {
+            // Snackbar.Add(languageContainer.Keys["Period From and Period To are required"], Severity.Error);
+            return;
+        }
+
+        if (periodTo.Value.Date < periodFrom.Value.Date)
+        {
+            // Snackbar.Add(languageContainer.Keys["Period To cannot be earlier than Period From"], Severity.Error);
+            return;
+        }
+
+        isGenerating = true;
+        var dto = new VisitSheetReportGenerateDto { VisitSheetId = VisitSheetId, PeriodFrom = periodFrom.Value.Date, PeriodTo = periodTo.Value.Date };
+        var result = await AddAsync("VisitSheetReports/Generate", dto);
+        isGenerating = false;
+
+        // if (result.isSuccess && result.obj is not null)
+        //     NavigationManager.NavigateTo($"/VisitSheetReports/Form/{result.obj.Id}");
+    }
+
+    private void OnPeriodFromChanged(DateTime? value)
+    {
+        periodFrom = value;
+        if (periodFrom.HasValue && (!periodTo.HasValue || periodTo.Value.Date < periodFrom.Value.Date))
+            periodTo = periodFrom.Value.Date;
+    }
+
+    private void OpenPrint(int id)
+    {
+        var parameters = new DialogParameters { ["Id"] = id };
+        var options = new DialogOptions { CloseButton = true, FullWidth = true, MaxWidth = MaxWidth.ExtraLarge };
+        DialogService.Show<VisitSheetReportPrint>("", parameters, options);
+    }
+
+    private static bool IsCompleted(string? status) => string.Equals(status, "Completed", StringComparison.OrdinalIgnoreCase);
+    private static Color GetStatusColor(string? status) => IsCompleted(status) ? Color.Success : Color.Warning;
+    private string GetStatusText(string? status) => IsCompleted(status) ? languageContainer.Keys["Completed"] : languageContainer.Keys["Draft"];
+}

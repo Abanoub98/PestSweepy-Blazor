@@ -191,6 +191,8 @@
                     </HeaderTemplate>
                     <CellTemplate>
                         <TableButtons IsDisable="isDisable"
+                                      EditRoles="@($"{Roles.AdminRole},{Roles.OperationManagerRole}")"
+                                      DeleteRoles="@($"{Roles.AdminRole},{Roles.OperationManagerRole}")"
                                       EditClicked="() => OpenForm(formUri, row.Item!.Id)"
                                       DeleteClicked="() => Delete(row.Item!.Id)"
                                       DetailsClicked="() => OpenDetails(detailsUri, row.Item!.Id)" />

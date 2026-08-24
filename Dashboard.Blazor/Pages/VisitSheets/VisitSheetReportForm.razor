@@ -1,0 +1,119 @@
+@page "/VisitSheetReports/Form/{Id:int}"
+@attribute [Authorize(Roles = $"{Roles.AdminRole},{Roles.ManagerRole},{Roles.SupervisorRole},{Roles.ContractClientRole},{Roles.OperationManagerRole},{Roles.SalesRole}")]
+@inherits BasePage
+
+<PageTitle>@($"{languageContainer.Keys["Compilation Report"]} #{Id}")</PageTitle>
+
+<MudBreadcrumbs Items="breadcrumbItems"></MudBreadcrumbs>
+
+@if (visitSheetReport is null)
+{
+    <FormLoadingSpinner IsBigForm="true" />
+}
+else
+{
+    <EditForm Model="@visitSheetReport" OnValidSubmit="OnValidSubmit">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+
+        <MudCard Elevation="25">
+            <MudCardHeader Style="padding:20px">
+                <CardHeaderAvatar>
+                    <MudAvatar Rounded="true" Color="Color.Info">
+                        <MudIcon Icon="@Icons.Material.Filled.Assessment" />
+                    </MudAvatar>
+                </CardHeaderAvatar>
+
+                <CardHeaderContent>
+                    <MudText Typo="Typo.h5">@languageContainer.Keys["Compilation Report"] - @visitSheetReport.ReportCode</MudText>
+                    <MudChip Color="@(IsCompleted ? Color.Success : Color.Warning)" Variant="Variant.Filled" Size="Size.Small" Class="mt-2">@(IsCompleted ? languageContainer.Keys["Completed"] : languageContainer.Keys["Draft"])</MudChip>
+                </CardHeaderContent>
+
+                <CardHeaderActions>
+                    <MudButton Href="@($"/VisitSheets/Details/{visitSheetReport.VisitSheetId}")" Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.ArrowBack" Color="Color.Info" Class="me-2">@languageContainer.Keys["Back"]</MudButton>
+                    <MudButton Variant="Variant.Outlined" StartIcon="@Icons.Material.Filled.Print" Color="Color.Secondary" OnClick="OpenPrint">@languageContainer.Keys["Print"]</MudButton>
+                </CardHeaderActions>
+            </MudCardHeader>
+
+            <MudCardContent Class="px-5 py-3">
+                <h5 class="fw-bold mt-3">@languageContainer.Keys["Report Information"]</h5>
+
+                <div class="d-flex flex-wrap">
+                    <div class="p-3 w-100 w-md-25"><MudTextField Value="@visitSheetReport.ReportCode" Disabled="true" Variant="Variant.Outlined" Label="@languageContainer.Keys["Report Code"]" /></div>
+                    <div class="p-3 w-100 w-md-25"><MudTextField Value="@visitSheetReport.VisitTypeName" Disabled="true" Variant="Variant.Outlined" Label="@languageContainer.Keys["Report Type"]" /></div>
+                    <div class="p-3 w-100 w-md-25"><MudTextField Value="@visitSheetReport.ClientName" Disabled="true" Variant="Variant.Outlined" Label="@languageContainer.Keys["Client"]" /></div>
+                    <div class="p-3 w-100 w-md-25"><MudTextField Value="@visitSheetReport.BranchName" Disabled="true" Variant="Variant.Outlined" Label="@languageContainer.Keys["Branch"]" /></div>
+                    <div class="p-3 w-100 w-md-25"><MudTextField Value="@visitSheetReport.PeriodFrom.ToString("dd/MM/yyyy")" Disabled="true" Variant="Variant.Outlined" Label="@languageContainer.Keys["Period From"]" /></div>
+                    <div class="p-3 w-100 w-md-25"><MudTextField Value="@visitSheetReport.PeriodTo.ToString("dd/MM/yyyy")" Disabled="true" Variant="Variant.Outlined" Label="@languageContainer.Keys["Period To"]" /></div>
+                    <div class="p-3 w-100 w-md-25"><MudNumericField T="int" Value="@visitSheetReport.TotalVisits" Disabled="true" HideSpinButtons="true" Variant="Variant.Outlined" Label="@languageContainer.Keys["Total Visits"]" /></div>
+                    <div class="p-3 w-100 w-md-25"><MudTextField Value="@visitSheetReport.GeneratedAt.ToLocalTime().ToString("dd/MM/yyyy HH:mm")" Disabled="true" Variant="Variant.Outlined" Label="@languageContainer.Keys["Generated At"]" /></div>
+                </div>
+
+                <MudDivider Class="my-5" />
+
+                <h5 class="fw-bold">@languageContainer.Keys["Report Technical Details"]</h5>
+
+                <MudDataGrid T="VisitSheetReportPestDto" Dense="true" Elevation="0" Items="@visitSheetReport.Pests" Hover="true">
+                    <NoRecordsContent>
+                        <NoDataToDisply />
+                    </NoRecordsContent>
+                    <Columns>
+                        <TemplateColumn Title="@languageContainer.Keys["Pest Type"]" Context="row"><CellTemplate><MudText>@(row.Item.PestType?.Name ?? "-")</MudText></CellTemplate></TemplateColumn>
+                        <TemplateColumn Title="@languageContainer.Keys["Highest Activity"]" Context="row"><CellTemplate><MudText>@(row.Item.HighestActivity?.Name ?? "-")</MudText></CellTemplate></TemplateColumn>
+                        <TemplateColumn Title="@languageContainer.Keys["Lowest Activity"]" Context="row"><CellTemplate><MudText>@(row.Item.LowestActivity?.Name ?? "-")</MudText></CellTemplate></TemplateColumn>
+                        <TemplateColumn Title="@languageContainer.Keys["Chemicals Used"]" Context="row"><CellTemplate><MudText>@(string.IsNullOrWhiteSpace(row.Item.ChemicalsUsed) ? "-" : row.Item.ChemicalsUsed)</MudText></CellTemplate></TemplateColumn>
+                        <TemplateColumn Title="@languageContainer.Keys["Treatment Types Used"]" Context="row"><CellTemplate><MudText>@(string.IsNullOrWhiteSpace(row.Item.TreatmentTypesUsed) ? "-" : row.Item.TreatmentTypesUsed)</MudText></CellTemplate></TemplateColumn>
+                        <TemplateColumn Title="@languageContainer.Keys["Cause of Infections"]" Context="row"><CellTemplate><MudText>@(string.IsNullOrWhiteSpace(row.Item.InfectionCauses) ? "-" : row.Item.InfectionCauses)</MudText></CellTemplate></TemplateColumn>
+                        <TemplateColumn Title="@languageContainer.Keys["Areas Treated"]" Context="row"><CellTemplate><MudText>@(string.IsNullOrWhiteSpace(row.Item.AreasTreated) ? "-" : row.Item.AreasTreated)</MudText></CellTemplate></TemplateColumn>
+                    </Columns>
+                </MudDataGrid>
+
+                <MudDivider Class="my-5" />
+
+                <div class="d-flex flex-wrap">
+                    <div class="p-3 w-100 w-md-50">
+                        <MudTextField Lines="6" Variant="Variant.Outlined" @bind-Value="visitSheetReport.ReportSummary" For="@(() => visitSheetReport.ReportSummary)" Disabled="@(!CanEdit)" Label="@languageContainer.Keys["Report Summary"]" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Summarize" />
+                    </div>
+                    <div class="p-3 w-100 w-md-50">
+                        <MudTextField Lines="6" Variant="Variant.Outlined" @bind-Value="visitSheetReport.Recommendations" For="@(() => visitSheetReport.Recommendations)" Disabled="@(!CanEdit)" Label="@languageContainer.Keys["Recommendations"]" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Recommend" />
+                    </div>
+                </div>
+
+                @if (CanEdit)
+                {
+                    <div class="mt-10">
+                        <h5 class="fw-bold">@languageContainer.Keys["Additional Media"]</h5>
+                        <div class="flex-wrap gap-5 gap-md-0 d-flex flex-md-nowrap align-items-end">
+                            <div class="p-3 w-100 d-flex flex-column">
+                                <ImagesUpload ImagesSelected="CaptureUploadedImages" UploadedImagesCleared="ClearUploadedImages" CurrentImages="@visitSheetReport.Images" />
+                                <MudSpacer />
+                            </div>
+                        </div>
+                    </div>
+                }
+                else if (visitSheetReport.Images!=null)
+                {
+                    <div class="mt-10">
+                        <h5 class="fw-bold">@languageContainer.Keys["Additional Media"]</h5>
+                        <div class="row">
+                            @foreach (var image in visitSheetReport.Images)
+                            {
+                                <div class="col-12 col-md-4 mb-4">
+                                    <MudImage Src="@(image)" Class="w-100 rounded border" Style="height:220px;object-fit:contain;cursor:pointer;" @onclick="() => ShowImagePreview(image)" />
+                                </div>
+                            }
+                        </div>
+                    </div>
+                }
+            </MudCardContent>
+
+            @if (CanEdit)
+            {
+                <MudCardActions Class="d-flex justify-content-end p-5">
+                    <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Info" StartIcon="@Icons.Material.Filled.Save" Disabled="@isProcessing" Class="me-3">@languageContainer.Keys["Save"]</MudButton>
+                    <MudButton Variant="Variant.Filled" Color="Color.Success" StartIcon="@Icons.Material.Filled.TaskAlt" Disabled="@isProcessing" OnClick="CompleteReport">@languageContainer.Keys["Complete Report"]</MudButton>
+                </MudCardActions>
+            }
+        </MudCard>
+    </EditForm>
+}

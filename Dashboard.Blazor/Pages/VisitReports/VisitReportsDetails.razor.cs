@@ -7,6 +7,9 @@
         public int Id { get; set; }
 
         private VisitReportsDto? visitReportForm;
+
+        private VisitReportLegacyDto? legacyReport;
+
         private readonly string formUri = "VisitReports/Form";
 
         protected override async Task OnParametersSetAsync()
@@ -15,6 +18,8 @@
 
             if (visitReportForm is null)
                 return;
+
+            legacyReport = await GetByIdAsync<VisitReportLegacyDto>($"VisitReports/LegacyReport/{Id}");
 
             breadcrumbItems.AddRange(new List<BreadcrumbItem>
             {

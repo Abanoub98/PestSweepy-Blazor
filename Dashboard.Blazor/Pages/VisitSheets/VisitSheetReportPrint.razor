@@ -1,0 +1,282 @@
+@attribute [Authorize(Roles = $"{Roles.AdminRole},{Roles.ManagerRole},{Roles.SupervisorRole},{Roles.ContractClientRole},{Roles.OperationManagerRole},{Roles.SalesRole}")]
+@inherits BasePage
+
+<MudDialog>
+    <DialogContent>
+        <div id="unique_id_scroll_section" class="w-100 d-flex flex-column align-items-center py-5" style="height:70vh;overflow:auto;">
+
+            @if (report is null)
+            {
+                <FormLoadingSpinner IsBigForm="true" />
+            }
+            else
+            {
+                <div class="border rounded border-gray-600" style="width:992px;background-color:white !important;">
+
+                    <div id="Report" class="px-8 py-5 h-100 position-relative bg-white">
+
+                        <!-- Watermark -->
+                        <div class="position-absolute top-50 start-50 translate-middle opacity-10" style="z-index:0;">
+                            <MudImage Src="/images/Logo.png" Width="380" />
+                        </div>
+
+                        <div class="position-relative" style="z-index:1;">
+
+                            <!-- ========================= -->
+                            <!-- Header -->
+                            <!-- ========================= -->
+
+                            <div class="row align-items-center mb-8">
+                                <div class="col-3 text-start">
+                                    <MudImage Src="/images/Logo.png" Width="105" />
+                                </div>
+
+                                <div class="col-6 text-center">
+                                    <div class="fs-2 fw-bold">
+                                        Compilation Report
+                                    </div>
+                                </div>
+
+                                <div class="col-3"></div>
+                            </div>
+
+
+                            <!-- ========================= -->
+                            <!-- Report Information -->
+                            <!-- ========================= -->
+
+                            <div class="fw-bold mb-3">
+                                Report information
+                            </div>
+
+                            <div class="mb-2">
+                                <span class="fw-bold">Report period:</span>
+                                @report.PeriodFrom.ToString("d-MMMM yyyy") : @report.PeriodTo.ToString("d-MMMM yyyy")
+                            </div>
+
+                            <div class="mb-2">
+                                <span class="fw-bold">Report ID:</span>
+                                @report.ReportCode
+                            </div>
+
+                            <div class="mb-2">
+                                <span class="fw-bold">Report type:</span>
+                                @(string.IsNullOrWhiteSpace(report.VisitTypeName) ? "-" : report.VisitTypeName)
+                            </div>
+
+                            <div class="mb-2">
+                                <span class="fw-bold">Client:</span>
+                                @(string.IsNullOrWhiteSpace(report.ClientName) ? "-" : report.ClientName)
+                            </div>
+
+                            <div class="mb-2">
+                                <span class="fw-bold">Branch:</span>
+                                @(string.IsNullOrWhiteSpace(report.BranchName) ? "-" : report.BranchName)
+                            </div>
+
+                            <div class="mb-2">
+                                <span class="fw-bold">Total visits:</span>
+                                @report.TotalVisits
+                            </div>
+
+
+                            <!-- ========================= -->
+                            <!-- Divider -->
+                            <!-- ========================= -->
+
+                            <div class="border-top border-2 border-dark my-4"></div>
+
+
+                            <!-- ========================= -->
+                            <!-- Technical Details -->
+                            <!-- ========================= -->
+
+                            <div class="fw-bold mb-4">
+                                Report Technical Details
+                            </div>
+
+                            @foreach (var pest in report.Pests ?? new List<VisitSheetReportPestDto>())
+                            {
+                                <div class="mb-6">
+
+                                    <div class="row align-items-start">
+
+                                        <!-- Pest Type -->
+                                        <div class="col-4">
+                                            <span class="fw-bold">Pest type:</span>
+                                            @(pest.PestType?.Name ?? "-")
+                                        </div>
+
+
+                                        <!-- Activity -->
+                                        <div class="col-4">
+                                            <div class="fw-bold">
+                                                Average percent active:
+                                            </div>
+
+                                            <div>
+                                                <span class="fw-bold">Max:</span>
+                                                @(pest.HighestActivity?.Name ?? "-")
+                                            </div>
+
+                                            <div>
+                                                <span class="fw-bold">Min:</span>
+                                                @(pest.LowestActivity?.Name ?? "-")
+                                            </div>
+                                        </div>
+
+
+                                        <!-- Chemical -->
+                                        <div class="col-4">
+                                            <span class="fw-bold">Chemical used:</span>
+                                            @(string.IsNullOrWhiteSpace(pest.ChemicalsUsed) ? "-" : pest.ChemicalsUsed)
+                                        </div>
+
+                                    </div>
+
+
+                                    <!-- Infection -->
+                                    <div class="row mt-4">
+                                        <div class="col-12">
+                                            <span class="fw-bold">Cause of infections:</span>
+                                            @(string.IsNullOrWhiteSpace(pest.InfectionCauses) ? "-" : pest.InfectionCauses)
+                                        </div>
+                                    </div>
+
+
+                                    <!-- Areas Treated -->
+                                    <div class="row mt-2">
+                                        <div class="col-12">
+                                            <span class="fw-bold">Areas treated:</span>
+                                            @(string.IsNullOrWhiteSpace(pest.AreasTreated) ? "-" : pest.AreasTreated)
+                                        </div>
+                                    </div>
+
+                                    <!-- Treatment Types Used -->
+                                    <div class="row mt-2">
+                                        <div class="col-12">
+                                            <span class="fw-bold">Treatment types used:</span>
+                                            @(string.IsNullOrWhiteSpace(pest.TreatmentTypesUsed) ? "-" : pest.TreatmentTypesUsed)
+                                        </div>
+                                    </div>
+
+                                </div>
+                            }
+
+
+                            <!-- ========================= -->
+                            <!-- Divider -->
+                            <!-- ========================= -->
+
+                            <div class="border-top border-2 border-dark my-4"></div>
+
+
+                            <!-- ========================= -->
+                            <!-- Report Summary -->
+                            <!-- ========================= -->
+
+                            <div class="mb-8">
+
+                                <div class="fw-bold mb-3">
+                                    Report Summary:
+                                </div>
+
+                                <div style="white-space:pre-line;">
+                                    @(string.IsNullOrWhiteSpace(report.ReportSummary) ? "-" : report.ReportSummary)
+                                </div>
+
+                            </div>
+
+
+                            <!-- ========================= -->
+                            <!-- Recommendations -->
+                            <!-- ========================= -->
+
+                            <div class="mb-8">
+
+                                <div class="fw-bold mb-3">
+                                    Recommendations:
+                                </div>
+
+                                <div style="white-space:pre-line;">
+                                    @(string.IsNullOrWhiteSpace(report.Recommendations) ? "-" : report.Recommendations)
+                                </div>
+
+                            </div>
+
+
+                            <!-- ========================= -->
+                            <!-- Images -->
+                            <!-- ========================= -->
+                            @if (report.Images?.Any() == true)
+                            {
+                                <div class="row g-4 mt-5">
+
+                                    @foreach (var image in report.Images)
+                                    {
+                                        <div class="col-4">
+
+                                            <div class="border border-dark p-2">
+                                                <MudImage Src="@image" Class="w-100" Style="height:180px;object-fit:cover;" />
+                                            </div>
+
+                                        </div>
+                                    }
+
+                                </div>
+                            }
+
+                        </div>
+
+                    </div>
+
+                </div>
+            }
+
+        </div>
+    </DialogContent>
+
+
+    <DialogActions>
+        <div class="w-100 text-center">
+
+            <button @onclick="PrintReport" class="btn btn-lg btn-success m-5">
+                @languageContainer.Keys["Print"]
+            </button>
+
+        </div>
+    </DialogActions>
+
+</MudDialog>
+
+
+@code {
+    [Inject] private IJSRuntime JSRuntime { get; set; } = default!;
+
+    [Parameter][EditorRequired] public int Id { get; set; }
+
+    [CascadingParameter] private MudDialogInstance MudDialog { get; set; } = default!;
+
+    private VisitSheetReportDto? report;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        report = await GetByIdAsync<VisitSheetReportDto>($"VisitSheetReports/{Id}");
+
+        if (report is not null)
+        {
+            report.Pests ??= new List<VisitSheetReportPestDto>();
+            report.Images ??= new List<string>();
+        }
+    }
+
+    private async Task PrintReport()
+    {
+        await JSRuntime.InvokeVoidAsync("DownloadPdf");
+    }
+
+    private void Cancel()
+    {
+        MudDialog.Cancel();
+    }
+}
