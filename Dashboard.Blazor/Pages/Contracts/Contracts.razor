@@ -58,16 +58,13 @@
                     </HeaderTemplate>
                     <CellTemplate>
                         <div>
-                            @if (role != Roles.ContractClientRole)
-                            {
-                                <TableButtons IsDisable="isDisable" IsEditHide=true
-                                              IsDeleteHide="true" DetailsClicked="() => OpenDetails(detailsUri,contract.Item!.Id)" />
-                            }
-                            else
-                            {
-                                <TableButtons IsDisable="isDisable" IsDeleteHide=true IsEditHide=true
-                                              DetailsClicked="() => OpenDetails(detailsUri, contract.Item!.Id)" />
-                            }
+                            <TableButtons IsDisable="isDisable"
+                                          IsDeleteHide="true"
+                                          IsEditHide="@(!string.IsNullOrEmpty(contract.Item?.UploadedContract))"
+                                          EditRoles="@($"{Roles.AdminRole},{Roles.OperationManagerRole}")"
+                                          EditClicked="() => OpenForm(formUri, contract.Item!.Id)"
+                                          DetailsClicked="() => OpenDetails(detailsUri, contract.Item!.Id)" />
+
                             <a @onclick="() => ShowContract(contract.Item!.Id)" title="@languageContainer.Keys["Show Report"]" class="btn btn-sm btn-light-success me-1">
                                 <i class="fa-solid fa-file-pdf p-0"></i>
                             </a>
