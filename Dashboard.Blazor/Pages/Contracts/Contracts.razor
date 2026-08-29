@@ -50,6 +50,33 @@
                 <PropertyColumn Property="x => x.CreatedAtLocal" Title="@languageContainer.Keys["Created Date"]" />
                 <PropertyColumn Property="x => x.EffectiveDateLocal" Title="@languageContainer.Keys["Effective Date"]" />
 
+                <TemplateColumn Title="@languageContainer.Keys["Status"]"
+                                Sortable="false"
+                                Filterable="false">
+
+                    <CellTemplate Context="contract">
+                        @if (!string.IsNullOrWhiteSpace(contract.Item?.UploadedContract))
+                        {
+                            <MudChip Color="Color.Success"
+                                     Variant="Variant.Filled"
+                                     Size="Size.Small"
+                                     Icon="@Icons.Material.Filled.CheckCircle">
+                                @languageContainer.Keys["Completed"]
+                            </MudChip>
+                        }
+                        else
+                        {
+                            <MudChip Color="Color.Warning"
+                                     Variant="Variant.Filled"
+                                     Size="Size.Small"
+                                     Icon="@Icons.Material.Filled.Pending">
+                                @languageContainer.Keys["Pending"]
+                            </MudChip>
+                        }
+                    </CellTemplate>
+
+                </TemplateColumn>
+
                 <TemplateColumn Title="@languageContainer.Keys["Actions"]" CellClass="text-center" Context="contract" HeaderClass="text-center" Sortable="false" Filterable="false">
                     <HeaderTemplate>
                         <MudText Class="w-100">
