@@ -11,6 +11,53 @@
 
 <MudCard Elevation="25">
     <MudCardContent>
+        <MudTabs ActivePanelIndex="@activeStatusTab"
+                 ActivePanelIndexChanged="@(index => ChangeStatusTab(index))"
+                 Color="Color.Surface"
+                 Rounded="true"
+                 Border="true"
+                 Outlined="true"                
+                 Class="mb-4">
+
+
+            <MudTabPanel Text="@languageContainer.Keys["Scheduled"]"
+                         Icon="@Icons.Material.Filled.Schedule" />
+
+            <MudTabPanel Text="@languageContainer.Keys["Completed"]"
+                         Icon="@Icons.Material.Filled.CheckCircle" />
+
+            <MudTabPanel Text="@languageContainer.Keys["ReScheduled"]"
+                         Icon="@Icons.Material.Filled.EventRepeat" />
+
+            <MudTabPanel Text="@languageContainer.Keys["Missed"]"
+                         Icon="@Icons.Material.Filled.EventBusy" />
+
+            <MudTabPanel Text="@languageContainer.Keys["Cancelled"]"
+                         Icon="@Icons.Material.Filled.Cancel" />
+
+            <MudTabPanel Text="@languageContainer.Keys["All"]" 
+                         Icon="@Icons.Material.Filled.AllInclusive" />
+        </MudTabs>
+        @if (IsScheduledTab)
+        {
+            <div class="d-flex flex-wrap gap-2 mb-4">
+                <MudButton OnClick="@(() => _visitReportFilter = VisitReportFilter.ReadyForReview)" Variant="@(_visitReportFilter == VisitReportFilter.ReadyForReview ? Variant.Filled : Variant.Outlined)" Color="Color.Success" StartIcon="@Icons.Material.Filled.RateReview">
+                    @languageContainer.Keys["Ready for Review"]
+                </MudButton>
+
+                <MudButton OnClick="@(() => _visitReportFilter = VisitReportFilter.ReportInProgress)" Variant="@(_visitReportFilter == VisitReportFilter.ReportInProgress ? Variant.Filled : Variant.Outlined)" Color="Color.Warning" StartIcon="@Icons.Material.Filled.EditNote">
+                    @languageContainer.Keys["Report in Progress"]
+                </MudButton>
+
+                <MudButton OnClick="@(() => _visitReportFilter = VisitReportFilter.NoReport)" Variant="@(_visitReportFilter == VisitReportFilter.NoReport ? Variant.Filled : Variant.Outlined)" Color="Color.Error" StartIcon="@Icons.Material.Filled.Description">
+                    @languageContainer.Keys["No Report"]
+                </MudButton>
+
+                <MudButton OnClick="@(() => _visitReportFilter = VisitReportFilter.All)" Variant="@(_visitReportFilter == VisitReportFilter.All ? Variant.Filled : Variant.Outlined)" Color="Color.Info" StartIcon="@Icons.Material.Filled.AllInclusive">
+                    @languageContainer.Keys["All Scheduled"]
+                </MudButton>
+            </div>
+        }
         <MudDataGrid T="VisitBaseDto" Dense="true" Elevation="0" FixedHeader="true"
                      Height="@($"{tableHight}px")"
                      SelectedItemsChanged="SelectedItemsChanged"
@@ -18,7 +65,7 @@
                      LoadingProgressColor="Color.Info"
                      Filterable="true"
                      MultiSelection="true"
-                     Items="filteredVisits"
+                     Items="DisplayedVisits"
                      Hover="true"
                      SortMode="SortMode.Single"
                      QuickFilter="@FilterFunc">
@@ -104,7 +151,7 @@
                                       Adornment="Adornment.Start"
                                       Class="mt-0 mb-5"
                                       Immediate="true"
-                                      Placeholder="@($"{languageContainer.Keys["Search For"]} {languageContainer.Keys["Date"]}, {languageContainer.Keys["Status"]}, {languageContainer.Keys["Notes"]}")"
+                                      Placeholder="@($"{languageContainer.Keys["Search For"]} {languageContainer.Keys["Id"]}, {languageContainer.Keys["Status"]}, {languageContainer.Keys["Client Name"]}, {languageContainer.Keys["Branch"]}")"
                                       AdornmentIcon="@Icons.Material.Filled.Search"
                                       IconSize="Size.Medium" />
                     </div>
@@ -254,21 +301,7 @@
                         <AuthorizeView Roles="Admin,Manager,OperationManager">
                             <Authorized>
 
-                                @if (row.Item?.Status == VisitStatus.ReScheduled.ToString())
-                                {
-                                    <MudTooltip Text="@languageContainer.Keys["Reschedule"]" Arrow="true">
-                                        <MudIconButton Icon="@Icons.Material.Filled.EventRepeat"
-                                                       Color="Color.Warning"
-                                                       OnClick="() => OpenVisitAction(row.Item!, VisitStatus.ReScheduled)" />
-                                    </MudTooltip>
-
-                                    <MudTooltip Text="@languageContainer.Keys["Cancel"]" Arrow="true">
-                                        <MudIconButton Icon="@Icons.Material.Filled.Cancel"
-                                                       Color="Color.Error"
-                                                       OnClick="() => OpenVisitAction(row.Item!, VisitStatus.Cancelled)" />
-                                    </MudTooltip>
-                                }
-                                else if (row.Item?.Status == VisitStatus.Scheduled.ToString())
+                                @if (row.Item?.Status == VisitStatus.Scheduled.ToString() || row.Item?.Status == VisitStatus.ReScheduled.ToString())
                                 {
                                     <MudTooltip Text="@languageContainer.Keys["Complete"]" Arrow="true">
                                         <MudIconButton Icon="@Icons.Material.Filled.CheckCircle"

@@ -100,13 +100,13 @@
     {
         if (!periodFrom.HasValue || !periodTo.HasValue)
         {
-            // Snackbar.Add(languageContainer.Keys["Period From and Period To are required"], Severity.Error);
+            Snackbar.Add(languageContainer.Keys["Period From and Period To are required"], Severity.Error);
             return;
         }
 
         if (periodTo.Value.Date < periodFrom.Value.Date)
         {
-            // Snackbar.Add(languageContainer.Keys["Period To cannot be earlier than Period From"], Severity.Error);
+            Snackbar.Add(languageContainer.Keys["Period To cannot be earlier than Period From"], Severity.Error);
             return;
         }
 

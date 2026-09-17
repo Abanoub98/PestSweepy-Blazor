@@ -9,10 +9,17 @@ public partial class VisitSheets
     private IEnumerable<Claim> claims = Enumerable.Empty<Claim>();
     private string role = null!;
 
+    private int activeStatusTab;
+
+    private readonly bool?[] visitSheetActiveTabs =
+    {
+        true,  // Active
+        false,  // Inactive
+        null  // All
+    };
+
     protected override async Task OnInitializedAsync()
     {
-        StartProcessing();
-
         claims = await GetClaimsPrincipalData();
         role = claims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value ?? string.Empty;
 
@@ -22,9 +29,27 @@ public partial class VisitSheets
             new(languageContainer.Keys["VisitSheets"], href: null, disabled: true, icon: EntityIcons.CategoriesIcon),
         };
 
-        visitSheets = await GetAllAsync<VisitSheetsDto>("VisitSheets?OrderBy=id&Asc=false");
+        await LoadVisitSheets();
+    }
 
-        StopProcessing();
+    private async Task LoadVisitSheets()
+    {
+        var isActive = visitSheetActiveTabs[activeStatusTab];
+
+        var url = "VisitSheets?OrderBy=id&Asc=false";
+
+        if (isActive.HasValue)
+        {
+            url += $"&FilterQuery=isActive%3D{isActive.Value.ToString().ToLowerInvariant()}";
+        }
+
+        visitSheets = await GetAllAsync<VisitSheetsDto>(url);
+    }
+
+    private async Task ChangeActiveTab(int index)
+    {
+        activeStatusTab = index;
+        await LoadVisitSheets();
     }
 
     private async Task Delete(int id)

@@ -10,9 +10,19 @@ public partial class VisitReports
     private IEnumerable<Claim> claims = Enumerable.Empty<Claim>();
     private string role = null!;
 
+    private int activeStatusTab;
+
+    private readonly VisitReportStatus?[] visitReportStatusTabs =
+    {
+        VisitReportStatus.Completed,
+        VisitReportStatus.CheckedIn,
+        //VisitReportStatus.InProgress,
+        //VisitReportStatus.Cancelled,
+        null // All
+    };
+
     protected override async Task OnInitializedAsync()
     {
-        StartProcessing();
 
         claims = await GetClaimsPrincipalData();
         role = claims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value ?? string.Empty;
@@ -23,9 +33,41 @@ public partial class VisitReports
             new(languageContainer.Keys["VisitReports"], href: null, disabled: true, icon: EntityIcons.CategoriesIcon),
         };
 
-        visitReports = await GetAllAsync<VisitReportsDto>("VisitReports?OrderBy=id&Asc=false");
+        await LoadVisitReports();
+    }
 
-        StopProcessing();
+    private async Task LoadVisitReports()
+    {
+        StartProcessing();
+
+        try
+        {
+            var selectedStatus = visitReportStatusTabs[activeStatusTab];
+
+            var url = "VisitReports?OrderBy=id&Asc=false";
+
+            if (selectedStatus.HasValue)
+            {
+                var filterQuery = Uri.EscapeDataString(
+                    $"Status=\"{selectedStatus.Value}\""
+                );
+
+                url += $"&FilterQuery={filterQuery}";
+            }
+
+            visitReports = await GetAllAsync<VisitReportsDto>(url);
+
+        }
+        finally
+        {
+            StopProcessing();
+        }
+    }
+
+    private async Task ChangeStatusTab(int index)
+    {
+        activeStatusTab = index;
+        await LoadVisitReports();
     }
 
     private async Task Delete(int id)

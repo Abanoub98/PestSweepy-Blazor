@@ -11,6 +11,31 @@
 
 <MudCard Elevation="25">
     <MudCardContent>
+        <MudTabs ActivePanelIndex="@activeStatusTab"
+                 ActivePanelIndexChanged="@(index => ChangeStatusTab(index))"
+                 Color="Color.Surface"
+                 Rounded="true"
+                 Border="true"
+                 Outlined="true"
+                 Class="mb-4">
+
+            <MudTabPanel Text="@languageContainer.Keys["Completed"]"
+                         Icon="@Icons.Material.Filled.CheckCircle" />
+
+            <MudTabPanel Text="@languageContainer.Keys["CheckedIn"]"
+                         Icon="@Icons.Material.Filled.Schedule" />
+
+ @*            <MudTabPanel Text="@languageContainer.Keys["InProgress"]"
+                         Icon="@Icons.Material.Filled.EventRepeat" /> *@
+
+
+  @*           <MudTabPanel Text="@languageContainer.Keys["Cancelled"]"
+                         Icon="@Icons.Material.Filled.Cancel" /> *@
+
+            <MudTabPanel Text="@languageContainer.Keys["All"]" 
+                         Icon="@Icons.Material.Filled.AllInclusive" />
+        </MudTabs>
+
         <MudDataGrid T="VisitReportsDto" Dense="true" Elevation="0" FixedHeader="true"
                      Height="@($"{tableHight}px")"
                      SelectedItemsChanged="SelectedItemsChanged"

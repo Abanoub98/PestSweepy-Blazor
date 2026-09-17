@@ -69,9 +69,9 @@ else
                                              AdornmentIcon="@Icons.Material.Filled.Assignment"
                                              ProgressIndicatorColor="Color.Info"
                                              Clearable
-                                             Value="visitSheetForm!.Contract"
+                                             Value="visitSheetForm.Contract"
                                              ValueChanged="OnContractChanged"
-                                             For="@(() => visitSheetForm!.Contract)"
+                                             For="@(() => visitSheetForm.Contract)"
                                              AdornmentColor="Color.Info"
                                              MaxItems="null"
                                              HelperTextOnFocus="true"
@@ -157,26 +157,52 @@ else
                         <MudPaper Class="p-4" Elevation="2" Rounded="true">
                             <MudText Class="fw-bold mb-3">@languageContainer.Keys["Plan"]</MudText>
 
+                            <!-- Scheduling Type -->
+                            <div class="p-2">
+                                <MudSwitch T="bool"
+                                           Color="Color.Info"
+                                           @bind-Value="UseSpecificDates"
+                                           Label="Select specific dates from calendar" />
+                            </div>
+
                             <div class="d-flex flex-wrap flex-md-nowrap">
-                                <div class="p-2 w-100 w-md-50">
-                                    <MudNumericField T="int"
-                                                     HideSpinButtons="true"
-                                                     Variant="Variant.Outlined"
-                                                     @bind-Value="visitSheetForm.TotalVisits"
-                                                     For="@(() => visitSheetForm.TotalVisits)"
-                                                     Label="@languageContainer.Keys["No Of Visits"]"
-                                                     AdornmentColor="Color.Info"
-                                                     Adornment="Adornment.Start"
-                                                     AdornmentIcon="@Icons.Material.Filled.FormatListNumbered"
-                                                     HelperText="@languageContainer.Keys["Required"]" />
-                                </div>
+                                @if (!UseSpecificDates)
+                                {
+                                    <div class="p-2 w-100 w-md-50">
+                                        <MudNumericField T="int"
+                                                         HideSpinButtons="true"
+                                                         Variant="Variant.Outlined"
+                                                         @bind-Value="visitSheetForm.TotalVisits"
+                                                         For="@(() => visitSheetForm.TotalVisits)"
+                                                         Label="@languageContainer.Keys["No Of Visits"]"
+                                                         AdornmentColor="Color.Info"
+                                                         Adornment="Adornment.Start"
+                                                         AdornmentIcon="@Icons.Material.Filled.FormatListNumbered"
+                                                         HelperText="@languageContainer.Keys["Required"]" />
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="p-2 w-100 w-md-50">
+                                        <MudNumericField T="int"
+                                                         HideSpinButtons="true"
+                                                         Variant="Variant.Outlined"
+                                                         Value="@visitSheetForm.TotalVisits"
+                                                         ReadOnly="true"
+                                                         Label="@languageContainer.Keys["No Of Visits"]"
+                                                         AdornmentColor="Color.Info"
+                                                         Adornment="Adornment.Start"
+                                                         AdornmentIcon="@Icons.Material.Filled.FormatListNumbered" />
+                                    </div>
+                                }
+
                                 <!-- Row 3: Service Request Type (Lookup) -->
-                                <div class="p-3 w-100">
+                                <div class="p-2 w-100 w-md-50">
                                     <MudAutocomplete T="LookupDto"
                                                      SearchFunc="@GetVisitTypes"
                                                      Adornment="Adornment.Start"
                                                      AnchorOrigin="Origin.BottomCenter"
-                                                     Label="@languageContainer.Keys[("Visit Type")]"
+                                                     Label="@languageContainer.Keys["Visit Type"]"
                                                      Variant="Variant.Outlined"
                                                      ShowProgressIndicator="true"
                                                      ResetValueOnEmptyText="true"
@@ -190,64 +216,65 @@ else
                                                      MaxItems="null"
                                                      HelperTextOnFocus="true"
                                                      ToStringFunc="@(e => e == null ? null : $"{e.Name}")"
-                                                     HelperText="@languageContainer.Keys[("Required")]"
-                                                     Placeholder="@languageContainer.Keys[("Select Request Type")]">
+                                                     HelperText="@languageContainer.Keys["Required"]"
+                                                     Placeholder="@languageContainer.Keys["Select Request Type"]">
                                         <NoItemsTemplate>
                                             <MudText Align="Align.Center" Class="px-4 py-4">
-                                                @languageContainer.Keys[("No items found")]
+                                                @languageContainer.Keys["No items found"]
                                             </MudText>
                                         </NoItemsTemplate>
                                     </MudAutocomplete>
                                 </div>
                             </div>
 
-                            <!-- Days -->
-                            <div class="p-2">
-                                <MudText Class="fw-bold mb-2">@languageContainer.Keys["Days"]</MudText>
+                            @if (!UseSpecificDates)
+                            {
+                                <!-- Days -->
+                                <div class="p-2">
+                                    <MudText Class="fw-bold mb-2">@languageContainer.Keys["Days"]</MudText>
 
-                                <div class="d-flex flex-wrap">
-                                    <!-- Column 1 -->
-                                    <div class="me-10 mb-3">
-                                        <MudCheckBox Label="@languageContainer.Keys["Saturday"]"
-                                                     Value="@IsDaySelected(VisitDays.Saturday)"
-                                                     ValueChanged="@((bool v) => SetDay(VisitDays.Saturday, v))" />
+                                    <div class="d-flex flex-wrap">
+                                        <!-- Column 1 -->
+                                        <div class="me-10 mb-3">
+                                            <MudCheckBox Label="@languageContainer.Keys["Saturday"]"
+                                                         Value="@IsDaySelected(VisitDays.Saturday)"
+                                                         ValueChanged="@((bool v) => SetDay(VisitDays.Saturday, v))" />
 
-                                        <MudCheckBox Label="@languageContainer.Keys["Tuesday"]"
-                                                     Value="@IsDaySelected(VisitDays.Tuesday)"
-                                                     ValueChanged="@((bool v) => SetDay(VisitDays.Tuesday, v))" />
+                                            <MudCheckBox Label="@languageContainer.Keys["Tuesday"]"
+                                                         Value="@IsDaySelected(VisitDays.Tuesday)"
+                                                         ValueChanged="@((bool v) => SetDay(VisitDays.Tuesday, v))" />
 
-                                        <MudCheckBox Label="@languageContainer.Keys["Friday"]"
-                                                     Value="@IsDaySelected(VisitDays.Friday)"
-                                                     ValueChanged="@((bool v) => SetDay(VisitDays.Friday, v))" />
-                                    </div>
+                                            <MudCheckBox Label="@languageContainer.Keys["Friday"]"
+                                                         Value="@IsDaySelected(VisitDays.Friday)"
+                                                         ValueChanged="@((bool v) => SetDay(VisitDays.Friday, v))" />
+                                        </div>
 
-                                    <!-- Column 2 -->
-                                    <div class="me-10 mb-3">
-                                        <MudCheckBox Label="@languageContainer.Keys["Sunday"]"
-                                                     Value="@IsDaySelected(VisitDays.Sunday)"
-                                                     ValueChanged="@((bool v) => SetDay(VisitDays.Sunday, v))" />
+                                        <!-- Column 2 -->
+                                        <div class="me-10 mb-3">
+                                            <MudCheckBox Label="@languageContainer.Keys["Sunday"]"
+                                                         Value="@IsDaySelected(VisitDays.Sunday)"
+                                                         ValueChanged="@((bool v) => SetDay(VisitDays.Sunday, v))" />
 
-                                        <MudCheckBox Label="@languageContainer.Keys["Wednesday"]"
-                                                     Value="@IsDaySelected(VisitDays.Wednesday)"
-                                                     ValueChanged="@((bool v) => SetDay(VisitDays.Wednesday, v))" />
-                                    </div>
+                                            <MudCheckBox Label="@languageContainer.Keys["Wednesday"]"
+                                                         Value="@IsDaySelected(VisitDays.Wednesday)"
+                                                         ValueChanged="@((bool v) => SetDay(VisitDays.Wednesday, v))" />
+                                        </div>
 
-                                    <!-- Column 3 -->
-                                    <div class="mb-3">
-                                        <MudCheckBox Label="@languageContainer.Keys["Monday"]"
-                                                     Value="@IsDaySelected(VisitDays.Monday)"
-                                                     ValueChanged="@((bool v) => SetDay(VisitDays.Monday, v))" />
+                                        <!-- Column 3 -->
+                                        <div class="mb-3">
+                                            <MudCheckBox Label="@languageContainer.Keys["Monday"]"
+                                                         Value="@IsDaySelected(VisitDays.Monday)"
+                                                         ValueChanged="@((bool v) => SetDay(VisitDays.Monday, v))" />
 
-                                        <MudCheckBox Label="@languageContainer.Keys["Thursday"]"
-                                                     Value="@IsDaySelected(VisitDays.Thursday)"
-                                                     ValueChanged="@((bool v) => SetDay(VisitDays.Thursday, v))" />
+                                            <MudCheckBox Label="@languageContainer.Keys["Thursday"]"
+                                                         Value="@IsDaySelected(VisitDays.Thursday)"
+                                                         ValueChanged="@((bool v) => SetDay(VisitDays.Thursday, v))" />
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
 
-                            <!-- Start Date + Time -->
-                            <div class="d-flex flex-wrap flex-md-nowrap">
-                                <div class="p-2 w-100 w-md-50">
+                                <!-- Start Date -->
+                                <div class="p-2 w-100">
                                     <MudDatePicker Variant="Variant.Outlined"
                                                    @bind-Date="StartingDateProxy"
                                                    Label="@languageContainer.Keys["Starting Date"]"
@@ -256,16 +283,68 @@ else
                                                    AdornmentIcon="@Icons.Material.Filled.CalendarMonth"
                                                    AdornmentColor="Color.Info" />
                                 </div>
+                            }
+                            else
+                            {
+                                <!-- Specific Dates -->
+                                <div class="p-2">
+                                    <MudText Class="fw-bold mb-2">Specific Visit Dates</MudText>
 
-                                <div class="p-2 w-100 w-md-50">
-                                    <MudTimePicker Variant="Variant.Outlined"
-                                                   @bind-Time="VisitTimeProxy"
-                                                   Label="@languageContainer.Keys["Time"]"
-                                                   Required="true"
-                                                   Adornment="Adornment.End"
-                                                   AdornmentIcon="@Icons.Material.Filled.AccessTime"
-                                                   AdornmentColor="Color.Info" />
+                                    <div class="d-flex flex-wrap flex-md-nowrap align-items-center">
+                                        <div class="p-2 w-100 w-md-75">
+                                            <MudDatePicker Variant="Variant.Outlined"
+                                                           @bind-Date="selectedSpecificDate"
+                                                           Label="Select Visit Date"
+                                                           Adornment="Adornment.End"
+                                                           AdornmentIcon="@Icons.Material.Filled.CalendarMonth"
+                                                           AdornmentColor="Color.Info" />
+                                        </div>
+
+                                        <div class="p-2 w-100 w-md-25">
+                                            <MudButton FullWidth="true"
+                                                       Variant="Variant.Filled"
+                                                       Color="Color.Info"
+                                                       StartIcon="@Icons.Material.Filled.Add"
+                                                       OnClick="AddSpecificDate">
+                                                Add Date
+                                            </MudButton>
+                                        </div>
+                                    </div>
+
+                                    @if (visitSheetForm.SpecificDates?.Count > 0)
+                                    {
+                                        <div class="d-flex flex-wrap gap-2 p-2">
+                                            @foreach (var date in visitSheetForm.SpecificDates.OrderBy(x => x))
+                                            {
+                                                var currentDate = date;
+
+                                                <MudButton Variant="Variant.Outlined"
+                                                           Color="Color.Info"
+                                                           EndIcon="@Icons.Material.Filled.Close"
+                                                           OnClick="@(() => RemoveSpecificDate(currentDate))">
+                                                    @currentDate.ToString("dd/MM/yyyy")
+                                                </MudButton>
+                                            }
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <MudText Class="p-2" Color="Color.Warning">
+                                            No dates selected.
+                                        </MudText>
+                                    }
                                 </div>
+                            }
+
+                            <!-- Time is required for both scheduling flows -->
+                            <div class="p-2 w-100">
+                                <MudTimePicker Variant="Variant.Outlined"
+                                               @bind-Time="VisitTimeProxy"
+                                               Label="@languageContainer.Keys["Time"]"
+                                               Required="true"
+                                               Adornment="Adornment.End"
+                                               AdornmentIcon="@Icons.Material.Filled.AccessTime"
+                                               AdornmentColor="Color.Info" />
                             </div>
                         </MudPaper>
                     </div>

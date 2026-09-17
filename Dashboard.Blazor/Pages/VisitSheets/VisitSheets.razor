@@ -11,6 +11,26 @@
 
 <MudCard Elevation="25">
     <MudCardContent>
+
+        <MudTabs ActivePanelIndex="@activeStatusTab"
+                 ActivePanelIndexChanged="@(index => ChangeActiveTab(index))"
+                 Color="Color.Surface"
+                 Rounded="true"
+                 Border="true"
+                 Outlined="true"
+                 Class="mb-4">
+
+            <MudTabPanel Text="@languageContainer.Keys["Active"]"
+                         Icon="@Icons.Material.Filled.CheckCircle" />
+
+            <MudTabPanel Text="@languageContainer.Keys["Inactive"]"
+                         Icon="@Icons.Material.Filled.Cancel" />
+
+            <MudTabPanel Text="@languageContainer.Keys["All"]"
+                         Icon="@Icons.Material.Filled.AllInclusive" />
+
+        </MudTabs>
+
         <MudDataGrid T="VisitSheetsDto"
                      Dense="true"
                      Elevation="0"

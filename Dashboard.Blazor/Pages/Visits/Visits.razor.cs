@@ -21,6 +21,30 @@ public partial class Visits
 
     private List<VisitBaseDto> filteredVisits = new();
 
+    private int activeStatusTab;
+
+    private readonly VisitStatus?[] visitStatusTabs =
+    {
+        VisitStatus.Scheduled,
+        VisitStatus.Completed,
+        VisitStatus.ReScheduled,
+        VisitStatus.Missed,
+        VisitStatus.Cancelled,
+        null // All
+    };
+
+    private VisitReportFilter _visitReportFilter = VisitReportFilter.ReadyForReview;
+
+    private enum VisitReportFilter
+    {
+        ReadyForReview,
+        ReportInProgress,
+        NoReport,
+        All
+    }
+
+    private bool IsScheduledTab => visitStatusTabs[activeStatusTab] == VisitStatus.Scheduled;
+
     private VisitsDateFilter _dateFilter = VisitsDateFilter.All;
 
     private enum VisitsDateFilter
@@ -33,8 +57,6 @@ public partial class Visits
 
     protected override async Task OnInitializedAsync()
     {
-        StartProcessing();
-
         claims = await GetClaimsPrincipalData();
         role = claims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value ?? string.Empty;
 
@@ -44,10 +66,57 @@ public partial class Visits
             new(languageContainer.Keys["Visits"], href: null, disabled: true, icon: EntityIcons.CategoriesIcon),
         };
 
-        visits = await GetAllAsync<VisitBaseDto>("Visits?OrderBy=scheduledAt&Asc=true");
-        ApplyDateFilter();
+        await LoadVisits();
+    }
 
-        StopProcessing();
+    private async Task LoadVisits()
+    {
+        StartProcessing();
+
+        try
+        {
+            var selectedStatus = visitStatusTabs[activeStatusTab];
+
+            var url = "Visits?OrderBy=scheduledAt&Asc=true";
+
+            if (selectedStatus.HasValue)
+            {
+                var filterQuery = Uri.EscapeDataString(
+                    $"Status=\"{selectedStatus.Value}\""
+                );
+
+                url += $"&FilterQuery={filterQuery}";
+            }
+
+            visits = await GetAllAsync<VisitBaseDto>(url) ?? new List<VisitBaseDto>();
+
+            ApplyDateFilter();
+        }
+        finally
+        {
+            StopProcessing();
+        }
+    }
+
+    private IEnumerable<VisitBaseDto> DisplayedVisits =>
+    !IsScheduledTab
+        ? filteredVisits
+        : _visitReportFilter switch
+        {
+            VisitReportFilter.ReadyForReview => filteredVisits.Where(x => x.VisitReport != null && x.VisitReport.Status == VisitReportStatus.Completed.ToString()),
+            VisitReportFilter.ReportInProgress => filteredVisits.Where(x => x.VisitReport != null && x.VisitReport.Status != VisitReportStatus.Completed.ToString()),
+            VisitReportFilter.NoReport => filteredVisits.Where(x => x.VisitReport == null),
+            _ => filteredVisits
+        };
+
+    private async Task ChangeStatusTab(int index)
+    {
+        activeStatusTab = index;
+
+        if (visitStatusTabs[index] == VisitStatus.Scheduled)
+            _visitReportFilter = VisitReportFilter.ReadyForReview;
+
+        await LoadVisits();
     }
 
     private async Task Delete(int id)
@@ -86,7 +155,10 @@ public partial class Visits
             return true;
         if (element.Status.Contains(searchString, StringComparison.OrdinalIgnoreCase))
             return true;
-
+        if (element.BranchName.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+            return true;
+        if (element.ClientName.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+            return true;
         return false;
     }
 

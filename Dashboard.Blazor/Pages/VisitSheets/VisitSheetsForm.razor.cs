@@ -8,6 +8,41 @@
 
         private VisitSheetsDto? visitSheetForm;
 
+        // =========================
+        // Specific dates helpers
+        // =========================
+
+        private bool useSpecificDates;
+
+        private bool UseSpecificDates
+        {
+            get => useSpecificDates;
+            set
+            {
+                if (useSpecificDates == value)
+                    return;
+
+                useSpecificDates = value;
+
+                if (useSpecificDates)
+                {
+                    // Clear repeated-days data
+                    visitSheetForm!.Days = VisitDays.None;
+                    visitSheetForm.TotalVisits = 0;
+                    visitSheetForm.StartingDate = default;
+                }
+                else
+                {
+                    // Clear manually selected dates
+                    visitSheetForm!.SpecificDates.Clear();
+                    selectedSpecificDate = null;
+                    visitSheetForm.TotalVisits = 0;
+                }
+            }
+        }
+
+        private DateTime? selectedSpecificDate;
+
         protected override async Task OnParametersSetAsync()
         {
             visitSheetForm = (Id == 0)
@@ -16,6 +51,8 @@
 
             if (visitSheetForm is null)
                 return;
+
+            visitSheetForm.SpecificDates ??= new List<DateTime>();
 
             breadcrumbItems.AddRange(new List<BreadcrumbItem>
             {
@@ -34,6 +71,28 @@
         private async Task OnValidSubmit(EditContext context)
         {
             StartProcessing();
+
+            // =========================
+            // Specific dates validation
+            // =========================
+
+            if (Id == 0 && UseSpecificDates)
+            {
+                if (visitSheetForm!.SpecificDates?.Count == 0)
+                {
+                    Snackbar.Add("You must select at least one visit date.", Severity.Error);
+                    StopProcessing();
+                    return;
+                }
+
+                visitSheetForm.TotalVisits = visitSheetForm.SpecificDates?.Count ?? 0;
+                visitSheetForm.StartingDate = visitSheetForm.SpecificDates?.Min().Date ?? default;
+                visitSheetForm.Days = VisitDays.None;
+            }
+            else
+            {
+                visitSheetForm!.SpecificDates?.Clear();
+            }
 
             // =========================
             // Business logic (same style)
@@ -70,26 +129,23 @@
             if (string.IsNullOrEmpty(value))
                 return visitSheetForm.Contracts;
 
-            return visitSheetForm.Contracts
-                .Where(x => x.Title.Contains(value, StringComparison.InvariantCultureIgnoreCase));
+            return visitSheetForm.Contracts.Where(x => x.Title.Contains(value, StringComparison.InvariantCultureIgnoreCase));
         }
 
         private async Task<IEnumerable<BranchBaseDto>> GetBranches(string value)
         {
             var clientId = visitSheetForm?.Contract?.ContractClient?.Id;
+
             if (clientId is null)
                 return Enumerable.Empty<BranchBaseDto>();
 
             if (visitSheetForm!.Branches is null)
-                visitSheetForm.Branches = await GetAllAsync<BranchBaseDto>(
-                    $"/Branches?FilterQuery=clientId%3D{clientId}"
-                );
+                visitSheetForm.Branches = await GetAllAsync<BranchBaseDto>($"/Branches?FilterQuery=clientId%3D{clientId}");
 
             if (string.IsNullOrWhiteSpace(value))
                 return visitSheetForm.Branches;
 
-            return visitSheetForm.Branches
-                .Where(x => x.Name.Contains(value, StringComparison.InvariantCultureIgnoreCase));
+            return visitSheetForm.Branches.Where(x => x.Name.Contains(value, StringComparison.InvariantCultureIgnoreCase));
         }
 
         private async Task OnContractChanged(ContractBaseDto contract)
@@ -103,11 +159,7 @@
 
             // optional preload
             if (contract?.ContractClient?.Id is not null)
-            {
-                visitSheetForm.Branches = await GetAllAsync<BranchBaseDto>(
-                    $"/Branches?FilterQuery=clientId%3D{contract.ContractClient.Id}"
-                );
-            }
+                visitSheetForm.Branches = await GetAllAsync<BranchBaseDto>($"/Branches?FilterQuery=clientId%3D{contract.ContractClient.Id}");
 
             StateHasChanged();
         }
@@ -120,16 +172,14 @@
             if (string.IsNullOrEmpty(value))
                 return visitSheetForm.Supervisors;
 
-            return visitSheetForm.Supervisors
-                .Where(x => x.FirstName.Contains(value, StringComparison.InvariantCultureIgnoreCase));
+            return visitSheetForm.Supervisors.Where(x => x.FirstName.Contains(value, StringComparison.InvariantCultureIgnoreCase));
         }
 
         // =========================
         // Days flags helpers
         // =========================
 
-        private bool IsDaySelected(VisitDays day)
-            => (visitSheetForm!.Days & day) == day;
+        private bool IsDaySelected(VisitDays day) => (visitSheetForm!.Days & day) == day;
 
         private void SetDay(VisitDays day, bool isSelected)
         {
@@ -137,6 +187,37 @@
                 visitSheetForm!.Days |= day;
             else
                 visitSheetForm!.Days &= ~day;
+        }
+
+        // =========================
+        // Specific dates helpers
+        // =========================
+
+        private void AddSpecificDate()
+        {
+            if (selectedSpecificDate is null)
+                return;
+
+            var date = selectedSpecificDate.Value.Date;
+
+            if (!visitSheetForm!.SpecificDates.Any(x => x.Date == date))
+                visitSheetForm.SpecificDates.Add(date);
+
+            visitSheetForm.SpecificDates = visitSheetForm.SpecificDates.OrderBy(x => x).ToList();
+            visitSheetForm.TotalVisits = visitSheetForm.SpecificDates.Count;
+            visitSheetForm.StartingDate = visitSheetForm.SpecificDates.Min().Date;
+            selectedSpecificDate = null;
+        }
+
+        private void RemoveSpecificDate(DateTime date)
+        {
+            visitSheetForm!.SpecificDates.RemoveAll(x => x.Date == date.Date);
+            visitSheetForm.TotalVisits = visitSheetForm.SpecificDates.Count;
+
+            if (visitSheetForm.SpecificDates.Count > 0)
+                visitSheetForm.StartingDate = visitSheetForm.SpecificDates.Min().Date;
+            else
+                visitSheetForm.StartingDate = default;
         }
 
         // =========================
@@ -163,8 +244,7 @@
             if (string.IsNullOrEmpty(value))
                 return visitSheetForm.VisitTypes;
 
-            return visitSheetForm.VisitTypes
-                .Where(x => x.Name.Contains(value, StringComparison.InvariantCultureIgnoreCase));
+            return visitSheetForm.VisitTypes.Where(x => x.Name.Contains(value, StringComparison.InvariantCultureIgnoreCase));
         }
     }
 }
